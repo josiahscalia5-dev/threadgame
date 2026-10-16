@@ -64,19 +64,19 @@ _(no message yet)_
 
 ## Simulation: race rules and Loop AI
 
-- transcript: `history/transcripts/370de19d-9b32-5c31-ac39-d89d7478db67/subagents/agent-ae84357f8296ab86f.jsonl` (171 entries)
+- transcript: `history/transcripts/370de19d-9b32-5c31-ac39-d89d7478db67/subagents/agent-ae84357f8296ab86f.jsonl` (173 entries)
 
 _(no message yet)_
 
 ## Renderer: plates, camera, actors, effects
 
-- transcript: `history/transcripts/370de19d-9b32-5c31-ac39-d89d7478db67/subagents/agent-aee076b7546be423f.jsonl` (225 entries)
+- transcript: `history/transcripts/370de19d-9b32-5c31-ac39-d89d7478db67/subagents/agent-aee076b7546be423f.jsonl` (233 entries)
 
 Now a side-by-side comparison helper, then the first capture.
 
 ## UI: HUD, input, loop, lifecycle
 
-- transcript: `history/transcripts/370de19d-9b32-5c31-ac39-d89d7478db67/subagents/agent-ae9506e4d1065977a.jsonl` (274 entries)
+- transcript: `history/transcripts/370de19d-9b32-5c31-ac39-d89d7478db67/subagents/agent-ae9506e4d1065977a.jsonl` (282 entries)
 
-Text sits ~3–5 design px higher than approved (font metrics) and our fallback font runs a bit wider. Let me tune padding/letter-spacing.
+Within ~1–2 design px now. Let me check the results state against approved 07 using the stub's `forceFinish`.
 
