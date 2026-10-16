@@ -1,5 +1,6 @@
 /* Plays a complete Level 1 race in the real game using only touch input, like a person would:
-   taps the START button, taps each glowing stitch after a reaction delay, swipes up to jump Snagling's hop
+   taps the START button, opens the first (ribbon) stitch with the TOUCH → PULL gesture (touch the gold loop, drag
+   down past the drag target over ~0.45 s), taps each later glowing stitch after a reaction delay, swipes up to jump Snagling's hop
    (dodge branch) or lets it connect (hit branch) and then swipes into the dropped thread's lane to recover it.
 
    node tests/e2e/play.cjs [--seed N] [--branch dodge|hit] [--react 1.0] [--record out.mp4] [--fps 30]
@@ -63,7 +64,19 @@ function args() {
       if (seen[tg.id] == null) { seen[tg.id] = wall; say(t, 'stitch ready: ' + tg.id); }
       const shotName = { ribbon: '01-ribbon', shortcut: '02-shortcut', tassels: '03-tassels', butterfly: '06-butterfly-cue' }[tg.id];
       if (wall - seen[tg.id] >= Math.min(0.6, A.react) && !tapped[tg.id + ':shot']) { tapped[tg.id + ':shot'] = true; await shot(shotName); }
-      if (wall - seen[tg.id] >= A.react) {
+      if (wall - seen[tg.id] >= A.react && tg.kind === 'pull') {
+        // touch the loop and pull it down (target clamp(0.10 × height, 64, 110) CSS px; drag 1.25× that)
+        const dist = 1.25 * Math.min(110, Math.max(64, 0.1 * A.height));
+        const steps = Math.round(0.45 * A.fps);
+        await g.cdp.send('Input.dispatchTouchEvent', { type: 'touchStart', touchPoints: [{ x: tg.x, y: tg.y, id: 1 }] });
+        for (let i = 1; i <= steps; i++) {
+          await g.cdp.send('Input.dispatchTouchEvent', { type: 'touchMove', touchPoints: [{ x: tg.x, y: tg.y + dist * i / steps, id: 1 }] });
+          await L.advance(g, dt); wall += dt; if (rec) await rec.frame(g);
+        }
+        await g.cdp.send('Input.dispatchTouchEvent', { type: 'touchEnd', touchPoints: [] });
+        tapped[tg.id] = true;
+        say(t, 'PULL stitch ' + tg.id + ' from (' + tg.x.toFixed(0) + ',' + tg.y.toFixed(0) + ') down ' + dist.toFixed(0) + ' px');
+      } else if (wall - seen[tg.id] >= A.react) {
         await L.touchTap(g, tg.x, tg.y);
         tapped[tg.id] = true;
         say(t, 'TAP stitch ' + tg.id + ' at (' + tg.x.toFixed(0) + ',' + tg.y.toFixed(0) + ')');
