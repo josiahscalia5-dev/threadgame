@@ -170,10 +170,7 @@
       if (!air) {
         legs.forEach(function (L) {
           const p = (phase + (L.side < 0 ? 0 : 0.5)) % 1;
-          const ft = footTarget(p, w);
-          // idle stance: feet a little apart
-          ft.z = ft.z; ft.pitch = ft.pitch;
-          placeLeg(L, ft, 0);
+          placeLeg(L, footTarget(p, w), 0);
         });
         bob = -0.05 * Math.cos(4 * Math.PI * (phase - DUTY / 2)) * w;
         sway = 0.06 * Math.sin(2 * Math.PI * phase) * w;
@@ -182,7 +179,7 @@
         // tucked jump pose: knees up, feet under the body
         const k = Math.sin(Math.PI * clamp(r.jumpT / 0.68, 0, 1));
         legs.forEach(function (L) {
-          placeLeg(L, { z: 0.08 * L.side * 0 + 0.06, y: 0.12 * k + 0.02, pitch: -0.35 * k }, 0);
+          placeLeg(L, { z: 0.06, y: 0.12 * k + 0.02, pitch: -0.35 * k }, 0);
         });
       }
 
