@@ -3354,3 +3354,7 @@ continue and proceed where we're at. But like I said, can you validate to me whe
 
 - _tool Write_: /home/user/threadgame/game/src/render/materials.js
 
+
+
+- _tool Write_: /home/user/threadgame/game/src/render/course.js
+
