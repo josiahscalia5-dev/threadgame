@@ -3579,3 +3579,9 @@ What are you doing? I want these to look like exactly my mobile app screens. You
 
 - _tool Bash_: Switch carpets and spools to the user's art
 
+
+**Claude:** Now the renderer: it passes your art through, turns off the colour-adjusting tone mapping so the art keeps its exact colours, and lets billboards face the camera.
+
+
+- _tool Bash_: Wire art into the renderer and capture frames
+
