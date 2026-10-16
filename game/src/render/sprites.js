@@ -48,8 +48,8 @@
       const W = spec.w || (img && img.width), H = spec.h || (img && img.height);
       const g = new THREE.PlaneGeometry(f.w * k, f.h * k);
       // move the pivot to the origin: x pivot px from the left, y pivot py from the top
-      g.translate((f.w / 2 - f.px) * k, (f.py - f.h / 2) * k * -1 + 0, 0);
-      g.translate(0, 0, 0);
+      // (quad top = +h/2; the pivot sits py below the top) → feet pivots stand on y = 0, top pivots hang from it
+      g.translate((f.w / 2 - f.px) * k, (f.py - f.h / 2) * k, 0);
       const uv = g.attributes.uv;
       const u0 = f.x / W, u1 = (f.x + f.w) / W, v1 = 1 - f.y / H, v0 = 1 - (f.y + f.h) / H;
       // PlaneGeometry uv order: (0,1) (1,1) (0,0) (1,0)
