@@ -2116,3 +2116,11 @@ Yes
 
 - _tool Bash_: Fix hold start conditions and swipe handling; rerun tests
 
+
+
+- _tool Bash_: Check speeds, Loop lengths, and current pacing sweeps
+
+
+
+- _tool Bash_: Shorten Loop's ribbon and re-run both pacing sweeps
+
