@@ -3288,3 +3288,9 @@ continue and proceed where we're at. But like I said, can you validate to me whe
 
 - _tool Bash_: List existing plate-era unit test names
 
+
+
+- _tool Bash_: Move plate-era tests into a retained subfolder
+
+- _tool Write_: /home/user/threadgame/tests/unit/plate-era/README.md
+
