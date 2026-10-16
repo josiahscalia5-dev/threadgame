@@ -1,0 +1,5 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="app_name">Wishweave Wonders</string>
+    <string name="renderer_gone">Wishweave Wonders stopped unexpectedly.\nTap to restart the race.</string>
+</resources>

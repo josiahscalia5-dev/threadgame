@@ -29,8 +29,8 @@ BACKGROUND_HEX = '#2F7470'
 BACKGROUND_INNER = (72, 150, 141)    # lighter centre glow for the legacy (pre-composited) icons
 DENSITIES = {'mdpi': 1.0, 'hdpi': 1.5, 'xhdpi': 2.0, 'xxhdpi': 3.0, 'xxxhdpi': 4.0}
 SS = 4                     # supersampling factor
-ART_MAX_DP = 64            # Purl's largest dimension inside the 108 dp layer (safe zone is a 66 dp circle)
-ART_CENTER_Y_DP = 55       # slightly below centre: the hair curl adds visual weight at the top
+ART_MAX_DP = 59            # Purl's largest dimension inside the 108 dp layer (safe zone is a 66 dp circle)
+ART_CENTER_Y_DP = 54.5     # slightly below centre: the hair curl adds visual weight at the top
 
 
 def hex_rgb(value):
