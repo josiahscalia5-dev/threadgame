@@ -3143,3 +3143,23 @@ continue and proceed where we're at. But like I said, can you validate to me whe
 
 - _tool Bash_: Read kit touch-input module and its tests
 
+
+**Claude:** Now the existing sim files I'll be rewiring, starting with `ww.js` and `level.js`:
+
+
+- _tool Bash_: Read ww.js tuning and level.js
+
+- _tool Read_: /home/user/threadgame/game/src/sim/race.js
+
+
+**Claude:** `race.js` is built around plate segments throughout, so I'll write a new connected-course race and keep its public shape. Next, inventory and the Loop AI:
+
+
+- _tool Bash_: Read inventory and Loop AI modules
+
+
+
+- _tool Bash_: List state fields used by UI and main loop
+
+- _tool Bash_: Read HUD progress/results code and main input wiring
+
