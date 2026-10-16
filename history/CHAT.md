@@ -3719,3 +3719,13 @@ First I'll check whether the files you just sent are the same ones I already hav
 
 - _tool TaskCreate_: Within the existing plate art: Purl never drawn floating over the blurred column; he runs behind the tower (occluded) and his size stays continuous. Before/after for approval.
 
+
+**Claude:** Starting with the objective fix (#9). I'll look at the two spots in your original code that cause it:
+
+
+- _tool TaskUpdate_: 
+
+- _tool Bash_: Read objective refresh and pickup code
+
+- _tool Bash_: Fix objective refresh and verify with a headless race
+
