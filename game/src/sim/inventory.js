@@ -79,6 +79,7 @@
     if (item.owner === 'purl') {
       st.stats.recoveries += 1;
       ctx.emit({ type: 'recover', item: item.id });
+      ctx.refreshObjective();
     } else {
       ctx.emit({ type: 'loop-recover', item: item.id });
     }

@@ -183,7 +183,7 @@
       mode: 'intro', paused: false, pauseReason: null, time: 0, countdown: T.countdown, seed: seed,
       purl: { seg: 0, segId: seg0.id, f: seg0.startF, lane: 0, laneX: 0, jumpT: 0, jumpH: 0, speed: 0,
               action: 'idle', airborne: false, jumpBuffered: false, immuneUntil: 0, tangledUntil: 0, slowUntil: 0,
-              distance: 0, finishTime: null, rank: null, progress: 0, waitingFor: null },
+              distance: 0, finishTime: null, rank: null, progress: 0, waitingFor: null, failAt: null },
       loop: loopInit.loop,
       items: null,
       held: { purl: 0, loop: 0 },
@@ -241,6 +241,13 @@
       sim.snagling.update(ctx, dt, spans);
       sim.loopAI.update(ctx, dt);
       settleFinish(ctx);
+      const p = st.purl;
+      if (p.failAt !== null && st.mode === 'running' && st.time >= p.failAt - 1e-9) {
+        st.mode = 'failed';
+        p.action = 'failed';
+        p.speed = 0;
+        ctx.emit({ type: 'fail' });
+      }
     } else if (st.mode === 'finished') {
       const racing = st.result && st.result.loopStillRacing;
       if (racing) st.time += dt;
@@ -356,6 +363,7 @@
       refreshObjective(ctx);
     }
     setTransitionFor(ctx, st.purl.seg);
+    if (s.reveal !== null && !st.snagling.armed) sim.snagling.rearm(ctx);   // a new pass over the landing
   }
 
   function refreshObjective(ctx) {
@@ -390,7 +398,6 @@
     p.f = tr.toF;
     st.transition = null;
     enterPurl(ctx, p.seg);
-    if (ctx.route[p.seg].reveal !== null) sim.snagling.rearm(ctx);
   }
 
   function gateBlocked(ctx) {
@@ -472,7 +479,7 @@
             !sim.stitches.passable(ctx, stop.stitch)) p.waitingFor = stop.stitch;
       });
     }
-    if (tangled) p.action = 'tangled';
+    if (tangled || p.failAt !== null) p.action = 'tangled';
     else if (cur.kind === 'connector') p.action = 'transition';
     else if (p.waitingFor) p.action = 'wait';
     else p.action = 'run';
@@ -518,7 +525,7 @@
       sim.stitches.tap(ctx, ev.target);
       return;
     }
-    if (ev.type !== 'swipe' || p.finishTime !== null) return;
+    if (ev.type !== 'swipe' || p.finishTime !== null || p.failAt !== null) return;
     if (ev.dir === 'left' || ev.dir === 'right') {
       const special = st.transition && st.transition.kind !== 'connector';
       const spacing = special ? T.connectorLaneSpacing : laneSpacing(ctx, ctx.route[p.seg], p.f);
@@ -577,6 +584,19 @@
         return s;
       },
       setLoopForm: function (form) { ctx.state.loop.form = form; return form; },
+      /* JSON-safe deep copy of the state (for the e2e harness). */
+      snapshot: function () { return JSON.parse(JSON.stringify(ctx.state)); },
+      /* Purl holds all three threads (helper for finish / gate tests). */
+      giveAll: function () {
+        ['coral', 'teal', 'gold'].forEach(function (c) {
+          const it = ctx.state.items['purl.' + c];
+          if (it.status !== 'held') { it.status = 'held'; it.available = true; it.heldSeq = ++ctx.heldCounter; }
+        });
+        sim.inventory.recount(ctx.state);
+        return ctx.state.held.purl;
+      },
+      /* Make Purl immune / not immune right now (seconds from now; 0 clears). */
+      setImmunity: function (seconds) { ctx.state.purl.immuneUntil = ctx.state.time + (seconds || 0); },
       forceReveal: function () { return sim.snagling.forceReveal ? sim.snagling.forceReveal(ctx) : false; },
       loopPlan: function () { return ctx.loopPlan; }
     };
