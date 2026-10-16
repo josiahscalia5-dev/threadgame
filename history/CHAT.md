@@ -3294,3 +3294,11 @@ continue and proceed where we're at. But like I said, can you validate to me whe
 
 - _tool Write_: /home/user/threadgame/tests/unit/plate-era/README.md
 
+
+**Claude:** Now the new connected-course test suite:
+
+
+- _tool Write_: /home/user/threadgame/tests/unit/connected.test.cjs
+
+- _tool Bash_: Run the full unit test suite
+
