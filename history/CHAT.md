@@ -2280,3 +2280,13 @@ Yes
 
 - _tool Read_: /tmp/claude-0/-home-user-threadgame/131a49c9-f445-5dda-9dd9-fdcc5c2be76a/scratchpad/view/pull-compare-small.jpg
 
+
+
+- _tool Bash_: Lower drag roll travel and enlarge lesson labels 1.5×
+
+
+**Claude:** While the other viewport runs finish, I'll check the Android build. It's a test build of the current game to confirm the toolchain and dependency downloads work in this new container:
+
+
+- _tool Bash_: Check machine resources and the rest of the build script
+
