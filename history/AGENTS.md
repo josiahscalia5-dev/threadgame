@@ -70,13 +70,13 @@ Now a side-by-side comparison helper, then the first capture.
 
 ## UI: HUD, input, loop, lifecycle
 
-- transcript: `history/transcripts/370de19d-9b32-5c31-ac39-d89d7478db67/subagents/agent-ae9506e4d1065977a.jsonl` (424 entries)
+- transcript: `history/transcripts/370de19d-9b32-5c31-ac39-d89d7478db67/subagents/agent-ae9506e4d1065977a.jsonl` (436 entries)
 
-Works with the real renderer. I'll drop the duplicate "LOOP —" from the ranks pill in the timeout case (keeping it in the times pill).
+Now the loader failure/retry path (abort an image's first 3 requests, then allow) and a `file://` load.
 
 ## Simulation: race rules and Loop AI
 
-- transcript: `history/transcripts/370de19d-9b32-5c31-ac39-d89d7478db67/subagents/agent-ae84357f8296ab86f.jsonl` (265 entries)
+- transcript: `history/transcripts/370de19d-9b32-5c31-ac39-d89d7478db67/subagents/agent-ae84357f8296ab86f.jsonl` (272 entries)
 
 Now the acceptance and pacing suites.
 
