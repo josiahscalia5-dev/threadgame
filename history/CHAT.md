@@ -2124,3 +2124,14 @@ Yes
 
 - _tool Bash_: Shorten Loop's ribbon and re-run both pacing sweeps
 
+- _tool Bash_: Show sweep summaries and per-seed winners
+
+
+**Claude:** The balance is back: competent Purl wins 36/50 (72%, same as before) and first-time Purl wins 19/50 (38%). Picking documented seeds with clear margins:
+
+
+- _tool Bash_: Choose documented seeds for each outcome
+
+
+- _tool Bash_: Read the level.js pacing header
+
