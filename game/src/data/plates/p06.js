@@ -19,8 +19,7 @@
         [391, 1064, 124, 10],
         [392, 1045, 115, 0],     // gold spool (approved spool position)
         [424, 1044, 116, 0],
-        [460, 1052, 119, 0],
-        [492, 1066, 124, 0]      // exit: along the round end toward the tower base
+        [458, 1051, 118, 0]      // exit: right along the round end, toward the tower base
       ],
       events: [
         { type: 'stop', stitch: 'butterfly', f: 0, readyF: 0 },
@@ -39,7 +38,7 @@
         [661, 954, 104],
         [612, 940, 96],
         [572, 934, 90],          // the bridge meets the tower base
-        [534, 931, 85]           // hidden behind the tower
+        [522, 930, 84]           // hidden behind the tower
       ],
       events: [
         { type: 'task', kind: 'stitch', f: 0, x: 0, y: 0, dur: 2.7 },
@@ -55,7 +54,13 @@
       exit: [[398, 1030, 272], [470, 860, 250], [610, 640, 205], [760, 430, 160], [900, 260, 120]]
     },
 
-    occluders: [],
+    occluders: [
+      // central tower base and the ball-topped post at the bridge's far end: Loop's bridge runs behind them
+      // (stops at y 1002, above Purl's round carpet end, so Purl is never repainted)
+      { id: 'tower', poly: [[470, 600], [562, 600], [562, 1002], [470, 1002]], behindY: 1000 },
+      // big near post at the right edge: Loop enters the plate behind it
+      { id: 'right-post', poly: [[770, 1185], [783, 1163], [836, 1160], [841, 1165], [841, 1520], [770, 1520]], behindY: 1500 }
+    ],
     wipe: { x0: 398, x1: 522 }
   };
 })(globalThis.WW = globalThis.WW || {});
