@@ -662,7 +662,7 @@
     const shake = bAge < 0.7 ? Math.sin(bAge * 42) * 5 * (1 - bAge / 0.7) : 0;
     if (a > 0.01) {
       ctx.save();
-      ctx.globalAlpha = a * (0.9 + 0.06 * Math.sin(R.clock * 2.2));
+      ctx.globalAlpha = a * (0.8 + 0.06 * Math.sin(R.clock * 2.2));
       ctx.translate(P.gate.x + shake, P.gate.y + 90);
       ctx.scale(s, s);
       ctx.drawImage(veil.c, veil.x - P.gate.x, veil.y - P.gate.y - 90);

@@ -69,7 +69,7 @@ const MOMENTS = {
   },
   'p03-ready': function () {
     __H.hold(['purl.coral', 'loop.coral']); __H.go('tassels', 0); __H.adv(0.9);
-    __H.loopAt('tassels', 740, 1000); __H.adv(0.15);
+    __H.loopAt('tassels', 724, 975); __H.adv(0.03);
   },
   'p03-lift': function () {
     __H.hold(['purl.coral', 'loop.coral']); __H.go('tassels', 0); __H.toStop();
