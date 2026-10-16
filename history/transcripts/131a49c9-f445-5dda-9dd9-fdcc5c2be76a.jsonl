@@ -924,3 +924,4 @@
 {"type": "last-prompt", "lastPrompt": "Can I have the APK file to see the preview of my mobile app so I see how it looks so far?", "leafUuid": "abfaeb59-b028-4c9a-bf49-ce0170993298", "sessionId": "131a49c9-f445-5dda-9dd9-fdcc5c2be76a"}
 {"type": "ai-title", "aiTitle": "Continue previous session", "sessionId": "131a49c9-f445-5dda-9dd9-fdcc5c2be76a"}
 {"type": "atis-latch", "atis": "", "sessionId": "131a49c9-f445-5dda-9dd9-fdcc5c2be76a"}
+{"parentUuid": "abfaeb59-b028-4c9a-bf49-ce0170993298", "isSidechain": false, "promptId": "cbefe2d2-b73e-42dd-8130-989e535bc604", "type": "user", "message": {"role": "user", "content": [{"type": "text", "text": "[Request interrupted by user]"}]}, "uuid": "2c8777c3-21f6-45c4-b6a2-601945cfcddc", "timestamp": "2026-10-16T17:40:52.711Z", "userType": "external", "entrypoint": "remote_mobile", "cwd": "/home/user/threadgame", "sessionId": "131a49c9-f445-5dda-9dd9-fdcc5c2be76a", "version": "2.1.301", "gitBranch": "ccr-207f431c-z9upqo"}
