@@ -4115,3 +4115,9 @@ I'll put those three screens in front of you so we're looking at the same thing:
 
 - _tool Bash_: Fix tool output paths and check saved scale/camera
 
+
+**Claude:** Fixed. The preview has the 2 m character scale and the camera I calibrated against your screens. Next I'll measure the thick gold rope in screen 1 so I can straighten it into a rope texture:
+
+
+- _tool Bash_: Locate the gold rope edges in the opening target
+
