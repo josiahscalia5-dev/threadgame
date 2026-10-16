@@ -67,6 +67,7 @@
       run: w(t.stitch.ribbon) + TUN().ribbonUnfurl + 2.6,
       run2: w(t.stitch.ribbon) + TUN().ribbonUnfurl + 7,
       pickup: w(t.item['purl.coral']) + 0.12,
+      flyup: w(t.item['purl.coral']) + 0.4,
       exit: w(seg[1]) - 0.4,
       connector: w(seg[1]) + 1.0,
       connector2: w(seg[1]) + 2.0,
