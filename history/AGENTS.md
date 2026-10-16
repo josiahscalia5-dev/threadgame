@@ -80,3 +80,9 @@ HUD placement, sizes and results layout now match approved 01/07 closely. Final 
 
 You've hit your session limit · resets 8:10pm (UTC)
 
+## Renderer M2: p02–p07 scenes
+
+- transcript: `history/transcripts/131a49c9-f445-5dda-9dd9-fdcc5c2be76a/subagents/agent-abb36e80113d6b16e.jsonl` (26 entries)
+
+_(no message yet)_
+

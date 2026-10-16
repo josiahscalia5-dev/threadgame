@@ -1985,3 +1985,7 @@ Yes
 
 - _tool Bash_: Extract the original renderer agent brief
 
+
+
+- _tool Agent_: Renderer M2: p02–p07 scenes
+
