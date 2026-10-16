@@ -2351,3 +2351,13 @@ Yes
 
 - _tool Bash_: Wait for the pull lesson re-recording to finish
 
+- _tool Bash_: Rebuild the comparison sheet and save the recording
+
+- _tool Read_: /tmp/claude-0/-home-user-threadgame/131a49c9-f445-5dda-9dd9-fdcc5c2be76a/scratchpad/view/pull-compare-small.jpg
+
+
+**Claude:** The PULL frame still shows the roll at the bend, about 960 plate px up, which matches the old 30% travel rather than 8%. Checking what's actually in `pull.js`:
+
+
+- _tool Bash_: Check PARTIAL value and band positions at small s
+
