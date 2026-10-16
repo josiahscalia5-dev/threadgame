@@ -15,45 +15,45 @@
     countdown: 3,
     purlSpeed: 5.0,
     purlAccel: 9,                 // m/s² when starting/stopping
-    laneChangeTime: 0.22,
-    jumpTime: 0.68,
+    metresPerWidth: 7,            // route metres per racer width of painted path (sets the on-screen pace)
+    connectorTime: 1.25,          // seconds to run "around the tower" between two scenes
+    minLane: 26,                  // plate px between lanes below which the path is single file
+    laneChangeTime: 0.2,
+    jumpTime: 0.62,
     jumpAirborneAbove: 0.3,       // jump height fraction that clears Snagling's contact
     inputBufferTime: 0.15,        // swipe-up within this time before landing is replayed
 
-    snagRevealToContact: 0.55,    // spec: visible reveal to possible contact
-    snagContactWindow: 0.10,      // contact is tested for this long after the hop lands
+    snagRevealToContact: 0.7,     // visible reveal to possible contact (spec starts at 0.55; tuned for touch)
+    snagContactWindow: 0.12,      // contact is tested for this long when the hop lands
     snagTangle: 0.5,              // spec: ankle tangle duration
     hitImmunity: 1.6,             // spec: post-hit damage immunity
     slowAfterHit: 0.6,            // speed multiplier while recovering footing
-    slowAfterHitTime: 1.2,
-    snagRetreat: 1.4,
-    dropAheadF: 0.10,             // dropped thread lands this far ahead (path fraction)
-    dropSpacingF: 0.07,
-    recoveryLoopTime: 2.6,        // local loop that returns Purl to the landing entry
+    slowAfterHitTime: 1.0,
+    snagRetreat: 1.1,
+    dropAheadM: 3.2,              // a dropped thread lands this many metres ahead of Purl
+    dropLandTime: 0.45,           // its arc onto the carpet; it can be recovered once it has landed
+    recoveryLoopTime: 2.4,        // local loop that returns Purl to the landing entry
     failDelay: 1.2,
 
-    ribbonUnfurl: 1.3,
-    shortcutUnroll: 1.5,
-    tasselLift: 0.45,
-    tasselStagger: 0.3,
-    butterflyEmerge: 0.7,
-    butterflyFly: 1.7,
-    butterflyPlace: 0.45,
-    routeSettle: 0.25,            // pause after an opening completes before Purl moves
+    tasselLift: 0.5,
+    tasselStagger: 0.28,
+    butterflyEmerge: 0.35,
+    butterflyFly: 1.3,
+    butterflyPlace: 0.3,
+    butterflyExit: 1.2,
 
-    pickupRadiusF: 0.035,         // path-fraction tolerance for collecting a thread
+    pickupRadiusM: 1.0,           // a thread is collected within this many metres of it
     dropPickupLane: 0.6,          // |lane - dropLane| must be below this to recover a drop
-    cueRepeatAfter: 4,
 
     loopSpeed: 5.0,
     loopSpeedJitter: 0.04,
-    loopReact: [0.45, 1.3],
-    loopHesitateChance: 0.22,
-    loopHesitate: [0.5, 1.2],
+    loopForm: [0.94, 1.06],       // whole-race pace multiplier, independent of the player
+    loopHesitateChance: 0.3,
+    loopHesitate: [0.4, 1.0],
     loopHopMissChance: 0.3,
     loopStumble: 0.9,
-    loopDropOnStumbleChance: 0.35,
-    loopRecover: 1.4,
+    loopDropOnStumbleChance: 0.4,
+    loopRecover: 1.2,
 
     finishWaitForLoop: 25
   };

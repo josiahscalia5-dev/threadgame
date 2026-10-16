@@ -4,6 +4,9 @@
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no, viewport-fit=cover">
 <meta name="theme-color" content="#3a2116">
+<meta name="mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
 <meta name="color-scheme" content="light">
 <meta name="format-detection" content="telephone=no">
 <title>Wishweave Wonders — Level 1</title>
@@ -11,8 +14,8 @@
 </head>
 <body>
 <div id="app">
+  <canvas id="view" aria-label="Race view: Purl races Loop through the loom city"></canvas>
   <main id="game" aria-label="Wishweave Wonders, Level 1">
-    <canvas id="view" aria-label="Race view: Purl runs into the loom city"></canvas>
 
     <!-- HUD: decorative pills ignore pointers so swipes that start over them still reach the game;
          only real buttons take pointer input, and they are never ancestors of the game surface. -->
@@ -90,10 +93,10 @@
         </div>
         <p class="rival-note">Loop is a computer-controlled rival.</p>
         <ul class="howto" aria-label="How to play">
-          <li><span class="ico ico-tap" aria-hidden="true"></span><span><b>Tap</b> glowing stitches to change the world</span></li>
-          <li><span class="ico ico-lr" aria-hidden="true">←&#8202;→</span><span><b>Swipe ← / →</b> to move between lanes</span></li>
-          <li><span class="ico ico-up" aria-hidden="true">↑</span><span><b>Swipe ↑</b> to jump</span></li>
-          <li><span class="ico ico-goal" aria-hidden="true"><svg viewBox="0 0 40 40"><use href="#ico-flower"/></svg></span><span>Hold all <b>3 wish threads</b> to open the flower gate</span></li>
+          <li><span class="ico ico-run" aria-hidden="true">»</span><span>Purl <b>runs by himself</b> — race Loop to the flower gate</span></li>
+          <li><span class="ico ico-lr" aria-hidden="true">←&#8202;→</span><span><b>Swipe ← / →</b> to change lane</span></li>
+          <li><span class="ico ico-up" aria-hidden="true">↑</span><span><b>Swipe ↑</b> or <b>tap</b> to jump over Snagling</span></li>
+          <li><span class="ico ico-goal" aria-hidden="true"><svg viewBox="0 0 40 40"><use href="#ico-flower"/></svg></span><span>Collect all <b>3 wish threads</b> to open the gate</span></li>
         </ul>
         <button id="btn-start" class="btn-teal btn-wide" type="button"><span class="face">START RACE</span></button>
         <p class="fine">Saved rewards are a locked placeholder — no real money.</p>
@@ -112,13 +115,12 @@
         <div class="pause-help" id="pause-help" hidden>
           <h2 class="pill title-pill">HOW TO PLAY</h2>
           <ul class="howto">
-            <li><span class="ico ico-run" aria-hidden="true">»</span><span>Purl <b>runs by himself</b> into the loom city</span></li>
-            <li><span class="ico ico-tap" aria-hidden="true"></span><span><b>Tap</b> a glowing stitch to unfurl ribbons, open carpets, lift tassels and wake the butterfly</span></li>
-            <li><span class="ico ico-lr" aria-hidden="true">←&#8202;→</span><span><b>Swipe ← / →</b> to change lane and pick up dropped threads</span></li>
-            <li><span class="ico ico-up" aria-hidden="true">↑</span><span><b>Swipe ↑</b> to jump — Snagling can tangle you</span></li>
-            <li><span class="ico ico-goal" aria-hidden="true"><svg viewBox="0 0 40 40"><use href="#ico-flower"/></svg></span><span>Hold all <b>3 threads</b> at the flower gate. <b>Loop</b> is a computer-controlled rival.</span></li>
+            <li><span class="ico ico-run" aria-hidden="true">»</span><span>Purl <b>runs by himself</b> through the loom city, racing <b>Loop</b>, a computer-controlled rival</span></li>
+            <li><span class="ico ico-lr" aria-hidden="true">←&#8202;→</span><span><b>Swipe ← / →</b> to change lane and grab a dropped thread</span></li>
+            <li><span class="ico ico-up" aria-hidden="true">↑</span><span><b>Swipe ↑</b> or <b>tap</b> to jump — Snagling can tangle you and knock a thread loose</span></li>
+            <li><span class="ico ico-goal" aria-hidden="true"><svg viewBox="0 0 40 40"><use href="#ico-flower"/></svg></span><span>Collect the <b>red, teal and gold threads</b>, then reach the flower gate</span></li>
           </ul>
-          <p class="fine">Keyboard: ← → ↑ move · Space/Enter taps the stitch · P/Esc pause</p>
+          <p class="fine">Keyboard: ← → change lane · ↑ or Space jump · P/Esc pause</p>
           <button id="btn-help-back" class="btn-teal btn-wide" type="button"><span class="face">BACK</span></button>
         </div>
       </div>
@@ -165,7 +167,7 @@
   </defs>
 </svg>
 
-<!-- Game modules, in the order fixed by docs/ARCHITECTURE.md §2. -->
+<!-- Game modules: core, data, simulation, renderer, UI. Classic scripts on globalThis.WW (no build step). -->
 <script src="src/core/ww.js"></script>
 <script src="src/core/path.js"></script>
 <script src="src/data/asset-data.js"></script>
@@ -176,23 +178,9 @@
 <script src="src/data/plates/p06.js"></script>
 <script src="src/data/plates/p07.js"></script>
 <script src="src/data/level.js"></script>
-<script src="src/sim/inventory.js"></script>
-<script src="src/sim/stitches.js"></script>
-<script src="src/sim/snagling.js"></script>
-<script src="src/sim/loop-ai.js"></script>
 <script src="src/sim/race.js"></script>
-<!--RENDER-SCRIPTS-->
 <script src="src/render/renderer.js"></script>
-<!--/RENDER-SCRIPTS-->
-<script>
-  /* UI test harness only: ?stubs=1 swaps in minimal fake WW.sim/WW.render (tests/harness/ui-stubs.js).
-     The harness is not packaged with the Android build and is never loaded without the flag. */
-  if (/[?&]stubs=1(&|$)/.test(location.search)) document.write('<script src="../tests/harness/ui-stubs.js"><\/script>');
-</script>
-<script src="src/ui/dom.js"></script>
-<script src="src/ui/loader.js"></script>
 <script src="src/ui/hud.js"></script>
-<script src="src/ui/overlays.js"></script>
 <script src="src/ui/input.js"></script>
 <script src="src/main.js"></script>
 </body>

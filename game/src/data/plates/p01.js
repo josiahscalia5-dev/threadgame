@@ -13,7 +13,7 @@
       ],
       events: [
         { type: 'start', f: 0 },
-        { type: 'stop', stitch: 'ribbon', f: 0.006, readyF: 0 },
+        { type: 'hint', f: 0.004, text: 'Swipe \u2190 \u2192 to change lane \u00b7 Swipe \u2191 or tap to jump' },
         { type: 'pickup', item: 'coral', f: 0.83, lane: 0, size: 62 },
         { type: 'exit', f: 1 }
       ]
@@ -22,12 +22,10 @@
       // teal ribbon: approved spot → up-left to the tower → behind the tower column
       path: [[726, 1068, 145], [692, 990, 130], [652, 935, 117], [608, 898, 107], [565, 880, 100], [512, 871, 95]],
       events: [
-        { type: 'task', kind: 'stitch', f: 0.02, x: 636, y: 1108 },
+        { type: 'task', kind: 'hesitate', f: 0.3 },
         { type: 'pickup', item: 'coral', f: 0.6, size: 60 }
       ]
     },
-    stitch: { id: 'ribbon', x: 417, y: 1405, r: 70 },
-    ribbon: { band: [[345, 1132, 145], [345, 1052, 125], [278, 955, 105], [172, 862, 100], [165, 790, 85], [252, 706, 48], [330, 628, 60], [405, 608, 52], [466, 600, 42]] },
     occluders: [
       // near-left railing post: hides Purl's left side when he runs in lane -1 beyond it
       { id: 'left-post', poly: [[38, 1214], [58, 1190], [88, 1180], [116, 1192], [128, 1226], [128, 1436], [112, 1456], [38, 1456]], behindY: 1450 },

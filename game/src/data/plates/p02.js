@@ -1,5 +1,5 @@
-/* Plate p02 — 02-shortcut. Purl waits on the broad landing, the runner unrolls to the far roll, he crosses and turns
-   right at the roll (never reaching the teal preview on the raised platform). Loop takes the upper right bypass. */
+/* Plate p02 — 02-shortcut. Purl runs up the floral carpet shortcut and turns right at the far roll; Snagling peeks
+   harmlessly from the left platform. Loop takes the upper right bypass. */
 (function (WW) {
   'use strict';
   WW.PLATES.p02 = {
@@ -12,7 +12,6 @@
         [418, 1120, 172, 35], [438, 1010, 130, 0], [462, 968, 110, 0], [510, 952, 104, 0]
       ],
       events: [
-        { type: 'stop', stitch: 'shortcut', f: 0.057, readyF: 0 },
         { type: 'exit', f: 1 }
       ]
     },
@@ -23,9 +22,6 @@
         { type: 'task', kind: 'bypass', f: 0.97, x: 535, y: 612, extra: 3.5 }
       ]
     },
-    stitch: { id: 'shortcut', x: 490, y: 1328, r: 70 },
-    shortcut: { band: [[404, 1338, 268], [411, 1200, 244], [427, 1100, 200], [445, 1000, 150], [455, 955, 126], [465, 936, 124]] },
-    previews: [{ item: 'teal', x: 405, y: 724, size: 65 }],
     cameo: { x: 211, y: 742, w: 130 },
     occluders: [
       // big plum tassel hanging over the bypass end

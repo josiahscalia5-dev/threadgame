@@ -21,7 +21,7 @@
         [405, 884, 97, 0]        // exit: heading right toward the landing's right post
       ],
       events: [
-        { type: 'stop', stitch: 'tassels', f: 0.030, readyF: 0 },
+        { type: 'tassels', f: 0.12 },   // the three tassels lift (staggered) as Purl starts up the approach
         { type: 'pickup', item: 'teal', f: 0.894, lane: 0, size: 71 },
         { type: 'exit', f: 1 }
       ]
@@ -39,12 +39,10 @@
         [535, 952, 85]           // hidden behind the tower (bridge end is beyond the landing)
       ],
       events: [
-        { type: 'task', kind: 'stitch', f: 0.35, x: 772, y: 952 },
+        { type: 'task', kind: 'hop', f: 0.35 },
         { type: 'pickup', item: 'teal', f: 0.65, size: 48 }
       ]
     },
-
-    stitch: { id: 'tassels', x: 571, y: 1365, r: 70 },
 
     /* TOP anchors (approved bottoms minus w * 498/319); lifts raise each top to just under the upper beam (~y 220). */
     tassels: [

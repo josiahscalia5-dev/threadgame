@@ -1,59 +1,57 @@
-/* Wishweave Wonders — Level 1 route (WW.LEVEL), docs/ARCHITECTURE.md §6.
+/* Wishweave Wonders — Level 1 route (WW.LEVEL).
 
-   route      Purl's connected route: the six plates alternate with "around the tower" connectors.
-   loopRoute  Loop's own route, index-aligned with `route` (same ids, kinds and plates) but with his own lengths.
-   stitches   the four tap interactions and the route segment that owns each one.
-   loop       Loop's per-race variation (see below); read by sim/loop-ai.js.
+   route      Purl's connected route: the six scenes alternate with short "around the tower" connectors.
+   loopRoute  Loop's route, index-aligned with `route` (same ids, kinds and plates) with his own lengths and the
+              window of each scene segment in which he is on his painted path (outside it he is out of view,
+              behind a tower or round a corner, but still simulated).
 
-   `length` is metres; a racer at speed v advances df = v * dt / length. Every fraction (stops, pickups, reveal,
-   finish, Loop's tasks...) lives in the plate data (WW.PLATES[plate].purl/loop.events) and is read by the sim at
-   createRace time — nothing here repeats a plate fraction.
-
-   Pacing (tuned with tests/unit/bot.cjs; the measured table is in that file's header):
-     competent run (stitch reaction ~1 s, dodges)      race clock ~ 93 s
-     first-time run (reaction ~2 s, one hit + recovery) race clock ~100 s
-     Loop                                               ~ 96 s, spread by his per-race form and his own fallible tasks
-   Purl crosses every plate at roughly the same on-screen pace (length ≈ 12–14 m per racer width of the plate's
-   path, see WW.path.widths) except the short landing/finish plates, which keep enough room for the Snagling
-   reveal (≥ 1.5 s after entering the landing) and for the final sprint. Connectors are ~3 s turns around a tower. */
+   Lengths are metres. A scene's length comes from its painted path: WW.path.widths(path) racer widths ×
+   WW.TUNING.metresPerWidth, so Purl crosses every scene at the same on-screen pace. A connector lasts
+   WW.TUNING.connectorTime seconds at Purl's speed. Loop's segments are exactly as long as Purl's (a fair race);
+   his painted path fills the part of the segment it can cover at his own pace (the whole segment if it is longer,
+   where he simply moves a little faster along it in the distance). */
 (function (WW) {
   'use strict';
+  const T = WW.TUNING;
 
   const route = [
-    { id: 'ribbon', kind: 'plate', plate: 'p01', length: 82,
-      phase: 'LEVEL 1 · START', objective: 'UNFURL THE RIBBON',
-      objectiveOpen: 'GRAB THE CORAL THREAD', objectiveDone: 'FOLLOW THE RIBBON' },
-    { id: 'c-ribbon', kind: 'connector', from: 'p01', to: 'p02', length: 15, style: 'right' },
-    { id: 'shortcut', kind: 'plate', plate: 'p02', length: 46,
-      phase: 'LEVEL 1 · MIDDLE', objective: 'OPEN THE SHORTCUT',
-      objectiveOpen: 'CROSS THE SHORTCUT' },
-    { id: 'c-shortcut', kind: 'connector', from: 'p02', to: 'p03', length: 15, style: 'right' },
-    { id: 'tassels', kind: 'plate', plate: 'p03', length: 58,
-      phase: 'LEVEL 1', objective: 'LIFT THE TASSELS',
-      objectiveOpen: 'GRAB THE TEAL THREAD', objectiveDone: 'RUN TO THE LANDING' },
-    { id: 'c-tassels', kind: 'connector', from: 'p03', to: 'p04', length: 15, style: 'right' },
-    { id: 'landing', kind: 'plate', plate: 'p04', length: 40,
-      phase: 'LEVEL 1', objective: 'CROSS THE LANDING',
-      objectiveDrop: 'GET YOUR THREAD BACK' },
-    { id: 'c-landing', kind: 'connector', from: 'p04', to: 'p06', length: 15, style: 'right' },
-    { id: 'tapestry', kind: 'plate', plate: 'p06', length: 44,
-      phase: 'LEVEL 1', objective: 'WAKE THE EMBROIDERY',
-      objectiveOpen: 'GRAB THE GOLDEN THREAD', objectiveDone: 'RACE TO THE FLOWER GATE' },
-    { id: 'c-tapestry', kind: 'connector', from: 'p06', to: 'p07', length: 15, style: 'right' },
-    { id: 'finish', kind: 'plate', plate: 'p07', length: 36,
-      phase: 'LEVEL 1', objective: 'REACH THE FLOWER GATE', objectiveDone: 'LEVEL 1 COMPLETE' }
+    { id: 'ribbon', kind: 'plate', plate: 'p01', phase: 'LEVEL 1 · START', objective: 'RUN UP THE RIBBON', objectiveDone: 'RACE AROUND THE TOWER' },
+    { id: 'c-ribbon', kind: 'connector', from: 'p01', to: 'p02', style: 'right' },
+    { id: 'shortcut', kind: 'plate', plate: 'p02', phase: 'LEVEL 1 · MIDDLE', objective: 'TAKE THE SHORTCUT' },
+    { id: 'c-shortcut', kind: 'connector', from: 'p02', to: 'p03', style: 'right' },
+    { id: 'tassels', kind: 'plate', plate: 'p03', phase: 'LEVEL 1 · MIDDLE', objective: 'GRAB THE TEAL THREAD', objectiveDone: 'ON TO THE LANDING' },
+    { id: 'c-tassels', kind: 'connector', from: 'p03', to: 'p04', style: 'right' },
+    { id: 'landing', kind: 'plate', plate: 'p04', phase: 'LEVEL 1 · MIDDLE', objective: 'WATCH OUT FOR SNAGLING', objectiveDrop: 'GET YOUR THREAD BACK' },
+    { id: 'c-landing', kind: 'connector', from: 'p04', to: 'p06', style: 'right' },
+    { id: 'tapestry', kind: 'plate', plate: 'p06', phase: 'LEVEL 1 · FINAL', objective: 'CATCH THE GOLDEN THREAD', objectiveDone: 'RACE TO THE FLOWER GATE' },
+    { id: 'c-tapestry', kind: 'connector', from: 'p06', to: 'p07', style: 'right' },
+    { id: 'finish', kind: 'plate', plate: 'p07', phase: 'LEVEL 1 · FINAL', objective: 'REACH THE FLOWER GATE' }
   ];
 
-  /* Loop's lengths: his visible routes are the neighbouring teal ribbons/bypasses of each plate. */
-  const loopLengths = {
-    'ribbon': 80, 'c-ribbon': 15, 'shortcut': 44, 'c-shortcut': 15, 'tassels': 56, 'c-tassels': 15,
-    'landing': 44, 'c-landing': 15, 'tapestry': 44, 'c-tapestry': 15, 'finish': 40
-  };
+  /* Where Loop's painted stretch sits inside his segment (0 = he is on it from the moment he enters, 0.5 = centred,
+     1 = at the end). */
+  const loopVisibleAt = { ribbon: 0, shortcut: 0.5, tassels: 0.5, landing: 0.5, tapestry: 0.5, finish: 1 };
+
+  function plateLength(plate) { return WW.path.widths(WW.PLATES[plate].purl.path) * T.metresPerWidth; }
+  function loopPathLength(plate) { return WW.path.widths(WW.PLATES[plate].loop.path) * T.metresPerWidth; }
+
+  route.forEach(function (seg) {
+    seg.length = seg.kind === 'plate' ? plateLength(seg.plate) : T.connectorTime * T.purlSpeed;
+  });
 
   const loopRoute = route.map(function (seg) {
-    const out = { id: seg.id, kind: seg.kind, length: loopLengths[seg.id] };
-    if (seg.kind === 'plate') out.plate = seg.plate;
-    else { out.from = seg.from; out.to = seg.to; out.style = seg.style; }
+    const out = { id: seg.id, kind: seg.kind };
+    if (seg.kind === 'connector') {
+      out.from = seg.from; out.to = seg.to; out.style = seg.style; out.length = seg.length;
+      out.window = null;
+      return out;
+    }
+    out.plate = seg.plate;
+    const length = seg.length;
+    const span = Math.min(1, loopPathLength(seg.plate) / length), at = loopVisibleAt[seg.id];
+    const a = (1 - span) * (at === undefined ? 0.5 : at);
+    out.length = length;
+    out.window = [a, a + span];          // segment fraction range mapped onto his painted path 0..1
     return out;
   });
 
@@ -61,22 +59,6 @@
     id: 'level1',
     route: route,
     loopRoute: loopRoute,
-    stitches: {
-      ribbon: { seg: 'ribbon', kind: 'ribbon' },
-      shortcut: { seg: 'shortcut', kind: 'shortcut' },
-      tassels: { seg: 'tassels', kind: 'tassels' },
-      butterfly: { seg: 'tapestry', kind: 'butterfly' }
-    },
-    /* Loop is a fallible computer rival. Besides the spec's per-segment speed jitter, reaction, hesitation and
-       hop mistakes (WW.TUNING.loop*), his pace varies from race to race ("form": a whole-race multiplier on
-       loopSpeed, independent of the player) and the line he takes over a bypass varies (± fraction of the plate's
-       `extra` seconds). Both are symmetric — he is never slowed to guarantee a Purl win. A WW.TUNING value with
-       the same name (loopForm, loopBypassJitter, loopDropAheadF) overrides these if it is ever added there. */
-    loop: {
-      form: [0.92, 1.08],
-      bypassJitter: 0.4,
-      dropAheadF: 0.05
-    },
     completeObjective: 'LEVEL 1 COMPLETE',
     missingMessage: 'A THREAD IS MISSING'
   };
