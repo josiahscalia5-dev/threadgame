@@ -3634,3 +3634,13 @@ What about the background? It looks nothing like my original. I liked my origina
 
 - _tool AskUserQuestion_: 
 
+
+**Claude:** Restoring your original game now. First I'll record exactly what differs from the checkpoint and note the current commit, so this work stays recoverable in history if you ever want it.
+
+
+- _tool Bash_: Record current commit and diff against the checkpoint
+
+
+
+- _tool Bash_: Restore game files to the original checkpoint
+
