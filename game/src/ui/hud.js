@@ -199,10 +199,11 @@
         ranks = P(purlRank) + (R.loopStillRacing ? '' : dot + '<span class="l">LOOP —</span>');
       }
       dom.setHTML(els.ranks, ranks);
-      const times = '<span class="p">PURL ' + esc(fmtTime(R.purlTime)) + '</span>' + dot +
-        '<span class="l">LOOP ' + esc(R.loopTime != null ? fmtTime(R.loopTime) : (R.loopStillRacing ? '…' : '—')) + '</span>';
+      const waiting = R.loopStillRacing && R.loopTime == null;
+      const times = '<span class="p">PURL ' + esc(fmtTime(R.purlTime)) + '</span>' +
+        (waiting ? '' : dot + '<span class="l">LOOP ' + esc(fmtTime(R.loopTime)) + '</span>');
       dom.setHTML(els.times, times);
-      dom.show(els.wait, R.loopStillRacing && R.loopTime == null);
+      dom.show(els.wait, waiting);
       if (els.ranks && els.ranks.__label !== ranks) {
         els.ranks.__label = ranks;
         els.ranks.setAttribute('aria-label', els.ranks.textContent);
