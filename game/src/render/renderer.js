@@ -90,16 +90,25 @@
         const who = it.owner || (id.indexOf('loop.') === 0 ? 'loop' : 'purl');
         const seen = R.itemScreen[id];
         if (it.status === 'held') {
+          const recovered = was === 'dropped' && who === 'purl' && sp;
           if (seen && R.clock - seen.at < 0.5 + (R.dt || 0)) {
-            fx.flyup(R.fx, actors.SPOOL[color] || actors.SPOOL.coral, seen, hudTarget(who), seen.size);
+            // a recovered thread is first held up at Purl's hand (setpieces), then flies to the HUD
+            if (!recovered) fx.flyup(R.fx, actors.SPOOL[color] || actors.SPOOL.coral, seen, hudTarget(who), seen.size);
             fx.sparkle(R.fx, seen.plate, seen.wx, seen.wy, 12, 140);
           }
-          if (was === 'dropped' && seen) fx.callout(R.fx, seen.plate, seen.wx, seen.wy - 90, '+1 THREAD', who === 'loop' ? 'teal' : 'coral');
+          if (recovered) sp.onRecover(R, color);
           delete R.dropAnim[id];
         } else if (it.status === 'dropped') {
-          const from = R.lastPurlPose && who === 'purl' ? R.lastPurlPose : null;
-          R.dropAnim[id] = { at: R.clock, from: from };
-          if (from) fx.callout(R.fx, from.plate, from.x, from.y - from.w * 1.25, '−1 THREAD', who === 'loop' ? 'teal' : 'coral');
+          const pose = who === 'purl' ? R.lastPurlPose : R.lastLoopPose;
+          R.dropAnim[id] = { at: R.clock, from: pose || null };
+          // approved "−1 THREAD" pill above the spool's landing spot (Purl's threads only)
+          if (who === 'purl' && sp && pose) {
+            const P = R.plates[pose.plate], path = pathFor(P, 'purl');
+            if (path && segIndex(it.seg) >= 0 && platePos(segIndex(it.seg)) === pose.plate) {
+              const q = WW.path.racerPoint(path, u.clamp(it.f || 0, 0, 1), it.lane || 0, 0);
+              sp.onDrop(R, pose.plate, { x: q.x, y: q.groundY }, actors.itemSize(P, 'purl', color));
+            }
+          }
         }
       }
       const sts = state.stitches || {};
@@ -127,6 +136,7 @@
       for (let i = 0; i < evs.length; i++) {
         const e = evs[i];
         if (!e || !e.type) continue;
+        if (sp) sp.event(R, e, state);
         if (e.type === 'jump' && e.who !== 'loop' && R.lastPurlPose) {
           const p = R.lastPurlPose; fx.dust(R.fx, p.plate, p.x, p.y, p.w);
         } else if (e.type === 'stitch-open') {
@@ -161,11 +171,19 @@
         if (st.immuneUntil && t < st.immuneUntil) opt.rim = 0.35 + 0.2 * Math.sin(R.clock * 9);
         R.purlScreen = { x: v.ox + p.x * v.s, y: v.oy + p.groundY * v.s, w: w * v.s };
         R.lastPurlPose = { plate: v.plate, x: p.x, y: p.groundY, w: w };
+        // snagged: wobble on the spot while the yarn holds his ankles
+        if (st.action === 'tangled' || st.action === 'failed') opt.wobble = 0.085 * Math.sin(R.clock * 17) + 0.03 * Math.sin(R.clock * 5.3);
+      } else {
+        R.lastLoopPose = { plate: v.plate, x: p.x, y: p.groundY, w: w };
       }
+      const pose = { plate: v.plate, x: p.x, groundY: p.groundY, lift: lift, w: w };
       return {
         y: p.groundY, who: who, x: p.x, w: w, opt: opt,
         box: { x0: p.x - w * 0.6, y0: p.y - w * 1.15, x1: p.x + w * 0.6, y1: p.groundY + 4 },
-        draw: function (c) { actors.drawRacer(R, c, who, st, p.x, p.groundY, lift, w, opt); }
+        draw: function (c) {
+          actors.drawRacer(R, c, who, st, p.x, p.groundY, lift, w, opt);
+          if (sp) sp.afterRacer(R, c, who, st, pose, state);
+        }
       };
     }
 
@@ -186,16 +204,22 @@
         const pt = WW.path.racerPoint(path, u.clamp(it.f || 0, 0, 1), owner === 'purl' ? (it.lane || 0) : 0, 0);
         let x = pt.x, y = pt.groundY, hover;
         const da = R.dropAnim[id];
-        let ring = 0;
+        let ring = 0, rot = 0, marks = 0;
         if (it.status === 'dropped') {
           const age = da ? R.clock - da.at : 9;
           if (da && da.from && da.from.plate === v.plate && age < 0.6) {
+            // knocked loose: arcs from the racer onto the carpet, tumbling (approved 04)
             const k = age / 0.6, e = u.easeOutCubic(k);
             x = u.lerp(da.from.x, pt.x, e); y = u.lerp(da.from.y, pt.groundY, e);
-            hover = Math.sin(k * Math.PI) * da.from.w * 0.9 + Math.abs(Math.sin(k * Math.PI * 2)) * 0;
+            hover = Math.sin(k * Math.PI) * da.from.w * 0.9;
+            rot = -k * (Math.PI * 2 + 0.6);
+            marks = 1;
           } else {
             const b = age - 0.6;
-            hover = Math.abs(Math.sin(b * 3.4)) * size * 0.16 * Math.exp(-Math.max(0, b) * 0.25) + 3;
+            // settles from its tilt, then bobs with a ring until it is picked up
+            rot = da && da.from ? -0.6 * Math.exp(-b * 3.2) * Math.cos(b * 8) : 0;
+            marks = da && da.from && b < 0.6 ? 1 - b / 0.6 : 0;
+            hover = Math.abs(Math.sin(b * 3.4)) * size * 0.16 * Math.exp(-Math.max(0, b) * 0.25) * u.smooth(b / 0.5) + 3;
             ring = 1;
           }
         }
@@ -206,10 +230,31 @@
           y: wy, box: { x0: x - size, y0: y - size * 2.2, x1: x + size, y1: y + 6 },
           draw: function (c) {
             if (ring) drawDropRing(c, wx, wy, size);
-            actors.drawSpool(R, c, color, wx, wy, size, { clock: R.clock, phase: phase, hover: hover });
+            if (Math.abs(rot) > 0.01) {
+              const fr = R.assets.frames[actors.SPOOL[color] || actors.SPOOL.coral], h = fr ? size * fr.h / fr.w : size * 1.4;
+              u.drawShadow(c, R.cache, wx, wy, size * 1.05, 0.42);
+              c.save(); c.translate(wx, wy - (hover || 0) - h * 0.5); c.rotate(rot);
+              actors.drawSpool(R, c, color, 0, h * 0.5, size, { clock: R.clock, phase: phase, hover: 0, shadow: false });
+              c.restore();
+            } else actors.drawSpool(R, c, color, wx, wy, size, { clock: R.clock, phase: phase, hover: hover });
+            if (marks > 0.01) drawSpeedMarks(c, wx, wy - (hover || 0) - size * 0.7, size, marks);
           }
         });
       }
+    }
+
+    /* White motion arcs beside a tumbling spool (approved 04). */
+    function drawSpeedMarks(c, x, y, size, a) {
+      c.save();
+      c.globalAlpha = a * 0.9;
+      c.strokeStyle = '#ffffff'; c.lineCap = 'round'; c.lineWidth = Math.max(2, size * 0.05);
+      for (let s = -1; s <= 1; s += 2) {
+        for (let j = 0; j < 2; j++) {
+          const r = size * (0.62 + 0.2 * j);
+          c.beginPath(); c.arc(x, y + size * 0.3, r, s > 0 ? -0.5 : Math.PI - 0.5, s > 0 ? 0.5 : Math.PI + 0.5); c.stroke();
+        }
+      }
+      c.restore();
     }
 
     function drawDropRing(c, x, y, size) {
@@ -260,16 +305,20 @@
       world.drawFraming(R, ctx, v, opts.rect);
       setWorld(v);
       world.drawBackground(R, ctx, v, state, R.clock, null);
+      if (sp) sp.behind(R, ctx, v, state);          // props behind: previews, cameo, embroidery, gate veil
       // depth-sorted actors
       const list = [];
       const purl = state.purl || {}, loop = state.loop || {};
       if (opts.purl && (purl.seg | 0) === v.segIdx) { const e = racerEntry(v, P, 'purl', purl, state); if (e) list.push(e); }
-      if (loop && typeof loop.seg === 'number' && loop.seg === v.segIdx && route()[loop.seg] && route()[loop.seg].kind === 'plate') {
+      // Loop is out of sight while he takes a bypass (his f holds while hidden)
+      const bypassing = loop && loop.task && loop.task.kind === 'bypass' && loop.action === 'task';
+      if (loop && !bypassing && typeof loop.seg === 'number' && loop.seg === v.segIdx && route()[loop.seg] && route()[loop.seg].kind === 'plate') {
         const e = racerEntry(v, P, 'loop', loop, state); if (e) list.push(e);
       }
       itemEntries(v, P, state, list);
       const se = feats.stitchEntry(R, v.plate, state); if (se) list.push(se);
       if (WW.render.pull) WW.render.pull.entries(R, v, P, state, list);   // opening lesson: loop, strand, poses
+      if (sp) sp.entries(R, v, P, state, list);     // tassels, Snagling
       list.sort(function (a, b) { return a.y - b.y; });
       const occ = occluderList(P);
       for (let i = 0; i < list.length; i++) {
@@ -280,7 +329,8 @@
           if (e.y < o.behindY && u.boxHit(e.box, o.box)) world.drawBackground(R, ctx, v, state, R.clock, o.poly);
         }
       }
-      if (loop && loop.seg === v.segIdx) loopTaskFx(v, P, loop);
+      if (sp) sp.air(R, ctx, v, state);             // butterfly, Snagling's yarn, Loop's task sparkles
+      else if (loop && loop.seg === v.segIdx) loopTaskFx(v, P, loop);
       fx.drawWorld(R.fx, ctx, v.plate);
       if (R.debug) drawDebugWorld(v, P);
       setScreen();
@@ -305,6 +355,7 @@
         }
       }
       drawCallouts(v);
+      if (sp) sp.screen(R, ctx, v, state);          // approved −1 / +1 THREAD callouts
     }
 
     function drawCallouts(v) {
@@ -332,9 +383,12 @@
     function drawPlateScene(state, sc, dt) {
       const P = R.plates[sc.plate];
       const purl = state.purl || {};
-      const tgt = cam.target(R.fit, P, u.clamp(purl.f || 0, 0, 1));
+      let tgt = cam.target(R.fit, P, u.clamp(purl.f || 0, 0, 1));
+      // finish: once Purl is through, ease back to the approved composition (07 frames the gate and both racers)
+      const reframe = purl.action === 'finished' && cam.eventF(P, 'finish', null) !== null;
+      if (reframe) tgt = cam.clampCam(R.fit, { plate: P.id, z: 1, fx: PW / 2, fy: PH / 2 });
       if (!R.cam || R.cam.plate !== sc.plate || R.snapNext) { R.cam = { plate: tgt.plate, z: tgt.z, fx: tgt.fx, fy: tgt.fy }; R.snapNext = false; }
-      else cam.follow(R.cam, tgt, dt);
+      else cam.follow(R.cam, tgt, reframe ? dt * 0.3 : dt);
       cam.clampCam(R.fit, R.cam);
       const v = cam.view(R.fit, R.cam); v.segIdx = sc.idx;
       R.views = [v];
