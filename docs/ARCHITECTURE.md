@@ -351,3 +351,32 @@ Back → `WishweaveGame.onBack()`; finish only on `'exit'`. Portrait. No INTERNE
 
 No real money: the rewards strip is a placeholder, cash out is locked, nothing is credited. Loop is labelled a computer
 rival. Do not claim device testing that did not happen; browser/Playwright checks are not Android device tests.
+
+## 12. Lead addenda (2026-10-16) — these settle details the sections above leave open
+
+1. **Item locations.** The sim keeps `seg` (segment id), `f` and `lane` filled for **every** item at all times, including
+   uncollected ones (from the plate `pickup` events). `purl.*` locations are on Purl's plate path, `loop.*` locations on
+   Loop's plate path (`item.owner` says which). `purl.gold`/`loop.gold` have `available:false` until delivered. The
+   renderer draws an item when `status !== 'held'`, `available` is true and its `seg` is a plate currently on screen.
+2. **Snagling extra fields.** `snagling = { state, t /* s in state */, targetLane, contactF, result, pass, armed,
+   contactConsumed }`. `contactF` = Purl-path f where contact is tested (reveal f + Purl's travel during
+   `snagRevealToContact`). `result: null|'hit'|'dodge'|'immune'`. States: `concealed → hop` (lasts
+   `snagRevealToContact + snagContactWindow`) → `tangle` (hit, `snagTangle` s) or `retreat` → `retreat` (`snagRetreat` s)
+   → `done`; a new pass re-arms to `concealed`.
+3. **Transitions.** On a connector segment, `transition = {kind:'connector', from, to, style, t}` with `t = purl.f`.
+   `loop` (recovery loop) and `return` (gate fallback) use the same object with `t` 0..1 and `from`/`to` segment ids.
+4. **Lanes.** `purl.lane` is the integer target (−1/0/1); `laneX` follows it. Where the path's lane spacing at f is
+   below 20 plate px, the sim eases `lane`/`laneX` to 0 (single file).
+5. **Events to the renderer.** `main.js` passes every array returned by `race.step()`/`race.input()` to
+   `renderer.handleEvents(events)` when that function exists (pickup fly-to-HUD, drop arcs, ±1 THREAD callouts, petals).
+6. **Loop visibility.** `loop.seg` indexes `loopRoute`, which is index-aligned with `route`, so Loop is drawn when
+   `loop.seg` equals the segment index of a plate currently on screen.
+7. **Test API.** `?test=1` exposes `WishweaveGame.debug = { race, renderer, advance(seconds) /* steps sim at 1/60 and
+   renders */, setClock('manual'|'real'), tap(target), swipe(dir), screenshotReady() /* Promise: images loaded and one
+   frame drawn */, newRace(seed) }`. With `setClock('manual')` nothing moves unless `advance()` is called (used for
+   deterministic recordings). Real touch input (pointer events) must still work in manual mode.
+8. **Team hygiene.** Agents never run git commands that change state; `tools/autosave.sh` commits and pushes every
+   30 s. Local web servers: lead 8100, renderer 8101, UI 8102, data 8103. Playwright:
+   `require('/opt/node22/lib/node_modules/playwright')` (Chromium preinstalled; never run `playwright install`).
+   Comparison viewport: 412 × 915 CSS px at DPR 2 — the plate contain-fits almost exactly (scale 0.489), so captures
+   line up with the 841 × 1870 approved PNGs.
