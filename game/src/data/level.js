@@ -9,10 +9,24 @@
    finish, Loop's tasks...) lives in the plate data (WW.PLATES[plate].purl/loop.events) and is read by the sim at
    createRace time — nothing here repeats a plate fraction.
 
-   Pacing (measured with tests/unit/bot.cjs, milestone 1 — Snagling not active yet; final table in milestone 2):
-     competent run (stitch reaction 1 s)   race clock ~85.5 s       first-time reaction 2 s   ~89.5 s
-     Loop over seeds 1–50                  81.5–96.7 s (avg 87.5)   Purl wins 34/50 resp. 13/50
-   Connectors are ~3 s turns around a tower. Objective texts: `objective` on entry, `objectiveOpen` once the
+   Pacing — race clock (s since GO), measured with `node tests/unit/bot.cjs --sweep=50 [--profile=first]` on the final
+   p06/p07 data, verified by tests/unit/pacing.test.cjs (bot profiles are described in tests/unit/bot.cjs):
+     profile                                                      Purl     Loop over seeds 1–50          Purl wins
+     competent  taps 1.0 s after each cue, jumps 0.3 s after reveal 99.92    94.0–116.9 (mean 103.3, sd 5.2)  36/50 (72 %)
+     first      taps 2.0 s after each cue, one hit, steers into
+                the dropped thread 0.4 s later, same-pass recovery  105.03   (same Loop races)               16/50 (32 %)
+   Purl's time does not depend on the seed; Loop's does (per-race form, per-segment jitter, reactions, hesitations,
+   bypass line, hop mistakes) and never on the player. Add the 3 s countdown for the wall-clock attempt length.
+   The two profiles differ by ~5 s: 4 × 1 s of extra stitch reaction + ~1.1 s for the tangle/slow-down of one hit.
+   Documented seeds (Loop's finish time; competent Purl 99.92 s, first-time Purl 105.03 s):
+     competent  Purl wins: 1 (Loop 103.11), 8 (108.93), 12 (108.15)   Loop wins: 4 (94.41), 30 (96.44), 36 (93.96)
+     first      Purl wins: 7 (114.58), 8 (108.93), 19 (111.38)        Loop wins: 1 (103.11), 2 (99.22), 4 (94.41)
+     photo finish: seed 6, Loop 105.00 vs first-time Purl 105.03
+   Snagling dodge window (reaction measured from the reveal, 1/60 s steps): jump started 0.04–0.48 s after the
+   reveal clears contact; a lane change started 0.00–0.41 s after it moves Purl out of the target lane in time.
+   Lengths: every plate is ~15 m per racer width of its path (WW.path.widths), so Purl crosses each plate at a
+   similar on-screen pace; connectors are 19 m (≈ 3.8 s turns around a tower). The landing (38 m) puts the
+   Snagling reveal ~1.9 s after Purl enters it. Objective texts: `objective` on entry, `objectiveOpen` once the
    plate's stitch is open, `objectiveDone` once its thread is held, `objectiveDrop` while a thread lies dropped. */
 (function (WW) {
   'use strict';
@@ -74,6 +88,11 @@
       form: [0.89, 1.11],
       bypassJitter: 0.4,
       dropAheadF: 0.05
+    },
+    /* Measured pacing and documented seeds (see the header); tests/unit/pacing.test.cjs checks them. */
+    pacing: {
+      competent: { purl: 99.92, purlWins: [1, 8, 12], loopWins: [4, 30, 36] },
+      first: { purl: 105.03, purlWins: [7, 8, 19], loopWins: [1, 2, 4] }
     },
     completeObjective: 'LEVEL 1 COMPLETE',
     missingMessage: 'A THREAD IS MISSING'

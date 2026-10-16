@@ -64,19 +64,19 @@ _(no message yet)_
 
 ## Renderer: plates, camera, actors, effects
 
-- transcript: `history/transcripts/370de19d-9b32-5c31-ac39-d89d7478db67/subagents/agent-aee076b7546be423f.jsonl` (374 entries)
+- transcript: `history/transcripts/370de19d-9b32-5c31-ac39-d89d7478db67/subagents/agent-aee076b7546be423f.jsonl` (376 entries)
 
 Now a side-by-side comparison helper, then the first capture.
 
-## Simulation: race rules and Loop AI
-
-- transcript: `history/transcripts/370de19d-9b32-5c31-ac39-d89d7478db67/subagents/agent-ae84357f8296ab86f.jsonl` (244 entries)
-
-_(no message yet)_
-
 ## UI: HUD, input, loop, lifecycle
 
-- transcript: `history/transcripts/370de19d-9b32-5c31-ac39-d89d7478db67/subagents/agent-ae9506e4d1065977a.jsonl` (401 entries)
+- transcript: `history/transcripts/370de19d-9b32-5c31-ac39-d89d7478db67/subagents/agent-ae9506e4d1065977a.jsonl` (404 entries)
 
-Results are identical across bot variants, so let me trace what differs from the debug run (the teal pickup on the tassels plate is missed here).
+The sim outcome differs between a DPR 1 desktop context and the DPR 2 mobile context with identical inputs — something outside the sim is affecting it. Let me pin that down.
+
+## Simulation: race rules and Loop AI
+
+- transcript: `history/transcripts/370de19d-9b32-5c31-ac39-d89d7478db67/subagents/agent-ae84357f8296ab86f.jsonl` (249 entries)
+
+_(no message yet)_
 
