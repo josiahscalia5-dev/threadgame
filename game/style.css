@@ -96,7 +96,7 @@ button { font: inherit; color: inherit; -webkit-tap-highlight-color: transparent
   border-image-repeat: stretch;
   color: var(--brown);
   font-weight: 800;
-  letter-spacing: .02em;
+  letter-spacing: 0;
   white-space: nowrap;
   line-height: 1;
   filter: drop-shadow(0 .1em .16em rgba(75, 35, 28, .38));
@@ -130,7 +130,7 @@ button { font: inherit; color: inherit; -webkit-tap-highlight-color: transparent
   --ph: 1.89em;
   margin-top: calc(var(--k) * 1px);
   min-width: calc(var(--k) * 200px);
-  padding: 0 1.3em;
+  padding: .2em 1.3em 0;
 }
 
 .hud-counts { display: flex; gap: max(5px, calc(var(--k) * 13px)); margin-top: calc(var(--k) * 1px); }
@@ -140,14 +140,14 @@ button { font: inherit; color: inherit; -webkit-tap-highlight-color: transparent
   --ph: 2.375em;
   width: max(9.2em, calc(var(--k) * 222px));
   justify-content: space-between;
-  padding: 0 1.12em 0 2.62em;
+  padding: .17em 1.12em 0 2.62em;
   transform-origin: 50% 50%;
 }
 .hud-count .star {
   position: absolute; left: .02em; top: 50%; width: 2.1em; height: 2.1em; transform: translateY(-50%);
   filter: drop-shadow(0 .05em .05em rgba(90, 45, 10, .4));
 }
-.hud-count .who { font-size: .92em; letter-spacing: .03em; }
+.hud-count .who { font-size: .92em; letter-spacing: .01em; }
 .hud-count.purl .who { color: var(--coral); }
 .hud-count.loop .who { color: var(--teal); }
 .hud-count .num { font-size: 1.08em; font-variant-numeric: tabular-nums; white-space: pre; }
@@ -174,7 +174,7 @@ button { font: inherit; color: inherit; -webkit-tap-highlight-color: transparent
   margin-top: calc(var(--k) * 2.5px);
   min-width: max(15.5em, calc(var(--k) * 365px));
   max-width: calc(100% - 2 * var(--edge));
-  padding: 0 3.3em 0 1.9em;
+  padding: .42em 3.2em 0 2.9em;
 }
 .hud-objective .txt { overflow: hidden; text-overflow: ellipsis; display: inline-block; }
 .hud-objective .flag { position: absolute; right: .3em; top: 50%; width: 2.2em; height: 2.2em; transform: translateY(-52%); }
@@ -232,15 +232,15 @@ button { font: inherit; color: inherit; -webkit-tap-highlight-color: transparent
   --ph: 1.7em;
   margin-top: calc(var(--k) * 15.5px);
   min-width: max(11em, calc(var(--k) * 361px));
-  padding: 0 1.5em;
-  letter-spacing: .03em;
+  padding: .14em 1.5em 0;
+  letter-spacing: .01em;
 }
 .result-title .orn, .btn-play-again .orn {
   position: absolute; top: 50%; width: 1.5em; height: 1.5em; transform: translateY(-50%); z-index: 2;
   filter: drop-shadow(0 .05em .06em rgba(90, 45, 10, .45));
 }
 .result-title .orn.l { left: -.62em; } .result-title .orn.r { right: -.62em; }
-.result-ranks, .result-times { gap: .45em; padding: 0 1.4em; }
+.result-ranks, .result-times { gap: .45em; padding: .16em 1.4em 0; }
 .result-ranks {
   font-size: max(11.5px, calc(var(--k) * 24px));
   --ph: 1.71em;
@@ -345,10 +345,10 @@ button { font: inherit; color: inherit; -webkit-tap-highlight-color: transparent
   border-image-slice: 96 100 fill;
   border-image-width: calc(var(--rw-h) / 2) calc(var(--rw-h) * .53);
   filter: drop-shadow(0 2px 4px rgba(60, 25, 10, .4));
-  font-size: max(9px, calc(var(--k) * 18px));
+  font-size: max(9px, calc(var(--k) * 17px));
   pointer-events: none;
 }
-.rw-label { flex: none; color: var(--brown-2); font-weight: 900; letter-spacing: .005em; white-space: nowrap; }
+.rw-label { flex: none; position: relative; top: .1em; color: var(--brown-2); font-weight: 900; letter-spacing: -.01em; white-space: nowrap; }
 .rw-bar {
   position: relative; flex: 0 1 calc(var(--k) * 171px); min-width: 26px;
   margin-left: max(5px, calc(var(--k) * 21px));
@@ -369,12 +369,12 @@ button { font: inherit; color: inherit; -webkit-tap-highlight-color: transparent
   position: relative; flex: none; margin-left: auto;
   display: inline-flex; align-items: center; justify-content: center; gap: .45em;
   height: max(22px, calc(var(--k) * 47px)); min-width: max(84px, calc(var(--k) * 191px));
-  padding: 0 .9em 0 .7em;
+  padding: .1em .9em 0 .8em;
   border-radius: 999px;
   border: 1.5px solid #d4ccbf;
   background: linear-gradient(180deg, #a49d92, #8d867c);
   box-shadow: inset 0 1px 0 rgba(255, 255, 255, .25), 0 1px 2px rgba(60, 40, 20, .25);
-  color: #fffaf0; font-weight: 700; font-size: 1.12em; letter-spacing: .03em;
+  color: #fffaf0; font-weight: 700; font-size: 1.1em; letter-spacing: .01em;
   white-space: nowrap;
   cursor: not-allowed; pointer-events: auto; touch-action: manipulation;
 }

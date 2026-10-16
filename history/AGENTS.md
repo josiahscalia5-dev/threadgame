@@ -70,13 +70,13 @@ _(no message yet)_
 
 ## Renderer: plates, camera, actors, effects
 
-- transcript: `history/transcripts/370de19d-9b32-5c31-ac39-d89d7478db67/subagents/agent-aee076b7546be423f.jsonl` (212 entries)
+- transcript: `history/transcripts/370de19d-9b32-5c31-ac39-d89d7478db67/subagents/agent-aee076b7546be423f.jsonl` (225 entries)
 
 Now a side-by-side comparison helper, then the first capture.
 
 ## UI: HUD, input, loop, lifecycle
 
-- transcript: `history/transcripts/370de19d-9b32-5c31-ac39-d89d7478db67/subagents/agent-ae9506e4d1065977a.jsonl` (271 entries)
+- transcript: `history/transcripts/370de19d-9b32-5c31-ac39-d89d7478db67/subagents/agent-ae9506e4d1065977a.jsonl` (274 entries)
 
-DOM centres match the approved targets to <0.5 design px. Now let me compare text glyph extents inside the pills (font metrics may shift text).
+Text sits ~3–5 design px higher than approved (font metrics) and our fallback font runs a bit wider. Let me tune padding/letter-spacing.
 
