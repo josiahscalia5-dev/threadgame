@@ -3801,3 +3801,7 @@ First I'll check whether the files you just sent are the same ones I already hav
 
 - _tool Bash_: Read the original transition drawing code
 
+
+
+- _tool Bash_: Check how the camera view applies a slide offset
+
