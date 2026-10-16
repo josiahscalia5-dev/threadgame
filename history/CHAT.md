@@ -3075,3 +3075,6 @@ continue and proceed where we're at. But like I said, can you validate to me whe
 
 - _tool Bash_: Reinstall Android SDK platform 36 and build-tools 35
 
+
+- _tool Bash_: Verify autosave and server are running
+
