@@ -3179,3 +3179,15 @@ continue and proceed where we're at. But like I said, can you validate to me whe
 
 - _tool Write_: /home/user/threadgame/game/src/core/route.js
 
+
+**Claude:** Next, the gesture port. I'm keeping it faithful to the kit, adapter included, so all 26 of its tests can run against it in Node.
+
+
+- _tool Write_: /home/user/threadgame/game/src/core/gesture.js
+
+
+**Claude:** Next I'll port the kit's 34 tests. They load my classic scripts directly, so they don't depend on `index.html` while it's being rebuilt.
+
+
+- _tool Bash_: Read unit test helpers and loader exports
+
