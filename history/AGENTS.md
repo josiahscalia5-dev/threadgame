@@ -62,12 +62,6 @@ You've hit your session limit · resets 7pm (UTC)
 
 _(no message yet)_
 
-## Renderer: plates, camera, actors, effects
-
-- transcript: `history/transcripts/370de19d-9b32-5c31-ac39-d89d7478db67/subagents/agent-aee076b7546be423f.jsonl` (376 entries)
-
-Now a side-by-side comparison helper, then the first capture.
-
 ## Simulation: race rules and Loop AI
 
 - transcript: `history/transcripts/370de19d-9b32-5c31-ac39-d89d7478db67/subagents/agent-ae84357f8296ab86f.jsonl` (280 entries)
@@ -79,4 +73,10 @@ Now the acceptance and pacing suites.
 - transcript: `history/transcripts/370de19d-9b32-5c31-ac39-d89d7478db67/subagents/agent-ae9506e4d1065977a.jsonl` (476 entries)
 
 HUD placement, sizes and results layout now match approved 01/07 closely. Final housekeeping: confirm nothing under `kit/` changed, list my files, and stop my server.
+
+## Renderer: plates, camera, actors, effects
+
+- transcript: `history/transcripts/370de19d-9b32-5c31-ac39-d89d7478db67/subagents/agent-aee076b7546be423f.jsonl` (378 entries)
+
+You've hit your session limit · resets 8:10pm (UTC)
 
