@@ -3398,3 +3398,11 @@ continue and proceed where we're at. But like I said, can you validate to me whe
 
 - _tool Bash_: Remove plate renderer files and wire new render scripts
 
+
+**Claude:** The new scripts are wired in. Next the loader filter in `main.js`, so it fetches only the portrait atlases and UI art:
+
+
+- _tool Bash_: Find loader creation and debug flag in main.js
+
+- _tool Bash_: Filter loaded images and drop plate args in main.js
+
