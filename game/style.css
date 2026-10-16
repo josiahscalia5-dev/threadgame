@@ -321,6 +321,7 @@ button { font: inherit; color: inherit; -webkit-tap-highlight-color: transparent
 /* PLAY AGAIN (approved 07), just above the rewards strip. */
 .btn-play-again {
   --bh: max(46px, calc(var(--k) * 94px));
+  min-height: 44px;
   position: absolute; z-index: 30; left: 50%; transform: translateX(-50%);
   bottom: calc(var(--rw-bottom) + var(--rw-h) + max(6px, calc(var(--k) * 12px)));
   width: max(196px, calc(var(--k) * 392px));
