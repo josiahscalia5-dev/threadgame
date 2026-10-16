@@ -130,17 +130,14 @@
       return { z: z - kick, y: lift, pitch: (-0.9 * Math.sin(Math.PI * k) + 0.25 * Math.sin(2 * Math.PI * k)) * w };
     }
 
+    /* The leg hangs along -Y from its hip; rotating the hip about X by -atan2(dz, dy) points it at the ankle. */
     function placeLeg(L, foot, extraY) {
-      const hx = L.hip.position.x, hy = L.hip.position.y, hz = L.hip.position.z;
-      const fx = hx, fy = foot.y + 0.1 + extraY, fz = foot.z;      // ankle point
-      const dy = hy - fy, dz = fz - hz;
+      const ay = foot.y + 0.1 + extraY, az = foot.z;             // ankle point (feet are 0.1 m tall)
+      const dy = L.hip.position.y - ay, dz = az - L.hip.position.z;
       const len = Math.max(0.12, Math.hypot(dy, dz));
-      L.hip.rotation.set(Math.atan2(dz, dy) * -1 * -1, 0, 0);
-      L.hip.rotation.x = -Math.atan2(dz, dy);
+      L.hip.rotation.set(-Math.atan2(dz, dy), 0, 0);
       L.leg.scale.set(1, len, 1);
-      L.leg.rotation.x = Math.PI;                                 // cylinder hangs from the hip down to the ankle
-      L.leg.rotation.x = 0;
-      L.foot.position.set(fx, foot.y + extraY, fz);
+      L.foot.position.set(L.hip.position.x, foot.y + extraY, az);
       L.foot.rotation.set(foot.pitch, 0, 0);
       return len;
     }
