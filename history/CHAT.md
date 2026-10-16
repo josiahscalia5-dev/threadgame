@@ -4008,3 +4008,16 @@ Next I'll find out exactly why the game doesn't fill your phone's screen.
 
 - _tool Bash_: Recheck features and transition with full-screen layout
 
+
+**Claude:** Everything still works in the full-screen layout:
+
+- objective after pickup;
+- double-tap stop while Loop runs 13 m;
+- the buttons;
+- the scene change, with no errors.
+
+Building the new APK:
+
+
+- _tool Bash_: Build the APK and verify it has the full-screen changes
+

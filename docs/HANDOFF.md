@@ -23,7 +23,14 @@ Updated 2026-10-16, ~19:55 UTC. Repository `josiahscalia5-dev/threadgame`, worki
   - scene change: Purl stays on the outgoing carpet, runs behind the (now sharp, not blurred) tower and comes out on
     the next carpet — never drawn floating over it — `render/renderer.js` drawTransitionScene/columnCanvas.
   Proof images: `docs/checkpoints/connected/02-features-added.jpg`, `03-transition-before-after.jpg`.
-  Not yet done: a new APK with these changes (`tools/build-android.sh`; the SDK is installed in this container).
+  - full screen on Android (user, ~20:10 UTC: "make the entire screen fit fully on an Android phone"): the host hides
+    the status/navigation bars (swipe shows them), the WebView is no longer padded, and the cutout + gesture-bar
+    insets go to the page as CSS vars --safe-* (`MainActivity.java` hideSystemBars/applySafeInsets/pushSafeInsets);
+    the canvas is position:fixed full screen (`style.css`, `#game` no longer has `contain`), the plate camera
+    cover-fits the art instead of contain-fit (`render/camera.js` fit), `main.js` sizes the renderer to the canvas.
+    HUD stays in the safe rect. Proof: `docs/checkpoints/connected/04-full-screen-before-after.jpg` (Chromium at
+    412×915, 360×800, 393×873 with simulated notch/gesture insets — no Android device or emulator here).
+  APK rebuilt with all of the above: `dist/wishweave-wonders-level1-debug.apk`.
 * The 3D connected-road work (route graph, ported kit input/route code with 34 kit tests, connected race sim,
   three.js renderer, art-derived carpet tool) is preserved at commit **`b36b7aa`** if it is ever wanted again.
   The blurred-pillar transition between scenes is therefore back as it was in the original.
