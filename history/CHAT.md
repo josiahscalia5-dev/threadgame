@@ -2233,3 +2233,7 @@ Yes
 
 - _tool Bash_: Run the pull-stitch touch e2e script
 
+
+
+- _tool Bash_: Debug: start game, advance, print targets and errors
+
