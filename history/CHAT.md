@@ -2227,3 +2227,9 @@ Yes
 
 - _tool Bash_: Read remaining e2e helper functions
 
+
+
+- _tool Write_: /home/user/threadgame/tests/e2e/pull.cjs
+
+- _tool Bash_: Run the pull-stitch touch e2e script
+
