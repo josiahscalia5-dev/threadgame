@@ -3173,3 +3173,9 @@ continue and proceed where we're at. But like I said, can you validate to me whe
 
 - _tool Bash_: Generate route.js and check collectibles and landmarks
 
+
+**Claude:** Tower-a lands on the runner's right, matching target 01 (tower on the right), which confirms the sign convention. Next is the core route math: the port plus the route graph and branch handoff.
+
+
+- _tool Write_: /home/user/threadgame/game/src/core/route.js
+
