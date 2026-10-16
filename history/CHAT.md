@@ -2217,3 +2217,13 @@ Yes
 
 - _tool SendMessage_: 
 
+
+
+- _tool Bash_: Add pull gesture to input.js and wire it in main.js
+
+
+**Claude:** Quick check of the remaining e2e helpers (touch-swipe pattern and recorder) before writing the pull test script:
+
+
+- _tool Bash_: Read remaining e2e helper functions
+
