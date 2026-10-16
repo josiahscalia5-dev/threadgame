@@ -3644,3 +3644,11 @@ What about the background? It looks nothing like my original. I liked my origina
 
 - _tool Bash_: Restore game files to the original checkpoint
 
+
+
+- _tool Bash_: Verify, commit and push the restored original game
+
+
+
+- _tool Bash_: Run original tests and screenshot the restored game
+
