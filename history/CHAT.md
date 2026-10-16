@@ -2322,3 +2322,24 @@ Yes
 
 - _tool ToolSearch_: select:Monitor
 
+
+**Claude:** The APK build will notify me when it finishes. Meanwhile I'm re-recording the lesson with the larger labels and shorter roll travel:
+
+
+- _tool Bash_: Re-record the pull lesson with updated visuals
+
+
+**Claude:** While those run, I'll update the lead's full-run player (`play.cjs`), which still taps the ribbon:
+
+
+- _tool Bash_: Read the full-run e2e player
+
+
+- _tool Bash_: Make the full-run player pull the ribbon with a real drag
+
+
+**Claude:** Waiting on the APK build and the recording.
+
+
+- _tool Bash_: Wait for the APK build to finish and show output
+
