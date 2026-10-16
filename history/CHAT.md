@@ -2041,3 +2041,9 @@ Yes
 
 - _tool Bash_: Add pull interaction and step-counted settle to stitches.js
 
+
+**Claude:** Now the race module: the tutorial hold, the pull input, releasing the grip on pause, and a debug fix.
+
+
+- _tool Bash_: Add tutorial hold and pull input to race.js
+
