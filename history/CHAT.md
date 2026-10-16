@@ -3773,3 +3773,9 @@ First I'll check whether the files you just sent are the same ones I already hav
 
 - _tool Bash_: Add optional on-screen buttons and pause menu toggle
 
+
+**Claude:** Two small corrections: the toggle's label should reflect the saved setting when the game opens, and one CSS font line was invalid.
+
+
+- _tool Bash_: Fix toggle label init and CSS font, rerun tests
+
