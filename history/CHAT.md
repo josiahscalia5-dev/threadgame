@@ -4145,3 +4145,7 @@ I'll put those three screens in front of you so we're looking at the same thing:
 
 - _tool Bash_: Generate the art crops and sample sky colours
 
+
+
+- _tool Bash_: List helper functions in the restored course.js
+
