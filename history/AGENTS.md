@@ -32,12 +32,6 @@ I'll start by reading the architecture contract and specs.
 
 Let me look at the approved screenshots and clean plates.
 
-## Canvas renderer for the game
-
-- transcript: `history/transcripts/283326c9-5b0d-5733-99e1-670739471e16/subagents/agent-a28c0afa73d95130a.jsonl` (173 entries)
-
-Now let me look at the approved screenshots.
-
 ## HUD, input, loop and lifecycle
 
 - transcript: `history/transcripts/283326c9-5b0d-5733-99e1-670739471e16/subagents/agent-a9d672b8da53c089c.jsonl` (130 entries)
@@ -53,6 +47,12 @@ You've hit your session limit · resets 7pm (UTC)
 ## Simulation and level route
 
 - transcript: `history/transcripts/283326c9-5b0d-5733-99e1-670739471e16/subagents/agent-a783bebd59988aa1d.jsonl` (72 entries)
+
+You've hit your session limit · resets 7pm (UTC)
+
+## Canvas renderer for the game
+
+- transcript: `history/transcripts/283326c9-5b0d-5733-99e1-670739471e16/subagents/agent-a28c0afa73d95130a.jsonl` (178 entries)
 
 You've hit your session limit · resets 7pm (UTC)
 
