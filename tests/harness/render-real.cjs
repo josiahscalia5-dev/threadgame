@@ -31,6 +31,7 @@ function pageHelpers() {
     while (t < (max || 10)) { if (pred(H.st())) return t; D.advance(1 / 60); t += 1 / 60; }
     return -1;
   };
+  H.toStop = function () { return H.until(function (s) { return s.purl.action === 'wait'; }, 4); };
   H.info = function () {
     const s = H.st(), r = D.renderer, R = r._R, out = { t: +s.time.toFixed(2), purl: null, loop: null };
     const seg = WW.LEVEL.route[s.purl.seg];
@@ -58,11 +59,11 @@ const MOMENTS = {
     __H.loopAt('shortcut', 717, 687); __H.adv(0.15);
   },
   'p02-unroll': function () {
-    __H.hold(['purl.coral', 'loop.coral']); __H.go('shortcut', 0); __H.adv(0.9);
+    __H.hold(['purl.coral', 'loop.coral']); __H.go('shortcut', 0); __H.toStop();
     WishweaveGame.debug.tap('shortcut'); __H.loopAt('shortcut', 655, 657); __H.adv(0.75);
   },
   'p02-cross': function () {
-    __H.hold(['purl.coral', 'loop.coral']); __H.go('shortcut', 0); __H.adv(0.9);
+    __H.hold(['purl.coral', 'loop.coral']); __H.go('shortcut', 0); __H.toStop();
     WishweaveGame.debug.tap('shortcut'); __H.adv(2.6);
   },
   'p03-ready': function () {
@@ -70,11 +71,11 @@ const MOMENTS = {
     __H.loopAt('tassels', 740, 1000); __H.adv(0.15);
   },
   'p03-lift': function () {
-    __H.hold(['purl.coral', 'loop.coral']); __H.go('tassels', 0); __H.adv(0.9);
+    __H.hold(['purl.coral', 'loop.coral']); __H.go('tassels', 0); __H.toStop();
     WishweaveGame.debug.tap('tassels'); __H.adv(0.55);
   },
   'p03-open': function () {
-    __H.hold(['purl.coral', 'loop.coral']); __H.go('tassels', 0); __H.adv(0.9);
+    __H.hold(['purl.coral', 'loop.coral']); __H.go('tassels', 0); __H.toStop();
     WishweaveGame.debug.tap('tassels'); __H.adv(1.6);
   },
   'p04-hop': function () {
@@ -104,23 +105,23 @@ const MOMENTS = {
     __H.loopAt('tapestry', 730, 1000); __H.adv(0.15);
   },
   'p06-emerge': function () {
-    __H.hold(['purl.coral', 'purl.teal', 'loop.coral', 'loop.teal']); __H.go('tapestry', 0); __H.adv(0.9);
+    __H.hold(['purl.coral', 'purl.teal', 'loop.coral', 'loop.teal']); __H.go('tapestry', 0); __H.toStop();
     WishweaveGame.debug.tap('butterfly'); __H.adv(0.45);
   },
   'p06-fly': function () {
-    __H.hold(['purl.coral', 'purl.teal', 'loop.coral', 'loop.teal']); __H.go('tapestry', 0); __H.adv(0.9);
+    __H.hold(['purl.coral', 'purl.teal', 'loop.coral', 'loop.teal']); __H.go('tapestry', 0); __H.toStop();
     WishweaveGame.debug.tap('butterfly');
     __H.until(function (s) { return s.stitches.butterfly.phase === 'fly' && s.stitches.butterfly.phaseT >= 0.62; }, 4);
     __H.loopAt('tapestry', 713, 984);
     __H.until(function (s) { return s.stitches.butterfly.phase === 'fly' && s.stitches.butterfly.phaseT >= 0.75; }, 4);
   },
   'p06-place': function () {
-    __H.hold(['purl.coral', 'purl.teal', 'loop.coral', 'loop.teal']); __H.go('tapestry', 0); __H.adv(0.9);
+    __H.hold(['purl.coral', 'purl.teal', 'loop.coral', 'loop.teal']); __H.go('tapestry', 0); __H.toStop();
     WishweaveGame.debug.tap('butterfly');
     __H.until(function (s) { return s.stitches.butterfly.phase === 'place' && s.stitches.butterfly.phaseT >= 0.5; }, 5);
   },
   'p06-exit': function () {
-    __H.hold(['purl.coral', 'purl.teal', 'loop.coral', 'loop.teal']); __H.go('tapestry', 0); __H.adv(0.9);
+    __H.hold(['purl.coral', 'purl.teal', 'loop.coral', 'loop.teal']); __H.go('tapestry', 0); __H.toStop();
     WishweaveGame.debug.tap('butterfly');
     __H.until(function (s) { return s.stitches.butterfly.state === 'open'; }, 5); __H.adv(0.5);
   },
