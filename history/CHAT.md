@@ -2097,3 +2097,12 @@ Yes
 
 - _tool Bash_: Update tests for the pull interaction and tutorial hold
 
+**Claude:** Now a dedicated test file for the pull stitch and the tutorial hold:
+
+
+- _tool Write_: /home/user/threadgame/tests/unit/pull.test.cjs
+
+- _tool Bash_: Run all unit tests
+
+- _tool Bash_: Show details of failing pull and rules subtests
+
