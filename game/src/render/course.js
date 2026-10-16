@@ -68,12 +68,11 @@
     const n = prof.length * 2 + 2;
     rows.forEach(function (s) {
       const q = S(road, s, 0), h = q.width / 2;
+      // left edge (top → down), across the underside, right edge (down → top); never across the road top
       const ring = [];
-      [-1, 1].forEach(function (side) {
-        const pr = side < 0 ? prof.slice().reverse() : prof;
-        pr.forEach(function (p) { ring.push([side * (h + p[0]), p[1]]); });
-      });
-      ring.push([h - 0.25, -depth], [-h + 0.25, -depth]);
+      prof.forEach(function (p) { ring.push([-(h + p[0]), p[1]]); });
+      ring.push([-h + 0.25, -depth], [h - 0.25, -depth]);
+      prof.slice().reverse().forEach(function (p) { ring.push([h + p[0], p[1]]); });
       ring.forEach(function (rp, k) {
         pos.push(q.center[0] + q.right[0] * rp[0] + q.normal[0] * rp[1], q.center[1] + q.right[1] * rp[0] + q.normal[1] * rp[1],
                  q.center[2] + q.right[2] * rp[0] + q.normal[2] * rp[1]);
