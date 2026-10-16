@@ -17,7 +17,7 @@
   WW.render = WW.render || {};
   const U = function () { return WW.render.util; };
 
-  const PARTIAL = 0.3;                                   // band fraction the roll travels during the drag
+  const PARTIAL = 0.15;                                  // band fraction the roll travels during the drag
   const HAND = { idle: [136, -165], duck: [132, -92] };  // Purl's right hand, frame px from the foot pivot
   const LABEL = { touch: 'Touch the loop', pull: 'Pull down' };
   /* Pill centre relative to the loop (plate px at zoom 1), from the approved TOUCH / PULL frames. */
