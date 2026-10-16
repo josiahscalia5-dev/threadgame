@@ -1,0 +1,37 @@
+plugins { id 'com.android.application' }
+
+android {
+    namespace 'com.wishweave.completevisualkit'
+    compileSdk 36
+    defaultConfig {
+        applicationId 'com.wishweave.completevisualkit'
+        minSdk 26
+        targetSdk 36
+        versionCode 1
+        versionName '1.0.0-complete-visual-kit'
+    }
+    compileOptions {
+        sourceCompatibility JavaVersion.VERSION_17
+        targetCompatibility JavaVersion.VERSION_17
+    }
+    sourceSets {
+        main { assets.srcDir layout.buildDirectory.dir('generated/visualAssets') }
+    }
+    buildTypes { release { minifyEnabled false } }
+}
+
+dependencies { implementation 'androidx.webkit:webkit:1.14.0' }
+
+// These are the SAME source folders used by the browser viewer. Do not maintain
+// a second edited copy inside the Android project.
+def bundleCompleteVisualKit = tasks.register('bundleCompleteVisualKit', Sync) {
+    into layout.buildDirectory.dir('generated/visualAssets')
+    from(new File(rootProject.projectDir, '../scene')) { into 'scene' }
+    from(new File(rootProject.projectDir, '../approved')) { into 'approved' }
+    from(new File(rootProject.projectDir, '../assets')) { into 'assets' }
+    doFirst {
+        def entry = new File(rootProject.projectDir, '../scene/index.html')
+        if (!entry.isFile()) throw new GradleException('Missing ../scene/index.html: extract the entire complete visual kit before building.')
+    }
+}
+tasks.named('preBuild').configure { dependsOn bundleCompleteVisualKit }

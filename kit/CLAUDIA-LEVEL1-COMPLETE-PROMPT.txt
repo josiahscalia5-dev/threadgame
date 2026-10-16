@@ -1,0 +1,54 @@
+Build my playable Android game Level 1, WISHWEAVE WONDERS, from this approved COMPLETE VISUAL KIT. I already approved the SEVEN screens in approved/, including the corrected connected shortcut. Continue implementation without asking me to approve the same design again. Do not redesign the world, characters, camera direction or scenery.
+
+READ FIRST
+Open all seven approved PNGs and the visual walkthrough. Read START-HERE.txt, docs/ART-DIRECTION.md, docs/LEVEL1-GAMEPLAY-SPEC.md, docs/CLAUDIA-INTEGRATION.md and docs/scene-connections.json. Inspect assets/manifest.json and the actual scene source. Keep the approved PNGs unchanged and use them as visual comparison targets.
+
+THIS KIT IS THE ENTIRE LEVEL'S VISUAL HANDOFF, NOT A FINISHED GAME
+It contains seven approved keyframes, six unique derived clean plates, reusable transparent character/prop/UI/feature art, metadata and responsive visual-review source. The hit and recovery share one landing. Seven keyframes cover the whole story but do not supply every frame of continuous travel. The independent clean plates and sprites are authoring assets and may differ slightly from the exact approved originals. Preserve the originals and aim faithfully for their look; do not claim animation is automatically pixel-identical.
+
+No rigged 3D models, GLB/FBX files, APK or payout backend are included. You must implement connected routes, animation, touch input, collision, inventory, the rival, Snagling, results and Android packaging/testing. A 2.5D implementation can use this art with real route curves, perspective and occlusion. If you choose 3D, create matching geometry, materials and rigs. Do not call a slideshow a completed game.
+
+CHARACTERS, COMPETITION AND CAMERA
+Purl is the red/coral crocheted player with ONE curled top tuft. Loop is the teal crocheted COMPUTER RIVAL with TWO curled loops. Snagling is the little plum tangled-yarn enemy. Purl and Loop race against each other; no co-op rescue, tether, team save or shared score. Make Loop feel like an active fallible rival, while honestly identifying him as computer-controlled.
+
+Keep the warm wooden loom city, embroidered teal/coral/plum carpets, gold braid, hanging tassels, lanterns, clouds/waterfalls and glowing flower gate. Use the rear camera behind and slightly above Purl. Both racers face away and move deeper into the world. Keep Purl fully visible lower-center, generally with feet around 76-80% of the gameplay image height. Match each reference's actual framing and perspective. Loop appears at the proper depth scale on his adjacent route.
+
+REVISED LEVEL FLOW — THIS SUPERSEDES THE OLD SPRING/HOLD-TO-WEAVE ROUTE
+1. 01-ribbon.png: Purl starts at 0/3 on the lower coral carpet. Introduce the glowing stitch with one simple tap cue. Tap it to unfurl the coral ribbon around the tower into a connected ramp. Run up and physically collect the coral spool; only then become 1/3. The first interaction is forgiving and safe.
+2. Travel continuously around the tower to 02-shortcut.png. Tap the stitch to unroll the floral carpet shortcut and connect both ends. Keep Purl safely stopped/slowed until it settles. OPENING THE SHORTCUT DOES NOT AWARD A THREAD: he remains 1/3. The teal spool glimpsed ahead is the SAME second collectible reached through the next tassel section, not another item to collect here.
+The earlier Snagling peek in the shortcut reference is harmless foreshadowing only; no collision or attack there.
+3. Cross the connected shortcut and reach 03-tassels.png. Tap the stitch to raise THREE plum tassels in a short readable sequence. They must clear Purl's body before he moves through. Reach the teal spool on the raised round landing and collect it: 1/3 becomes 2/3.
+4. Follow a connected path onto the broad landing. Snagling emerges from behind the left post with no advance warning banner, but a visible short hopping attack gives a real dodge/jump opportunity. Start tuning at about 0.55 seconds from visible reveal to possible contact. A successful dodge keeps 2/3 and skips the hit/recovery branch.
+5. 04-snagged.png shows ONE POSSIBLE MISSED DODGE: Snagling's loose yarn tangles Purl's ankles for about 0.5 seconds, then releases. Drop exactly one held thread onto safe reachable carpet, illustrated as the teal spool. Purl goes 2/3 to 1/3. The enemy does not abduct him or drag him off a ledge.
+6. 05-recovery.png is the SAME landing after Purl moves into that dropped spool. Restore the SAME teal collectible identity: 1/3 to 2/3. The +1 THREAD text restores inventory; it does not create a fourth unique item or extra reward payment. Do not make being hit compulsory.
+7. Follow the landing's connecting curve to 06-butterfly.png. Tap the stitch on the lower fitting of the tall left tapestry. The embroidered coral/gold butterfly wakes from the fabric, flies forward with the golden spool and places it on reachable connected carpet. Purl is 2/3 during delivery and becomes 3/3 only when he collects gold.
+8. Run the final connected approach to 07-finish.png. With all three held threads, open the flower gate, record the actual race result and show Level 1 Complete plus Replay. The picture showing Purl first is an example, not a forced outcome. Purl may finish second and still complete Level 1.
+
+INTERACTION AND ROUTE RULES
+The revised core gesture is TAP THE STITCH. Do not restore HOLD TO WEAVE or make spring pads the main collection mechanic. Ribbon/shortcut unfolding, three tassel lifts and butterfly delivery must be visibly distinct changes. Keep Purl safely stopped or slowed while required touch interactions own attention. Do not attack him during an input lock. Open paths stay open; do not retract carpet or lower tassels under either runner. The shortcut, tassel approach, enemy landing, tapestry terrace and finish must physically connect, not merely appear as separate pictures.
+
+Target a first successful run around 90-150 seconds, subject to real touch testing. Use brief travel and transition animation between the keyframes. Keep the level lively and varied without stacking an enemy, blocking tassel and gap at once.
+
+INVENTORY AND DAMAGE
+There are exactly THREE unique collectible IDs per racer: coral, teal and gold. Track uncollected/held/dropped separately. Purl and Loop have independent copies and cannot steal each other's required items. Touching an already-held item gives no duplicate credit. Recovering a drop restores its original ID only.
+
+A hit while holding at least one thread drops exactly one, preferably the most recently collected. Losing the last held thread and reaching 0/3 does NOT end the attempt. A later valid hit while ALREADY at zero starts failure. Protect the initial learning section. Allow one damage event per attack and around 1.6 seconds of immunity afterward. A required dropped thread stays available on reachable safe ground; no timer, falling into the void or permanent loss behind auto-run. Provide a local recovery loop or safe motion control. An incomplete player reaching the gate must have a reachable recovery connection, not a dead end.
+
+LOOP'S BEHAVIOR
+Matching Purl/Loop counter values in these pictures are one illustrative run, not a rule to synchronize their inventories.
+Make Loop navigate his own connected route, collect his own three objects and perform tasks with comparable time cost. He may choose routes, hesitate, mistime an action or recover naturally. He reacts after seeing obstacles, never teleports, never phases through hazards and does not gain score from Purl's actions. Simulate him consistently while hidden behind a tower. Let him win genuinely sometimes; no forced player victory. Race eligibility requires all three of his own IDs held, just as for Purl.
+
+TOUCH AND ANDROID
+Use automatic forward travel with swipe left/right for safe movement/branch choice and swipe up for designed dodge jumps. Only add slide if a real slide obstacle and animation exist. Keep stitch taps separate from running gestures. Pause both racers/hazards consistently; backgrounding must not let the computer race unfairly while the user cannot act.
+
+Adapt to actual Android viewport and safe insets. Preserve full character silhouettes, required route and usable controls. Contain-fit full reference images; do not stretch or crop them to claim universal fit. Keep the HUD compact and saved-rewards strip slim at the bottom, above the system gesture inset. Draw live HUD once over clean scenery; do not duplicate baked text or characters. Test real phones and report which ones, rather than claiming every Android phone was tested.
+
+REWARDS
+The saved-rewards/cash-out strip is a visual placeholder. Keep cash out locked. This kit implements no real crediting, exchange rate or payouts. Do not invent dollar earnings, simulate a real withdrawal or treat repeated pickup/recovery animations as money. Saved rewards never decrease from damage, failure or replay. Any real reward service must be a separately authorized authenticated backend.
+
+IMPLEMENTATION AND DELIVERY
+Use the current asset metadata for file paths, transparency and frame rectangles. Preserve stable foot anchors and rear poses for gameplay. Retained older props are optional art, not instructions to restore obsolete mechanics. Add missing production animation, depth masks or models in the same approved design.
+
+Deliver the playable connected Level 1, source, assets, metadata, build steps and an Android build only if actually produced. Compare captured gameplay with all seven approved moments. Record a complete touch-controlled run plus successful-dodge and hit/recovery evidence. Verify score progression 0->1->1 through shortcut->2 after tassels->optional 1 then recovered 2->3 after gold, duplicate protection, zero-hit rule, immunity, reachable recovery, both race outcomes, pause/background behavior and real system insets. State remaining limitations honestly. Do not label HTML/source-only work a tested APK.
+
+The seven-screen design is already approved. Complete the gameplay around it faithfully without restarting the visual approval process.

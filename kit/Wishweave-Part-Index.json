@@ -1,0 +1,643 @@
+{
+  "originalArchive": "Wishweave-Level1-Complete-Visual-Kit.zip",
+  "originalArchiveBytes": 76410462,
+  "packing": "Four independent ordinary ZIPs; no file was divided or re-encoded. Extract into one common parent folder.",
+  "originalFiles": 123,
+  "parts": [
+    {
+      "file": "Wishweave-Level1-Part-1-of-4.zip",
+      "originalEntries": [
+        {
+          "path": "CLAUDIA-COMPLETE-SOURCE.txt",
+          "bytes": 52596,
+          "sha256": "948ab92352ae0760fa2f34d4dd87a568825617ca23d5c284598c8ba2701542a2"
+        },
+        {
+          "path": "CLAUDIA-LEVEL1-COMPLETE-PROMPT.txt",
+          "bytes": 10064,
+          "sha256": "fdbf7f5948e04f0a07524b0ed6350504d724fba26e667637d00a4454c03b4872"
+        },
+        {
+          "path": "Preview-Wishweave-Level1-Complete-Small.html",
+          "bytes": 4779483,
+          "sha256": "e6299c1c3ac58d14567252a515056191d2d5555601b8dd6a30e1df67a0e8a6fa"
+        },
+        {
+          "path": "Wishweave-Level1-Complete-For-Claude.html",
+          "bytes": 52457,
+          "sha256": "cfc6d196e83ac162d6e3f05f24adffcd1f61d6fa3364532288e7e4d64303549e"
+        },
+        {
+          "path": "Wishweave-Level1-Complete-Visual-Kit/CLAUDIA-PROMPT.txt",
+          "bytes": 10064,
+          "sha256": "fdbf7f5948e04f0a07524b0ed6350504d724fba26e667637d00a4454c03b4872"
+        },
+        {
+          "path": "Wishweave-Level1-Complete-Visual-Kit/SHA256SUMS.txt",
+          "bytes": 11792,
+          "sha256": "a9487ccf55bf44f4c9d54243229cdfcdda060737579b28fdab603304cbbbd014"
+        },
+        {
+          "path": "Wishweave-Level1-Complete-Visual-Kit/START-HERE.txt",
+          "bytes": 3784,
+          "sha256": "ace767f1592508e4ab440bf3f63b7d7370d2323988f93f32a9824b95177de2df"
+        },
+        {
+          "path": "Wishweave-Level1-Complete-Visual-Kit/android/.gitignore",
+          "bytes": 43,
+          "sha256": "dd503f23ec1f8913ad013dd5610e683c41c11b7d343da599db1fcd964de068ca"
+        },
+        {
+          "path": "Wishweave-Level1-Complete-Visual-Kit/android/app/build.gradle",
+          "bytes": 1474,
+          "sha256": "e5608af4f9b505a04f2c9a0934c8b788ba0c29daa3c494f63c98e3bd0d5f4226"
+        },
+        {
+          "path": "Wishweave-Level1-Complete-Visual-Kit/android/app/src/main/AndroidManifest.xml",
+          "bytes": 975,
+          "sha256": "a1b04725aa79a78d83ee207c172593a36b2440343bd83201d633d4d378e54a9b"
+        },
+        {
+          "path": "Wishweave-Level1-Complete-Visual-Kit/android/app/src/main/java/com/wishweave/completevisualkit/MainActivity.java",
+          "bytes": 7701,
+          "sha256": "40a184764ce6e8f6b3ddc3ba7c954eb53358873f250edc33ea83a478be3b8e9c"
+        },
+        {
+          "path": "Wishweave-Level1-Complete-Visual-Kit/android/app/src/main/res/values/styles.xml",
+          "bytes": 541,
+          "sha256": "8f77a18a094e8d06f56489b5f7b85bf6e3380f42f0c13a5566fcd95e4828e578"
+        },
+        {
+          "path": "Wishweave-Level1-Complete-Visual-Kit/android/build.gradle",
+          "bytes": 74,
+          "sha256": "6844d442e0ae87ec0b784c8afe5598878784c4fa41aced1e9389a9b3bfb25666"
+        },
+        {
+          "path": "Wishweave-Level1-Complete-Visual-Kit/android/gradle.properties",
+          "bytes": 109,
+          "sha256": "e6b436ff6a08da8b8c05e0e2fc1a7f40f41701bb506cd80fc2ddfd7b6e3b3b2b"
+        },
+        {
+          "path": "Wishweave-Level1-Complete-Visual-Kit/android/settings.gradle",
+          "bytes": 298,
+          "sha256": "422a9828f724883c6099fde00f9816c0b74c28d25501eaeb8d2556f941ef204f"
+        },
+        {
+          "path": "Wishweave-Level1-Complete-Visual-Kit/approved/02-shortcut.png",
+          "bytes": 3235688,
+          "sha256": "f70b0e50c558cacc54c458d0b3385ea94dc21732725f598e75c0260b5d2bd25c"
+        },
+        {
+          "path": "Wishweave-Level1-Complete-Visual-Kit/assets/backgrounds/01-ribbon.png",
+          "bytes": 3155512,
+          "sha256": "67ba904dcb01a2c44113f92e5d10112eff755883eaf0eeccb518959795e3c37a"
+        },
+        {
+          "path": "Wishweave-Level1-Complete-Visual-Kit/assets/features/carpet-flat.png",
+          "bytes": 463955,
+          "sha256": "266341bf31a6e4f0e3799078fd3b85b58528897944f51caa305a7479773b053e"
+        },
+        {
+          "path": "Wishweave-Level1-Complete-Visual-Kit/assets/features/feature-atlas.png",
+          "bytes": 2611719,
+          "sha256": "6acb4fa7b6890322eabd4fc36508223443d35d42682f9b5cdb20c3b9d5d51e80"
+        },
+        {
+          "path": "Wishweave-Level1-Complete-Visual-Kit/assets/features/feature-manifest.json",
+          "bytes": 3997,
+          "sha256": "c8a2cc850faf6f13d40e0f58d64eea0692d583c072596ab42f26fa38f6695751"
+        },
+        {
+          "path": "Wishweave-Level1-Complete-Visual-Kit/assets/individual/loop-atlas/frame-02.png",
+          "bytes": 223159,
+          "sha256": "f96d2fbf4678c44d6b7fc374ee495341a2aa08ed59ba2b7503eb633b5e12a32d"
+        },
+        {
+          "path": "Wishweave-Level1-Complete-Visual-Kit/assets/individual/loop-atlas/frame-03.png",
+          "bytes": 248736,
+          "sha256": "ef9c294892f713c3b8f3c63d390fc68b5fd74a6938ce3c977ac2bbb8e7670113"
+        },
+        {
+          "path": "Wishweave-Level1-Complete-Visual-Kit/assets/individual/loop-rear/run-left.png",
+          "bytes": 195828,
+          "sha256": "815d287d51b655e066e7d7c7658611ff4c63fa2601e0797db237b0f62ae5698b"
+        },
+        {
+          "path": "Wishweave-Level1-Complete-Visual-Kit/assets/individual/loop-rear/run-pass-b.png",
+          "bytes": 188501,
+          "sha256": "623885296e6a356a50c299aeedd405b1dc1b2567ae23a56e74155beefb2bec83"
+        },
+        {
+          "path": "Wishweave-Level1-Complete-Visual-Kit/assets/individual/manifest.json",
+          "bytes": 23633,
+          "sha256": "025f4c305d961a620a6ce79ed6b052c94079449564d0787cd42e9b94fde8a5d1"
+        },
+        {
+          "path": "Wishweave-Level1-Complete-Visual-Kit/assets/individual/props-atlas/coral-thread.png",
+          "bytes": 186462,
+          "sha256": "765000f0633ba23286f2bbc968cefd8f1b065bc065b7f0c9ad5bfb085ab4fe96"
+        },
+        {
+          "path": "Wishweave-Level1-Complete-Visual-Kit/assets/individual/props-atlas/flower-gate.png",
+          "bytes": 495240,
+          "sha256": "7f9485dbabd6ea1d3363cb25bf79ec2e9f63b4ab5af3fd05a1809401d9fc553a"
+        },
+        {
+          "path": "Wishweave-Level1-Complete-Visual-Kit/assets/individual/purl-atlas/frame-03.png",
+          "bytes": 234715,
+          "sha256": "53e84363ec15ba4237aadecf5d9ea5fc6bc5245140701f9f39be22af605689f8"
+        },
+        {
+          "path": "Wishweave-Level1-Complete-Visual-Kit/assets/individual/purl-rear/run-pass-b.png",
+          "bytes": 168576,
+          "sha256": "d34510a12885fd25d6f79b2627e49162a9118cf2aeba0173d8f3b88ca3c1ae64"
+        },
+        {
+          "path": "Wishweave-Level1-Complete-Visual-Kit/assets/individual/purl-rear/run-right.png",
+          "bytes": 162263,
+          "sha256": "99384a0f1c88e4bde2c361125de27aff60c760f5303a4e47b209bc8018eba467"
+        },
+        {
+          "path": "Wishweave-Level1-Complete-Visual-Kit/assets/individual/purl-rear/stumble.png",
+          "bytes": 172374,
+          "sha256": "2a6d701f6d322b9e1bfe3a4b88f07f57e070bde7683fdca16351c140ca256cc7"
+        },
+        {
+          "path": "Wishweave-Level1-Complete-Visual-Kit/assets/individual/snagling-atlas/frame-03.png",
+          "bytes": 206018,
+          "sha256": "c91925cde3a102b06d32415c75bf3baf679860c9985f9220d55ce382e5e2aee3"
+        },
+        {
+          "path": "Wishweave-Level1-Complete-Visual-Kit/assets/individual/snagling-atlas/frame-07.png",
+          "bytes": 228159,
+          "sha256": "f92b5f36bdbc4ff0d8dc9b65d25dab69e1e02030ed26cde298ffed7f3fd6eb66"
+        },
+        {
+          "path": "Wishweave-Level1-Complete-Visual-Kit/assets/individual/snagling-atlas/frame-08.png",
+          "bytes": 201824,
+          "sha256": "cd8f0f66c674d86b87121edbe5dc70b00927dc7154e3f4d56c4023dede13784b"
+        },
+        {
+          "path": "Wishweave-Level1-Complete-Visual-Kit/assets/individual/ui-atlas/frame-01.png",
+          "bytes": 517803,
+          "sha256": "c1a42a99448bcf025a169fd75e5627fe4ac305c69506b93ed811c5f1f87dc472"
+        },
+        {
+          "path": "Wishweave-Level1-Complete-Visual-Kit/assets/individual/ui-atlas/frame-02.png",
+          "bytes": 317640,
+          "sha256": "ca865dac79c72cca06b881afe3a91b059d392e55c117acd7654b0e9c2cc73391"
+        },
+        {
+          "path": "Wishweave-Level1-Complete-Visual-Kit/assets/manifest.json",
+          "bytes": 9128,
+          "sha256": "aeb1a16f4a89e077e6081ec60e8593c7593a2463c0cf726e965cbf6a167746e0"
+        },
+        {
+          "path": "Wishweave-Level1-Complete-Visual-Kit/assets/props-atlas.png",
+          "bytes": 2246925,
+          "sha256": "dd6c09d45be1030028595244d3c4b92e6df76472ef49f1f16f2240d81a27cedf"
+        },
+        {
+          "path": "Wishweave-Level1-Complete-Visual-Kit/docs/ANDROID-BUILD.md",
+          "bytes": 4934,
+          "sha256": "a6e7d57f7e961172879aadebfb4bb50c540781711a298fa49dde4dcc74cc2eb5"
+        },
+        {
+          "path": "Wishweave-Level1-Complete-Visual-Kit/docs/APPROVED-ART-HASHES.json",
+          "bytes": 621,
+          "sha256": "392753a75fd46f83fa9eeb01bb9d74fd68741c5ea1ed7343b5ac294e4eccc8b8"
+        },
+        {
+          "path": "Wishweave-Level1-Complete-Visual-Kit/docs/ART-DIRECTION.md",
+          "bytes": 8179,
+          "sha256": "fef4660c9f0a95d20afff0f44cca810e80dab7043d240ef21bfa378c7d3ee10a"
+        },
+        {
+          "path": "Wishweave-Level1-Complete-Visual-Kit/docs/ASSET-INVENTORY.json",
+          "bytes": 1521,
+          "sha256": "3e598cbbbe5b930f3c31d486b782878e25d1dbf6d7162a9f0e6c2bf6b461e8bf"
+        },
+        {
+          "path": "Wishweave-Level1-Complete-Visual-Kit/docs/CLAUDIA-INTEGRATION.md",
+          "bytes": 11018,
+          "sha256": "492fe593d5df31563ac78c7836e7da3675c38cb31dce3c336f3c34f33ac4c0f3"
+        },
+        {
+          "path": "Wishweave-Level1-Complete-Visual-Kit/docs/DELIVERY-STATUS.json",
+          "bytes": 449,
+          "sha256": "75d8d032ff9d9acbf8a43da1cc5899ba6e66faa27dc17e49c94f77f68eafcdf1"
+        },
+        {
+          "path": "Wishweave-Level1-Complete-Visual-Kit/docs/LEVEL1-GAMEPLAY-SPEC.md",
+          "bytes": 17010,
+          "sha256": "9f6e499f7ad4e3b39c02e56eb8c206ba64529745e89f3c1014460178a4088af0"
+        },
+        {
+          "path": "Wishweave-Level1-Complete-Visual-Kit/docs/QA-STATUS.md",
+          "bytes": 2396,
+          "sha256": "499dc3deaeb57b17b9fd4ecb8772a05a0c22c69e8f5a22fd466241b1fde9e45e"
+        },
+        {
+          "path": "Wishweave-Level1-Complete-Visual-Kit/docs/asset-checks.json",
+          "bytes": 2568,
+          "sha256": "ffcc4d8f0c7cf98dbec952d8d8b1880f54c88ea864bf78ce1c31c97a9f1cc5a6"
+        },
+        {
+          "path": "Wishweave-Level1-Complete-Visual-Kit/docs/background-art-provenance.json",
+          "bytes": 774,
+          "sha256": "e0c9042c28aa19f1f824a09266414b9cc723b7bdb12764bd7db3f64264fabaa5"
+        },
+        {
+          "path": "Wishweave-Level1-Complete-Visual-Kit/docs/feature-art-prompts.json",
+          "bytes": 4706,
+          "sha256": "129866fbe7038c12c20e6f42482cd87b146479c8f6903283032e4e5b606fe584"
+        },
+        {
+          "path": "Wishweave-Level1-Complete-Visual-Kit/docs/individual-asset-checks.json",
+          "bytes": 18012,
+          "sha256": "6f55f97d782667766409fa4a9abc257b1bbe8106339d35f2d773251c38b0c11d"
+        },
+        {
+          "path": "Wishweave-Level1-Complete-Visual-Kit/docs/scene-connections.json",
+          "bytes": 5479,
+          "sha256": "e78eda393dbe50817f1b9c8a356f9cafd2ba89f64f6316ee8c0ad052630b716a"
+        },
+        {
+          "path": "Wishweave-Level1-Complete-Visual-Kit/package.json",
+          "bytes": 345,
+          "sha256": "bd729bd249664b9165f802dc97524c009fea557f61d626f6eaebc6722cfdb792"
+        },
+        {
+          "path": "Wishweave-Level1-Complete-Visual-Kit/scene/README.md",
+          "bytes": 4170,
+          "sha256": "dd2bc6f0c2015295e90ab0d76cc10bd69cb4b040e032abc98159e353691c7382"
+        },
+        {
+          "path": "Wishweave-Level1-Complete-Visual-Kit/scene/app.js",
+          "bytes": 16507,
+          "sha256": "90d6ac1665a3e2596cfeccbe17aa24761b36dc3b1b626b3f2e2d940b9a30ec54"
+        },
+        {
+          "path": "Wishweave-Level1-Complete-Visual-Kit/scene/asset-data.js",
+          "bytes": 9156,
+          "sha256": "de8045bb7ec1d3f31354416deb95098f9dea5e3f1d39c02103075b8e6e1a9b05"
+        },
+        {
+          "path": "Wishweave-Level1-Complete-Visual-Kit/scene/index.html",
+          "bytes": 4807,
+          "sha256": "6fee90934b318e36c49b8d6e0067a567010997f2b3d6639a3def2b801034ca3d"
+        },
+        {
+          "path": "Wishweave-Level1-Complete-Visual-Kit/scene/scene-data.js",
+          "bytes": 10456,
+          "sha256": "739088554fc83f5193aa242519d38b514324f40fb21bbfeaf564d2301ef4f987"
+        },
+        {
+          "path": "Wishweave-Level1-Complete-Visual-Kit/scene/style.css",
+          "bytes": 10469,
+          "sha256": "4bc505294f779c431517a082ee0fdcfe5f4f8d8b4b8d95fda536c6248a542477"
+        },
+        {
+          "path": "Wishweave-Level1-Complete-Visual-Kit/tests/browser-checks.json",
+          "bytes": 6558,
+          "sha256": "18414aade34f8992f5bc26e58eda45c43356f021845a658be449c23a34bc1973"
+        },
+        {
+          "path": "Wishweave-Level1-Complete-Visual-Kit/tests/complete-visual.test.cjs",
+          "bytes": 10143,
+          "sha256": "604e2f6163a66072f5a28239a1eeee2e7ff41e1c1e18acec73d0f9420d624df9"
+        },
+        {
+          "path": "Wishweave-Level1-Complete-Visual-Kit/tests/export-checks.json",
+          "bytes": 5244,
+          "sha256": "0989cac4958932eea39bc46c087d855c80db83d3e9164f4ab1b810f00729f8cf"
+        },
+        {
+          "path": "Wishweave-Level1-Complete-Visual-Kit/tests/export-preview.test.cjs",
+          "bytes": 4206,
+          "sha256": "69a79f226f71d956a39f2dcc0070de4e951286c8c6e10d08297c7cad9f3b98d1"
+        },
+        {
+          "path": "Wishweave-Level1-Complete-Visual-Kit/tools/build-deliverables.py",
+          "bytes": 12618,
+          "sha256": "8c727118791a72997354e28e3db81f4ea3bbd7a6a48d641be313ff47983ca85d"
+        },
+        {
+          "path": "Wishweave-Level1-Complete-Visual-Kit/tools/package-kit.py",
+          "bytes": 2237,
+          "sha256": "870857832d26ec95ca6d16491eefb47a864ce7eeceb2665812f1888182b6acbe"
+        }
+      ]
+    },
+    {
+      "file": "Wishweave-Level1-Part-2-of-4.zip",
+      "originalEntries": [
+        {
+          "path": "Wishweave-Level1-Complete-Visual-Kit/approved/03-tassels.png",
+          "bytes": 3154639,
+          "sha256": "eaa056ce9dd9a8b4a8e6954834d57a493ddf6004ecaa08a84bc0bebfab9d6fd6"
+        },
+        {
+          "path": "Wishweave-Level1-Complete-Visual-Kit/approved/06-butterfly.png",
+          "bytes": 3243118,
+          "sha256": "a5334265b0c2bfd1051ce431f522d9db91b04fa626b52e79d695fab39fc9e469"
+        },
+        {
+          "path": "Wishweave-Level1-Complete-Visual-Kit/approved/07-finish.png",
+          "bytes": 3109235,
+          "sha256": "8457b74d9141109c623777aff16afa68642bcf81492746a1f335a465a7fed818"
+        },
+        {
+          "path": "Wishweave-Level1-Complete-Visual-Kit/assets/backgrounds/02-shortcut.png",
+          "bytes": 3394363,
+          "sha256": "556881b4c27eb86705e874cac16f87077988ffdfc91b973b50c79a1d8c0d1e0c"
+        },
+        {
+          "path": "Wishweave-Level1-Complete-Visual-Kit/assets/features/butterfly-closed.png",
+          "bytes": 309334,
+          "sha256": "5c579f6cbe417122bad872d18945a25cf3c64d8b4cf65b9257098d47b9b5f555"
+        },
+        {
+          "path": "Wishweave-Level1-Complete-Visual-Kit/assets/features/butterfly-open.png",
+          "bytes": 334460,
+          "sha256": "3830bd47774e695519faa44dc45732ea4fc9797ad13ef2bcbc491e8d1e3d26e5"
+        },
+        {
+          "path": "Wishweave-Level1-Complete-Visual-Kit/assets/individual/loop-atlas/frame-01.png",
+          "bytes": 240463,
+          "sha256": "b5da2628d8683e43ef5999da33f10c31ff5d93030aabababcc9fecadfb8564ae"
+        },
+        {
+          "path": "Wishweave-Level1-Complete-Visual-Kit/assets/individual/loop-atlas/frame-04.png",
+          "bytes": 230587,
+          "sha256": "dec1771d201c10aeaf4ca7f786d942d108b074c5b85cb17b5d76adc2032a21ce"
+        },
+        {
+          "path": "Wishweave-Level1-Complete-Visual-Kit/assets/individual/loop-atlas/frame-05.png",
+          "bytes": 218193,
+          "sha256": "c4d8741936c740b8bfd538a9b96ab2b643f0d0d23e7228742c8028b82e9d624d"
+        },
+        {
+          "path": "Wishweave-Level1-Complete-Visual-Kit/assets/individual/loop-atlas/frame-06.png",
+          "bytes": 198399,
+          "sha256": "8e113b04961b6e82967d506d7175862c1b4a1f34e7ba89857e35387fa0d966cb"
+        },
+        {
+          "path": "Wishweave-Level1-Complete-Visual-Kit/assets/individual/loop-atlas/frame-08.png",
+          "bytes": 225336,
+          "sha256": "c0342c016bbf1b3a6475c34c7dfad7196fd94ac2e5ce775c5ca32f7c35c09f20"
+        },
+        {
+          "path": "Wishweave-Level1-Complete-Visual-Kit/assets/individual/props-atlas/golden-thread.png",
+          "bytes": 183824,
+          "sha256": "4a9806c1528ebad7a41603830a7e054993627d1fd443ccf22a281da22879756a"
+        },
+        {
+          "path": "Wishweave-Level1-Complete-Visual-Kit/assets/individual/purl-atlas/frame-02.png",
+          "bytes": 203380,
+          "sha256": "86c2ecdc3877475e651ba4fff332c95fc344c4d3cd7741f471369d41c12d73ce"
+        },
+        {
+          "path": "Wishweave-Level1-Complete-Visual-Kit/assets/individual/purl-rear/idle.png",
+          "bytes": 170517,
+          "sha256": "8ecc26da7ac0e8772fe4870eab6b497c5afdc916b17319f6263a3e4849b57d2c"
+        },
+        {
+          "path": "Wishweave-Level1-Complete-Visual-Kit/assets/individual/purl-rear/run-left.png",
+          "bytes": 165868,
+          "sha256": "be35c0cebd9a9821b7c091966eb5737036ad812390a734d803b70642b14d298b"
+        },
+        {
+          "path": "Wishweave-Level1-Complete-Visual-Kit/assets/individual/ui-atlas/frame-04.png",
+          "bytes": 190247,
+          "sha256": "6484e523089dc50a7fbc78f39261d2206be55f6bd9e46483f13c331ff273f706"
+        },
+        {
+          "path": "Wishweave-Level1-Complete-Visual-Kit/assets/individual/ui-atlas/frame-05.png",
+          "bytes": 187869,
+          "sha256": "1a07627b720e028b7b0f6664bb0fa9827c5ecf68cbe2a35b7cd2a197ef750dfd"
+        },
+        {
+          "path": "Wishweave-Level1-Complete-Visual-Kit/assets/purl-atlas.png",
+          "bytes": 1885967,
+          "sha256": "3b6df5d26489994f158444770cc9154b92b2adfec1033755e1d8c08f47abc0de"
+        },
+        {
+          "path": "Wishweave-Level1-Complete-Visual-Kit/assets/ui-atlas.png",
+          "bytes": 1584379,
+          "sha256": "8a0f530bd8e5220dbbc1547f696785047c57309c8363146e2c2d24d04d0ecd77"
+        }
+      ]
+    },
+    {
+      "file": "Wishweave-Level1-Part-3-of-4.zip",
+      "originalEntries": [
+        {
+          "path": "Wishweave-Level1-Complete-Visual-Kit/approved/04-snagged.png",
+          "bytes": 3206350,
+          "sha256": "63d69a4c75b3abce8ded1dd0f5a72f238c59fc2f9ca1bfcad3057419ec93a6c8"
+        },
+        {
+          "path": "Wishweave-Level1-Complete-Visual-Kit/approved/05-recovery.png",
+          "bytes": 3140860,
+          "sha256": "110cb09e9c73ecf78da3a19ab62079404f348f3b7fa4d2a1c19033344ad5f9fa"
+        },
+        {
+          "path": "Wishweave-Level1-Complete-Visual-Kit/assets/backgrounds/06-butterfly.png",
+          "bytes": 3247190,
+          "sha256": "741425ba14c847217cd93a0619463da655cdab76072104e10308c90d9498b574"
+        },
+        {
+          "path": "Wishweave-Level1-Complete-Visual-Kit/assets/backgrounds/07-finish.png",
+          "bytes": 3336051,
+          "sha256": "f392508f2b522b51081930a87a09ec496c98d6bc7c3f4a2ffc2d457744601efa"
+        },
+        {
+          "path": "Wishweave-Level1-Complete-Visual-Kit/assets/features/butterfly-carrying-spool.png",
+          "bytes": 319933,
+          "sha256": "0d57b9cb363eee5c89eb9523c3cbc845858fd2ca742e53a0f4cc084535c5436d"
+        },
+        {
+          "path": "Wishweave-Level1-Complete-Visual-Kit/assets/features/stitch-loop.png",
+          "bytes": 164778,
+          "sha256": "1ba5cd7604fa973fd468f9850999e41387dcb49962211a69f654088166134bc2"
+        },
+        {
+          "path": "Wishweave-Level1-Complete-Visual-Kit/assets/individual/loop-atlas/frame-07.png",
+          "bytes": 237896,
+          "sha256": "10c48af977ee03bd8a36e193fd4352c7cb2e6b57cf49924ea9ed2563111323fd"
+        },
+        {
+          "path": "Wishweave-Level1-Complete-Visual-Kit/assets/individual/loop-rear/idle.png",
+          "bytes": 203138,
+          "sha256": "1d3dcf03393f8b96073215168ef6757754eba577387206efb9dc20e87a4fea5c"
+        },
+        {
+          "path": "Wishweave-Level1-Complete-Visual-Kit/assets/individual/loop-rear/jump.png",
+          "bytes": 196872,
+          "sha256": "ef7f13698a06e28c024d3debdaf1d094a2ddf098e4cbd877818c5a6ce894c5d9"
+        },
+        {
+          "path": "Wishweave-Level1-Complete-Visual-Kit/assets/individual/loop-rear/run-right.png",
+          "bytes": 191293,
+          "sha256": "b8943385fa53c201c722536fb5e909b4774e6f6d6519df2206608746f5e068b6"
+        },
+        {
+          "path": "Wishweave-Level1-Complete-Visual-Kit/assets/individual/props-atlas/swinging-tassel.png",
+          "bytes": 283065,
+          "sha256": "815ca9efc646e58f887deb2336afd315db1533f62c94baf54b2b9d633a0ffb83"
+        },
+        {
+          "path": "Wishweave-Level1-Complete-Visual-Kit/assets/individual/props-atlas/teal-thread.png",
+          "bytes": 186175,
+          "sha256": "7d3b73609a0c2205cd038a2c53b2de9bc44f49f40d7a1c703d0c8afe3fad679a"
+        },
+        {
+          "path": "Wishweave-Level1-Complete-Visual-Kit/assets/individual/purl-atlas/frame-04.png",
+          "bytes": 228198,
+          "sha256": "41733da0637e84c8b6e33ee073041f684a72f2ba00182c7a8a8e69f3363392c0"
+        },
+        {
+          "path": "Wishweave-Level1-Complete-Visual-Kit/assets/individual/purl-atlas/frame-08.png",
+          "bytes": 216562,
+          "sha256": "d698cdf2d359ad263ce0357f96f3fb233c802af917e73718bdf7f50c215dd0a8"
+        },
+        {
+          "path": "Wishweave-Level1-Complete-Visual-Kit/assets/individual/purl-rear/duck.png",
+          "bytes": 134296,
+          "sha256": "b2d4df7a5ca4892712b680c3b97304abba0d81c11bb85454e11866a99d34a296"
+        },
+        {
+          "path": "Wishweave-Level1-Complete-Visual-Kit/assets/individual/purl-rear/jump.png",
+          "bytes": 169770,
+          "sha256": "11a1ae7103e8601e108a96c25abe6800f5eb8f39fa6b60e7d3ec84ad56500efa"
+        },
+        {
+          "path": "Wishweave-Level1-Complete-Visual-Kit/assets/individual/snagling-atlas/frame-01.png",
+          "bytes": 186860,
+          "sha256": "e3f1e42a50f23fd4d934d0731cb9530639e219d4dc48184c26b192c7cb797882"
+        },
+        {
+          "path": "Wishweave-Level1-Complete-Visual-Kit/assets/individual/snagling-atlas/frame-04.png",
+          "bytes": 223982,
+          "sha256": "443235a9ded9e041b3fa1f27f9100d6d168ef148cbe0473a59fd88046bfe5cdb"
+        },
+        {
+          "path": "Wishweave-Level1-Complete-Visual-Kit/assets/loop-rear.png",
+          "bytes": 1675513,
+          "sha256": "05dc7bee2c15bb3e831c4d9a0f51070e88fb3b41f42f6cc21be9e7d99fd8aeee"
+        },
+        {
+          "path": "Wishweave-Level1-Complete-Visual-Kit/assets/snagling-atlas.png",
+          "bytes": 1843081,
+          "sha256": "16a7a5633747e2cdb815b863f52472e4a26100ac9086870848f6aa1b76385122"
+        }
+      ]
+    },
+    {
+      "file": "Wishweave-Level1-Part-4-of-4.zip",
+      "originalEntries": [
+        {
+          "path": "Wishweave-Level1-Complete-Visual-Kit/approved/01-ribbon.png",
+          "bytes": 3110781,
+          "sha256": "ad58cf956d91fb71860760a6e8e8a23a36a34e2f0dad6cc7419b506b8b4d943d"
+        },
+        {
+          "path": "Wishweave-Level1-Complete-Visual-Kit/assets/backgrounds/03-tassels.png",
+          "bytes": 3203210,
+          "sha256": "1fde6f961d42f85e058763589815ce035223c2bf22c2c7134e6a3f4895a8c571"
+        },
+        {
+          "path": "Wishweave-Level1-Complete-Visual-Kit/assets/backgrounds/04-snagged.png",
+          "bytes": 3292897,
+          "sha256": "fb54defd66f2f01ff15d219bb925d294b6ac1fab0b666a909ed1efa4804fb660"
+        },
+        {
+          "path": "Wishweave-Level1-Complete-Visual-Kit/assets/backgrounds/05-recovery.png",
+          "bytes": 3292897,
+          "sha256": "fb54defd66f2f01ff15d219bb925d294b6ac1fab0b666a909ed1efa4804fb660"
+        },
+        {
+          "path": "Wishweave-Level1-Complete-Visual-Kit/assets/features/carpet-rolled.png",
+          "bytes": 457524,
+          "sha256": "39e8607bc6984726b83450d5eda9fd6d8cd80c0e00aeb6ecc26093896eac6d01"
+        },
+        {
+          "path": "Wishweave-Level1-Complete-Visual-Kit/assets/individual/loop-rear/duck.png",
+          "bytes": 152895,
+          "sha256": "d0aaae9bb7bf0ce176927d3754bb75bafc3957e2b61864f95d26f91231eabc5d"
+        },
+        {
+          "path": "Wishweave-Level1-Complete-Visual-Kit/assets/individual/loop-rear/run-pass-a.png",
+          "bytes": 195171,
+          "sha256": "2310aff9bf9a3aeea5eb4034b33724f3a743e06fab6405bcf9bfe0c991bb9665"
+        },
+        {
+          "path": "Wishweave-Level1-Complete-Visual-Kit/assets/individual/loop-rear/stumble.png",
+          "bytes": 200772,
+          "sha256": "5d51410804c7d9e9c18d9fddbab0c1bba47510dd2dc647fcfb5b0ef19a54c6da"
+        },
+        {
+          "path": "Wishweave-Level1-Complete-Visual-Kit/assets/individual/props-atlas/cover-post.png",
+          "bytes": 177896,
+          "sha256": "d398308005a96b0dc77b382d8cca4ae14d2ad91ee9366cf15c9cd6ce2338c1ec"
+        },
+        {
+          "path": "Wishweave-Level1-Complete-Visual-Kit/assets/individual/purl-atlas/frame-01.png",
+          "bytes": 241184,
+          "sha256": "24090f641f4b7b855ee278cf761c4f957dd864afe2ccb67189b1ab6525f1e845"
+        },
+        {
+          "path": "Wishweave-Level1-Complete-Visual-Kit/assets/individual/purl-atlas/frame-05.png",
+          "bytes": 203862,
+          "sha256": "8f82e0b2c4e863ea53d9fef8b9283ed3f8abdad7969401ae231715359f77a98e"
+        },
+        {
+          "path": "Wishweave-Level1-Complete-Visual-Kit/assets/individual/purl-atlas/frame-06.png",
+          "bytes": 186778,
+          "sha256": "72ba2dfdb64c5ff50357e2f9cb1059e77ca621a0b003f1cc7228fe9aca64caa2"
+        },
+        {
+          "path": "Wishweave-Level1-Complete-Visual-Kit/assets/individual/purl-atlas/frame-07.png",
+          "bytes": 225917,
+          "sha256": "6ab83372b839767fcfe4a0ddbf92302a8383816a24d67014ef2af4b9aaded8ff"
+        },
+        {
+          "path": "Wishweave-Level1-Complete-Visual-Kit/assets/individual/purl-rear/run-pass-a.png",
+          "bytes": 168459,
+          "sha256": "d40ce1f9299f3aa8f2acd18682ccd2c2d1f9ef1f98e2984695d57c289b150b98"
+        },
+        {
+          "path": "Wishweave-Level1-Complete-Visual-Kit/assets/individual/snagling-atlas/frame-02.png",
+          "bytes": 232434,
+          "sha256": "6cc6b6d1fa565f634eb5dcb0139592b0b0e4f421de9c601875e7cec529a56dad"
+        },
+        {
+          "path": "Wishweave-Level1-Complete-Visual-Kit/assets/individual/snagling-atlas/frame-05.png",
+          "bytes": 219729,
+          "sha256": "187f7528977763dfc063d7390fa73e30ff1514520257e5ada104747ff90348d4"
+        },
+        {
+          "path": "Wishweave-Level1-Complete-Visual-Kit/assets/individual/snagling-atlas/frame-06.png",
+          "bytes": 171911,
+          "sha256": "44fc525618eb9d69706011208f4ac085264de59b3133c1d5e03a70bd37d0ce1d"
+        },
+        {
+          "path": "Wishweave-Level1-Complete-Visual-Kit/assets/individual/ui-atlas/frame-03.png",
+          "bytes": 253623,
+          "sha256": "c0615c80dfb743668b1400728f6a295a230e5fbaccf8ee9a29ef3b265abe6975"
+        },
+        {
+          "path": "Wishweave-Level1-Complete-Visual-Kit/assets/loop-atlas.png",
+          "bytes": 1980558,
+          "sha256": "828c4321bbd591a6900eceaba44ff5e0fadc78d00b615458021a653fa41951b8"
+        },
+        {
+          "path": "Wishweave-Level1-Complete-Visual-Kit/assets/purl-rear.png",
+          "bytes": 1419586,
+          "sha256": "4a83f118523224bf216cc7b232466a7c729172ca0018a0de830ebcb5c02a6ee5"
+        }
+      ]
+    }
+  ]
+}

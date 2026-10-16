@@ -1,0 +1,15 @@
+WISHWEAVE LEVEL 1 — SMALLER DOWNLOADS
+
+Download all four numbered ZIPs. These contain every file from the original complete visual kit, without changing any artwork or code. Each is an ordinary ZIP that can be opened independently; no joining software is needed.
+
+FOR CLAUDIA / CLAUDE
+Send the four ZIPs in the SAME conversation, one attachment at a time. Say they form one project and all four should arrive before implementation begins. Part 1 includes the standalone picture preview, code and Claudia prompt. After all four arrive, ask Claudia to follow CLAUDIA-LEVEL1-COMPLETE-PROMPT.txt. If ZIP attachments are unsupported, extract the files and provide needed source/images directly; reducing size cannot change supported file types.
+
+FOR VIEWING ON YOUR PHONE OR COMPUTER
+Extract all four ZIPs into the SAME destination folder. Merge the identically named Wishweave-Level1-Complete-Visual-Kit folders. Avoid separate Kit(1), Kit(2) folders. Keep internal names and folders.
+
+The standalone Preview-Wishweave-Level1-Complete-Small.html in Part 1 opens by itself. For the full-quality viewer, open Wishweave-Level1-Complete-Visual-Kit/scene/index.html after all four are extracted together. The code-only HTML needs the matching kit folder beside it.
+
+The original seven approved PNG screenshots, backgrounds, transparent images, Android viewer source, tests and handoff instructions are unchanged. This remains a visual kit; playable gameplay and rigged 3D models are not included.
+
+Wishweave-Part-Index.json maps every original file to its ZIP and records its SHA-256 hash.

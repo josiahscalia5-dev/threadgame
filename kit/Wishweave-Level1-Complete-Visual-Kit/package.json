@@ -1,0 +1,13 @@
+{
+  "name": "wishweave-level1-complete-visual-kit",
+  "version": "2.0.0",
+  "private": true,
+  "description": "Approved Level1 visual handoff; not a playable game",
+  "scripts": {
+    "test": "node tests/complete-visual.test.cjs",
+    "export": "python3 tools/build-deliverables.py"
+  },
+  "devDependencies": {
+    "playwright": "^1.62.1"
+  }
+}

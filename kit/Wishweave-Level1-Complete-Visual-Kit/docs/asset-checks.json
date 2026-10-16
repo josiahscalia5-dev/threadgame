@@ -1,0 +1,149 @@
+{
+  "passed": true,
+  "assetEntries": [
+    {
+      "id": "loop-atlas",
+      "dimensions": [
+        1774,
+        887
+      ],
+      "frames": 8,
+      "passed": true
+    },
+    {
+      "id": "purl-atlas",
+      "dimensions": [
+        1774,
+        887
+      ],
+      "frames": 8,
+      "passed": true
+    },
+    {
+      "id": "ui-atlas",
+      "dimensions": [
+        1774,
+        887
+      ],
+      "frames": 5,
+      "passed": true
+    },
+    {
+      "id": "snagling-atlas",
+      "dimensions": [
+        1774,
+        887
+      ],
+      "frames": 8,
+      "passed": true
+    },
+    {
+      "id": "purl-rear",
+      "dimensions": [
+        1774,
+        887
+      ],
+      "frames": 8,
+      "passed": true
+    },
+    {
+      "id": "loop-rear",
+      "dimensions": [
+        1774,
+        887
+      ],
+      "frames": 8,
+      "passed": true
+    },
+    {
+      "id": "props-atlas",
+      "dimensions": [
+        1536,
+        1024
+      ],
+      "frames": 6,
+      "passed": true
+    },
+    {
+      "id": "feature-atlas",
+      "dimensions": [
+        1536,
+        1024
+      ],
+      "frames": 6,
+      "passed": true
+    },
+    {
+      "id": "background-01-ribbon",
+      "dimensions": [
+        841,
+        1870
+      ],
+      "frames": 0,
+      "passed": true
+    },
+    {
+      "id": "background-02-shortcut",
+      "dimensions": [
+        841,
+        1870
+      ],
+      "frames": 0,
+      "passed": true
+    },
+    {
+      "id": "background-03-tassels",
+      "dimensions": [
+        840,
+        1871
+      ],
+      "frames": 0,
+      "passed": true
+    },
+    {
+      "id": "background-04-snagged",
+      "dimensions": [
+        841,
+        1870
+      ],
+      "frames": 0,
+      "passed": true
+    },
+    {
+      "id": "background-05-recovery",
+      "dimensions": [
+        841,
+        1870
+      ],
+      "frames": 0,
+      "passed": true
+    },
+    {
+      "id": "background-06-butterfly",
+      "dimensions": [
+        841,
+        1870
+      ],
+      "frames": 0,
+      "passed": true
+    },
+    {
+      "id": "background-07-finish",
+      "dimensions": [
+        839,
+        1875
+      ],
+      "frames": 0,
+      "passed": true
+    }
+  ],
+  "approvedImages": 7,
+  "backgroundFiles": 7,
+  "uniqueBackgrounds": 6,
+  "individualTransparentImages": 57,
+  "notes": [
+    "Exact approved reference art is retained.",
+    "Clean plates and extracted atlas cutouts are reusable raster authoring assets, not 3D geometry.",
+    "Two inherited Snagling source frame edges have tiny neighboring yarn slivers; see individual-asset-checks.json."
+  ]
+}

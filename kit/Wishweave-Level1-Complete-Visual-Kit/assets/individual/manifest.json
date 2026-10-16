@@ -1,0 +1,1135 @@
+{
+  "version": 1,
+  "basePath": "assets/",
+  "assets": [
+    {
+      "id": "purl-atlas/frame-01",
+      "file": "individual/purl-atlas/frame-01.png",
+      "sourceAtlas": "purl-atlas.png",
+      "atlasKey": "purl-atlas",
+      "frameIndex": 0,
+      "pose": "frame-01",
+      "rect": [
+        25,
+        23,
+        402,
+        386
+      ],
+      "width": 402,
+      "height": 386,
+      "mode": "RGBA",
+      "pivot": "bottom-center",
+      "pivotNormalized": [
+        0.5,
+        1.0
+      ]
+    },
+    {
+      "id": "purl-atlas/frame-02",
+      "file": "individual/purl-atlas/frame-02.png",
+      "sourceAtlas": "purl-atlas.png",
+      "atlasKey": "purl-atlas",
+      "frameIndex": 1,
+      "pose": "frame-02",
+      "rect": [
+        513,
+        25,
+        335,
+        371
+      ],
+      "width": 335,
+      "height": 371,
+      "mode": "RGBA",
+      "pivot": "bottom-center",
+      "pivotNormalized": [
+        0.5,
+        1.0
+      ]
+    },
+    {
+      "id": "purl-atlas/frame-03",
+      "file": "individual/purl-atlas/frame-03.png",
+      "sourceAtlas": "purl-atlas.png",
+      "atlasKey": "purl-atlas",
+      "frameIndex": 2,
+      "pose": "frame-03",
+      "rect": [
+        916,
+        22,
+        388,
+        380
+      ],
+      "width": 388,
+      "height": 380,
+      "mode": "RGBA",
+      "pivot": "bottom-center",
+      "pivotNormalized": [
+        0.5,
+        1.0
+      ]
+    },
+    {
+      "id": "purl-atlas/frame-04",
+      "file": "individual/purl-atlas/frame-04.png",
+      "sourceAtlas": "purl-atlas.png",
+      "atlasKey": "purl-atlas",
+      "frameIndex": 3,
+      "pose": "frame-04",
+      "rect": [
+        1367,
+        17,
+        392,
+        338
+      ],
+      "width": 392,
+      "height": 338,
+      "mode": "RGBA",
+      "pivot": "bottom-center",
+      "pivotNormalized": [
+        0.5,
+        1.0
+      ]
+    },
+    {
+      "id": "purl-atlas/frame-05",
+      "file": "individual/purl-atlas/frame-05.png",
+      "sourceAtlas": "purl-atlas.png",
+      "atlasKey": "purl-atlas",
+      "frameIndex": 4,
+      "pose": "frame-05",
+      "rect": [
+        82,
+        436,
+        348,
+        335
+      ],
+      "width": 348,
+      "height": 335,
+      "mode": "RGBA",
+      "pivot": "bottom-center",
+      "pivotNormalized": [
+        0.5,
+        1.0
+      ]
+    },
+    {
+      "id": "purl-atlas/frame-06",
+      "file": "individual/purl-atlas/frame-06.png",
+      "sourceAtlas": "purl-atlas.png",
+      "atlasKey": "purl-atlas",
+      "frameIndex": 5,
+      "pose": "frame-06",
+      "rect": [
+        466,
+        530,
+        416,
+        274
+      ],
+      "width": 416,
+      "height": 274,
+      "mode": "RGBA",
+      "pivot": "bottom-center",
+      "pivotNormalized": [
+        0.5,
+        1.0
+      ]
+    },
+    {
+      "id": "purl-atlas/frame-07",
+      "file": "individual/purl-atlas/frame-07.png",
+      "sourceAtlas": "purl-atlas.png",
+      "atlasKey": "purl-atlas",
+      "frameIndex": 6,
+      "pose": "frame-07",
+      "rect": [
+        952,
+        441,
+        353,
+        379
+      ],
+      "width": 353,
+      "height": 379,
+      "mode": "RGBA",
+      "pivot": "bottom-center",
+      "pivotNormalized": [
+        0.5,
+        1.0
+      ]
+    },
+    {
+      "id": "purl-atlas/frame-08",
+      "file": "individual/purl-atlas/frame-08.png",
+      "sourceAtlas": "purl-atlas.png",
+      "atlasKey": "purl-atlas",
+      "frameIndex": 7,
+      "pose": "frame-08",
+      "rect": [
+        1379,
+        435,
+        364,
+        396
+      ],
+      "width": 364,
+      "height": 396,
+      "mode": "RGBA",
+      "pivot": "bottom-center",
+      "pivotNormalized": [
+        0.5,
+        1.0
+      ]
+    },
+    {
+      "id": "loop-atlas/frame-01",
+      "file": "individual/loop-atlas/frame-01.png",
+      "sourceAtlas": "loop-atlas.png",
+      "atlasKey": "loop-atlas",
+      "frameIndex": 0,
+      "pose": "frame-01",
+      "rect": [
+        69,
+        29,
+        341,
+        392
+      ],
+      "width": 341,
+      "height": 392,
+      "mode": "RGBA",
+      "pivot": "bottom-center",
+      "pivotNormalized": [
+        0.5,
+        1.0
+      ]
+    },
+    {
+      "id": "loop-atlas/frame-02",
+      "file": "individual/loop-atlas/frame-02.png",
+      "sourceAtlas": "loop-atlas.png",
+      "atlasKey": "loop-atlas",
+      "frameIndex": 1,
+      "pose": "frame-02",
+      "rect": [
+        523,
+        30,
+        325,
+        376
+      ],
+      "width": 325,
+      "height": 376,
+      "mode": "RGBA",
+      "pivot": "bottom-center",
+      "pivotNormalized": [
+        0.5,
+        1.0
+      ]
+    },
+    {
+      "id": "loop-atlas/frame-03",
+      "file": "individual/loop-atlas/frame-03.png",
+      "sourceAtlas": "loop-atlas.png",
+      "atlasKey": "loop-atlas",
+      "frameIndex": 2,
+      "pose": "frame-03",
+      "rect": [
+        945,
+        28,
+        362,
+        391
+      ],
+      "width": 362,
+      "height": 391,
+      "mode": "RGBA",
+      "pivot": "bottom-center",
+      "pivotNormalized": [
+        0.5,
+        1.0
+      ]
+    },
+    {
+      "id": "loop-atlas/frame-04",
+      "file": "individual/loop-atlas/frame-04.png",
+      "sourceAtlas": "loop-atlas.png",
+      "atlasKey": "loop-atlas",
+      "frameIndex": 3,
+      "pose": "frame-04",
+      "rect": [
+        1395,
+        22,
+        366,
+        359
+      ],
+      "width": 366,
+      "height": 359,
+      "mode": "RGBA",
+      "pivot": "bottom-center",
+      "pivotNormalized": [
+        0.5,
+        1.0
+      ]
+    },
+    {
+      "id": "loop-atlas/frame-05",
+      "file": "individual/loop-atlas/frame-05.png",
+      "sourceAtlas": "loop-atlas.png",
+      "atlasKey": "loop-atlas",
+      "frameIndex": 4,
+      "pose": "frame-05",
+      "rect": [
+        72,
+        457,
+        353,
+        339
+      ],
+      "width": 353,
+      "height": 339,
+      "mode": "RGBA",
+      "pivot": "bottom-center",
+      "pivotNormalized": [
+        0.5,
+        1.0
+      ]
+    },
+    {
+      "id": "loop-atlas/frame-06",
+      "file": "individual/loop-atlas/frame-06.png",
+      "sourceAtlas": "loop-atlas.png",
+      "atlasKey": "loop-atlas",
+      "frameIndex": 5,
+      "pose": "frame-06",
+      "rect": [
+        485,
+        550,
+        395,
+        284
+      ],
+      "width": 395,
+      "height": 284,
+      "mode": "RGBA",
+      "pivot": "bottom-center",
+      "pivotNormalized": [
+        0.5,
+        1.0
+      ]
+    },
+    {
+      "id": "loop-atlas/frame-07",
+      "file": "individual/loop-atlas/frame-07.png",
+      "sourceAtlas": "loop-atlas.png",
+      "atlasKey": "loop-atlas",
+      "frameIndex": 6,
+      "pose": "frame-07",
+      "rect": [
+        949,
+        464,
+        359,
+        384
+      ],
+      "width": 359,
+      "height": 384,
+      "mode": "RGBA",
+      "pivot": "bottom-center",
+      "pivotNormalized": [
+        0.5,
+        1.0
+      ]
+    },
+    {
+      "id": "loop-atlas/frame-08",
+      "file": "individual/loop-atlas/frame-08.png",
+      "sourceAtlas": "loop-atlas.png",
+      "atlasKey": "loop-atlas",
+      "frameIndex": 7,
+      "pose": "frame-08",
+      "rect": [
+        1393,
+        471,
+        358,
+        374
+      ],
+      "width": 358,
+      "height": 374,
+      "mode": "RGBA",
+      "pivot": "bottom-center",
+      "pivotNormalized": [
+        0.5,
+        1.0
+      ]
+    },
+    {
+      "id": "purl-rear/idle",
+      "file": "individual/purl-rear/idle.png",
+      "sourceAtlas": "purl-rear.png",
+      "atlasKey": "purl-rear",
+      "frameIndex": 0,
+      "pose": "idle",
+      "rect": [
+        49,
+        36,
+        337,
+        335
+      ],
+      "width": 337,
+      "height": 335,
+      "mode": "RGBA",
+      "pivot": "bottom-center",
+      "pivotNormalized": [
+        0.5,
+        1.0
+      ]
+    },
+    {
+      "id": "purl-rear/run-left",
+      "file": "individual/purl-rear/run-left.png",
+      "sourceAtlas": "purl-rear.png",
+      "atlasKey": "purl-rear",
+      "frameIndex": 1,
+      "pose": "run-left",
+      "rect": [
+        500,
+        36,
+        332,
+        335
+      ],
+      "width": 332,
+      "height": 335,
+      "mode": "RGBA",
+      "pivot": "bottom-center",
+      "pivotNormalized": [
+        0.5,
+        1.0
+      ]
+    },
+    {
+      "id": "purl-rear/run-pass-a",
+      "file": "individual/purl-rear/run-pass-a.png",
+      "sourceAtlas": "purl-rear.png",
+      "atlasKey": "purl-rear",
+      "frameIndex": 2,
+      "pose": "run-pass-a",
+      "rect": [
+        957,
+        36,
+        323,
+        348
+      ],
+      "width": 323,
+      "height": 348,
+      "mode": "RGBA",
+      "pivot": "bottom-center",
+      "pivotNormalized": [
+        0.5,
+        1.0
+      ]
+    },
+    {
+      "id": "purl-rear/run-right",
+      "file": "individual/purl-rear/run-right.png",
+      "sourceAtlas": "purl-rear.png",
+      "atlasKey": "purl-rear",
+      "frameIndex": 3,
+      "pose": "run-right",
+      "rect": [
+        1399,
+        36,
+        328,
+        338
+      ],
+      "width": 328,
+      "height": 338,
+      "mode": "RGBA",
+      "pivot": "bottom-center",
+      "pivotNormalized": [
+        0.5,
+        1.0
+      ]
+    },
+    {
+      "id": "purl-rear/run-pass-b",
+      "file": "individual/purl-rear/run-pass-b.png",
+      "sourceAtlas": "purl-rear.png",
+      "atlasKey": "purl-rear",
+      "frameIndex": 4,
+      "pose": "run-pass-b",
+      "rect": [
+        57,
+        478,
+        332,
+        343
+      ],
+      "width": 332,
+      "height": 343,
+      "mode": "RGBA",
+      "pivot": "bottom-center",
+      "pivotNormalized": [
+        0.5,
+        1.0
+      ]
+    },
+    {
+      "id": "purl-rear/jump",
+      "file": "individual/purl-rear/jump.png",
+      "sourceAtlas": "purl-rear.png",
+      "atlasKey": "purl-rear",
+      "frameIndex": 5,
+      "pose": "jump",
+      "rect": [
+        490,
+        468,
+        370,
+        338
+      ],
+      "width": 370,
+      "height": 338,
+      "mode": "RGBA",
+      "pivot": "bottom-center",
+      "pivotNormalized": [
+        0.5,
+        1.0
+      ]
+    },
+    {
+      "id": "purl-rear/duck",
+      "file": "individual/purl-rear/duck.png",
+      "sourceAtlas": "purl-rear.png",
+      "atlasKey": "purl-rear",
+      "frameIndex": 6,
+      "pose": "duck",
+      "rect": [
+        965,
+        542,
+        291,
+        279
+      ],
+      "width": 291,
+      "height": 279,
+      "mode": "RGBA",
+      "pivot": "bottom-center",
+      "pivotNormalized": [
+        0.5,
+        1.0
+      ]
+    },
+    {
+      "id": "purl-rear/stumble",
+      "file": "individual/purl-rear/stumble.png",
+      "sourceAtlas": "purl-rear.png",
+      "atlasKey": "purl-rear",
+      "frameIndex": 7,
+      "pose": "stumble",
+      "rect": [
+        1374,
+        486,
+        360,
+        334
+      ],
+      "width": 360,
+      "height": 334,
+      "mode": "RGBA",
+      "pivot": "bottom-center",
+      "pivotNormalized": [
+        0.5,
+        1.0
+      ]
+    },
+    {
+      "id": "loop-rear/idle",
+      "file": "individual/loop-rear/idle.png",
+      "sourceAtlas": "loop-rear.png",
+      "atlasKey": "loop-rear",
+      "frameIndex": 0,
+      "pose": "idle",
+      "rect": [
+        45,
+        47,
+        354,
+        352
+      ],
+      "width": 354,
+      "height": 352,
+      "mode": "RGBA",
+      "pivot": "bottom-center",
+      "pivotNormalized": [
+        0.5,
+        1.0
+      ]
+    },
+    {
+      "id": "loop-rear/run-left",
+      "file": "individual/loop-rear/run-left.png",
+      "sourceAtlas": "loop-rear.png",
+      "atlasKey": "loop-rear",
+      "frameIndex": 1,
+      "pose": "run-left",
+      "rect": [
+        490,
+        47,
+        341,
+        351
+      ],
+      "width": 341,
+      "height": 351,
+      "mode": "RGBA",
+      "pivot": "bottom-center",
+      "pivotNormalized": [
+        0.5,
+        1.0
+      ]
+    },
+    {
+      "id": "loop-rear/run-pass-a",
+      "file": "individual/loop-rear/run-pass-a.png",
+      "sourceAtlas": "loop-rear.png",
+      "atlasKey": "loop-rear",
+      "frameIndex": 2,
+      "pose": "run-pass-a",
+      "rect": [
+        943,
+        48,
+        345,
+        360
+      ],
+      "width": 345,
+      "height": 360,
+      "mode": "RGBA",
+      "pivot": "bottom-center",
+      "pivotNormalized": [
+        0.5,
+        1.0
+      ]
+    },
+    {
+      "id": "loop-rear/run-right",
+      "file": "individual/loop-rear/run-right.png",
+      "sourceAtlas": "loop-rear.png",
+      "atlasKey": "loop-rear",
+      "frameIndex": 3,
+      "pose": "run-right",
+      "rect": [
+        1385,
+        49,
+        327,
+        349
+      ],
+      "width": 327,
+      "height": 349,
+      "mode": "RGBA",
+      "pivot": "bottom-center",
+      "pivotNormalized": [
+        0.5,
+        1.0
+      ]
+    },
+    {
+      "id": "loop-rear/run-pass-b",
+      "file": "individual/loop-rear/run-pass-b.png",
+      "sourceAtlas": "loop-rear.png",
+      "atlasKey": "loop-rear",
+      "frameIndex": 4,
+      "pose": "run-pass-b",
+      "rect": [
+        48,
+        490,
+        332,
+        351
+      ],
+      "width": 332,
+      "height": 351,
+      "mode": "RGBA",
+      "pivot": "bottom-center",
+      "pivotNormalized": [
+        0.5,
+        1.0
+      ]
+    },
+    {
+      "id": "loop-rear/jump",
+      "file": "individual/loop-rear/jump.png",
+      "sourceAtlas": "loop-rear.png",
+      "atlasKey": "loop-rear",
+      "frameIndex": 5,
+      "pose": "jump",
+      "rect": [
+        474,
+        472,
+        385,
+        340
+      ],
+      "width": 385,
+      "height": 340,
+      "mode": "RGBA",
+      "pivot": "bottom-center",
+      "pivotNormalized": [
+        0.5,
+        1.0
+      ]
+    },
+    {
+      "id": "loop-rear/duck",
+      "file": "individual/loop-rear/duck.png",
+      "sourceAtlas": "loop-rear.png",
+      "atlasKey": "loop-rear",
+      "frameIndex": 6,
+      "pose": "duck",
+      "rect": [
+        952,
+        568,
+        308,
+        269
+      ],
+      "width": 308,
+      "height": 269,
+      "mode": "RGBA",
+      "pivot": "bottom-center",
+      "pivotNormalized": [
+        0.5,
+        1.0
+      ]
+    },
+    {
+      "id": "loop-rear/stumble",
+      "file": "individual/loop-rear/stumble.png",
+      "sourceAtlas": "loop-rear.png",
+      "atlasKey": "loop-rear",
+      "frameIndex": 7,
+      "pose": "stumble",
+      "rect": [
+        1353,
+        480,
+        388,
+        355
+      ],
+      "width": 388,
+      "height": 355,
+      "mode": "RGBA",
+      "pivot": "bottom-center",
+      "pivotNormalized": [
+        0.5,
+        1.0
+      ]
+    },
+    {
+      "id": "snagling-atlas/frame-01",
+      "file": "individual/snagling-atlas/frame-01.png",
+      "sourceAtlas": "snagling-atlas.png",
+      "atlasKey": "snagling-atlas",
+      "frameIndex": 0,
+      "pose": "frame-01",
+      "rect": [
+        44,
+        138,
+        319,
+        273
+      ],
+      "width": 319,
+      "height": 273,
+      "mode": "RGBA",
+      "pivot": "bottom-center",
+      "pivotNormalized": [
+        0.5,
+        1.0
+      ]
+    },
+    {
+      "id": "snagling-atlas/frame-02",
+      "file": "individual/snagling-atlas/frame-02.png",
+      "sourceAtlas": "snagling-atlas.png",
+      "atlasKey": "snagling-atlas",
+      "frameIndex": 1,
+      "pose": "frame-02",
+      "rect": [
+        440,
+        69,
+        461,
+        336
+      ],
+      "width": 461,
+      "height": 336,
+      "mode": "RGBA",
+      "pivot": "bottom-center",
+      "pivotNormalized": [
+        0.5,
+        1.0
+      ]
+    },
+    {
+      "id": "snagling-atlas/frame-03",
+      "file": "individual/snagling-atlas/frame-03.png",
+      "sourceAtlas": "snagling-atlas.png",
+      "atlasKey": "snagling-atlas",
+      "frameIndex": 2,
+      "pose": "frame-03",
+      "rect": [
+        895,
+        91,
+        435,
+        305
+      ],
+      "width": 435,
+      "height": 305,
+      "mode": "RGBA",
+      "pivot": "bottom-center",
+      "pivotNormalized": [
+        0.5,
+        1.0
+      ]
+    },
+    {
+      "id": "snagling-atlas/frame-04",
+      "file": "individual/snagling-atlas/frame-04.png",
+      "sourceAtlas": "snagling-atlas.png",
+      "atlasKey": "snagling-atlas",
+      "frameIndex": 3,
+      "pose": "frame-04",
+      "rect": [
+        1347,
+        105,
+        419,
+        309
+      ],
+      "width": 419,
+      "height": 309,
+      "mode": "RGBA",
+      "pivot": "bottom-center",
+      "pivotNormalized": [
+        0.5,
+        1.0
+      ]
+    },
+    {
+      "id": "snagling-atlas/frame-05",
+      "file": "individual/snagling-atlas/frame-05.png",
+      "sourceAtlas": "snagling-atlas.png",
+      "atlasKey": "snagling-atlas",
+      "frameIndex": 4,
+      "pose": "frame-05",
+      "rect": [
+        56,
+        499,
+        348,
+        314
+      ],
+      "width": 348,
+      "height": 314,
+      "mode": "RGBA",
+      "pivot": "bottom-center",
+      "pivotNormalized": [
+        0.5,
+        1.0
+      ]
+    },
+    {
+      "id": "snagling-atlas/frame-06",
+      "file": "individual/snagling-atlas/frame-06.png",
+      "sourceAtlas": "snagling-atlas.png",
+      "atlasKey": "snagling-atlas",
+      "frameIndex": 5,
+      "pose": "frame-06",
+      "rect": [
+        450,
+        588,
+        451,
+        219
+      ],
+      "width": 451,
+      "height": 219,
+      "mode": "RGBA",
+      "pivot": "bottom-center",
+      "pivotNormalized": [
+        0.5,
+        1.0
+      ]
+    },
+    {
+      "id": "snagling-atlas/frame-07",
+      "file": "individual/snagling-atlas/frame-07.png",
+      "sourceAtlas": "snagling-atlas.png",
+      "atlasKey": "snagling-atlas",
+      "frameIndex": 6,
+      "pose": "frame-07",
+      "rect": [
+        925,
+        480,
+        382,
+        330
+      ],
+      "width": 382,
+      "height": 330,
+      "mode": "RGBA",
+      "pivot": "bottom-center",
+      "pivotNormalized": [
+        0.5,
+        1.0
+      ]
+    },
+    {
+      "id": "snagling-atlas/frame-08",
+      "file": "individual/snagling-atlas/frame-08.png",
+      "sourceAtlas": "snagling-atlas.png",
+      "atlasKey": "snagling-atlas",
+      "frameIndex": 7,
+      "pose": "frame-08",
+      "rect": [
+        1344,
+        534,
+        396,
+        289
+      ],
+      "width": 396,
+      "height": 289,
+      "mode": "RGBA",
+      "pivot": "bottom-center",
+      "pivotNormalized": [
+        0.5,
+        1.0
+      ]
+    },
+    {
+      "id": "props-atlas/coral-thread",
+      "file": "individual/props-atlas/coral-thread.png",
+      "sourceAtlas": "props-atlas.png",
+      "atlasKey": "props-atlas",
+      "frameIndex": 0,
+      "pose": "coral-thread",
+      "rect": [
+        165,
+        53,
+        244,
+        352
+      ],
+      "width": 244,
+      "height": 352,
+      "mode": "RGBA",
+      "pivot": "bottom-center",
+      "pivotNormalized": [
+        0.5,
+        1.0
+      ]
+    },
+    {
+      "id": "props-atlas/teal-thread",
+      "file": "individual/props-atlas/teal-thread.png",
+      "sourceAtlas": "props-atlas.png",
+      "atlasKey": "props-atlas",
+      "frameIndex": 1,
+      "pose": "teal-thread",
+      "rect": [
+        646,
+        53,
+        244,
+        352
+      ],
+      "width": 244,
+      "height": 352,
+      "mode": "RGBA",
+      "pivot": "bottom-center",
+      "pivotNormalized": [
+        0.5,
+        1.0
+      ]
+    },
+    {
+      "id": "props-atlas/golden-thread",
+      "file": "individual/props-atlas/golden-thread.png",
+      "sourceAtlas": "props-atlas.png",
+      "atlasKey": "props-atlas",
+      "frameIndex": 2,
+      "pose": "golden-thread",
+      "rect": [
+        1127,
+        53,
+        245,
+        354
+      ],
+      "width": 245,
+      "height": 354,
+      "mode": "RGBA",
+      "pivot": "bottom-center",
+      "pivotNormalized": [
+        0.5,
+        1.0
+      ]
+    },
+    {
+      "id": "props-atlas/swinging-tassel",
+      "file": "individual/props-atlas/swinging-tassel.png",
+      "sourceAtlas": "props-atlas.png",
+      "atlasKey": "props-atlas",
+      "frameIndex": 3,
+      "pose": "swinging-tassel",
+      "rect": [
+        106,
+        467,
+        323,
+        502
+      ],
+      "width": 323,
+      "height": 502,
+      "mode": "RGBA",
+      "pivot": "bottom-center",
+      "pivotNormalized": [
+        0.5,
+        1.0
+      ]
+    },
+    {
+      "id": "props-atlas/cover-post",
+      "file": "individual/props-atlas/cover-post.png",
+      "sourceAtlas": "props-atlas.png",
+      "atlasKey": "props-atlas",
+      "frameIndex": 4,
+      "pose": "cover-post",
+      "rect": [
+        654,
+        518,
+        192,
+        431
+      ],
+      "width": 192,
+      "height": 431,
+      "mode": "RGBA",
+      "pivot": "bottom-center",
+      "pivotNormalized": [
+        0.5,
+        1.0
+      ]
+    },
+    {
+      "id": "props-atlas/flower-gate",
+      "file": "individual/props-atlas/flower-gate.png",
+      "sourceAtlas": "props-atlas.png",
+      "atlasKey": "props-atlas",
+      "frameIndex": 5,
+      "pose": "flower-gate",
+      "rect": [
+        983,
+        483,
+        535,
+        460
+      ],
+      "width": 535,
+      "height": 460,
+      "mode": "RGBA",
+      "pivot": "bottom-center",
+      "pivotNormalized": [
+        0.5,
+        1.0
+      ]
+    },
+    {
+      "id": "ui-atlas/frame-01",
+      "file": "individual/ui-atlas/frame-01.png",
+      "sourceAtlas": "ui-atlas.png",
+      "atlasKey": "ui-atlas",
+      "frameIndex": 0,
+      "pose": "frame-01",
+      "rect": [
+        25,
+        70,
+        884,
+        338
+      ],
+      "width": 884,
+      "height": 338,
+      "mode": "RGBA",
+      "pivot": "bottom-center",
+      "pivotNormalized": [
+        0.5,
+        1.0
+      ]
+    },
+    {
+      "id": "ui-atlas/frame-02",
+      "file": "individual/ui-atlas/frame-02.png",
+      "sourceAtlas": "ui-atlas.png",
+      "atlasKey": "ui-atlas",
+      "frameIndex": 1,
+      "pose": "frame-02",
+      "rect": [
+        930,
+        145,
+        827,
+        230
+      ],
+      "width": 827,
+      "height": 230,
+      "mode": "RGBA",
+      "pivot": "bottom-center",
+      "pivotNormalized": [
+        0.5,
+        1.0
+      ]
+    },
+    {
+      "id": "ui-atlas/frame-03",
+      "file": "individual/ui-atlas/frame-03.png",
+      "sourceAtlas": "ui-atlas.png",
+      "atlasKey": "ui-atlas",
+      "frameIndex": 2,
+      "pose": "frame-03",
+      "rect": [
+        280,
+        450,
+        400,
+        386
+      ],
+      "width": 400,
+      "height": 386,
+      "mode": "RGBA",
+      "pivot": "bottom-center",
+      "pivotNormalized": [
+        0.5,
+        1.0
+      ]
+    },
+    {
+      "id": "ui-atlas/frame-04",
+      "file": "individual/ui-atlas/frame-04.png",
+      "sourceAtlas": "ui-atlas.png",
+      "atlasKey": "ui-atlas",
+      "frameIndex": 3,
+      "pose": "frame-04",
+      "rect": [
+        1030,
+        450,
+        646,
+        194
+      ],
+      "width": 646,
+      "height": 194,
+      "mode": "RGBA",
+      "pivot": "bottom-center",
+      "pivotNormalized": [
+        0.5,
+        1.0
+      ]
+    },
+    {
+      "id": "ui-atlas/frame-05",
+      "file": "individual/ui-atlas/frame-05.png",
+      "sourceAtlas": "ui-atlas.png",
+      "atlasKey": "ui-atlas",
+      "frameIndex": 4,
+      "pose": "frame-05",
+      "rect": [
+        1030,
+        639,
+        646,
+        204
+      ],
+      "width": 646,
+      "height": 204,
+      "mode": "RGBA",
+      "pivot": "bottom-center",
+      "pivotNormalized": [
+        0.5,
+        1.0
+      ]
+    }
+  ],
+  "notes": [
+    "Exact rectangles from current assets/manifest.json used without alteration.",
+    "All PNGs are lossless rectangular crops preserving source RGBA pixels and alpha.",
+    "Pivot bottom-center is a default placement convention; hanging tassels rotate around top-center in use.",
+    "Original atlases remain unchanged. Legacy interaction-atlas and background plates deliberately excluded.",
+    "Feature-specific individual sprites are separately listed in assets/features/feature-manifest.json."
+  ]
+}

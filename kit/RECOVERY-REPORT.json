@@ -1,0 +1,125 @@
+{
+  "reason": "Wishweave-Level1-Part-4-of-4.zip upload was truncated at 9,501,637 bytes",
+  "still_missing": [],
+  "files": [
+    {
+      "path": "Wishweave-Level1-Complete-Visual-Kit/assets/backgrounds/05-recovery.png",
+      "method": "exact",
+      "sha256": "fb54defd66f2f01ff15d219bb925d294b6ac1fab0b666a909ed1efa4804fb660",
+      "originalSha256": "fb54defd66f2f01ff15d219bb925d294b6ac1fab0b666a909ed1efa4804fb660",
+      "note": "copied from Wishweave-Level1-Complete-Visual-Kit/assets/backgrounds/04-snagged.png (identical original hash)"
+    },
+    {
+      "path": "Wishweave-Level1-Complete-Visual-Kit/assets/features/carpet-rolled.png",
+      "method": "exact",
+      "sha256": "39e8607bc6984726b83450d5eda9fd6d8cd80c0e00aeb6ecc26093896eac6d01",
+      "originalSha256": "39e8607bc6984726b83450d5eda9fd6d8cd80c0e00aeb6ecc26093896eac6d01",
+      "note": "lossless crop of feature-atlas frame 1"
+    },
+    {
+      "path": "Wishweave-Level1-Complete-Visual-Kit/assets/individual/loop-rear/duck.png",
+      "method": "exact",
+      "sha256": "d0aaae9bb7bf0ce176927d3754bb75bafc3957e2b61864f95d26f91231eabc5d",
+      "originalSha256": "d0aaae9bb7bf0ce176927d3754bb75bafc3957e2b61864f95d26f91231eabc5d",
+      "note": "lossless crop of loop-rear.png"
+    },
+    {
+      "path": "Wishweave-Level1-Complete-Visual-Kit/assets/individual/loop-rear/run-pass-a.png",
+      "method": "exact",
+      "sha256": "2310aff9bf9a3aeea5eb4034b33724f3a743e06fab6405bcf9bfe0c991bb9665",
+      "originalSha256": "2310aff9bf9a3aeea5eb4034b33724f3a743e06fab6405bcf9bfe0c991bb9665",
+      "note": "lossless crop of loop-rear.png"
+    },
+    {
+      "path": "Wishweave-Level1-Complete-Visual-Kit/assets/individual/loop-rear/stumble.png",
+      "method": "exact",
+      "sha256": "5d51410804c7d9e9c18d9fddbab0c1bba47510dd2dc647fcfb5b0ef19a54c6da",
+      "originalSha256": "5d51410804c7d9e9c18d9fddbab0c1bba47510dd2dc647fcfb5b0ef19a54c6da",
+      "note": "lossless crop of loop-rear.png"
+    },
+    {
+      "path": "Wishweave-Level1-Complete-Visual-Kit/assets/individual/props-atlas/cover-post.png",
+      "method": "exact",
+      "sha256": "d398308005a96b0dc77b382d8cca4ae14d2ad91ee9366cf15c9cd6ce2338c1ec",
+      "originalSha256": "d398308005a96b0dc77b382d8cca4ae14d2ad91ee9366cf15c9cd6ce2338c1ec",
+      "note": "lossless crop of props-atlas.png"
+    },
+    {
+      "path": "Wishweave-Level1-Complete-Visual-Kit/assets/individual/purl-atlas/frame-01.png",
+      "method": "exact",
+      "sha256": "24090f641f4b7b855ee278cf761c4f957dd864afe2ccb67189b1ab6525f1e845",
+      "originalSha256": "24090f641f4b7b855ee278cf761c4f957dd864afe2ccb67189b1ab6525f1e845",
+      "note": "lossless crop of purl-atlas.png"
+    },
+    {
+      "path": "Wishweave-Level1-Complete-Visual-Kit/assets/individual/purl-atlas/frame-05.png",
+      "method": "exact",
+      "sha256": "8f82e0b2c4e863ea53d9fef8b9283ed3f8abdad7969401ae231715359f77a98e",
+      "originalSha256": "8f82e0b2c4e863ea53d9fef8b9283ed3f8abdad7969401ae231715359f77a98e",
+      "note": "lossless crop of purl-atlas.png"
+    },
+    {
+      "path": "Wishweave-Level1-Complete-Visual-Kit/assets/individual/purl-atlas/frame-06.png",
+      "method": "exact",
+      "sha256": "72ba2dfdb64c5ff50357e2f9cb1059e77ca621a0b003f1cc7228fe9aca64caa2",
+      "originalSha256": "72ba2dfdb64c5ff50357e2f9cb1059e77ca621a0b003f1cc7228fe9aca64caa2",
+      "note": "lossless crop of purl-atlas.png"
+    },
+    {
+      "path": "Wishweave-Level1-Complete-Visual-Kit/assets/individual/purl-atlas/frame-07.png",
+      "method": "exact",
+      "sha256": "6ab83372b839767fcfe4a0ddbf92302a8383816a24d67014ef2af4b9aaded8ff",
+      "originalSha256": "6ab83372b839767fcfe4a0ddbf92302a8383816a24d67014ef2af4b9aaded8ff",
+      "note": "lossless crop of purl-atlas.png"
+    },
+    {
+      "path": "Wishweave-Level1-Complete-Visual-Kit/assets/individual/purl-rear/run-pass-a.png",
+      "method": "lossy",
+      "sha256": "941f628bd5d72bd9f5cf5f6c447c3fb5d6457507bc3597f9a39b9fc546381c5f",
+      "originalSha256": "d40ce1f9299f3aa8f2acd18682ccd2c2d1f9ef1f98e2984695d57c289b150b98",
+      "note": "crop of embedded WebP review copy of purl-rear.png"
+    },
+    {
+      "path": "Wishweave-Level1-Complete-Visual-Kit/assets/individual/snagling-atlas/frame-02.png",
+      "method": "exact",
+      "sha256": "6cc6b6d1fa565f634eb5dcb0139592b0b0e4f421de9c601875e7cec529a56dad",
+      "originalSha256": "6cc6b6d1fa565f634eb5dcb0139592b0b0e4f421de9c601875e7cec529a56dad",
+      "note": "lossless crop of snagling-atlas.png"
+    },
+    {
+      "path": "Wishweave-Level1-Complete-Visual-Kit/assets/individual/snagling-atlas/frame-05.png",
+      "method": "exact",
+      "sha256": "187f7528977763dfc063d7390fa73e30ff1514520257e5ada104747ff90348d4",
+      "originalSha256": "187f7528977763dfc063d7390fa73e30ff1514520257e5ada104747ff90348d4",
+      "note": "lossless crop of snagling-atlas.png"
+    },
+    {
+      "path": "Wishweave-Level1-Complete-Visual-Kit/assets/individual/snagling-atlas/frame-06.png",
+      "method": "exact",
+      "sha256": "44fc525618eb9d69706011208f4ac085264de59b3133c1d5e03a70bd37d0ce1d",
+      "originalSha256": "44fc525618eb9d69706011208f4ac085264de59b3133c1d5e03a70bd37d0ce1d",
+      "note": "lossless crop of snagling-atlas.png"
+    },
+    {
+      "path": "Wishweave-Level1-Complete-Visual-Kit/assets/individual/ui-atlas/frame-03.png",
+      "method": "exact",
+      "sha256": "c0615c80dfb743668b1400728f6a295a230e5fbaccf8ee9a29ef3b265abe6975",
+      "originalSha256": "c0615c80dfb743668b1400728f6a295a230e5fbaccf8ee9a29ef3b265abe6975",
+      "note": "lossless crop of ui-atlas.png"
+    },
+    {
+      "path": "Wishweave-Level1-Complete-Visual-Kit/assets/loop-atlas.png",
+      "method": "rebuilt",
+      "sha256": "7ae1c3872e6de34b2c22c9f0fdfcef0a8f4a6427f19f3084e6c0a025b59ac28b",
+      "originalSha256": "828c4321bbd591a6900eceaba44ff5e0fadc78d00b615458021a653fa41951b8",
+      "note": "reassembled from 8 individual frames"
+    },
+    {
+      "path": "Wishweave-Level1-Complete-Visual-Kit/assets/purl-rear.png",
+      "method": "rebuilt",
+      "sha256": "b4d4dd2207e92852b5978d7e4a34f659b8ace4f0a5a98b4e768a92fa992982ae",
+      "originalSha256": "4a83f118523224bf216cc7b232466a7c729172ca0018a0de830ebcb5c02a6ee5",
+      "note": "reassembled from 8 individual frames; lossy frames: run-pass-a"
+    }
+  ]
+}

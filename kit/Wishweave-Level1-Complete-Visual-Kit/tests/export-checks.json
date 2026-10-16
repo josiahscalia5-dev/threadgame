@@ -1,0 +1,252 @@
+{
+  "kind": "Portable HTML export verification",
+  "testedAt": "2026-10-16T13:50:17.302Z",
+  "exports": [
+    {
+      "name": "Preview-Wishweave-Level1-Complete-Small.html",
+      "bytes": 4779483,
+      "cases": [
+        {
+          "mode": "approved",
+          "id": "ribbon",
+          "passed": true
+        },
+        {
+          "mode": "approved",
+          "id": "shortcut",
+          "passed": true
+        },
+        {
+          "mode": "approved",
+          "id": "tassels",
+          "passed": true
+        },
+        {
+          "mode": "approved",
+          "id": "snagged",
+          "passed": true
+        },
+        {
+          "mode": "approved",
+          "id": "recovery",
+          "passed": true
+        },
+        {
+          "mode": "approved",
+          "id": "butterfly",
+          "passed": true
+        },
+        {
+          "mode": "approved",
+          "id": "finish",
+          "passed": true
+        },
+        {
+          "mode": "scenery",
+          "id": "ribbon",
+          "passed": true
+        },
+        {
+          "mode": "scenery",
+          "id": "shortcut",
+          "passed": true
+        },
+        {
+          "mode": "scenery",
+          "id": "tassels",
+          "passed": true
+        },
+        {
+          "mode": "scenery",
+          "id": "snagged",
+          "passed": true
+        },
+        {
+          "mode": "scenery",
+          "id": "recovery",
+          "passed": true
+        },
+        {
+          "mode": "scenery",
+          "id": "butterfly",
+          "passed": true
+        },
+        {
+          "mode": "scenery",
+          "id": "finish",
+          "passed": true
+        },
+        {
+          "mode": "layered",
+          "id": "ribbon",
+          "passed": true
+        },
+        {
+          "mode": "layered",
+          "id": "shortcut",
+          "passed": true
+        },
+        {
+          "mode": "layered",
+          "id": "tassels",
+          "passed": true
+        },
+        {
+          "mode": "layered",
+          "id": "snagged",
+          "passed": true
+        },
+        {
+          "mode": "layered",
+          "id": "recovery",
+          "passed": true
+        },
+        {
+          "mode": "layered",
+          "id": "butterfly",
+          "passed": true
+        },
+        {
+          "mode": "layered",
+          "id": "finish",
+          "passed": true
+        }
+      ],
+      "branchNavigationPassed": true,
+      "mobileFit": {
+        "top": 105,
+        "bottom": 805,
+        "width": 314.8125,
+        "height": 700,
+        "overflow": false
+      },
+      "errors": [],
+      "failedRequests": [],
+      "networkRequests": []
+    },
+    {
+      "name": "Wishweave-Level1-Complete-For-Claude.html",
+      "bytes": 52457,
+      "cases": [
+        {
+          "mode": "approved",
+          "id": "ribbon",
+          "passed": true
+        },
+        {
+          "mode": "approved",
+          "id": "shortcut",
+          "passed": true
+        },
+        {
+          "mode": "approved",
+          "id": "tassels",
+          "passed": true
+        },
+        {
+          "mode": "approved",
+          "id": "snagged",
+          "passed": true
+        },
+        {
+          "mode": "approved",
+          "id": "recovery",
+          "passed": true
+        },
+        {
+          "mode": "approved",
+          "id": "butterfly",
+          "passed": true
+        },
+        {
+          "mode": "approved",
+          "id": "finish",
+          "passed": true
+        },
+        {
+          "mode": "scenery",
+          "id": "ribbon",
+          "passed": true
+        },
+        {
+          "mode": "scenery",
+          "id": "shortcut",
+          "passed": true
+        },
+        {
+          "mode": "scenery",
+          "id": "tassels",
+          "passed": true
+        },
+        {
+          "mode": "scenery",
+          "id": "snagged",
+          "passed": true
+        },
+        {
+          "mode": "scenery",
+          "id": "recovery",
+          "passed": true
+        },
+        {
+          "mode": "scenery",
+          "id": "butterfly",
+          "passed": true
+        },
+        {
+          "mode": "scenery",
+          "id": "finish",
+          "passed": true
+        },
+        {
+          "mode": "layered",
+          "id": "ribbon",
+          "passed": true
+        },
+        {
+          "mode": "layered",
+          "id": "shortcut",
+          "passed": true
+        },
+        {
+          "mode": "layered",
+          "id": "tassels",
+          "passed": true
+        },
+        {
+          "mode": "layered",
+          "id": "snagged",
+          "passed": true
+        },
+        {
+          "mode": "layered",
+          "id": "recovery",
+          "passed": true
+        },
+        {
+          "mode": "layered",
+          "id": "butterfly",
+          "passed": true
+        },
+        {
+          "mode": "layered",
+          "id": "finish",
+          "passed": true
+        }
+      ],
+      "branchNavigationPassed": true,
+      "mobileFit": {
+        "top": 105,
+        "bottom": 805,
+        "width": 314.8125,
+        "height": 700,
+        "overflow": false
+      },
+      "errors": [],
+      "failedRequests": [],
+      "networkRequests": []
+    }
+  ],
+  "browserVersion": "153.0.8010.0",
+  "passed": true
+}

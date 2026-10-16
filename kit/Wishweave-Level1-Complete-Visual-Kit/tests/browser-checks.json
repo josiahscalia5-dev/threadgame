@@ -1,0 +1,317 @@
+{
+  "checkedAt": "2026-10-16T13:46:24.643Z",
+  "kind": "Complete Level 1 offline visual viewer verification",
+  "cases": [
+    {
+      "check": "scene loads",
+      "mode": "approved",
+      "scene": "ribbon",
+      "passed": true
+    },
+    {
+      "check": "scene loads",
+      "mode": "approved",
+      "scene": "shortcut",
+      "passed": true
+    },
+    {
+      "check": "scene loads",
+      "mode": "approved",
+      "scene": "tassels",
+      "passed": true
+    },
+    {
+      "check": "scene loads",
+      "mode": "approved",
+      "scene": "snagged",
+      "passed": true
+    },
+    {
+      "check": "scene loads",
+      "mode": "approved",
+      "scene": "recovery",
+      "passed": true
+    },
+    {
+      "check": "scene loads",
+      "mode": "approved",
+      "scene": "butterfly",
+      "passed": true
+    },
+    {
+      "check": "scene loads",
+      "mode": "approved",
+      "scene": "finish",
+      "passed": true
+    },
+    {
+      "check": "scene loads",
+      "mode": "scenery",
+      "scene": "ribbon",
+      "passed": true
+    },
+    {
+      "check": "scene loads",
+      "mode": "scenery",
+      "scene": "shortcut",
+      "passed": true
+    },
+    {
+      "check": "scene loads",
+      "mode": "scenery",
+      "scene": "tassels",
+      "passed": true
+    },
+    {
+      "check": "scene loads",
+      "mode": "scenery",
+      "scene": "snagged",
+      "passed": true
+    },
+    {
+      "check": "scene loads",
+      "mode": "scenery",
+      "scene": "recovery",
+      "passed": true
+    },
+    {
+      "check": "scene loads",
+      "mode": "scenery",
+      "scene": "butterfly",
+      "passed": true
+    },
+    {
+      "check": "scene loads",
+      "mode": "scenery",
+      "scene": "finish",
+      "passed": true
+    },
+    {
+      "check": "scene loads",
+      "mode": "layered",
+      "scene": "ribbon",
+      "passed": true
+    },
+    {
+      "check": "scene loads",
+      "mode": "layered",
+      "scene": "shortcut",
+      "passed": true
+    },
+    {
+      "check": "scene loads",
+      "mode": "layered",
+      "scene": "tassels",
+      "passed": true
+    },
+    {
+      "check": "scene loads",
+      "mode": "layered",
+      "scene": "snagged",
+      "passed": true
+    },
+    {
+      "check": "scene loads",
+      "mode": "layered",
+      "scene": "recovery",
+      "passed": true
+    },
+    {
+      "check": "scene loads",
+      "mode": "layered",
+      "scene": "butterfly",
+      "passed": true
+    },
+    {
+      "check": "scene loads",
+      "mode": "layered",
+      "scene": "finish",
+      "passed": true
+    },
+    {
+      "check": "layer toggle changes rendered output",
+      "layer": "actors",
+      "passed": true
+    },
+    {
+      "check": "layer toggle changes rendered output",
+      "layer": "props",
+      "passed": true
+    },
+    {
+      "check": "layer toggle changes rendered output",
+      "layer": "hud",
+      "passed": true
+    },
+    {
+      "check": "responsive layout",
+      "viewport": [
+        320,
+        568
+      ],
+      "documentWidth": 320,
+      "stage": {
+        "x": 69.609375,
+        "y": 105,
+        "width": 180.78125,
+        "height": 402,
+        "top": 105,
+        "bottom": 507
+      },
+      "smallControls": [],
+      "passed": true
+    },
+    {
+      "check": "responsive layout",
+      "viewport": [
+        390,
+        866
+      ],
+      "documentWidth": 390,
+      "stage": {
+        "x": 37.59375,
+        "y": 105,
+        "width": 314.8125,
+        "height": 700,
+        "top": 105,
+        "bottom": 805
+      },
+      "smallControls": [],
+      "passed": true
+    },
+    {
+      "check": "responsive layout",
+      "viewport": [
+        412,
+        915
+      ],
+      "documentWidth": 412,
+      "stage": {
+        "x": 37.578125,
+        "y": 105,
+        "width": 336.84375,
+        "height": 749,
+        "top": 105,
+        "bottom": 854
+      },
+      "smallControls": [],
+      "passed": true
+    },
+    {
+      "check": "responsive layout",
+      "viewport": [
+        600,
+        960
+      ],
+      "documentWidth": 600,
+      "stage": {
+        "x": 121.453125,
+        "y": 105,
+        "width": 357.078125,
+        "height": 794,
+        "top": 105,
+        "bottom": 899
+      },
+      "smallControls": [],
+      "passed": true
+    },
+    {
+      "check": "responsive layout",
+      "viewport": [
+        800,
+        412
+      ],
+      "documentWidth": 800,
+      "stage": {
+        "x": 488.890625,
+        "y": 98.390625,
+        "width": 132.21875,
+        "height": 294,
+        "top": 98.390625,
+        "bottom": 392.390625
+      },
+      "smallControls": [],
+      "passed": true
+    },
+    {
+      "check": "responsive layout",
+      "viewport": [
+        1365,
+        950
+      ],
+      "documentWidth": 1365,
+      "stage": {
+        "x": 708.34375,
+        "y": 156.390625,
+        "width": 328.296875,
+        "height": 730,
+        "top": 156.390625,
+        "bottom": 886.390625
+      },
+      "smallControls": [],
+      "passed": true
+    },
+    {
+      "check": "next button, scene tabs, mobile selection scrolls preview into view, mode buttons and native pause API",
+      "passed": true
+    },
+    {
+      "check": "guided route branches preserve thread counts: successful dodge skips hit and recovery; shown hit restores the dropped thread",
+      "passed": true
+    },
+    {
+      "check": "RGBA props transparency composites correctly in Chromium",
+      "samples": [
+        {
+          "point": [
+            0,
+            0
+          ],
+          "pixel": [
+            33,
+            183,
+            204,
+            255
+          ]
+        },
+        {
+          "point": [
+            700,
+            10
+          ],
+          "pixel": [
+            33,
+            183,
+            204,
+            255
+          ]
+        },
+        {
+          "point": [
+            1535,
+            1023
+          ],
+          "pixel": [
+            33,
+            183,
+            204,
+            255
+          ]
+        }
+      ],
+      "passed": true
+    },
+    {
+      "check": "no uncaught browser errors or network requests",
+      "passed": true
+    }
+  ],
+  "limitations": [
+    "No native Android build or physical Android device was tested.",
+    "The layered scenes are editable assemblies, not pixel-identical recreations of the approved screenshots.",
+    "Gameplay, collisions, payouts, and seamless navigation through the environment are not implemented."
+  ],
+  "browserVersion": "153.0.8010.0",
+  "standalone": "Not present at test time; requires separate verification after build.",
+  "passed": true
+}

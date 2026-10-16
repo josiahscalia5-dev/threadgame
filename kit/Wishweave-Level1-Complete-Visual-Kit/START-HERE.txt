@@ -1,0 +1,49 @@
+WISHWEAVE WONDERS — COMPLETE LEVEL 1 VISUAL KIT
+
+This is your approved Level 1 visual handoff for Claudia. It covers the story from the first ribbon to the flower-gate finish, including the optional Snagling hit and recovery. Claudia will add the playable features.
+
+EASIEST WAY TO SEND IT
+1. Upload Preview-Wishweave-Level1-Complete-Small.html and CLAUDIA-LEVEL1-COMPLETE-PROMPT.txt to Claudia. The small preview is a self-contained visual review copy; its pictures are compressed for sharing.
+2. Upload Wishweave-Level1-Complete-Visual-Kit.zip for the full-resolution approved pictures, separate art, backgrounds, scene sources and instructions. If Claudia cannot read ZIP attachments, extract it and upload the required files in batches while keeping their folder names.
+3. Paste or attach CLAUDIA-PROMPT.txt from this kit and ask Claudia to implement it. It has the same task purpose as the separate prompt download.
+
+TO OPEN THIS KIT LOCALLY
+Extract the ZIP before opening its HTML. Wishweave-Level1-Complete-For-Claude.html is a small entry file that relies on the accompanying folders; do not move or send it alone. The separate Small.html preview embeds its own review pictures and can be sent on its own.
+
+WHAT YOU APPROVED
+01-ribbon: Tap a stitch to unfurl the first coral ribbon; collect the coral thread.
+02-shortcut: Tap a stitch to unroll a connected shortcut. This action does not award another thread.
+03-tassels: Tap the stitch to raise three tassels and reach the teal thread.
+04-snagged: One possible missed dodge; Snagling briefly tangles Purl and drops one held thread.
+05-recovery: Recover the SAME dropped thread and resume. A successful dodge skips this branch.
+06-butterfly: Tap the tapestry stitch; an embroidered butterfly brings the golden thread.
+07-finish: Reach the flower gate with all three held threads; show the true race result.
+
+Purl is the red player. Loop is the teal COMPUTER RIVAL. They compete; they do not rescue or tether to each other.
+
+WHAT IS INCLUDED
+- Seven unchanged approved PNG references in approved/.
+- Six unique derived clean scene plates covering seven keyframes; hit and recovery share a landing.
+- Separate reusable character, prop, interface and feature artwork with asset metadata.
+- Responsive visual-review/scene sources and the full handoff documents.
+- Android source host for that visual viewer, with build instructions; no compiled APK.
+- A detailed prompt for Claudia to finish the playable game.
+
+WHAT CLAUDIA STILL BUILDS
+Continuous travel between the pictured moments, route geometry, animations, touch controls, collision, collectible state, Loop's opponent behavior, Snagling attacks and recovery, results, Android packaging/device testing, and any separately authorized real reward service.
+
+This is the whole level's VISUAL KIT, not a finished playable game. Seven keyframes explain the level but do not create every frame of a continuous world. The reusable art is 2D. No rigged 3D models, GLB/FBX files, Android APK or payout backend are included.
+
+The original approved PNGs are unchanged. The clean plates and movable art are separate authoring assets and may differ slightly from the reference pictures. Claudia must use the originals as the visual targets; animation does not become pixel-identical automatically.
+
+The saved-rewards strip is a visual placeholder. Cash out remains locked; no real cash is credited or paid by this kit.
+
+START READING
+CLAUDIA-PROMPT.txt
+docs/LEVEL1-GAMEPLAY-SPEC.md
+docs/ART-DIRECTION.md
+docs/CLAUDIA-INTEGRATION.md
+assets/manifest.json
+docs/ANDROID-BUILD.md, if you want to build the Android visual viewer
+
+These seven-screen instructions supersede the earlier five-screen bridge/spring concept. Keep the revised ribbon, shortcut, three-tassel and butterfly sequence.

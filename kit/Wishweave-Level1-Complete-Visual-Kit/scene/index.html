@@ -1,0 +1,44 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
+  <meta name="theme-color" content="#092f35">
+  <title>Wishweave Wonders · Complete Level 1 Visual Kit</title>
+  <link rel="stylesheet" href="style.css">
+</head>
+<body>
+  <header class="masthead">
+    <a class="wordmark" href="#main"><span class="brand-mark" aria-hidden="true">✦</span><span>WISHWEAVE <b>WONDERS</b></span></a>
+    <span class="project-tag">LEVEL 1 <span> / COMPLETE VISUAL KIT</span></span>
+  </header>
+  <main id="main" class="workspace">
+    <section class="preview-area" aria-label="Level 1 scene preview">
+      <div class="preview-toolbar"><span id="stage-kicker">01 / THE RIBBON GATE</span><span id="mode-badge">APPROVED ART</span></div>
+      <div class="stage-wrap">
+        <div class="stage" id="stage" aria-busy="true">
+          <img id="scene-image" alt="" width="841" height="1870">
+          <canvas id="scene-canvas" width="841" height="1870" role="img" aria-label="Layered visual scene"></canvas>
+          <div class="stage-message" id="stage-message" role="status">Loading your scene…</div>
+        </div>
+      </div>
+      <div class="preview-nav"><button id="previous" type="button" aria-label="Previous scene">← <span>Previous</span></button><span id="page-count">01 / 07</span><button id="next" type="button" aria-label="Next scene"><span>Next</span> →</button></div>
+    </section>
+    <aside class="director-panel" aria-label="Scene controls and direction">
+      <div class="panel-intro"><p class="eyebrow">THE APPROVED WORLD</p><h1>Level one.<br> Beginning to finish.</h1><p class="intro-copy">Seven approved moments and the actions between them. Follow Purl and rival Loop through the loom-tower world.</p></div>
+      <nav class="scene-tabs" id="scene-tabs" aria-label="Level 1 moments"></nav>
+      <section class="control-section"><div class="section-heading"><h2>View</h2><span>OFFLINE</span></div><div class="mode-options" role="group" aria-label="Preview mode"><button type="button" data-mode="approved" aria-pressed="true">Approved</button><button type="button" data-mode="scenery" aria-pressed="false">Scenery</button><button type="button" data-mode="layered" aria-pressed="false">Layered</button></div><p class="mode-help" id="mode-help">Your approved screen, shown unchanged and fully visible.</p>
+      <fieldset class="layer-toggles" id="layer-toggles" hidden><legend>Visible layers</legend><label><input type="checkbox" name="actors" checked><span>Characters</span></label><label><input type="checkbox" name="props" checked><span>Props</span></label><label><input type="checkbox" name="hud" checked><span>Interface</span></label></fieldset></section>
+      <section class="scene-note" aria-live="polite"><p class="eyebrow" id="scene-location">01 · THE RIBBON GATE</p><h2 id="scene-title">The race begins</h2><p id="scene-description"></p><dl><div><dt>Purl</dt><dd id="purl-count">0 / 3 threads</dd></div><div><dt>Loop</dt><dd id="loop-count">0 / 3 threads</dd></div></dl><p class="direction-note" id="scene-direction"></p></section>
+      <section class="story-beats" aria-label="Actions between the approved screens"><h2>The moments between</h2><div class="beat-group"><span class="beat-label">BEFORE THIS SCREEN</span><p id="beat-before"></p></div><div class="beat-group"><span class="beat-label">THEN WHAT HAPPENS?</span><p id="beat-after"></p></div></section>
+      <section class="route-controls"><h2>Snagling story route</h2><div class="route-options" role="group" aria-label="Snagling encounter outcome"><button type="button" data-route="hit" aria-pressed="true">Hit + recovery</button><button type="button" data-route="dodge" aria-pressed="false">Successful dodge</button></div><p id="route-help">The approved example shows one lost thread, then a safe recovery.</p><button id="dodge-next" type="button" hidden>Keep both threads → Butterfly</button></section>
+      <section class="walkthrough"><button id="autoplay" type="button" aria-pressed="false"><span aria-hidden="true">▷</span> Start guided visual tour</button><p>Changes scenes every 8 seconds. This is a storyboard with explained transitions, not continuous gameplay.</p></section>
+      <footer class="panel-footer"><span class="status-dot" aria-hidden="true"></span><p>Complete visual handoff · Gameplay and payouts are for Claudia to implement. The saved-rewards bar is display-only.</p></footer>
+    </aside>
+  </main>
+  <noscript><p class="noscript">Enable JavaScript to browse the seven scenes. You can also open the PNG files in the approved folder directly.</p></noscript>
+  <script src="asset-data.js"></script>
+  <script src="scene-data.js"></script>
+  <script src="app.js"></script>
+</body>
+</html>

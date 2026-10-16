@@ -1,0 +1,829 @@
+{
+  "exportCount": 51,
+  "originalAtlasesUnchanged": true,
+  "allRGBA": true,
+  "allHaveTransparentPixels": true,
+  "edgeReviewRequired": [
+    "purl-atlas/frame-01",
+    "purl-atlas/frame-02",
+    "purl-atlas/frame-03",
+    "purl-atlas/frame-04",
+    "purl-atlas/frame-05",
+    "purl-atlas/frame-06",
+    "purl-atlas/frame-07",
+    "purl-atlas/frame-08",
+    "loop-atlas/frame-01",
+    "loop-atlas/frame-02",
+    "loop-atlas/frame-03",
+    "loop-atlas/frame-04",
+    "loop-atlas/frame-05",
+    "loop-atlas/frame-06",
+    "loop-atlas/frame-07",
+    "loop-atlas/frame-08",
+    "purl-rear/idle",
+    "purl-rear/run-left",
+    "purl-rear/run-pass-a",
+    "purl-rear/run-right",
+    "purl-rear/run-pass-b",
+    "purl-rear/jump",
+    "purl-rear/duck",
+    "purl-rear/stumble",
+    "loop-rear/idle",
+    "loop-rear/run-left",
+    "loop-rear/run-pass-a",
+    "loop-rear/run-right",
+    "loop-rear/run-pass-b",
+    "loop-rear/jump",
+    "loop-rear/duck",
+    "loop-rear/stumble",
+    "snagling-atlas/frame-01",
+    "snagling-atlas/frame-02",
+    "snagling-atlas/frame-03",
+    "snagling-atlas/frame-04",
+    "snagling-atlas/frame-05",
+    "snagling-atlas/frame-06",
+    "snagling-atlas/frame-07",
+    "snagling-atlas/frame-08",
+    "ui-atlas/frame-05"
+  ],
+  "frames": [
+    {
+      "id": "purl-atlas/frame-01",
+      "mode": "RGBA",
+      "alphaMin": 0,
+      "alphaMax": 255,
+      "fullyTransparentFraction": 0.35593,
+      "maxEdgeAlpha": 242,
+      "visibleMarginsAlpha32": [
+        0,
+        0,
+        0,
+        0
+      ],
+      "edgeVisiblePixelCount": 61
+    },
+    {
+      "id": "purl-atlas/frame-02",
+      "mode": "RGBA",
+      "alphaMin": 0,
+      "alphaMax": 255,
+      "fullyTransparentFraction": 0.32635,
+      "maxEdgeAlpha": 200,
+      "visibleMarginsAlpha32": [
+        0,
+        0,
+        0,
+        0
+      ],
+      "edgeVisiblePixelCount": 66
+    },
+    {
+      "id": "purl-atlas/frame-03",
+      "mode": "RGBA",
+      "alphaMin": 0,
+      "alphaMax": 255,
+      "fullyTransparentFraction": 0.34624,
+      "maxEdgeAlpha": 233,
+      "visibleMarginsAlpha32": [
+        0,
+        0,
+        0,
+        0
+      ],
+      "edgeVisiblePixelCount": 62
+    },
+    {
+      "id": "purl-atlas/frame-04",
+      "mode": "RGBA",
+      "alphaMin": 0,
+      "alphaMax": 255,
+      "fullyTransparentFraction": 0.29626,
+      "maxEdgeAlpha": 224,
+      "visibleMarginsAlpha32": [
+        0,
+        0,
+        0,
+        0
+      ],
+      "edgeVisiblePixelCount": 85
+    },
+    {
+      "id": "purl-atlas/frame-05",
+      "mode": "RGBA",
+      "alphaMin": 0,
+      "alphaMax": 255,
+      "fullyTransparentFraction": 0.28723,
+      "maxEdgeAlpha": 239,
+      "visibleMarginsAlpha32": [
+        0,
+        0,
+        0,
+        0
+      ],
+      "edgeVisiblePixelCount": 96
+    },
+    {
+      "id": "purl-atlas/frame-06",
+      "mode": "RGBA",
+      "alphaMin": 0,
+      "alphaMax": 255,
+      "fullyTransparentFraction": 0.32727,
+      "maxEdgeAlpha": 206,
+      "visibleMarginsAlpha32": [
+        0,
+        0,
+        0,
+        0
+      ],
+      "edgeVisiblePixelCount": 75
+    },
+    {
+      "id": "purl-atlas/frame-07",
+      "mode": "RGBA",
+      "alphaMin": 0,
+      "alphaMax": 255,
+      "fullyTransparentFraction": 0.31551,
+      "maxEdgeAlpha": 170,
+      "visibleMarginsAlpha32": [
+        0,
+        0,
+        0,
+        0
+      ],
+      "edgeVisiblePixelCount": 69
+    },
+    {
+      "id": "purl-atlas/frame-08",
+      "mode": "RGBA",
+      "alphaMin": 0,
+      "alphaMax": 255,
+      "fullyTransparentFraction": 0.39,
+      "maxEdgeAlpha": 233,
+      "visibleMarginsAlpha32": [
+        0,
+        0,
+        0,
+        0
+      ],
+      "edgeVisiblePixelCount": 80
+    },
+    {
+      "id": "loop-atlas/frame-01",
+      "mode": "RGBA",
+      "alphaMin": 0,
+      "alphaMax": 255,
+      "fullyTransparentFraction": 0.25337,
+      "maxEdgeAlpha": 213,
+      "visibleMarginsAlpha32": [
+        0,
+        0,
+        0,
+        0
+      ],
+      "edgeVisiblePixelCount": 71
+    },
+    {
+      "id": "loop-atlas/frame-02",
+      "mode": "RGBA",
+      "alphaMin": 0,
+      "alphaMax": 255,
+      "fullyTransparentFraction": 0.23887,
+      "maxEdgeAlpha": 209,
+      "visibleMarginsAlpha32": [
+        0,
+        0,
+        0,
+        0
+      ],
+      "edgeVisiblePixelCount": 68
+    },
+    {
+      "id": "loop-atlas/frame-03",
+      "mode": "RGBA",
+      "alphaMin": 0,
+      "alphaMax": 255,
+      "fullyTransparentFraction": 0.25718,
+      "maxEdgeAlpha": 237,
+      "visibleMarginsAlpha32": [
+        0,
+        0,
+        0,
+        0
+      ],
+      "edgeVisiblePixelCount": 61
+    },
+    {
+      "id": "loop-atlas/frame-04",
+      "mode": "RGBA",
+      "alphaMin": 0,
+      "alphaMax": 255,
+      "fullyTransparentFraction": 0.27354,
+      "maxEdgeAlpha": 212,
+      "visibleMarginsAlpha32": [
+        0,
+        0,
+        0,
+        0
+      ],
+      "edgeVisiblePixelCount": 69
+    },
+    {
+      "id": "loop-atlas/frame-05",
+      "mode": "RGBA",
+      "alphaMin": 0,
+      "alphaMax": 255,
+      "fullyTransparentFraction": 0.23552,
+      "maxEdgeAlpha": 185,
+      "visibleMarginsAlpha32": [
+        0,
+        0,
+        0,
+        0
+      ],
+      "edgeVisiblePixelCount": 76
+    },
+    {
+      "id": "loop-atlas/frame-06",
+      "mode": "RGBA",
+      "alphaMin": 0,
+      "alphaMax": 255,
+      "fullyTransparentFraction": 0.2682,
+      "maxEdgeAlpha": 222,
+      "visibleMarginsAlpha32": [
+        0,
+        0,
+        0,
+        0
+      ],
+      "edgeVisiblePixelCount": 134
+    },
+    {
+      "id": "loop-atlas/frame-07",
+      "mode": "RGBA",
+      "alphaMin": 0,
+      "alphaMax": 255,
+      "fullyTransparentFraction": 0.28094,
+      "maxEdgeAlpha": 216,
+      "visibleMarginsAlpha32": [
+        0,
+        0,
+        0,
+        0
+      ],
+      "edgeVisiblePixelCount": 70
+    },
+    {
+      "id": "loop-atlas/frame-08",
+      "mode": "RGBA",
+      "alphaMin": 0,
+      "alphaMax": 255,
+      "fullyTransparentFraction": 0.30267,
+      "maxEdgeAlpha": 187,
+      "visibleMarginsAlpha32": [
+        0,
+        0,
+        0,
+        0
+      ],
+      "edgeVisiblePixelCount": 71
+    },
+    {
+      "id": "purl-rear/idle",
+      "mode": "RGBA",
+      "alphaMin": 0,
+      "alphaMax": 255,
+      "fullyTransparentFraction": 0.36491,
+      "maxEdgeAlpha": 201,
+      "visibleMarginsAlpha32": [
+        0,
+        0,
+        0,
+        0
+      ],
+      "edgeVisiblePixelCount": 114
+    },
+    {
+      "id": "purl-rear/run-left",
+      "mode": "RGBA",
+      "alphaMin": 0,
+      "alphaMax": 255,
+      "fullyTransparentFraction": 0.38377,
+      "maxEdgeAlpha": 183,
+      "visibleMarginsAlpha32": [
+        0,
+        0,
+        0,
+        0
+      ],
+      "edgeVisiblePixelCount": 59
+    },
+    {
+      "id": "purl-rear/run-pass-a",
+      "mode": "RGBA",
+      "alphaMin": 0,
+      "alphaMax": 255,
+      "fullyTransparentFraction": 0.38058,
+      "maxEdgeAlpha": 216,
+      "visibleMarginsAlpha32": [
+        0,
+        0,
+        0,
+        0
+      ],
+      "edgeVisiblePixelCount": 76
+    },
+    {
+      "id": "purl-rear/run-right",
+      "mode": "RGBA",
+      "alphaMin": 0,
+      "alphaMax": 255,
+      "fullyTransparentFraction": 0.39448,
+      "maxEdgeAlpha": 218,
+      "visibleMarginsAlpha32": [
+        0,
+        0,
+        0,
+        0
+      ],
+      "edgeVisiblePixelCount": 74
+    },
+    {
+      "id": "purl-rear/run-pass-b",
+      "mode": "RGBA",
+      "alphaMin": 0,
+      "alphaMax": 255,
+      "fullyTransparentFraction": 0.39135,
+      "maxEdgeAlpha": 190,
+      "visibleMarginsAlpha32": [
+        0,
+        0,
+        0,
+        0
+      ],
+      "edgeVisiblePixelCount": 50
+    },
+    {
+      "id": "purl-rear/jump",
+      "mode": "RGBA",
+      "alphaMin": 0,
+      "alphaMax": 255,
+      "fullyTransparentFraction": 0.43564,
+      "maxEdgeAlpha": 223,
+      "visibleMarginsAlpha32": [
+        0,
+        0,
+        0,
+        0
+      ],
+      "edgeVisiblePixelCount": 51
+    },
+    {
+      "id": "purl-rear/duck",
+      "mode": "RGBA",
+      "alphaMin": 0,
+      "alphaMax": 255,
+      "fullyTransparentFraction": 0.32158,
+      "maxEdgeAlpha": 222,
+      "visibleMarginsAlpha32": [
+        0,
+        0,
+        0,
+        0
+      ],
+      "edgeVisiblePixelCount": 133
+    },
+    {
+      "id": "purl-rear/stumble",
+      "mode": "RGBA",
+      "alphaMin": 0,
+      "alphaMax": 255,
+      "fullyTransparentFraction": 0.40762,
+      "maxEdgeAlpha": 172,
+      "visibleMarginsAlpha32": [
+        0,
+        0,
+        0,
+        0
+      ],
+      "edgeVisiblePixelCount": 83
+    },
+    {
+      "id": "loop-rear/idle",
+      "mode": "RGBA",
+      "alphaMin": 0,
+      "alphaMax": 255,
+      "fullyTransparentFraction": 0.27906,
+      "maxEdgeAlpha": 219,
+      "visibleMarginsAlpha32": [
+        0,
+        0,
+        0,
+        0
+      ],
+      "edgeVisiblePixelCount": 126
+    },
+    {
+      "id": "loop-rear/run-left",
+      "mode": "RGBA",
+      "alphaMin": 0,
+      "alphaMax": 255,
+      "fullyTransparentFraction": 0.30351,
+      "maxEdgeAlpha": 198,
+      "visibleMarginsAlpha32": [
+        0,
+        0,
+        0,
+        0
+      ],
+      "edgeVisiblePixelCount": 76
+    },
+    {
+      "id": "loop-rear/run-pass-a",
+      "mode": "RGBA",
+      "alphaMin": 0,
+      "alphaMax": 255,
+      "fullyTransparentFraction": 0.3189,
+      "maxEdgeAlpha": 159,
+      "visibleMarginsAlpha32": [
+        0,
+        0,
+        0,
+        0
+      ],
+      "edgeVisiblePixelCount": 65
+    },
+    {
+      "id": "loop-rear/run-right",
+      "mode": "RGBA",
+      "alphaMin": 0,
+      "alphaMax": 255,
+      "fullyTransparentFraction": 0.27506,
+      "maxEdgeAlpha": 220,
+      "visibleMarginsAlpha32": [
+        0,
+        0,
+        0,
+        0
+      ],
+      "edgeVisiblePixelCount": 109
+    },
+    {
+      "id": "loop-rear/run-pass-b",
+      "mode": "RGBA",
+      "alphaMin": 0,
+      "alphaMax": 255,
+      "fullyTransparentFraction": 0.29324,
+      "maxEdgeAlpha": 218,
+      "visibleMarginsAlpha32": [
+        0,
+        0,
+        0,
+        0
+      ],
+      "edgeVisiblePixelCount": 94
+    },
+    {
+      "id": "loop-rear/jump",
+      "mode": "RGBA",
+      "alphaMin": 0,
+      "alphaMax": 255,
+      "fullyTransparentFraction": 0.34877,
+      "maxEdgeAlpha": 228,
+      "visibleMarginsAlpha32": [
+        0,
+        0,
+        0,
+        0
+      ],
+      "edgeVisiblePixelCount": 74
+    },
+    {
+      "id": "loop-rear/duck",
+      "mode": "RGBA",
+      "alphaMin": 0,
+      "alphaMax": 255,
+      "fullyTransparentFraction": 0.19124,
+      "maxEdgeAlpha": 212,
+      "visibleMarginsAlpha32": [
+        0,
+        0,
+        0,
+        0
+      ],
+      "edgeVisiblePixelCount": 134
+    },
+    {
+      "id": "loop-rear/stumble",
+      "mode": "RGBA",
+      "alphaMin": 0,
+      "alphaMax": 255,
+      "fullyTransparentFraction": 0.35317,
+      "maxEdgeAlpha": 154,
+      "visibleMarginsAlpha32": [
+        0,
+        0,
+        0,
+        0
+      ],
+      "edgeVisiblePixelCount": 65
+    },
+    {
+      "id": "snagling-atlas/frame-01",
+      "mode": "RGBA",
+      "alphaMin": 0,
+      "alphaMax": 255,
+      "fullyTransparentFraction": 0.19839,
+      "maxEdgeAlpha": 216,
+      "visibleMarginsAlpha32": [
+        0,
+        0,
+        0,
+        0
+      ],
+      "edgeVisiblePixelCount": 74
+    },
+    {
+      "id": "snagling-atlas/frame-02",
+      "mode": "RGBA",
+      "alphaMin": 0,
+      "alphaMax": 255,
+      "fullyTransparentFraction": 0.43628,
+      "maxEdgeAlpha": 251,
+      "visibleMarginsAlpha32": [
+        0,
+        0,
+        0,
+        0
+      ],
+      "edgeVisiblePixelCount": 83
+    },
+    {
+      "id": "snagling-atlas/frame-03",
+      "mode": "RGBA",
+      "alphaMin": 0,
+      "alphaMax": 255,
+      "fullyTransparentFraction": 0.41676,
+      "maxEdgeAlpha": 251,
+      "visibleMarginsAlpha32": [
+        0,
+        0,
+        0,
+        0
+      ],
+      "edgeVisiblePixelCount": 89
+    },
+    {
+      "id": "snagling-atlas/frame-04",
+      "mode": "RGBA",
+      "alphaMin": 0,
+      "alphaMax": 255,
+      "fullyTransparentFraction": 0.35182,
+      "maxEdgeAlpha": 227,
+      "visibleMarginsAlpha32": [
+        0,
+        0,
+        0,
+        0
+      ],
+      "edgeVisiblePixelCount": 64
+    },
+    {
+      "id": "snagling-atlas/frame-05",
+      "mode": "RGBA",
+      "alphaMin": 0,
+      "alphaMax": 255,
+      "fullyTransparentFraction": 0.22069,
+      "maxEdgeAlpha": 202,
+      "visibleMarginsAlpha32": [
+        0,
+        0,
+        0,
+        0
+      ],
+      "edgeVisiblePixelCount": 61
+    },
+    {
+      "id": "snagling-atlas/frame-06",
+      "mode": "RGBA",
+      "alphaMin": 0,
+      "alphaMax": 255,
+      "fullyTransparentFraction": 0.35919,
+      "maxEdgeAlpha": 210,
+      "visibleMarginsAlpha32": [
+        0,
+        0,
+        0,
+        0
+      ],
+      "edgeVisiblePixelCount": 49
+    },
+    {
+      "id": "snagling-atlas/frame-07",
+      "mode": "RGBA",
+      "alphaMin": 0,
+      "alphaMax": 255,
+      "fullyTransparentFraction": 0.3127,
+      "maxEdgeAlpha": 181,
+      "visibleMarginsAlpha32": [
+        0,
+        0,
+        0,
+        0
+      ],
+      "edgeVisiblePixelCount": 44
+    },
+    {
+      "id": "snagling-atlas/frame-08",
+      "mode": "RGBA",
+      "alphaMin": 0,
+      "alphaMax": 255,
+      "fullyTransparentFraction": 0.33727,
+      "maxEdgeAlpha": 219,
+      "visibleMarginsAlpha32": [
+        0,
+        0,
+        0,
+        0
+      ],
+      "edgeVisiblePixelCount": 46
+    },
+    {
+      "id": "props-atlas/coral-thread",
+      "mode": "RGBA",
+      "alphaMin": 0,
+      "alphaMax": 254,
+      "fullyTransparentFraction": 0.17498,
+      "maxEdgeAlpha": 5,
+      "visibleMarginsAlpha32": [
+        2,
+        3,
+        3,
+        3
+      ],
+      "edgeVisiblePixelCount": 0
+    },
+    {
+      "id": "props-atlas/teal-thread",
+      "mode": "RGBA",
+      "alphaMin": 0,
+      "alphaMax": 254,
+      "fullyTransparentFraction": 0.17225,
+      "maxEdgeAlpha": 4,
+      "visibleMarginsAlpha32": [
+        3,
+        3,
+        2,
+        2
+      ],
+      "edgeVisiblePixelCount": 0
+    },
+    {
+      "id": "props-atlas/golden-thread",
+      "mode": "RGBA",
+      "alphaMin": 0,
+      "alphaMax": 254,
+      "fullyTransparentFraction": 0.16998,
+      "maxEdgeAlpha": 4,
+      "visibleMarginsAlpha32": [
+        3,
+        3,
+        3,
+        3
+      ],
+      "edgeVisiblePixelCount": 0
+    },
+    {
+      "id": "props-atlas/swinging-tassel",
+      "mode": "RGBA",
+      "alphaMin": 0,
+      "alphaMax": 254,
+      "fullyTransparentFraction": 0.49879,
+      "maxEdgeAlpha": 5,
+      "visibleMarginsAlpha32": [
+        3,
+        4,
+        2,
+        2
+      ],
+      "edgeVisiblePixelCount": 0
+    },
+    {
+      "id": "props-atlas/cover-post",
+      "mode": "RGBA",
+      "alphaMin": 0,
+      "alphaMax": 254,
+      "fullyTransparentFraction": 0.15989,
+      "maxEdgeAlpha": 4,
+      "visibleMarginsAlpha32": [
+        2,
+        2,
+        3,
+        3
+      ],
+      "edgeVisiblePixelCount": 0
+    },
+    {
+      "id": "props-atlas/flower-gate",
+      "mode": "RGBA",
+      "alphaMin": 0,
+      "alphaMax": 254,
+      "fullyTransparentFraction": 0.38556,
+      "maxEdgeAlpha": 4,
+      "visibleMarginsAlpha32": [
+        2,
+        3,
+        3,
+        2
+      ],
+      "edgeVisiblePixelCount": 0
+    },
+    {
+      "id": "ui-atlas/frame-01",
+      "mode": "RGBA",
+      "alphaMin": 0,
+      "alphaMax": 255,
+      "fullyTransparentFraction": 0.25427,
+      "maxEdgeAlpha": 1,
+      "visibleMarginsAlpha32": [
+        21,
+        22,
+        13,
+        12
+      ],
+      "edgeVisiblePixelCount": 0
+    },
+    {
+      "id": "ui-atlas/frame-02",
+      "mode": "RGBA",
+      "alphaMin": 0,
+      "alphaMax": 255,
+      "fullyTransparentFraction": 0.19218,
+      "maxEdgeAlpha": 1,
+      "visibleMarginsAlpha32": [
+        9,
+        19,
+        25,
+        21
+      ],
+      "edgeVisiblePixelCount": 0
+    },
+    {
+      "id": "ui-atlas/frame-03",
+      "mode": "RGBA",
+      "alphaMin": 0,
+      "alphaMax": 255,
+      "fullyTransparentFraction": 0.32371,
+      "maxEdgeAlpha": 0,
+      "visibleMarginsAlpha32": [
+        22,
+        17,
+        24,
+        15
+      ],
+      "edgeVisiblePixelCount": 0
+    },
+    {
+      "id": "ui-atlas/frame-04",
+      "mode": "RGBA",
+      "alphaMin": 0,
+      "alphaMax": 255,
+      "fullyTransparentFraction": 0.27518,
+      "maxEdgeAlpha": 14,
+      "visibleMarginsAlpha32": [
+        19,
+        17,
+        31,
+        3
+      ],
+      "edgeVisiblePixelCount": 0
+    },
+    {
+      "id": "ui-atlas/frame-05",
+      "mode": "RGBA",
+      "alphaMin": 0,
+      "alphaMax": 255,
+      "fullyTransparentFraction": 0.32294,
+      "maxEdgeAlpha": 49,
+      "visibleMarginsAlpha32": [
+        19,
+        0,
+        32,
+        21
+      ],
+      "edgeVisiblePixelCount": 10
+    }
+  ],
+  "contactSheet": "Private technical contact sheet visually inspected for Purl rear, Loop rear, and all eight Snagling frames.",
+  "visualReview": {
+    "purlRear": "All eight poses readable, no major limb/tuft clipping; source rectangles are extremely tight around antialiased silhouettes.",
+    "loopRear": "All eight poses readable, no major limb/tuft clipping; source rectangles are extremely tight around antialiased silhouettes.",
+    "snagling": "All eight poses readable; frames02 and03 retain tiny neighboring-yarn slivers at the far crop edges inherited from overlapping source rectangles. Exact source rectangles retained as requested.",
+    "transparency": "Every exported file is RGBA and contains actual alpha0 pixels; no opaque rectangular background added.",
+    "limitations": [
+      "Exact crops preserve the original tight frame edges; they are not newly padded animation canvases.",
+      "Automated edgeVisiblePixelCount detects tight antialiased boundaries, so it must not be read as a guarantee of zero edge contact.",
+      "Snagling frames02 and03 have minor inherited edge slivers; frame01 is clean for a standalone character thumbnail.",
+      "No source pixels, alpha masks, character designs, atlas rectangles or main manifest were modified."
+    ]
+  }
+}

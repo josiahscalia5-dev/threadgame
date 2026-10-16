@@ -1,0 +1,965 @@
+WISHWEAVE WONDERS — COMPLETE LEVEL 1 VIEWER SOURCE
+This small text file contains all viewer code, seven-scene story data, and the asset manifest.
+Original PNGs and complete documentation are in the companion visual kit.
+Recreate the files below inside Wishweave-Level1-Complete-Visual-Kit/scene/.
+The ../approved/ and ../assets/ paths intentionally reference the companion folders.
+This is a visual authoring viewer, not an implemented gameplay or payout system.
+
+
+============================================================
+FILE: scene/index.html
+============================================================
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
+  <meta name="theme-color" content="#092f35">
+  <title>Wishweave Wonders · Complete Level 1 Visual Kit</title>
+  <link rel="stylesheet" href="style.css">
+</head>
+<body>
+  <header class="masthead">
+    <a class="wordmark" href="#main"><span class="brand-mark" aria-hidden="true">✦</span><span>WISHWEAVE <b>WONDERS</b></span></a>
+    <span class="project-tag">LEVEL 1 <span> / COMPLETE VISUAL KIT</span></span>
+  </header>
+  <main id="main" class="workspace">
+    <section class="preview-area" aria-label="Level 1 scene preview">
+      <div class="preview-toolbar"><span id="stage-kicker">01 / THE RIBBON GATE</span><span id="mode-badge">APPROVED ART</span></div>
+      <div class="stage-wrap">
+        <div class="stage" id="stage" aria-busy="true">
+          <img id="scene-image" alt="" width="841" height="1870">
+          <canvas id="scene-canvas" width="841" height="1870" role="img" aria-label="Layered visual scene"></canvas>
+          <div class="stage-message" id="stage-message" role="status">Loading your scene…</div>
+        </div>
+      </div>
+      <div class="preview-nav"><button id="previous" type="button" aria-label="Previous scene">← <span>Previous</span></button><span id="page-count">01 / 07</span><button id="next" type="button" aria-label="Next scene"><span>Next</span> →</button></div>
+    </section>
+    <aside class="director-panel" aria-label="Scene controls and direction">
+      <div class="panel-intro"><p class="eyebrow">THE APPROVED WORLD</p><h1>Level one.<br> Beginning to finish.</h1><p class="intro-copy">Seven approved moments and the actions between them. Follow Purl and rival Loop through the loom-tower world.</p></div>
+      <nav class="scene-tabs" id="scene-tabs" aria-label="Level 1 moments"></nav>
+      <section class="control-section"><div class="section-heading"><h2>View</h2><span>OFFLINE</span></div><div class="mode-options" role="group" aria-label="Preview mode"><button type="button" data-mode="approved" aria-pressed="true">Approved</button><button type="button" data-mode="scenery" aria-pressed="false">Scenery</button><button type="button" data-mode="layered" aria-pressed="false">Layered</button></div><p class="mode-help" id="mode-help">Your approved screen, shown unchanged and fully visible.</p>
+      <fieldset class="layer-toggles" id="layer-toggles" hidden><legend>Visible layers</legend><label><input type="checkbox" name="actors" checked><span>Characters</span></label><label><input type="checkbox" name="props" checked><span>Props</span></label><label><input type="checkbox" name="hud" checked><span>Interface</span></label></fieldset></section>
+      <section class="scene-note" aria-live="polite"><p class="eyebrow" id="scene-location">01 · THE RIBBON GATE</p><h2 id="scene-title">The race begins</h2><p id="scene-description"></p><dl><div><dt>Purl</dt><dd id="purl-count">0 / 3 threads</dd></div><div><dt>Loop</dt><dd id="loop-count">0 / 3 threads</dd></div></dl><p class="direction-note" id="scene-direction"></p></section>
+      <section class="story-beats" aria-label="Actions between the approved screens"><h2>The moments between</h2><div class="beat-group"><span class="beat-label">BEFORE THIS SCREEN</span><p id="beat-before"></p></div><div class="beat-group"><span class="beat-label">THEN WHAT HAPPENS?</span><p id="beat-after"></p></div></section>
+      <section class="route-controls"><h2>Snagling story route</h2><div class="route-options" role="group" aria-label="Snagling encounter outcome"><button type="button" data-route="hit" aria-pressed="true">Hit + recovery</button><button type="button" data-route="dodge" aria-pressed="false">Successful dodge</button></div><p id="route-help">The approved example shows one lost thread, then a safe recovery.</p><button id="dodge-next" type="button" hidden>Keep both threads → Butterfly</button></section>
+      <section class="walkthrough"><button id="autoplay" type="button" aria-pressed="false"><span aria-hidden="true">▷</span> Start guided visual tour</button><p>Changes scenes every 8 seconds. This is a storyboard with explained transitions, not continuous gameplay.</p></section>
+      <footer class="panel-footer"><span class="status-dot" aria-hidden="true"></span><p>Complete visual handoff · Gameplay and payouts are for Claudia to implement. The saved-rewards bar is display-only.</p></footer>
+    </aside>
+  </main>
+  <noscript><p class="noscript">Enable JavaScript to browse the seven scenes. You can also open the PNG files in the approved folder directly.</p></noscript>
+  <script src="asset-data.js"></script>
+  <script src="scene-data.js"></script>
+  <script src="app.js"></script>
+</body>
+</html>
+
+
+============================================================
+FILE: scene/style.css
+============================================================
+:root{color-scheme:dark;--ink:#eaf0e8;--muted:#a9c1bc;--teal:#5cd9c9;--paper:#ffefd5;--coral:#ff8a8f;--line:#ffffff18;--deep:#092f35;--panel:#0b363c;font-family:Arial,Helvetica,sans-serif;font-synthesis:none}*{box-sizing:border-box}body{margin:0;background:#07282d;color:var(--ink);min-width:280px}button,a,input{-webkit-tap-highlight-color:transparent}button{font:inherit;color:inherit;cursor:pointer;min-height:44px;border:1px solid var(--line);background:transparent;border-radius:12px;padding:10px 15px;font-size:13px;font-weight:700;transition:background .15s,border-color .15s,color .15s}button:hover{background:#ffffff0c;border-color:#ffffff45}button:focus-visible,a:focus-visible,input:focus-visible{outline:3px solid var(--teal);outline-offset:4px}button:disabled{cursor:default;opacity:.4}.masthead{display:flex;align-items:center;justify-content:space-between;gap:16px;padding:22px 38px;border-bottom:1px solid var(--line)}.wordmark{color:var(--paper);text-decoration:none;display:flex;align-items:center;gap:12px;font-size:12px;letter-spacing:2.5px;line-height:1.4}.wordmark b{display:block;color:var(--teal);letter-spacing:4.2px}.brand-mark{font-size:31px;color:var(--coral);font-weight:400}.project-tag{font-size:10px;letter-spacing:2.2px;color:var(--muted);line-height:1.7}.workspace{display:grid;grid-template-columns:minmax(300px,380px) minmax(0,1fr);max-width:1500px;margin:auto;min-height:calc(100svh - 84px)}.preview-area{grid-column:2;grid-row:1;background:radial-gradient(ellipse at center,#155055 0,#092f35 66%);padding:24px 38px 16px;display:flex;align-items:center;flex-direction:column;position:sticky;top:0;align-self:start;min-width:0}.preview-toolbar{display:flex;justify-content:space-between;align-items:center;width:100%;max-width:680px;font-size:10px;letter-spacing:1.5px;color:var(--muted);gap:15px;min-height:28px;margin-bottom:16px}#mode-badge{background:#092b31;border:1px solid #ffffff21;border-radius:30px;padding:7px 11px;white-space:nowrap;color:#f8ddae;font-size:9px;letter-spacing:1px}.stage-wrap{width:100%;height:calc(100svh - 220px);min-height:300px;display:flex;align-items:center;justify-content:center}.stage{aspect-ratio:841/1870;height:100%;max-width:100%;position:relative;overflow:hidden;background:#16383d;border:1px solid #f4dfb633;box-shadow:0 18px 55px #001b22a0;border-radius:15px;isolation:isolate}.stage>img,.stage>canvas{display:block;width:100%;height:100%;object-fit:contain;position:absolute;inset:0;opacity:1}.stage>img[hidden],.stage>canvas[hidden]{display:none}.stage.scene-enter{animation:sceneEnter .25s ease-out}@keyframes sceneEnter{from{opacity:.5}to{opacity:1}}.stage-message{position:absolute;inset:0;display:grid;place-content:center;text-align:center;padding:32px;background:#092f35f2;color:var(--paper);font-size:15px;line-height:1.6;z-index:3}.stage-message[hidden]{display:none}.stage-message.error{color:#ffd7bc}.preview-nav{width:100%;max-width:450px;display:flex;align-items:center;justify-content:space-between;margin-top:14px;gap:16px}.preview-nav button{border:0;font-size:12px;min-width:100px}.preview-nav button span{margin:0 7px}#page-count{font-size:11px;letter-spacing:2.5px;color:var(--muted);white-space:nowrap}.director-panel{grid-column:1;grid-row:1;border-right:1px solid var(--line);padding:32px 26px 26px;background:linear-gradient(160deg,#103b40,#092b31)}.eyebrow{font-size:9px;font-weight:700;letter-spacing:2.1px;color:var(--teal);line-height:1.6;margin:0 0 12px}h1{font-family:Georgia,serif;font-weight:400;letter-spacing:-.6px;font-size:32px;line-height:1.15;margin:0 0 17px;color:var(--paper)}.intro-copy{color:var(--muted);font-size:12px;line-height:1.7;margin:0 0 25px}.scene-tabs{display:grid;gap:7px;margin:0 0 25px}.scene-tab{display:flex;align-items:center;gap:12px;text-align:left;min-height:49px;border:1px solid transparent;padding:8px 12px}.scene-tab .tab-index{font-size:10px;letter-spacing:1px;color:#829f9b;min-width:20px}.scene-tab .tab-name{flex:1;font-size:12px;font-weight:500}.scene-tab .tab-arrow{font-weight:400;opacity:0;color:var(--coral)}.scene-tab[aria-current="step"]{background:#ffffff09;border-color:#ffffff24;color:var(--paper)}.scene-tab[aria-current="step"] .tab-index{color:var(--coral)}.scene-tab[aria-current="step"] .tab-arrow{opacity:1}.control-section{padding:20px 0 19px;border-top:1px solid var(--line);border-bottom:1px solid var(--line)}.section-heading{display:flex;justify-content:space-between;align-items:center;margin-bottom:12px}.section-heading h2{font-size:12px;font-weight:600;margin:0}.section-heading>span{font-size:8px;letter-spacing:1.5px;color:#7da9a0}.mode-options{display:grid;grid-template-columns:repeat(3,1fr);gap:4px;padding:4px;background:#032a2f;border-radius:13px}.mode-options button{border:0;border-radius:9px;font-size:11px;padding:9px 6px}.mode-options button[aria-pressed="true"]{background:var(--paper);color:#12383b;box-shadow:0 2px 5px #0002}.mode-help{font-size:11px;color:var(--muted);line-height:1.6;min-height:35px;margin:12px 0 0}.layer-toggles{border:0;margin:13px 0 0;padding:0;display:flex;flex-wrap:wrap;gap:0 15px}.layer-toggles[hidden]{display:none}.layer-toggles legend{font-size:10px;color:var(--muted);margin-bottom:3px}.layer-toggles label{min-height:44px;display:flex;align-items:center;font-size:11px;gap:6px;cursor:pointer}.layer-toggles input{width:17px;height:17px;accent-color:var(--teal)}.scene-note{padding:23px 0}.scene-note .eyebrow{font-size:8px;margin-bottom:8px;color:#e9ba81}.scene-note h2{font-family:Georgia,serif;font-size:23px;line-height:1.25;font-weight:400;color:var(--paper);margin:0 0 11px}#scene-description{font-size:12px;line-height:1.75;color:var(--muted);margin:0}.scene-note dl{display:grid;grid-template-columns:1fr 1fr;gap:10px;margin:18px 0}.scene-note dl>div{border-left:2px solid var(--coral);padding-left:10px}.scene-note dl>div+div{border-color:var(--teal)}.scene-note dt{font-size:9px;text-transform:uppercase;letter-spacing:1.6px;margin-bottom:4px;color:#dfcbc0}.scene-note dd{margin:0;font-size:12px;color:var(--paper)}.direction-note{font-size:10px;line-height:1.65;color:#84aba5;margin:0}.walkthrough{border-top:1px solid var(--line);padding-top:19px}.walkthrough button{width:100%;display:flex;align-items:center;justify-content:center;gap:9px;background:#12494e;border-color:#2d6669;color:#e5eee1;font-size:11px}.walkthrough button[aria-pressed="true"]{border-color:var(--coral)}.walkthrough p{font-size:10px;line-height:1.65;color:var(--muted);margin:9px 0 0;text-align:center}.panel-footer{display:flex;align-items:flex-start;gap:8px;margin-top:25px}.status-dot{width:5px;height:5px;flex:0 0 5px;border-radius:50%;background:#c19c62;margin-top:5px}.panel-footer p{font-size:9px;line-height:1.7;color:#809c97;margin:0}.noscript{padding:20px;text-align:center}.layer-toggles input:disabled{opacity:.3}@media(min-width:1450px){.stage-wrap{height:calc(100svh - 210px);max-height:1100px}.director-panel{padding-top:40px}}@media(max-width:800px){.masthead{padding:16px 20px}.workspace{grid-template-columns:minmax(260px,310px) minmax(0,1fr)}.director-panel{padding:25px 20px}.preview-area{padding:20px 18px 14px}.preview-toolbar{font-size:8px;letter-spacing:1px;gap:8px}#mode-badge{font-size:8px;padding:6px 8px}.project-tag{font-size:8px;letter-spacing:1.4px}.stage-wrap{height:calc(100svh - 200px)}.preview-nav button{min-width:60px}.preview-nav button span{display:none}h1{font-size:28px}}@media(max-width:620px){.masthead{padding:12px 16px;min-height:61px}.wordmark{font-size:9px;letter-spacing:1.9px;gap:8px}.wordmark b{letter-spacing:3px}.brand-mark{font-size:25px}.project-tag{font-size:8px;letter-spacing:1.4px;max-width:125px;text-align:right}.project-tag span{display:none}.workspace{display:flex;flex-direction:column;min-height:0}.preview-area{position:relative;top:auto;padding:12px 14px 8px;width:100%;order:0}.preview-toolbar{max-width:410px;margin-bottom:9px;min-height:21px}.stage-wrap{height:calc(100svh - 166px);min-height:250px}.stage{border-radius:11px}.preview-nav{max-width:360px;margin-top:5px}.preview-nav button{min-width:90px}.preview-nav button span{display:inline}.director-panel{order:1;border-right:0;border-top:1px solid var(--line);padding:25px 23px 30px;width:100%;max-width:620px}.panel-intro h1 br{display:none}.panel-intro h1{font-size:27px}.intro-copy{max-width:480px}.scene-tabs{grid-template-columns:repeat(5,1fr);gap:5px;margin-bottom:20px}.scene-tab{min-height:67px;padding:8px 3px;display:flex;flex-direction:column;text-align:center;gap:5px}.scene-tab .tab-name{font-size:9px;line-height:1.25}.scene-tab .tab-arrow{display:none}.scene-tab .tab-index{font-size:10px}.mode-help{min-height:0}.scene-note{padding:21px 0}.mode-options button{font-size:12px}.panel-footer{margin-top:18px}}@media(max-height:500px) and (min-width:621px){.stage-wrap{height:calc(100svh - 118px);min-height:170px}.masthead{padding:9px 20px}.preview-area{padding-top:7px;padding-bottom:7px}.preview-toolbar{margin-bottom:6px;min-height:18px}.preview-nav{margin-top:4px}.project-tag{display:none}.workspace{min-height:calc(100svh - 57px)}.director-panel{padding-top:20px}}@media(prefers-reduced-motion:reduce){*,*:before,*:after{animation:none!important;transition:none!important;scroll-behavior:auto!important}}
+.story-beats{border-top:1px solid var(--line);padding:20px 0}.story-beats h2,.route-controls h2{font-size:12px;font-weight:600;margin:0 0 16px;color:var(--paper)}.beat-group{padding-left:12px;border-left:2px solid #3e6d6a;margin-bottom:17px}.beat-group:last-child{margin-bottom:0;border-color:#b89059}.beat-label{font-size:8px;letter-spacing:1.4px;color:#a5c5bc;font-weight:700}.beat-group p{font-size:11px;line-height:1.75;color:var(--muted);margin:7px 0 0}.route-controls{border-top:1px solid var(--line);padding:20px 0}.route-options{display:grid;grid-template-columns:1fr 1fr;gap:6px}.route-options button{font-size:10px;padding:9px 7px}.route-options button[aria-pressed="true"]{background:var(--paper);border-color:var(--paper);color:#12383b}.route-controls p{font-size:10px;line-height:1.65;color:var(--muted);margin:12px 0 0}#dodge-next{width:100%;margin-top:12px;color:var(--teal);font-size:11px;border-color:#396e6a}#dodge-next[hidden]{display:none}@media(max-width:620px){.scene-tabs{grid-template-columns:repeat(4,1fr)}.scene-tab{min-height:61px}.scene-tab .tab-name{font-size:10px}.story-beats h2,.route-controls h2{font-size:13px}.beat-group p{font-size:12px}.route-options button{font-size:11px}}
+
+
+============================================================
+FILE: scene/asset-data.js
+============================================================
+window.WW_ASSET_MANIFEST = {
+  "source": "Seven approved immutable screens, derived clean scenery plates, retained transparent character/UI/prop atlases and new feature atlas. Raster starter artwork; no rigged 3D models.",
+  "images": {
+    "loop-atlas": {
+      "file": "loop-atlas.png",
+      "width": 1774,
+      "height": 887,
+      "mode": "RGBA",
+      "frames": [
+        [
+          69,
+          29,
+          341,
+          392
+        ],
+        [
+          523,
+          30,
+          325,
+          376
+        ],
+        [
+          945,
+          28,
+          362,
+          391
+        ],
+        [
+          1395,
+          22,
+          366,
+          359
+        ],
+        [
+          72,
+          457,
+          353,
+          339
+        ],
+        [
+          485,
+          550,
+          395,
+          284
+        ],
+        [
+          949,
+          464,
+          359,
+          384
+        ],
+        [
+          1393,
+          471,
+          358,
+          374
+        ]
+      ]
+    },
+    "purl-atlas": {
+      "file": "purl-atlas.png",
+      "width": 1774,
+      "height": 887,
+      "mode": "RGBA",
+      "frames": [
+        [
+          25,
+          23,
+          402,
+          386
+        ],
+        [
+          513,
+          25,
+          335,
+          371
+        ],
+        [
+          916,
+          22,
+          388,
+          380
+        ],
+        [
+          1367,
+          17,
+          392,
+          338
+        ],
+        [
+          82,
+          436,
+          348,
+          335
+        ],
+        [
+          466,
+          530,
+          416,
+          274
+        ],
+        [
+          952,
+          441,
+          353,
+          379
+        ],
+        [
+          1379,
+          435,
+          364,
+          396
+        ]
+      ]
+    },
+    "ui-atlas": {
+      "file": "ui-atlas.png",
+      "width": 1774,
+      "height": 887,
+      "mode": "RGBA",
+      "frames": [
+        [
+          25,
+          70,
+          884,
+          338
+        ],
+        [
+          930,
+          145,
+          827,
+          230
+        ],
+        [
+          280,
+          450,
+          400,
+          386
+        ],
+        [
+          1030,
+          450,
+          646,
+          194
+        ],
+        [
+          1030,
+          639,
+          646,
+          204
+        ]
+      ]
+    },
+    "snagling-atlas": {
+      "file": "snagling-atlas.png",
+      "width": 1774,
+      "height": 887,
+      "mode": "RGBA",
+      "frames": [
+        [
+          44,
+          138,
+          319,
+          273
+        ],
+        [
+          440,
+          69,
+          461,
+          336
+        ],
+        [
+          895,
+          91,
+          435,
+          305
+        ],
+        [
+          1347,
+          105,
+          419,
+          309
+        ],
+        [
+          56,
+          499,
+          348,
+          314
+        ],
+        [
+          450,
+          588,
+          451,
+          219
+        ],
+        [
+          925,
+          480,
+          382,
+          330
+        ],
+        [
+          1344,
+          534,
+          396,
+          289
+        ]
+      ]
+    },
+    "purl-rear": {
+      "file": "purl-rear.png",
+      "width": 1774,
+      "height": 887,
+      "mode": "RGBA",
+      "frames": [
+        [
+          49,
+          36,
+          337,
+          335
+        ],
+        [
+          500,
+          36,
+          332,
+          335
+        ],
+        [
+          957,
+          36,
+          323,
+          348
+        ],
+        [
+          1399,
+          36,
+          328,
+          338
+        ],
+        [
+          57,
+          478,
+          332,
+          343
+        ],
+        [
+          490,
+          468,
+          370,
+          338
+        ],
+        [
+          965,
+          542,
+          291,
+          279
+        ],
+        [
+          1374,
+          486,
+          360,
+          334
+        ]
+      ],
+      "poses": [
+        "idle",
+        "run-left",
+        "run-pass-a",
+        "run-right",
+        "run-pass-b",
+        "jump",
+        "duck",
+        "stumble"
+      ]
+    },
+    "loop-rear": {
+      "file": "loop-rear.png",
+      "width": 1774,
+      "height": 887,
+      "mode": "RGBA",
+      "frames": [
+        [
+          45,
+          47,
+          354,
+          352
+        ],
+        [
+          490,
+          47,
+          341,
+          351
+        ],
+        [
+          943,
+          48,
+          345,
+          360
+        ],
+        [
+          1385,
+          49,
+          327,
+          349
+        ],
+        [
+          48,
+          490,
+          332,
+          351
+        ],
+        [
+          474,
+          472,
+          385,
+          340
+        ],
+        [
+          952,
+          568,
+          308,
+          269
+        ],
+        [
+          1353,
+          480,
+          388,
+          355
+        ]
+      ],
+      "poses": [
+        "idle",
+        "run-left",
+        "run-pass-a",
+        "run-right",
+        "run-pass-b",
+        "jump",
+        "duck",
+        "stumble"
+      ]
+    },
+    "props-atlas": {
+      "file": "props-atlas.png",
+      "width": 1536,
+      "height": 1024,
+      "mode": "RGBA",
+      "frames": [
+        [
+          165,
+          53,
+          244,
+          352
+        ],
+        [
+          646,
+          53,
+          244,
+          352
+        ],
+        [
+          1127,
+          53,
+          245,
+          354
+        ],
+        [
+          106,
+          467,
+          323,
+          502
+        ],
+        [
+          654,
+          518,
+          192,
+          431
+        ],
+        [
+          983,
+          483,
+          535,
+          460
+        ]
+      ],
+      "poses": [
+        "coral-thread",
+        "teal-thread",
+        "golden-thread",
+        "swinging-tassel",
+        "cover-post",
+        "flower-gate"
+      ],
+      "alphaMin": 0,
+      "alphaMax": 254,
+      "fullyTransparentFraction": 0.6691239674886068,
+      "frameAlphaThreshold": 8,
+      "framePaddingPx": 2,
+      "source": "exec-072e4cd5-2efc-4a43-9c9b-acb564c63122.png",
+      "anchors": [
+        [
+          0.5,
+          1
+        ],
+        [
+          0.5,
+          1
+        ],
+        [
+          0.5,
+          1
+        ],
+        [
+          0.5,
+          0
+        ],
+        [
+          0.5,
+          1
+        ],
+        [
+          0.5,
+          1
+        ]
+      ]
+    },
+    "feature-atlas": {
+      "file": "features/feature-atlas.png",
+      "width": 1536,
+      "height": 1024,
+      "mode": "RGBA",
+      "frames": [
+        [
+          157,
+          91,
+          205,
+          358
+        ],
+        [
+          519,
+          69,
+          505,
+          401
+        ],
+        [
+          1034,
+          50,
+          470,
+          420
+        ],
+        [
+          115,
+          530,
+          364,
+          435
+        ],
+        [
+          536,
+          584,
+          494,
+          317
+        ],
+        [
+          1094,
+          524,
+          397,
+          439
+        ]
+      ],
+      "poses": [
+        "stitch-loop",
+        "carpet-rolled",
+        "carpet-flat",
+        "butterfly-closed",
+        "butterfly-open",
+        "butterfly-carrying-spool"
+      ],
+      "anchors": [
+        [
+          0.5,
+          1
+        ],
+        [
+          0.5,
+          1
+        ],
+        [
+          0.5,
+          1
+        ],
+        [
+          0.5,
+          1
+        ],
+        [
+          0.5,
+          1
+        ],
+        [
+          0.5,
+          1
+        ]
+      ],
+      "alphaMin": 0,
+      "alphaMax": 254,
+      "fullyTransparentFraction": 0.5537967681884766,
+      "frameAlphaThreshold": 8,
+      "framePaddingPx": 2
+    },
+    "background-01-ribbon": {
+      "file": "backgrounds/01-ribbon.png",
+      "width": 841,
+      "height": 1870,
+      "mode": "RGB",
+      "role": "derived clean scene plate"
+    },
+    "background-02-shortcut": {
+      "file": "backgrounds/02-shortcut.png",
+      "width": 841,
+      "height": 1870,
+      "mode": "RGB",
+      "role": "derived clean scene plate"
+    },
+    "background-03-tassels": {
+      "file": "backgrounds/03-tassels.png",
+      "width": 840,
+      "height": 1871,
+      "mode": "RGB",
+      "role": "derived clean scene plate"
+    },
+    "background-04-snagged": {
+      "file": "backgrounds/04-snagged.png",
+      "width": 841,
+      "height": 1870,
+      "mode": "RGB",
+      "role": "derived clean scene plate"
+    },
+    "background-05-recovery": {
+      "file": "backgrounds/05-recovery.png",
+      "width": 841,
+      "height": 1870,
+      "mode": "RGB",
+      "role": "derived clean scene plate"
+    },
+    "background-06-butterfly": {
+      "file": "backgrounds/06-butterfly.png",
+      "width": 841,
+      "height": 1870,
+      "mode": "RGB",
+      "role": "derived clean scene plate"
+    },
+    "background-07-finish": {
+      "file": "backgrounds/07-finish.png",
+      "width": 839,
+      "height": 1875,
+      "mode": "RGB",
+      "role": "derived clean scene plate"
+    }
+  },
+  "version": "2.0.0-complete-visual-kit",
+  "designSpace": {
+    "width": 841,
+    "height": 1870,
+    "entityAnchor": "bottom-center"
+  }
+};
+
+
+============================================================
+FILE: scene/scene-data.js
+============================================================
+/* Complete Level 1 visual storyboard. Coordinates are fixed 841 × 1870 design
+   pixels. Entity x is center; y is bottom anchor; width retains atlas aspect.
+   The approved PNGs are immutable appearance targets. The background plates
+   retain route geometry; loose characters and specified props are separate.
+   before/after describe implementation beats, not implemented gameplay. */
+window.WW_SCENES = [
+  {
+    id:'ribbon',label:'Ribbon',title:'Unfurl the first path',location:'The ribbon gate',phase:'LEVEL 1 · START',
+    approved:'../approved/01-ribbon.png',background:'../assets/backgrounds/01-ribbon.png',
+    objective:'UNFURL THE RIBBON',counts:[0,0],
+    description:'Purl reaches a curled coral ribbon. One glowing stitch opens the route toward the first coral thread while Loop runs along a separate teal ribbon.',
+    direction:'The camera stays behind Purl. A single tap is the first gentle task. Loop is computer-controlled with independent progress; matched counters are sample race states, not synchronized scoring.',
+    before:'Begin on a safe straight carpet with a short countdown. Purl and Loop set off, and the first stitch comes into view before any damaging enemy appears.',
+    after:'Tap the stitch. The curled ribbon unfurls into a stable path; Purl runs up it and collects the coral thread. Loop collects a separate thread on the parallel route. Both reach the shortcut at 1 / 3.',
+    callout:{text:'Tap the stitch',x:449,y:1295,width:175,point:[417,1405]},
+    entities:[
+      {id:'coral-thread',kind:'props',asset:'props-atlas',frame:0,x:315,y:575,width:62,z:1},
+      {id:'loop',kind:'actors',asset:'loop-rear',frame:3,x:726,y:1068,width:145,z:2},
+      {id:'purl',kind:'actors',asset:'purl-rear',frame:1,x:274,y:1518,width:289,z:4}
+    ]
+  },
+  {
+    id:'shortcut',label:'Shortcut',title:'Open the carpet shortcut',location:'The rolled crossing',phase:'LEVEL 1 · MIDDLE',
+    approved:'../approved/02-shortcut.png',background:'../assets/backgrounds/02-shortcut.png',
+    objective:'OPEN THE SHORTCUT',counts:[1,1],
+    description:'A rolled carpet blocks Purl’s short route. The next stitch releases it across the gap. Loop continues on the longer upper bypass.',
+    direction:'This is a one-tap unfolding shortcut. The visible Snagling peek is harmless foreshadowing, with no attack during the stitch task. The visible teal thread is ahead; it has not been collected yet.',
+    before:'After the coral pickup, the path bends around the first tower. The camera follows Purl without reversing direction, revealing a broad safe approach to the rolled crossing.',
+    after:'Tap the stitch and let the carpet fully open. Purl crosses onto the next broad platform and approaches the tassel gate. Loop remains visible on the independent upper route.',
+    callout:{text:'Tap the stitch',x:603,y:1314,width:174,point:[490,1328]},
+    entities:[
+      {id:'snagling',kind:'actors',asset:'snagling-atlas',frame:0,x:211,y:742,width:130,z:1},
+      {id:'teal-thread-ahead',kind:'props',asset:'props-atlas',frame:1,x:405,y:724,width:65,z:2},
+      {id:'loop',kind:'actors',asset:'loop-rear',frame:1,x:717,y:687,width:111,z:2},
+      {id:'purl',kind:'actors',asset:'purl-rear',frame:3,x:346,y:1530,width:292,z:5}
+    ]
+  },
+  {
+    id:'tassels',label:'Tassels',title:'Lift a path through the tassels',location:'The tassel gate',phase:'LEVEL 1',
+    approved:'../approved/03-tassels.png',background:'../assets/backgrounds/03-tassels.png',
+    objective:'LIFT THE TASSELS',counts:[1,1],
+    description:'Three plum tassels hang across the approach to the teal thread. Tapping the stitch sends a wave up their cords and lifts them in sequence.',
+    direction:'Hold the opening long enough for a comfortable crossing, with a safe waiting pocket before it. This required task opens access to the teal thread. Snagling attacks only later, after the pickup, on the broad landing.',
+    before:'Purl has one coral thread and reaches the next raised landing. The teal pickup is visible beyond the three tassels; its counter has not increased yet.',
+    after:'Tap once, watch the tassels rise, then pass through and collect the teal thread: 2 / 3. Loop reaches its own second pickup. On the next broad landing, Purl can dodge the Snagling; the approved example shows the missed-dodge and recovery branch.',
+    callout:{text:'Tap the stitch',x:625,y:1275,width:184,point:[571,1365]},
+    entities:[
+      {id:'teal-thread',kind:'props',asset:'props-atlas',frame:1,x:359,y:886,width:71,z:1},
+      {id:'tassel-left',kind:'props',asset:'props-atlas',frame:3,x:221,y:660,width:173,z:2},
+      {id:'tassel-middle',kind:'props',asset:'props-atlas',frame:3,x:386,y:756,width:177,z:2},
+      {id:'tassel-right',kind:'props',asset:'props-atlas',frame:3,x:555,y:858,width:176,z:2},
+      {id:'loop',kind:'actors',asset:'loop-rear',frame:3,x:722,y:972,width:117,z:3},
+      {id:'purl',kind:'actors',asset:'purl-rear',frame:3,x:411,y:1514,width:294,z:5}
+    ]
+  },
+  {
+    id:'snagged',label:'Snagged',title:'One hit, one dropped thread',location:'The wide landing',phase:'LEVEL 1',
+    approved:'../approved/04-snagged.png',background:'../assets/backgrounds/04-snagged.png',
+    objective:'SNAGGED!',counts:[1,2],
+    description:'This is the missed-dodge example. Snagling catches Purl’s ankles for a brief stumble and knocks one teal thread onto safe, reachable carpet.',
+    direction:'Purl had two threads before this hit and now has one. The enemy never carries Purl away. Loop continues racing and saved rewards stay untouched.',
+    before:'The tassel section is complete and Purl carries 2 / 3. Snagling hops visibly from behind the post on this wide landing; a successful dodge keeps both threads and skips the two recovery screens.',
+    after:'The loose ankle wrap releases after the short stumble. Brief hit protection prevents repeated damage from this attack. Purl turns toward the dropped spool, which stays reachable instead of falling into the gap.',
+    callout:{text:'−1 THREAD',x:696,y:1158,width:159,point:[709,1251]},
+    entities:[
+      {id:'loop',kind:'actors',asset:'loop-rear',frame:1,x:649,y:561,width:111,z:1},
+      {id:'snagling',kind:'actors',asset:'snagling-atlas',frame:1,x:205,y:1270,width:202,z:3},
+      {id:'dropped-thread',kind:'props',asset:'props-atlas',frame:1,x:702,y:1325,width:108,rotation:.28,z:4},
+      {id:'purl',kind:'actors',asset:'purl-rear',frame:7,x:450,y:1455,width:312,z:5}
+    ]
+  },
+  {
+    id:'recovery',label:'Recovery',title:'Collect it back and catch up',location:'The safe recovery',phase:'LEVEL 1',
+    approved:'../approved/05-recovery.png',background:'../assets/backgrounds/05-recovery.png',
+    objective:'THREAD RECOVERED',counts:[2,2],
+    description:'Purl reaches the dropped teal spool and recovers the same thread. The counter returns from 1 / 3 to 2 / 3 as a brief protective glow fades.',
+    direction:'This restores the lost collectible; it is not a fourth item or a bonus payout. A later hit while already carrying zero threads ends the attempt.',
+    before:'Purl has broken free of the loose yarn and moved toward the dropped spool on the wide carpet. No new stitch task appears in the recovery area.',
+    after:'The recovered thread returns to Purl’s inventory. Snagling falls behind, the protective glow clears, and Purl follows the carpet bend toward the embroidered butterfly alcove.',
+    callout:{text:'+1 THREAD',x:707,y:1260,width:156,point:null},
+    entities:[
+      {id:'loop',kind:'actors',asset:'loop-rear',frame:1,x:634,y:531,width:95,z:1},
+      {id:'snagling',kind:'actors',asset:'snagling-atlas',frame:0,x:159,y:1222,width:172,z:3},
+      {id:'recovering-thread',kind:'props',asset:'props-atlas',frame:1,x:622,y:1265,width:94,rotation:.25,z:4},
+      {id:'purl',kind:'actors',asset:'purl-rear',frame:1,x:435,y:1408,width:301,z:5}
+    ]
+  },
+  {
+    id:'butterfly',label:'Butterfly',title:'Wake the embroidery',location:'The butterfly alcove',phase:'LEVEL 1',
+    approved:'../approved/06-butterfly.png',background:'../assets/backgrounds/06-butterfly.png',
+    objective:'WAKE THE EMBROIDERY',counts:[2,2],
+    description:'A butterfly peels out of the embroidered wall hanging and carries the golden thread down toward Purl’s reachable landing.',
+    direction:'The shown counter is still 2 / 3 because the butterfly is delivering the item. The thread stays on the landing until collected; there is no precision chase.',
+    before:'Purl arrives carrying two threads, either after dodging successfully or after recovering the dropped teal spool. The stitch on the left tapestry invites the next action.',
+    after:'Tap the tapestry stitch. The butterfly lifts from the cloth, delivers the golden thread, and Purl collects it for 3 / 3. Loop completes its own third pickup. Both take the short final sprint toward the flower gate.',
+    callout:{text:'Tap the stitch',x:137,y:903,width:190,point:[135,990]},
+    entities:[
+      {id:'butterfly-carrying-thread',kind:'props',asset:'feature-atlas',frame:5,x:443,y:1051,width:286,z:1},
+      {id:'loop',kind:'actors',asset:'loop-rear',frame:3,x:715,y:990,width:117,z:3},
+      {id:'purl',kind:'actors',asset:'purl-rear',frame:3,x:404,y:1482,width:307,z:5}
+    ]
+  },
+  {
+    id:'finish',label:'Finish',title:'Race through the flower gate',location:'The finish terrace',phase:'LEVEL 1',
+    approved:'../approved/07-finish.png',background:'../assets/backgrounds/07-finish.png',
+    objective:'LEVEL 1 COMPLETE',counts:[3,3],action:'PLAY AGAIN',
+    description:'The final sprint ends on the flower-gate terrace. This approved result shows Purl first and Loop second, each with their own three threads.',
+    direction:'Finish order must come from actual arrival times in the playable version. Loop can genuinely win; this artwork is one possible result.',
+    before:'After the golden pickup, the camera follows the final stretch into the glowing flower gate. The two routes meet at the broad finish terrace; crossing the finish records each racer’s time.',
+    after:'Show the true finishing order and level completion. A future reward service may validate eligible earnings; the current savings bar is a visual placeholder. Play again returns to the safe opening for another attempt.',
+    entities:[
+      {id:'purl',kind:'actors',asset:'purl-rear',frame:5,x:409,y:1236,width:216,z:3},
+      {id:'loop',kind:'actors',asset:'loop-rear',frame:1,x:648,y:1336,width:240,z:4}
+    ]
+  }
+];
+
+
+============================================================
+FILE: scene/app.js
+============================================================
+/* Offline visual authoring viewer. There is deliberately no gameplay simulation,
+   collision system, reward accrual, player account, or payment integration here. */
+(function () {
+  'use strict';
+  const W = 841, H = 1870;
+  const scenes = window.WW_SCENES || [];
+  const manifest = window.WW_ASSET_MANIFEST || {images:{}};
+  const $ = id => document.getElementById(id);
+  const stage = $('stage'), image = $('scene-image'), canvas = $('scene-canvas');
+  const ctx = canvas.getContext('2d');
+  const state = {index:0,mode:'approved',route:'hit',layers:{actors:true,props:true,hud:true},loading:false,error:null,autoplay:false,rendered:false};
+  const cache = new Map();
+  let version = 0, timer = null, latestRender = Promise.resolve();
+  const modeCopy = {
+    approved: ['APPROVED ART','Your approved screen, shown unchanged and fully visible.'],
+    scenery: ['CLEAN SCENERY','A derived plate with actors and interface removed. Carpet routes and attached scenery stay in the artwork.'],
+    layered: ['EDITABLE LAYERS','Separate sprites, props, and live interface over a clean plate. Use the approved view as the visual target.']
+  };
+  function source(path) { return window.WW_EMBEDDED_ASSETS?.[path] || path; }
+  function loadImage(path) {
+    if (cache.has(path)) return cache.get(path);
+    const promise = new Promise((resolve,reject) => {
+      const img = new Image();
+      img.onload = () => resolve(img);
+      img.onerror = () => reject(new Error('Could not load '+path+'. Keep the scene, approved, and assets folders together, then reload.'));
+      img.src = source(path);
+    });
+    cache.set(path,promise);
+    promise.catch(() => cache.delete(path));
+    return promise;
+  }
+  function atlasPath(name) {
+    const spec = manifest.images?.[name];
+    if (!spec?.file) throw new Error('The asset manifest is missing “'+name+'”. Check that asset-data.js and the asset pack are complete.');
+    return '../assets/'+spec.file;
+  }
+  function roundRect(x,y,w,h,r) {
+    ctx.beginPath();ctx.moveTo(x+r,y);ctx.arcTo(x+w,y,x+w,y+h,r);ctx.arcTo(x+w,y+h,x,y+h,r);ctx.arcTo(x,y+h,x,y,r);ctx.arcTo(x,y,x+w,y,r);ctx.closePath();
+  }
+  function text(label,x,y,size=23,color='#552916',weight=700,align='center') {
+    ctx.font=weight+' '+size+'px Arial, Helvetica, sans-serif';ctx.fillStyle=color;ctx.textAlign=align;ctx.textBaseline='middle';ctx.fillText(label,x,y);
+  }
+  function pill(x,y,w,h,r=26) {
+    ctx.save();ctx.shadowColor='#4b231c66';ctx.shadowBlur=9;ctx.shadowOffsetY=4;
+    const gradient=ctx.createLinearGradient(x,y,x,y+h);gradient.addColorStop(0,'#fff8e8');gradient.addColorStop(1,'#f8e6ca');
+    ctx.fillStyle=gradient;roundRect(x,y,w,h,r);ctx.fill();ctx.shadowBlur=0;ctx.shadowOffsetY=0;ctx.lineWidth=4;ctx.strokeStyle='#fff6df';ctx.stroke();ctx.lineWidth=1.5;ctx.strokeStyle='#c7a480';roundRect(x+5,y+5,w-10,h-10,Math.max(r-5,4));ctx.stroke();ctx.restore();
+  }
+  function cropDraw(asset,frame,x,y,width,anchor='bottom',rotation=0) {
+    const spec=manifest.images?.[asset], frames=spec?.frames;
+    if (!frames?.[frame]) throw new Error('The frame '+frame+' for “'+asset+'” is missing from the manifest.');
+    const raw=frames[frame];
+    const a=Array.isArray(raw)?raw:[raw.x,raw.y,raw.w ?? raw.width,raw.h ?? raw.height];
+    const img=loaded[asset];
+    if (!img) return;
+    const height=width*a[3]/a[2];
+    ctx.save();ctx.translate(x,y);if(rotation)ctx.rotate(rotation);
+    ctx.drawImage(img,a[0],a[1],a[2],a[3],-width/2,anchor==='bottom'?-height:0,width,height);ctx.restore();
+  }
+  let loaded={};
+  function glow(x,y,r,color='#ffd566') {
+    ctx.save();const g=ctx.createRadialGradient(x,y,0,x,y,r);g.addColorStop(0,color+'80');g.addColorStop(1,color+'00');ctx.fillStyle=g;ctx.beginPath();ctx.arc(x,y,r,0,Math.PI*2);ctx.fill();ctx.restore();
+  }
+  function drawSnagLoop() {
+    ctx.save();ctx.strokeStyle='#912b74';ctx.lineWidth=11;ctx.lineCap='round';ctx.shadowColor='#2c173b88';ctx.shadowBlur=4;ctx.beginPath();ctx.moveTo(257,1256);ctx.bezierCurveTo(306,1300,316,1390,437,1411);ctx.bezierCurveTo(546,1425,537,1450,477,1442);ctx.bezierCurveTo(412,1428,402,1395,346,1391);ctx.stroke();ctx.strokeStyle='#d46bb5';ctx.lineWidth=2;ctx.stroke();ctx.restore();
+  }
+  function drawRecoveryGlow(){
+    ctx.save();ctx.strokeStyle='#ffe7a2';ctx.shadowColor='#ffbc24';ctx.shadowBlur=20;ctx.lineWidth=5;ctx.beginPath();ctx.ellipse(443,1320,176,66,-.2,0,Math.PI*2);ctx.stroke();ctx.restore();
+  }
+  function drawCallout(callout){
+    const {text:label,x,y,width,point}=callout;
+    if(point){
+      ctx.save();ctx.strokeStyle='#fff2ce';ctx.lineWidth=9;ctx.lineCap='round';ctx.lineJoin='round';ctx.shadowColor='#59321b88';ctx.shadowBlur=4;ctx.beginPath();ctx.moveTo(x,y+17);ctx.lineTo(point[0],point[1]-12);ctx.stroke();const a=Math.atan2(point[1]-(y+17),point[0]-x);ctx.translate(point[0],point[1]);ctx.rotate(a);ctx.fillStyle='#fff2ce';ctx.beginPath();ctx.moveTo(0,0);ctx.lineTo(-23,-10);ctx.lineTo(-23,10);ctx.closePath();ctx.fill();ctx.restore();
+    }
+    pill(x-width/2,y-25,width,50,22);
+    ctx.font='700 23px Arial, Helvetica, sans-serif';
+    const labelSize=Math.min(23,23*(width-24)/ctx.measureText(label).width);
+    text(label,x,y,labelSize,label.includes('THREAD')?'#b52248':'#552916');
+  }
+  function drawHUD(scene) {
+    cropDraw('ui-atlas',0,419,15,466,'top');
+    const phaseWidth=scene.phase==='LEVEL 1'?210:282;
+    pill(421-phaseWidth/2,166,phaseWidth,46,23);text(scene.phase||'LEVEL 1',421,190,24);
+    pill(191,219,223,55,25);pill(432,219,223,55,25);
+    text('✿',218,247,36,'#d99a24');text('PURL',278,247,22,'#c51640');text(scene.counts[0]+' / 3',361,247,24);
+    text('✿',458,247,36,'#d99a24');text('LOOP',519,247,22,'#067e8d');text(scene.counts[1]+' / 3',603,247,24);
+    const wide=scene.id==='finish';pill(wide?195:245,285,wide?451:354,52,24);
+    text(scene.objective,421,312,wide?29:19);
+    if(scene.id==='finish'){pill(269,350,306,42,21);text('1st PURL',354,371,21,'#c51640');text('·',422,371,21);text('2nd LOOP',492,371,21,'#067e8d');}
+    pill(750,43,67,73,28);ctx.fillStyle='#643419';roundRect(770,64,7,31,3);ctx.fill();roundRect(785,64,7,31,3);ctx.fill();
+    if(scene.action){
+      const y=1637,h=100;
+      pill(205,y,435,h,33);const g=ctx.createLinearGradient(0,y,0,y+h);g.addColorStop(0,'#03a7ae');g.addColorStop(1,'#007685');ctx.fillStyle=g;roundRect(224,y+16,397,h-31,27);ctx.fill();ctx.strokeStyle='#83dfd1';ctx.lineWidth=2;ctx.stroke();
+      text(scene.action,423,y+48,32,'#fff8e5');
+    }
+    if(scene.callout)drawCallout(scene.callout);
+    pill(55,1741,732,73,27);text('SAVED REWARDS',87,1778,17,'#603319',700,'left');
+    ctx.fillStyle='#e8ceb2';roundRect(251,1763,172,29,14);ctx.fill();ctx.fillStyle='#f24c7d';roundRect(253,1765,91,25,12);ctx.fill();ctx.strokeStyle='#ff9db0';ctx.lineWidth=2;ctx.stroke();
+    for(const x of [463,519]){ctx.fillStyle='#e8ceb2';ctx.beginPath();ctx.arc(x,1777,18,0,Math.PI*2);ctx.fill();}
+    ctx.fillStyle='#aaa398';roundRect(570,1753,194,48,22);ctx.fill();ctx.lineWidth=2;ctx.strokeStyle='#cdc5b7';ctx.stroke();
+    ctx.strokeStyle='#fffaf0';ctx.lineWidth=3;ctx.beginPath();ctx.arc(602,1771,6,Math.PI,0);ctx.stroke();ctx.fillStyle='#fffaf0';roundRect(592,1773,20,18,3);ctx.fill();text('CASH OUT',682,1779,19,'#fffaf0',600);
+    text('VISUAL FOUNDATION · NO LIVE REWARDS',785,1844,11,'#fff8df',500,'right');
+  }
+  async function paint() {
+    const ticket=++version, scene=scenes[state.index];
+    if(!scene)return;
+    state.loading=true;state.error=null;state.rendered=false;
+    stage.setAttribute('aria-busy','true');$('stage-message').hidden=false;$('stage-message').className='stage-message';$('stage-message').textContent='Loading this scene…';
+    updateLabels();
+    try {
+      const path=state.mode==='approved'?scene.approved:scene.background;
+      const base=await loadImage(path);
+      if(ticket!==version)return;
+      if(state.mode!=='layered'){
+        image.src=base.src;image.alt=scene.title+' — '+(state.mode==='approved'?'unchanged approved artwork':'clean scenery plate');image.hidden=false;canvas.hidden=true;
+      }else{
+        const names=new Set(scene.entities.filter(e=>state.layers[e.kind]).map(e=>e.asset));
+        if(state.layers.hud)names.add('ui-atlas');
+        const pairs=await Promise.all([...names].map(async name=>[name,await loadImage(atlasPath(name))]));
+        if(ticket!==version)return;
+        loaded=Object.fromEntries(pairs);ctx.clearRect(0,0,W,H);ctx.drawImage(base,0,0,W,H);
+        if(scene.id==='recovery'&&state.layers.actors)drawRecoveryGlow();
+        for(const e of [...scene.entities].sort((a,b)=>(a.z||0)-(b.z||0))){
+          if(!state.layers[e.kind])continue;
+          if(e.id.includes('thread'))glow(e.x,e.y-e.width*.5,e.width*1.25);
+          cropDraw(e.asset,e.frame,e.x,e.y,e.width,'bottom',e.rotation||0);
+        }
+        if(scene.id==='snagged'&&state.layers.actors)drawSnagLoop();
+        if(state.layers.hud)drawHUD(scene);
+        canvas.setAttribute('aria-label',scene.title+' — layered composition with '+Object.keys(state.layers).filter(k=>state.layers[k]).join(', '));canvas.hidden=false;image.hidden=true;
+      }
+      state.rendered=true;state.loading=false;$('stage-message').hidden=true;stage.setAttribute('aria-busy','false');
+      stage.classList.remove('scene-enter');void stage.offsetWidth;stage.classList.add('scene-enter');
+    }catch(error){
+      if(ticket!==version)return;
+      state.error=error.message;state.loading=false;stopWalkthrough();image.hidden=true;canvas.hidden=true;$('stage-message').textContent=error.message;$('stage-message').className='stage-message error';$('stage-message').hidden=false;stage.setAttribute('aria-busy','false');
+    }
+    window.dispatchEvent(new CustomEvent('wishweave:render',{detail:getState()}));
+  }
+  function render(){latestRender=paint();return latestRender;}
+  function updateLabels(){
+    const s=scenes[state.index],n=String(state.index+1).padStart(2,'0');
+    $('stage-kicker').textContent=n+' / '+s.location.toUpperCase();$('mode-badge').textContent=modeCopy[state.mode][0];$('mode-help').textContent=modeCopy[state.mode][1];$('page-count').textContent=n+' / '+String(scenes.length).padStart(2,'0');
+    $('scene-location').textContent=n+' · '+s.location.toUpperCase();$('scene-title').textContent=s.title;$('scene-description').textContent=s.description;$('scene-direction').textContent=s.direction;
+    $('beat-before').textContent=s.before;$('beat-after').textContent=s.after;
+    $('purl-count').textContent=s.counts[0]+' / 3 threads';$('loop-count').textContent=s.counts[1]+' / 3 threads';
+    $('previous').disabled=previousIndex()<0;$('next').disabled=nextIndex()<0;
+    for(const b of document.querySelectorAll('[data-scene]')){const on=Number(b.dataset.scene)===state.index;if(on)b.setAttribute('aria-current','step');else b.removeAttribute('aria-current');}
+    for(const b of document.querySelectorAll('[data-mode]'))b.setAttribute('aria-pressed',String(b.dataset.mode===state.mode));
+    $('layer-toggles').hidden=state.mode!=='layered';
+    for(const b of document.querySelectorAll('[data-route]'))b.setAttribute('aria-pressed',String(b.dataset.route===state.route));
+    $('route-help').textContent=state.route==='hit'?'The approved example shows one lost thread, then a safe recovery.':'A successful dodge keeps Purl at 2 / 3. The guided tour skips the hit and recovery images and continues to the butterfly.';
+    $('dodge-next').hidden=!(s.id==='tassels'&&state.route==='dodge');
+  }
+  function routeIndices(){return state.route==='dodge'?[0,1,2,5,6]:scenes.map((_,i)=>i);}
+  function nextIndex(){return routeIndices().find(i=>i>state.index)??-1;}
+  function previousIndex(){return routeIndices().filter(i=>i<state.index).at(-1)??-1;}
+  function setScene(value){
+    const index=typeof value==='string'?scenes.findIndex(s=>s.id===value):Number(value);
+    if(!Number.isInteger(index)||index<0||index>=scenes.length)throw new Error('Unknown scene: '+value);
+    if(index===3||index===4)state.route='hit';
+    state.index=index;return render();
+  }
+  function setRoute(route){if(!['hit','dodge'].includes(route))throw new Error('Unknown story route: '+route);state.route=route;if(route==='dodge'&&(state.index===3||state.index===4))state.index=5;return render();}
+  function setMode(mode){if(!modeCopy[mode])throw new Error('Unknown mode: '+mode);state.mode=mode;return render();}
+  function setLayer(layer,enabled){if(!(layer in state.layers))throw new Error('Unknown layer: '+layer);state.layers[layer]=Boolean(enabled);const checkbox=document.querySelector('[name="'+layer+'"]');if(checkbox)checkbox.checked=state.layers[layer];return render();}
+  async function revealUserSelection(pending){
+    await pending;
+    // The mobile controls sit below the artwork. Bring a user's new selection
+    // into view without changing the scroll position for programmatic authoring.
+    if(window.innerWidth<=620&&state.rendered){
+      stage.scrollIntoView({block:'start',behavior:window.matchMedia('(prefers-reduced-motion: reduce)').matches?'auto':'smooth'});
+    }
+  }
+  function stopWalkthrough(){
+    clearInterval(timer);timer=null;state.autoplay=false;$('autoplay').setAttribute('aria-pressed','false');$('autoplay').innerHTML='<span aria-hidden="true">▷</span> Start guided visual tour';
+  }
+  function startWalkthrough(){
+    stopWalkthrough();if(state.index===scenes.length-1)setScene(0);
+    state.autoplay=true;$('autoplay').setAttribute('aria-pressed','true');$('autoplay').innerHTML='<span aria-hidden="true">Ⅱ</span> Pause guided visual tour';
+    timer=setInterval(()=>{if(state.loading)return;const next=nextIndex();if(next<0){stopWalkthrough();return;}setScene(next);},8000);
+  }
+  function getState(){return {...state,layers:{...state.layers},scene:scenes[state.index]?.id,routeScenes:routeIndices().map(i=>scenes[i].id),designSize:[W,H],gameplayImplemented:false,payoutsEnabled:false};}
+  function fitStage(){
+    const wrap=stage.parentElement;
+    const scale=Math.min(wrap.clientWidth/W,wrap.clientHeight/H);
+    stage.style.width=(W*scale)+'px';stage.style.height=(H*scale)+'px';
+  }
+  scenes.forEach((s,i)=>{const b=document.createElement('button');b.type='button';b.className='scene-tab';b.dataset.scene=i;b.innerHTML='<span class="tab-index">'+String(i+1).padStart(2,'0')+'</span><span class="tab-name">'+s.label+'</span><span class="tab-arrow" aria-hidden="true">↗</span>';b.addEventListener('click',()=>{stopWalkthrough();revealUserSelection(setScene(i));});$('scene-tabs').append(b);});
+  $('previous').addEventListener('click',()=>{stopWalkthrough();const previous=previousIndex();if(previous>=0)revealUserSelection(setScene(previous));});
+  $('next').addEventListener('click',()=>{stopWalkthrough();const next=nextIndex();if(next>=0)revealUserSelection(setScene(next));});
+  for(const b of document.querySelectorAll('[data-mode]'))b.addEventListener('click',()=>revealUserSelection(setMode(b.dataset.mode)));
+  for(const input of document.querySelectorAll('.layer-toggles input'))input.addEventListener('change',()=>setLayer(input.name,input.checked));
+  for(const b of document.querySelectorAll('[data-route]'))b.addEventListener('click',()=>{stopWalkthrough();revealUserSelection(setRoute(b.dataset.route));});
+  $('dodge-next').addEventListener('click',()=>{stopWalkthrough();revealUserSelection(setScene('butterfly'));});
+  $('autoplay').addEventListener('click',()=>{if(state.autoplay)stopWalkthrough();else{startWalkthrough();revealUserSelection(latestRender);}});
+  document.addEventListener('keydown',event=>{
+    if(['INPUT','TEXTAREA','SELECT'].includes(event.target.tagName)||event.altKey||event.ctrlKey||event.metaKey)return;
+    if(event.key==='ArrowRight'&&nextIndex()>=0){event.preventDefault();stopWalkthrough();revealUserSelection(setScene(nextIndex()));}
+    if(event.key==='ArrowLeft'&&previousIndex()>=0){event.preventDefault();stopWalkthrough();revealUserSelection(setScene(previousIndex()));}
+  });
+  document.addEventListener('visibilitychange',()=>{if(document.hidden)stopWalkthrough();});
+  if(window.ResizeObserver)new ResizeObserver(fitStage).observe(stage.parentElement);
+  window.addEventListener('resize',fitStage);fitStage();
+  window.WishweaveVisual={setScene,setMode,setLayer,setRoute,getState,startWalkthrough,stopWalkthrough,pause:stopWalkthrough,whenReady:()=>latestRender,scenes,designSize:[W,H]};
+  if(!scenes.length){$('stage-message').textContent='No scene data found. Check that scene-data.js is next to index.html.';return;}
+  render();
+})();

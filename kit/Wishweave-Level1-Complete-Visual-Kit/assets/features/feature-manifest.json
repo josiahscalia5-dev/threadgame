@@ -1,0 +1,206 @@
+{
+  "version": 1,
+  "images": {
+    "feature-atlas": {
+      "file": "features/feature-atlas.png",
+      "width": 1536,
+      "height": 1024,
+      "mode": "RGBA",
+      "frames": [
+        [
+          157,
+          91,
+          205,
+          358
+        ],
+        [
+          519,
+          69,
+          505,
+          401
+        ],
+        [
+          1034,
+          50,
+          470,
+          420
+        ],
+        [
+          115,
+          530,
+          364,
+          435
+        ],
+        [
+          536,
+          584,
+          494,
+          317
+        ],
+        [
+          1094,
+          524,
+          397,
+          439
+        ]
+      ],
+      "poses": [
+        "stitch-loop",
+        "carpet-rolled",
+        "carpet-flat",
+        "butterfly-closed",
+        "butterfly-open",
+        "butterfly-carrying-spool"
+      ],
+      "anchors": [
+        [
+          0.5,
+          1
+        ],
+        [
+          0.5,
+          1
+        ],
+        [
+          0.5,
+          1
+        ],
+        [
+          0.5,
+          1
+        ],
+        [
+          0.5,
+          1
+        ],
+        [
+          0.5,
+          1
+        ]
+      ],
+      "alphaMin": 0,
+      "alphaMax": 254,
+      "fullyTransparentFraction": 0.5537967681884766,
+      "frameAlphaThreshold": 8,
+      "framePaddingPx": 2
+    }
+  },
+  "individual": {
+    "stitch-loop": {
+      "file": "features/stitch-loop.png",
+      "width": 205,
+      "height": 358,
+      "mode": "RGBA",
+      "atlasFrame": 0,
+      "sourceRect": [
+        157,
+        91,
+        205,
+        358
+      ],
+      "anchor": [
+        0.5,
+        1.0
+      ],
+      "fullyTransparentFraction": 0.1843302902302766
+    },
+    "carpet-rolled": {
+      "file": "features/carpet-rolled.png",
+      "width": 505,
+      "height": 401,
+      "mode": "RGBA",
+      "atlasFrame": 1,
+      "sourceRect": [
+        519,
+        69,
+        505,
+        401
+      ],
+      "anchor": [
+        0.5,
+        1.0
+      ],
+      "fullyTransparentFraction": 0.22445371719216808
+    },
+    "carpet-flat": {
+      "file": "features/carpet-flat.png",
+      "width": 470,
+      "height": 420,
+      "mode": "RGBA",
+      "atlasFrame": 2,
+      "sourceRect": [
+        1034,
+        50,
+        470,
+        420
+      ],
+      "anchor": [
+        0.5,
+        1.0
+      ],
+      "fullyTransparentFraction": 0.22052684903748734
+    },
+    "butterfly-closed": {
+      "file": "features/butterfly-closed.png",
+      "width": 364,
+      "height": 435,
+      "mode": "RGBA",
+      "atlasFrame": 3,
+      "sourceRect": [
+        115,
+        530,
+        364,
+        435
+      ],
+      "anchor": [
+        0.5,
+        1.0
+      ],
+      "fullyTransparentFraction": 0.3829986105848175
+    },
+    "butterfly-open": {
+      "file": "features/butterfly-open.png",
+      "width": 494,
+      "height": 317,
+      "mode": "RGBA",
+      "atlasFrame": 4,
+      "sourceRect": [
+        536,
+        584,
+        494,
+        317
+      ],
+      "anchor": [
+        0.5,
+        1.0
+      ],
+      "fullyTransparentFraction": 0.28986321664389075
+    },
+    "butterfly-carrying-spool": {
+      "file": "features/butterfly-carrying-spool.png",
+      "width": 397,
+      "height": 439,
+      "mode": "RGBA",
+      "atlasFrame": 5,
+      "sourceRect": [
+        1094,
+        524,
+        397,
+        439
+      ],
+      "anchor": [
+        0.5,
+        1.0
+      ],
+      "fullyTransparentFraction": 0.40998835227761743
+    }
+  },
+  "notes": [
+    "Paths in file are relative to assets/.",
+    "Frame order is fixed: stitch-loop, carpet-rolled, carpet-flat, butterfly-closed, butterfly-open, butterfly-carrying-spool.",
+    "Use explicit frames: no uniform-grid assumption.",
+    "All original alpha channels preserved; individual files are lossless rectangular atlas crops.",
+    "Butterfly carrying spool is one compound sprite; do not add a second gold spool.",
+    "Existing tassel prop is assets/props-atlas.png frame3; existing spool art unchanged."
+  ]
+}

@@ -1,0 +1,14 @@
+{
+  "method": "imagegen derived clean-plate edits; approved originals unchanged",
+  "source_images": {
+    "01-ribbon": "exec-1b24212c-46af-44d4-abe9-3280dbd240e8.png",
+    "02-shortcut": "exec-e8584b60-fee3-4b0d-b99b-ac50c7b336e8.png",
+    "03-tassels": "exec-d71da087-aaba-4fb4-aadf-e1682c5e5bde.png",
+    "04-snagged": "exec-85c94c4d-3b77-43b7-b7a5-e74735d1363c.png",
+    "05-recovery": "exec-85c94c4d-3b77-43b7-b7a5-e74735d1363c.png",
+    "06-butterfly": "exec-3ca4c083-720d-43f4-8c71-6b7dcf6926cc.png",
+    "07-finish": "exec-499d5a2f-f356-4fc6-9dfe-b33ff7234c84.png"
+  },
+  "recovery_plate": "05-recovery is an exact copy of 04-snagged for the same landing",
+  "tassel_plate": "Three blocking tassels removed; plain cords retained. Other decorative tassels remain."
+}

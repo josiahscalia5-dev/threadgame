@@ -1,0 +1,43 @@
+{
+  "approvedScreens": [
+    "01-ribbon.png",
+    "02-shortcut.png",
+    "03-tassels.png",
+    "04-snagged.png",
+    "05-recovery.png",
+    "06-butterfly.png",
+    "07-finish.png"
+  ],
+  "approvedRole": "Immutable exact approved pixels",
+  "cleanPlateFiles": 7,
+  "uniqueCleanPlates": 6,
+  "transparentAtlases": 8,
+  "individualTransparentPNGs": 57,
+  "geometry3DModels": 0,
+  "rigs": 0,
+  "animations": "Pose images and concept keyframes; production motion not implemented",
+  "sceneViewer": "Seven scene visual walkthrough, layer toggles and branching guide",
+  "characterSources": [
+    "purl-rear.png",
+    "loop-rear.png",
+    "snagling-atlas.png"
+  ],
+  "separateSprites": "assets/individual/ and six PNGs directly in assets/features/; see the two local manifests",
+  "fileReferences": {
+    "loop-atlas": "loop-atlas.png",
+    "purl-atlas": "purl-atlas.png",
+    "ui-atlas": "ui-atlas.png",
+    "snagling-atlas": "snagling-atlas.png",
+    "purl-rear": "purl-rear.png",
+    "loop-rear": "loop-rear.png",
+    "props-atlas": "props-atlas.png",
+    "feature-atlas": "features/feature-atlas.png",
+    "background-01-ribbon": "backgrounds/01-ribbon.png",
+    "background-02-shortcut": "backgrounds/02-shortcut.png",
+    "background-03-tassels": "backgrounds/03-tassels.png",
+    "background-04-snagged": "backgrounds/04-snagged.png",
+    "background-05-recovery": "backgrounds/05-recovery.png",
+    "background-06-butterfly": "backgrounds/06-butterfly.png",
+    "background-07-finish": "backgrounds/07-finish.png"
+  }
+}

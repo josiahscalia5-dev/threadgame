@@ -1,0 +1,198 @@
+{
+  "schema": "wishweave.level1.design-route.v1",
+  "status": "design metadata for future gameplay implementation; not a tested runtime route",
+  "approvedReferenceCount": 7,
+  "uniqueCleanPlateCount": 6,
+  "oldMechanicsSuperseded": [
+    "spring-first main task",
+    "hold-to-weave bridge",
+    "golden side-ramp pickup"
+  ],
+  "collectiblesPerRacer": [
+    "coral",
+    "teal",
+    "gold"
+  ],
+  "idPattern": "{racer}.{color}",
+  "statesPerCollectible": [
+    "uncollected",
+    "held",
+    "dropped"
+  ],
+  "raceCompletion": "all three of that racer's unique IDs held and finish trigger reached",
+  "secondPlaceCompletesLevel": true,
+  "targetFirstSuccessfulRunSeconds": [
+    90,
+    150
+  ],
+  "beats": [
+    {
+      "id": "ready",
+      "reference": "approved/01-ribbon.png",
+      "exampleSeconds": [
+        0,
+        5
+      ],
+      "heldBefore": 0,
+      "heldAfter": 0,
+      "next": "ribbon",
+      "connection": "lower start carpet into safe stitch approach"
+    },
+    {
+      "id": "ribbon",
+      "reference": "approved/01-ribbon.png",
+      "exampleSeconds": [
+        5,
+        25
+      ],
+      "interaction": "tap stitch; unfurl coral ribbon; walk to coral spool",
+      "heldBefore": 0,
+      "heldAfter": 1,
+      "pickup": "purl.coral",
+      "next": "ribbon_connector"
+    },
+    {
+      "id": "ribbon_connector",
+      "exampleSeconds": [
+        25,
+        35
+      ],
+      "heldBefore": 1,
+      "heldAfter": 1,
+      "connection": "upper coral ribbon around wooden tower onto shortcut entry landing",
+      "next": "shortcut"
+    },
+    {
+      "id": "shortcut",
+      "reference": "approved/02-shortcut.png",
+      "exampleSeconds": [
+        35,
+        50
+      ],
+      "interaction": "tap stitch; unroll connected carpet; cross",
+      "heldBefore": 1,
+      "heldAfter": 1,
+      "pickup": null,
+      "visibleTealMeaning": "same future purl.teal seen beyond the tassel route; not a shortcut reward",
+      "next": "tassels"
+    },
+    {
+      "id": "tassels",
+      "reference": "approved/03-tassels.png",
+      "exampleSeconds": [
+        50,
+        68
+      ],
+      "connection": "shortcut far landing around tower to tassel approach",
+      "interaction": "tap stitch; raise three tassels; pass and collect teal",
+      "heldBefore": 1,
+      "heldAfter": 2,
+      "pickup": "purl.teal",
+      "next": "snagling_reveal"
+    },
+    {
+      "id": "snagling_reveal",
+      "exampleSeconds": [
+        68,
+        78
+      ],
+      "connection": "collection ledge to broad safe landing; movement controls restored",
+      "heldBefore": 2,
+      "branches": {
+        "dodge": "tapestry_connector",
+        "hit": "snagged"
+      }
+    },
+    {
+      "id": "snagged",
+      "reference": "approved/04-snagged.png",
+      "interaction": "one short ankle tangle; drop most recently held ID onto safe carpet",
+      "heldBefore": 2,
+      "heldAfter": 1,
+      "exampleDroppedId": "purl.teal",
+      "next": "recovery"
+    },
+    {
+      "id": "recovery",
+      "reference": "approved/05-recovery.png",
+      "exampleSeconds": [
+        78,
+        87
+      ],
+      "location": "same broad landing as snagged",
+      "interaction": "touch same dropped thread; restore its identity",
+      "heldBefore": 1,
+      "heldAfter": 2,
+      "restoredId": "purl.teal",
+      "newUniqueReward": false,
+      "next": "tapestry_connector"
+    },
+    {
+      "id": "tapestry_connector",
+      "heldBefore": 2,
+      "heldAfter": 2,
+      "connection": "wide landing around its curve to coral tapestry approach",
+      "next": "butterfly"
+    },
+    {
+      "id": "butterfly",
+      "reference": "approved/06-butterfly.png",
+      "exampleSeconds": [
+        87,
+        108
+      ],
+      "interaction": "tap tapestry stitch; butterfly emerges; delivers gold onto connected terrace; collect",
+      "heldBefore": 2,
+      "heldAfter": 3,
+      "pickup": "purl.gold",
+      "countChangesOn": "pickup, not activation or delivery",
+      "next": "finish"
+    },
+    {
+      "id": "finish",
+      "reference": "approved/07-finish.png",
+      "exampleSeconds": [
+        108,
+        120
+      ],
+      "connection": "short connected carpet sprint to flower-gate terrace",
+      "heldBefore": 3,
+      "heldAfter": 3,
+      "interaction": "open gate; record actual rank; replay",
+      "terminal": true
+    }
+  ],
+  "snaglingTuningProposalsSeconds": {
+    "visibleReactionWindow": 0.55,
+    "hitReaction": 0.5,
+    "postHitImmunity": 1.6
+  },
+  "snaglingRules": {
+    "advanceAlertBanner": false,
+    "attackDuringStitchLock": false,
+    "unavoidableOffscreenAttack": false,
+    "damageEventsPerAttack": 1,
+    "hitWhileHolding": "drop one held identity onto reachable safe ground",
+    "losingLastThreadFails": false,
+    "newHitWhileAlreadyZeroFails": true,
+    "dropExpires": false,
+    "savedRewardsAffected": false
+  },
+  "rival": {
+    "identity": "computer opponent",
+    "independentInventory": true,
+    "mayWin": true,
+    "canTakePlayerRequiredItem": false,
+    "mustUseConnectedRoute": true,
+    "comparableInteractionCosts": true
+  },
+  "deliveryBoundary": {
+    "continuousPlayableGame": false,
+    "rigged3DModels": false,
+    "glbOrFbx": false,
+    "androidApk": false,
+    "realPayoutBackend": false
+  },
+  "earlySnaglingCameo": "Non-attacking visual foreshadowing at shortcut; actual attack occurs only on the broad landing after teal pickup.",
+  "matchedRivalCounts": "Illustrative snapshot values, not synchronized score requirements."
+}
