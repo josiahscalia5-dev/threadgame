@@ -74,8 +74,13 @@
     on(els.loadRetry, function () { H.onLoadRetry && H.onLoadRetry(); });
     on(els.cashout, showCashNote);
 
+    /* Overlay buttons take focus automatically only for keyboard players; on touch a focus ring would just be noise. */
+    let keyboardUser = false;
+    window.addEventListener('keydown', function () { keyboardUser = true; }, true);
+    window.addEventListener('pointerdown', function () { keyboardUser = false; }, true);
+
     function focus(el) {
-      if (!el || !el.focus) return;
+      if (!el || !el.focus || !keyboardUser) return;
       try { el.focus({ preventScroll: true }); } catch (e) { el.focus(); }
     }
 
