@@ -212,12 +212,14 @@ const MOMENTS = {
     await open();
     const res = await page.evaluate(() => {
       const D = window.WishweaveGame.debug, r = D.renderer, out = {};
+      // per-call JS time of renderer.render (canvas work is deferred to the GPU process; the median/p90 of 240 calls
+      // reflects the JS + command recording cost, occasional flush stalls show in max)
       const time = function (label) {
-        const st = D.race.state;
-        for (let i = 0; i < 10; i++) r.render(st, 1 / 60);
-        const t0 = performance.now();
-        for (let i = 0; i < 120; i++) r.render(st, 1 / 60);
-        out[label] = +((performance.now() - t0) / 120).toFixed(2);
+        const st = D.race.state, ts = [];
+        for (let i = 0; i < 20; i++) r.render(st, 1 / 60);
+        for (let i = 0; i < 240; i++) { const t0 = performance.now(); r.render(st, 1 / 60); ts.push(performance.now() - t0); }
+        ts.sort(function (a, b) { return a - b; });
+        out[label] = { med: +ts[120].toFixed(2), p90: +ts[216].toFixed(2), max: +ts[239].toFixed(1) };
       };
       __H.hold(['purl.coral', 'loop.coral']); __H.go('shortcut', 0); __H.adv(0.9); __H.loopAt('shortcut', 717, 687); time('p02-ready');
       __H.go('tassels', 0); __H.adv(0.9); D.tap('tassels'); __H.adv(0.4); time('p03-lift');
