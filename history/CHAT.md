@@ -2176,3 +2176,17 @@ Yes
 
 - _tool Bash_: Read ghost/roll canvases and Purl frame metadata
 
+
+**Claude:** I have the details I need. Checking the p01 loop position and where `touch-action` is set:
+
+
+- _tool Bash_: Check p01 stitch, touch-action and render script list
+
+- _tool Bash_: Read touch-action rule context and Purl frame pivots
+
+
+**Claude:** `#game` applies `touch-action: none` to the whole game area, HUD included. Your prompt asks for this on the canvas only. Checking how the HUD and the page handle touches before I move it:
+
+
+- _tool Bash_: Check pointer-events, overscroll and viewport settings
+
