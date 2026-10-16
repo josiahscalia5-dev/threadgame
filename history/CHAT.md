@@ -3259,3 +3259,9 @@ continue and proceed where we're at. But like I said, can you validate to me whe
 
 - _tool Edit_: /home/user/threadgame/game/src/core/route.js
 
+
+**Claude:** Now Loop's AI. Every random choice is rolled once per race from the seed, so nothing the player does affects his decisions:
+
+
+- _tool Write_: /home/user/threadgame/game/src/sim/loop-ai.js
+
