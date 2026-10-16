@@ -38,6 +38,7 @@
 
   function fmtTime(t) {
     if (t == null || !isFinite(t)) return '—';
+    t = Math.round(Math.max(0, t) * 10) / 10;
     const m = Math.floor(t / 60);
     const s = t - m * 60;
     const ss = s.toFixed(1);
