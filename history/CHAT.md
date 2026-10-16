@@ -2035,3 +2035,9 @@ Yes
 
 - _tool Bash_: Read race.js input handling and debug helpers
 
+
+**Claude:** I have what I need. Writing the simulation changes to `stitches.js`:
+
+
+- _tool Bash_: Add pull interaction and step-counted settle to stitches.js
+

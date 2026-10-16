@@ -9,7 +9,16 @@
      butterfly  phase emerge → fly → place (`butterflyEmerge/Fly/Place`); at the end of `place` the gold item on
                 that segment becomes available (3/3 happens only when Purl picks it up)
    Extra state fields: `elapsed` (s since the tap), `openedAt` (race time when it opened), `phaseT` (butterfly:
-   0..1 within the current phase), `seg`/`f`/`readyF` (where Purl's stop is). */
+   0..1 within the current phase), `seg`/`f`/`readyF` (where Purl's stop is), `settle` (s since it opened, counted
+   by sim steps so it also runs while the tutorial hold freezes the race clock).
+
+   PULL stitches (level `interaction: 'pull'`, the opening ribbon — kit/pull-stitch, docs/PULL-STITCH.md):
+   TOUCH → PULL → OPEN instead of a tap. While `ready`, input {type:'pull', target, phase, amount}:
+     start   grips the gold loop (`gripping` = true); `pullBase` = the progress kept from earlier gestures
+     move    `amount` = this gesture's largest downward drag / the drag target (0..1, never decreases within a
+             gesture); `pull` = max(pull, pullBase + amount). At 1 the knot releases: `animating` (the unfurl)
+     end / cancel   releases the grip; partial `pull` is kept, so a new touch continues from it
+   Taps on a pull stitch do nothing. Completion happens once: later pulls/taps are ignored. Opening awards nothing. */
 (function (WW) {
   'use strict';
   const sim = WW.sim = WW.sim || {};
@@ -35,7 +44,9 @@
       const stop = seg.stops.filter(function (s) { return s.stitch === id; })[0];
       if (!stop) throw new Error('WW.sim: no stop event for stitch "' + id + '" on plate ' + seg.plate);
       const s = { id: id, kind: def.kind || id, state: 'idle', t: 0, elapsed: 0, tappedAt: null, openedAt: null,
-                  seg: seg.id, segIndex: segIndex, f: stop.f, readyF: stop.readyF || 0 };
+                  settle: 0, seg: seg.id, segIndex: segIndex, f: stop.f, readyF: stop.readyF || 0,
+                  interaction: def.interaction || 'tap', tutorial: !!def.tutorial };
+      if (s.interaction === 'pull') { s.pull = 0; s.pullBase = 0; s.gripping = false; s.gestures = 0; }
       if (s.kind === 'tassels') s.lifts = [0, 0, 0];
       if (s.kind === 'butterfly') { s.phase = 'dormant'; s.phaseT = 0; }
       out[id] = s;
@@ -45,7 +56,7 @@
 
   function passable(ctx, id) {
     const s = ctx.state.stitches[id];
-    return !!s && s.state === 'open' && ctx.state.time >= s.openedAt + ctx.T.routeSettle - 1e-9;
+    return !!s && s.state === 'open' && s.settle >= ctx.T.routeSettle - 1e-9;
   }
 
   /* True while a stitch on Purl's current segment still holds him (ready/animating/settling, stop ahead):
@@ -98,6 +109,7 @@
     const st = ctx.state, p = st.purl;
     Object.keys(st.stitches).forEach(function (id) {
       const s = st.stitches[id];
+      if (s.state === 'open' && s.settle < ctx.T.routeSettle) s.settle += dt;
       if (s.state === 'idle' && st.mode === 'running' && p.seg === s.segIndex && p.f >= s.readyF - 1e-9 &&
           p.f <= s.f + 1e-6) {
         s.state = 'ready';
@@ -109,7 +121,7 @@
   /* A tap from the renderer's hit test. Returns true when it started the interaction. */
   function tap(ctx, id) {
     const s = ctx.state.stitches[id];
-    if (!s || s.state !== 'ready') return false;
+    if (!s || s.state !== 'ready' || s.interaction === 'pull') return false;
     s.state = 'animating';
     s.tappedAt = ctx.state.time;
     s.elapsed = 0;
@@ -119,5 +131,49 @@
     return true;
   }
 
-  sim.stitches = { create: create, update: update, tap: tap, passable: passable, locked: locked, totalTime: totalTime };
+  /* A pull gesture on a pull stitch (see the header). Returns true when it changed the stitch. */
+  function pull(ctx, id, phase, amount) {
+    const s = ctx.state.stitches[id];
+    if (!s || s.interaction !== 'pull') return false;
+    if (phase === 'start') {
+      if (s.state !== 'ready' || s.gripping) return false;
+      s.gripping = true;
+      s.pullBase = s.pull;
+      s.gestures += 1;
+      ctx.emit({ type: 'pull-start', id: id, pull: s.pull });
+      return true;
+    }
+    if (!s.gripping || s.state !== 'ready') return false;
+    let changed = false;
+    if (amount > 0) {
+      const p = WW.util.clamp(s.pullBase + amount, 0, 1);
+      if (p > s.pull + 1e-9) { s.pull = p; changed = true; }
+    }
+    if (s.pull >= 1 - 1e-9) {
+      s.pull = 1;
+      s.gripping = false;
+      s.state = 'animating';
+      s.tappedAt = ctx.state.time;
+      s.elapsed = 0;
+      s.t = 0;
+      ctx.emit({ type: 'stitch-tap', id: id });
+      ctx.emit({ type: 'pull-complete', id: id });
+      return true;
+    }
+    if (phase === 'end' || phase === 'cancel') {
+      s.gripping = false;
+      ctx.emit({ type: 'pull-release', id: id, pull: s.pull, cancelled: phase === 'cancel' });
+      return true;
+    }
+    return changed;
+  }
+
+  /* Pausing, backgrounding or a lost pointer: let go of any grip (partial progress is kept). */
+  function releaseAll(ctx) {
+    const st = ctx.state.stitches;
+    Object.keys(st).forEach(function (id) { if (st[id].gripping) st[id].gripping = false; });
+  }
+
+  sim.stitches = { create: create, update: update, tap: tap, pull: pull, releaseAll: releaseAll, passable: passable,
+                   locked: locked, totalTime: totalTime };
 })(globalThis.WW = globalThis.WW || {});
