@@ -58,25 +58,25 @@ You've hit your session limit · resets 7pm (UTC)
 
 ## Route data for p06 and p07
 
-- transcript: `history/transcripts/370de19d-9b32-5c31-ac39-d89d7478db67/subagents/agent-aff5e4bcb58123cca.jsonl` (356 entries)
+- transcript: `history/transcripts/370de19d-9b32-5c31-ac39-d89d7478db67/subagents/agent-aff5e4bcb58123cca.jsonl` (358 entries)
 
 _(no message yet)_
 
-## UI: HUD, input, loop, lifecycle
-
-- transcript: `history/transcripts/370de19d-9b32-5c31-ac39-d89d7478db67/subagents/agent-ae9506e4d1065977a.jsonl` (261 entries)
-
-The cream-mask detector excludes our gold rim, so I'll compare outer extents visually with a 50/50 blend overlay instead.
-
 ## Renderer: plates, camera, actors, effects
 
-- transcript: `history/transcripts/370de19d-9b32-5c31-ac39-d89d7478db67/subagents/agent-aee076b7546be423f.jsonl` (203 entries)
+- transcript: `history/transcripts/370de19d-9b32-5c31-ac39-d89d7478db67/subagents/agent-aee076b7546be423f.jsonl` (207 entries)
 
 Now a side-by-side comparison helper, then the first capture.
 
 ## Simulation: race rules and Loop AI
 
-- transcript: `history/transcripts/370de19d-9b32-5c31-ac39-d89d7478db67/subagents/agent-ae84357f8296ab86f.jsonl` (159 entries)
+- transcript: `history/transcripts/370de19d-9b32-5c31-ac39-d89d7478db67/subagents/agent-ae84357f8296ab86f.jsonl` (171 entries)
 
 _(no message yet)_
+
+## UI: HUD, input, loop, lifecycle
+
+- transcript: `history/transcripts/370de19d-9b32-5c31-ac39-d89d7478db67/subagents/agent-ae9506e4d1065977a.jsonl` (268 entries)
+
+DOM centres match the approved targets to <0.5 design px. Now let me compare text glyph extents inside the pills (font metrics may shift text).
 
