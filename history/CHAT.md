@@ -3817,3 +3817,11 @@ First I'll check whether the files you just sent are the same ones I already hav
 
 - _tool Bash_: Use full-res tower strip and capture the new transition
 
+- _tool Bash_: Build the transition before/after comparison sheet
+
+- _tool Read_: /home/user/threadgame/docs/checkpoints/connected/03-transition-before-after.jpg
+
+
+
+- _tool Bash_: Run tests and confirm GitHub has the changes
+
