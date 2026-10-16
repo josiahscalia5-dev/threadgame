@@ -3964,3 +3964,11 @@ Next I'll find out exactly why the game doesn't fill your phone's screen.
 
 - _tool Bash_: Read WebView client and lifecycle code
 
+
+
+- _tool Bash_: Make the Android app full screen and pass safe insets
+
+
+
+- _tool Bash_: Capture the full-screen version and compare
+
