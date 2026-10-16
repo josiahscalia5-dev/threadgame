@@ -62,8 +62,12 @@
     dropPickupLane: 0.6,          // |lane - dropLane| must be below this to recover a drop
     cueRepeatAfter: 4,
 
-    loopSpeed: 5.0,
-    loopSpeedJitter: 0.04,
+    loopSpeed: 5.5,
+    loopSpeedJitter: 0.04,        // per course section
+    loopBranchChance: 0.5,        // chance Loop takes the side loop
+    loopStumbleChance: 0.5,       // chance of one visible stumble somewhere in the race
+    loopStumbleSpeed: 0.3,        // speed multiplier while stumbling (loopStumble s)
+    loopLine: [-0.9, 0.9],        // his preferred lateral line, rolled per race
     loopReact: [0.45, 1.3],
     loopHesitateChance: 0.22,
     loopHesitate: [0.5, 1.2],
