@@ -15,7 +15,14 @@
                                      WW.LEVEL, loop/return `from`/`to` are segment ids per §12.3)
      items[id].segIndex/size/homeSeg/homeF, stitches[id].elapsed/openedAt/phaseT/seg/f/readyF,
      loopTasks[key] = { key, kind, seg, segIndex, f, x, y, state: 'pending'|'react'|'hesitate'|'active'|'done', t }
-   `purl.airborne` is true for the whole jump; contact rules use jumpH. */
+   `purl.airborne` is true for the whole jump; contact rules use jumpH.
+
+   TUTORIAL HOLD (the first lesson, kit/pull-stitch): while Purl waits at a stop whose stitch has `tutorial: true`
+   (the opening ribbon pull) and it is not yet passable, `state.tutorial = {id, stage}` with stage
+   'touch' | 'pull' | 'unfurl' | 'settle'. During the hold the race clock does not advance and neither racer's
+   route progress, tasks or timers move (Loop keeps his exact position and speed; the renderer shows both idle).
+   Only the stitch itself (gesture, unfurl, settle) advances. When the route is ready the hold ends and both
+   racers continue from where they were. Outside the hold nothing changes: Loop stays fully autonomous. */
 (function (WW) {
   'use strict';
   const sim = WW.sim = WW.sim || {};
@@ -192,7 +199,7 @@
       snagling: sim.snagling.create(ctx),
       gate: { state: 'closed', t: 0 },
       objective: seg0.def.objective || '', phase: seg0.def.phase || '',
-      message: null, hint: null, transition: null, result: null,
+      message: null, hint: null, transition: null, result: null, tutorial: null,
       stats: { hits: 0, dodges: 0, recoveries: 0, taps: 0 }
     };
     st.items = sim.inventory.create(ctx);
@@ -210,7 +217,7 @@
         if (st.mode === 'intro') { st.mode = 'countdown'; st.countdown = T.countdown; }
         return st.mode;
       },
-      pause: function (reason) { st.paused = true; st.pauseReason = reason || 'user'; },
+      pause: function (reason) { st.paused = true; st.pauseReason = reason || 'user'; sim.stitches.releaseAll(ctx); },
       resume: function () { st.paused = false; st.pauseReason = null; },
       debug: makeDebug(ctx)
     };
@@ -234,6 +241,13 @@
       return;
     }
     if (st.mode === 'running') {
+      if (tutorialHold(ctx)) {
+        // First lesson: the race clock and both racers' progress stand still; only the stitch moves.
+        sim.stitches.update(ctx, dt);
+        tutorialHold(ctx);
+        updateProgress(ctx);
+        return;
+      }
       st.time += dt;
       expire(ctx);
       sim.stitches.update(ctx, dt);
@@ -263,6 +277,22 @@
       if (st.gate.t >= 1) st.gate.state = 'open';
     }
     updateProgress(ctx);
+  }
+
+  /* Sets state.tutorial and returns true while the first-lesson hold applies (see the header). */
+  function tutorialHold(ctx) {
+    const st = ctx.state, p = st.purl;
+    let t = null;
+    if (p.waitingFor && p.finishTime === null && !st.transition) {
+      const s = st.stitches[p.waitingFor];
+      if (s && s.tutorial && s.segIndex === p.seg && !sim.stitches.passable(ctx, s.id)) {
+        const stage = s.state === 'open' ? 'settle' : s.state === 'animating' ? 'unfurl' :
+          (s.gripping || s.pull > 0) ? 'pull' : 'touch';
+        t = { id: s.id, stage: stage };
+      }
+    }
+    st.tutorial = t;
+    return !!t;
   }
 
   function expire(ctx) {
@@ -525,6 +555,13 @@
       sim.stitches.tap(ctx, ev.target);
       return;
     }
+    if (ev.type === 'pull') {
+      if (sim.stitches.pull(ctx, ev.target, ev.phase, +ev.amount || 0)) {
+        if (ev.phase === 'start') st.stats.pulls = (st.stats.pulls || 0) + 1;
+        tutorialHold(ctx);
+      }
+      return;
+    }
     if (ev.type !== 'swipe' || p.finishTime !== null || p.failAt !== null) return;
     if (ev.dir === 'left' || ev.dir === 'right') {
       const special = st.transition && st.transition.kind !== 'connector';
@@ -581,6 +618,8 @@
         sim.stitches.update(ctx, 0);
         if (s.state !== 'open') { s.state = 'animating'; }
         s.openedAt = ctx.state.time - ctx.T.routeSettle;
+        s.settle = ctx.T.routeSettle;
+        if (s.interaction === 'pull') { s.pull = 1; s.gripping = false; }
         return s;
       },
       setLoopForm: function (form) { ctx.state.loop.form = form; return form; },
