@@ -2868,3 +2868,19 @@ I'll start by saving a recoverable checkpoint of the current game. Then I'll unp
 
 - _tool Bash_: Fetch three.js r147 via npm pack and extract the build
 
+- _tool Bash_: Vendor three.min.js r147 into game/vendor with license
+
+
+**Claude:** The 3D library is in place (`game/vendor/three.min.js`, MIT licence, checksum recorded). Updating the task list for the new direction:
+
+
+- _tool TaskUpdate_: Superseded by the Connected World package (user redirected 18:37 UTC). Plate-based M2 state preserved at checkpoint commit 635b772.
+
+- _tool TaskUpdate_: SDK installed, Maven mirror works, APK builds (8.3 MiB) — toolchain verified; milestone APKs are built under the new tasks.
+
+- _tool TaskCreate_: Four parallel investigations (engine, kit code, GLB/route, art) → docs/CONNECTED-WORLD-PLAN.md: root cause of the wipe with evidence, keep/replace table, renderer scope and reuse plan.
+
+- _tool TaskCreate_: WebGL (three r147) world from route.json/GLB with crochet materials; 3D crochet Purl/Loop rigs with distance-driven gait; continuous-route sim (steer, branch, jump, brake toggle, pause, Loop AI); kit 
+
+- _tool TaskCreate_: Uncut normal + debug-geometry recordings from one commit showing left/right, jump, brake with Loop passing, resume, opening bend, entry into the next area; 720x1602 + narrow viewport; APK; honest repo
+
