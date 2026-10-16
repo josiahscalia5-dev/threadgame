@@ -2237,3 +2237,9 @@ Yes
 
 - _tool Bash_: Debug: start game, advance, print targets and errors
 
+
+**Claude:** The target is there; `snap()` in the e2e library simply drops the new `kind` field. Fixing that, and adding a step-count guard so the wait loop can't spin forever:
+
+
+- _tool Bash_: Fix snap target kind and rerun the pull e2e
+
