@@ -3302,3 +3302,9 @@ continue and proceed where we're at. But like I said, can you validate to me whe
 
 - _tool Bash_: Run the full unit test suite
 
+
+**Claude:** The new tests caught real jumps in position: 24 m/s in one frame (about a 0.4 m pop) somewhere in the race, and 15 m/s around the side loop. I'll find exactly where they happen.
+
+
+- _tool Bash_: Locate per-step position jumps in the sim
+
