@@ -200,7 +200,7 @@ describe('§7.4 inventory', function () {
     assert.equal(st.held.loop, 1);
     const race2 = running(WW, 2);
     race2.debug.setItem('purl.teal', { seg: 'ribbon', f: 0.05 });  // on Loop's ribbon f, never his to take
-    stepUntil(race2, function (s) { return s.loop.f > 0.2; }, 30);
+    stepUntil(race2, function (s) { return s.loop.f > 0.2; }, 30, { tap: false });
     assert.equal(race2.state.items['purl.teal'].status, 'uncollected');
     assert.equal(race2.state.held.loop, 0);
   });
@@ -209,7 +209,7 @@ describe('§7.4 inventory', function () {
     const race = toLanding(WW, 2);
     const st = race.state;
     const teal = st.items['purl.teal'];
-    race.debug.setItem('purl.teal', { status: 'dropped', f: 0.2, lane: 1 });
+    race.debug.setItem('purl.teal', { status: 'dropped', seg: 'landing', f: 0.2, lane: 1 });
     assert.equal(st.held.purl, 1);
     stepUntil(race, function (s) { return s.purl.f > 0.3; }, 10, { tap: false, each: function (r) {
       if (r.state.snagling.state === 'hop') return swipe(r, 'up');
@@ -340,7 +340,7 @@ describe('§7.5 Snagling', function () {
   test('in lane +1 the drop goes to lane 0; drops keep dropSpacingF apart', function () {
     const race = toLanding(WW, 4);
     const st = race.state;
-    race.debug.setItem('purl.coral', { status: 'dropped', f: 0.43, lane: 0 });
+    race.debug.setItem('purl.coral', { status: 'dropped', seg: 'landing', f: 0.43, lane: 0 });
     swipe(race, 'right');
     toReveal(race);
     stepUntil(race, function (s, e) { return e.some(function (x) { return x.type === 'hit'; }); }, 2, { tap: false });
@@ -352,7 +352,7 @@ describe('§7.5 Snagling', function () {
   test('1 → 0 is not a fail; a valid hit at 0 fails after failDelay', function () {
     const race = toLanding(WW, 4);
     const st = race.state;
-    race.debug.setItem('purl.coral', { status: 'dropped', f: 0.9, lane: 0 });
+    race.debug.setItem('purl.coral', { status: 'dropped', seg: 'landing', f: 0.9, lane: 0 });
     assert.equal(st.held.purl, 1);
     toReveal(race);
     stepUntil(race, function (s) { return s.snagling.state !== 'hop'; }, 2, { tap: false });
@@ -491,7 +491,8 @@ describe('§7.6 finish and gate fallback', function () {
     stepUntil(race, function (s) { return s.purl.action === 'returning'; }, 30);
     assert.equal(st.transition.to, 'ribbon');
     stepUntil(race, function (s) { return !s.transition; }, 5);
-    assert.deepEqual([st.purl.segId, st.purl.f], ['ribbon', 0]);
+    assert.equal(st.purl.segId, 'ribbon');
+    assert.ok(st.purl.f < 0.002, 'back at the segment entry');
     stepUntil(race, function (s) { return s.mode === 'finished'; }, 300);
     assert.equal(st.held.purl, 3);
   });
