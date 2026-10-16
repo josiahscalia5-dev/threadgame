@@ -48,6 +48,11 @@
 
     stitch: { id: 'butterfly', x: 137, y: 995, r: 72 },
 
+    /* Butterfly points use the feat.butterfly-* bottom-centre pivot: [x, y, w] = bottom-centre and sprite width; rot in
+       radians. rest covers the matching outline on the tapestry (outline bbox x 37..182, y 547..765, body axis x ~131).
+       flight: lift off the tapestry, swing right and grow toward the camera through the approved mid-flight pose
+       (445,885 w 268), ending directly above the gold pickup (392,1045) with the bottom 15 px above it.
+       exit: up and away toward the distant flower gate, leaving the plate at the top right. */
     butterfly: {
       rest: { x: 113, y: 712, w: 168, rot: 0 },
       flight: [[113, 712, 168], [205, 700, 200], [330, 775, 240], [445, 885, 268], [398, 1030, 272]],
