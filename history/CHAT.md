@@ -3414,3 +3414,13 @@ continue and proceed where we're at. But like I said, can you validate to me whe
 
 - _tool Bash_: Update main.js header and capture first 3D frames
 
+
+**Claude:** First real bug: `main.js` passes the start result (the string `'countdown'`) through the events dispatcher. The old renderer ignored it; mine crashed. I'll add a guard, then look at the frames.
+
+
+- _tool Edit_: /home/user/threadgame/game/src/render/renderer.js
+
+- _tool Bash_: Combine first capture frames into a sheet
+
+- _tool Read_: /tmp/claude-0/-home-user-threadgame/3689052e-f35d-5a30-b62d-bdfb14b60d40/scratchpad/cp1/sheet.jpg
+
