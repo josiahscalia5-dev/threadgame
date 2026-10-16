@@ -2399,3 +2399,41 @@ Yes
 
 - _tool TaskUpdate_: 
 
+**Claude:** The Pull Stitch opening now works in the running game. One renderer agent is still building the later scenes; when it reports I'll integrate its work, record the full level, compare all seven approved screens and build the final APK.
+
+The last session stopped at 15:57 UTC on a usage limit. I restarted auto-save on this session's branch, `ccr-207f431c-z9upqo`. It is pushing to GitHub every few seconds, including chat history and agent transcripts. I took your "Yes" as the go-ahead.
+
+**Missing files:** your prompt refers to an update ZIP containing `pull-stitch-approved.png`, `PULL-STITCH-SPEC.md` and three other spec docs, plus the raster cutouts. Only the preview HTML and the prompt arrived. I built from the prompt and the preview's three compressed frames. If you upload the ZIP, I'll check the work against it.
+
+**How the opening plays now:**
+- Purl arrives at the closed carpet and a "Touch the loop" label appears beside a gold loop.
+- Touching it switches to "Pull down". The pull follows your finger downward only, and the target distance scales with screen height (64–110 px).
+- Purl braces and leans back while a gold strand runs to the roll, and the roll climbs slightly.
+- When the pull completes, the knot pops and the carpet unfurls up the tower in 1.3 s.
+- The objective becomes "Collect the coral thread". Opening awards nothing; Purl goes from 0/3 to 1/3 only when he picks up the spool.
+
+**The lesson is fair:** while you learn it, the race clock and both racers stand still. Loop stays exactly where he was and gets no head start. After the opening he races normally. To keep the win rates where they were (72% for a confident player, 38% for a first-timer), I shortened Loop's ribbon route by 10 m, since he no longer gains ground during the lesson.
+
+**Safety and duplicates:** releasing early keeps your progress. Extra fingers are ignored. Pausing or backgrounding mid-pull lets go safely. Repeated touches after completion do nothing, and the pull can never trigger a jump or lane change.
+
+**Tested:**
+- All 58 unit tests pass.
+- The touch-driven lesson script passes 24/24 checks at 412×915, 360×640, 393×852 and 800×1280.
+- A full race with the dodge passes (0→1→2→3, Purl wins).
+- A full race where Snagling hits passes (drop, same-pass recovery, Loop wins seed 2).
+- Everything was tested in Chromium only, not on an Android phone.
+
+**Interim APK:** it builds (8.3 MiB, no internet permission) but is untested on a device. It isn't the final build.
+
+**Where it doesn't match the approved frames:**
+- **Purl's size:** the three frames draw Purl about 1.8× larger than approved screen 1, while the background and Loop are unchanged. As your prompt asked, I kept the screen-1 size and camera.
+- **Pull pose:** the frames show Purl's arms raised overhead. There's no raised-arms back-view art, so he braces in his crouch pose with the strand at his right hand. One new pull pose would close this gap.
+- **Roll:** it moves only a little during the drag. Moving it further turns it sideways at the bend in the ramp; the unfurl does the rest.
+
+The comparison sheet and the touch recording are the two files I sent above. Full notes are in `docs/PULL-STITCH.md`.
+
+Files are in `docs/checkpoints/`:
+- 2026-10-16-pull-stitch-compare.jpg
+- 2026-10-16-pull-stitch-touch-run.mp4
+
+
