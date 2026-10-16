@@ -2062,3 +2062,6 @@ Yes
 
 - _tool Bash_: Read bot and helper stitch-tap logic
 
+
+- _tool Bash_: Teach test helpers and bot to pull the ribbon; rerun tests
+

@@ -5,7 +5,8 @@
      node tests/unit/bot.cjs --sweep=N [--profile=...]      # seeds 1..N, finish times and win share
 
    Profiles (options can override any field, e.g. --react=1.5 --dodge=lane --dodgeDelay=0.4):
-     competent  taps each stitch `react` = 1.0 s after its cue appears (stitch state 'ready'); dodges Snagling
+     competent  taps each stitch `react` = 1.0 s after its cue appears (stitch state 'ready'; the opening ribbon is
+                pulled instead, once Purl stands at it, and that reaction time is outside the race clock); dodges Snagling
                 with a jump (`dodge`: 'jump' | 'lane') started `dodgeDelay` = 0.3 s after the reveal
      first      react 2.0 s; does not react to Snagling (one hit), then steers into the dropped thread's lane
                 `steerDelay` = 0.4 s after the drop and recovers it on the same pass
@@ -13,6 +14,7 @@
    Timeline rows: race clock, racer, event. */
 'use strict';
 const { load, newRace } = require('./load.cjs');
+const { activate } = require('./helpers.cjs');
 
 const PROFILES = {
   competent: { react: 1.0, snag: 'dodge', dodge: 'jump', dodgeDelay: 0.3, steerDelay: 0.4 },
@@ -80,8 +82,11 @@ function runBot(opts) {
     });
   };
   const maxSteps = Math.round((opts.maxTime || 400) / dt);
+  let clock = 0;                        // the player's own clock: reactions take real time even while the
+                                        // first-lesson tutorial hold freezes the race clock
   for (let i = 0; i < maxSteps; i++) {
     const evs = race.step(dt);
+    clock += dt;
     log(evs);
     react(evs);
     for (let k = todo.length - 1; k >= 0; k--) {
@@ -90,8 +95,9 @@ function runBot(opts) {
     if (steerLane !== null && p.lane !== steerLane) swipe(p.lane < steerLane ? 'right' : 'left');
     Object.keys(st.stitches).forEach(function (id) {
       const s = st.stitches[id];
-      if (s.state === 'ready' && readyAt[id] === undefined) { readyAt[id] = st.time; add('purl', 'cue ' + id); }
-      if (s.state === 'ready' && st.time >= readyAt[id] + prof.react - 1e-9) log(race.input({ type: 'tap', target: id }));
+      const cue = s.state === 'ready' && (s.interaction !== 'pull' || p.waitingFor === id);
+      if (cue && readyAt[id] === undefined) { readyAt[id] = clock; add('purl', 'cue ' + id); }
+      if (cue && clock >= readyAt[id] + prof.react - 1e-9) log(activate(race, id));
     });
     if (policy) log(policy(race, evs, { prof: prof, add: add }) || []);
     if (st.mode === 'failed') break;

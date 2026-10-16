@@ -38,10 +38,23 @@ function tapReady(race, sink) {
   const st = race.state;
   Object.keys(st.stitches).forEach(function (id) {
     if (st.stitches[id].state === 'ready') {
-      const evs = race.input({ type: 'tap', target: id });
+      const evs = activate(race, id);
       if (sink) sink.push.apply(sink, evs);
     }
   });
+}
+
+/* Open a ready stitch the way a player does: a tap, or for a pull stitch (the opening ribbon) a complete
+   TOUCH → PULL gesture once Purl stands at its stop. Returns the events. */
+function activate(race, id) {
+  const s = race.state.stitches[id];
+  if (!s || s.interaction !== 'pull') return race.input({ type: 'tap', target: id });
+  if (race.state.purl.waitingFor !== id) return [];
+  const evs = [];
+  [{ phase: 'start' }, { phase: 'move', amount: 1 }, { phase: 'end', amount: 1 }].forEach(function (g) {
+    evs.push.apply(evs, race.input(Object.assign({ type: 'pull', target: id }, g)));
+  });
+  return evs;
 }
 
 /* A running race (countdown done). */
@@ -68,4 +81,4 @@ function types(evs, type) { return evs.filter(function (e) { return e.type === t
 
 function swipe(race, dir) { return race.input({ type: 'swipe', dir: dir }); }
 
-module.exports = { load, newRace, DT, stepUntil, stepFor, tapReady, running, toLanding, toReveal, types, swipe };
+module.exports = { load, newRace, DT, stepUntil, stepFor, tapReady, activate, running, toLanding, toReveal, types, swipe };
