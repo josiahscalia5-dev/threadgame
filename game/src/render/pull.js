@@ -17,7 +17,7 @@
   WW.render = WW.render || {};
   const U = function () { return WW.render.util; };
 
-  const PARTIAL = 0.08;                                  // band fraction the roll travels during the drag (stays
+  const PARTIAL = 0.045;                                 // band fraction the roll travels during the drag (stays
                                                          // on the straight ramp base, horizontal, as in approved PULL)
   const HAND = { idle: [136, -165], duck: [132, -92] };  // Purl's right hand, frame px from the foot pivot
   const LABEL = { touch: 'Touch the loop', pull: 'Pull down' };

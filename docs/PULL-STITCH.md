@@ -19,7 +19,7 @@ and the cutouts would let the art be matched more closely; nothing in the code d
    **Pull down**, with a long downward arrow that fills gold with the progress. Purl reaches toward the loop, then braces
    in a two-foot crouch and leans back. A twisted gold strand is fitted every frame from the roll's fastening to
    his grip, with its slack falling to the carpet. Stitch lights twinkle at the roll's edges. The roll climbs the
-   ramp base with the progress, up to 8 % of the band. The route stays closed and Purl cannot enter it.
+   straight ramp base with the progress, up to 4.5 % of the band. The route stays closed and Purl cannot enter it.
 3. At full progress the knot releases (sparkle burst at the fastening, Purl recoils, then recovers). The prompt
    disappears. The roll finishes laying the carpet up the tower in `ribbonUnfurl` = 1.3 s, revealing the plate's own
    coral-and-gold surface. After `routeSettle` (0.25 s) the hold ends and both racers run on.
@@ -67,8 +67,8 @@ and the cutouts would let the art be matched more closely; nothing in the code d
 
 ## Rendering (`game/src/render/pull.js` + small hooks)
 
-* `world.openProgress()` asks `pull.openProgress()` for the roll position: during the drag the roll moves up to 8 % of
-  the band, smoothed. During the unfurl it goes from 8 % to 100 % with an ease. `world.rollGeom()` gives the roll
+* `world.openProgress()` asks `pull.openProgress()` for the roll position: during the drag the roll moves up to 4.5 % of
+  the band, smoothed. During the unfurl it goes from 4.5 % to 100 % with an ease. `world.rollGeom()` gives the roll
   geometry used for the fastening.
 * There is only ever one roll (world.js). The clean p01 plate shows the open carpet, and the closed part of the band
   is drawn as cream, not-yet-woven crochet.
