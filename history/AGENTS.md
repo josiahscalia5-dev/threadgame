@@ -183,12 +183,6 @@ This matches the kit's own record in `docs/VERIFICATION.json:5-7`. The split is 
 - `paused` or `dt===0` returns the state unchanged with `distanceMoved:0` (`:29`).
 - At `routeLength` the runner clamps, spee
 
-## inspect:geometry
-
-- transcript: `history/transcripts/131a49c9-f445-5dda-9dd9-fdcc5c2be76a/subagents/workflows/wf_ab6d9c83-f3e/agent-a4ee84d369e612e1c.jsonl` (28 entries)
-
-_(no message yet)_
-
 ## inspect:engine
 
 - transcript: `history/transcripts/131a49c9-f445-5dda-9dd9-fdcc5c2be76a/subagents/workflows/wf_ab6d9c83-f3e/agent-a5d5d56d3a9a1cf42.jsonl` (277 entries)
@@ -247,9 +241,15 @@ _(no message yet)_
 - In general, the column crosses mid-screen at about 32.8 s + L + (time on the start screen before START).
 - So 0:36–0:37 matches **`c-ribbon` (p01→p02)** if the lesson reaction plus start-screen dwell is about 3–4 s. This is consistent but not
 
-## inspect:art
+## inspect:geometry
 
-- transcript: `history/transcripts/131a49c9-f445-5dda-9dd9-fdcc5c2be76a/subagents/workflows/wf_ab6d9c83-f3e/agent-a553f1494b2f06332.jsonl` (11 entries)
+- transcript: `history/transcripts/131a49c9-f445-5dda-9dd9-fdcc5c2be76a/subagents/workflows/wf_ab6d9c83-f3e/agent-a4ee84d369e612e1c.jsonl` (32 entries)
 
 _(no message yet)_
+
+## inspect:art
+
+- transcript: `history/transcripts/131a49c9-f445-5dda-9dd9-fdcc5c2be76a/subagents/workflows/wf_ab6d9c83-f3e/agent-a553f1494b2f06332.jsonl` (33 entries)
+
+Now the game's runtime atlases and asset data.
 
