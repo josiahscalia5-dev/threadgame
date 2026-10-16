@@ -2292,3 +2292,17 @@ Yes
 
 - _tool Bash_: Run a test Android APK build
 
+
+**Claude:** While those run, I'll write `docs/PULL-STITCH.md`. It covers the contract and what's implemented, and records that the update ZIP with the four spec docs was never supplied:
+
+
+- _tool Write_: /home/user/threadgame/docs/PULL-STITCH.md
+
+
+**Claude:** I'll point the architecture contract at the new doc as well:
+
+
+- _tool Bash_: Add a pull-stitch addendum to the architecture doc
+
+- _tool Bash_: Check viewport runs and APK build progress
+
