@@ -1989,3 +1989,31 @@ Yes
 
 - _tool Agent_: Renderer M2: p02–p07 scenes
 
+- _tool TaskCreate_: Ribbon stitch becomes pull interaction: stitches.ribbon.pull 0..1 monotonic, input {type:'pull'}, completion once → unfurl ~1.2 s → open; tutorial hold freezes race clock + both racers' route progress
+
+- _tool TaskCreate_: Pointer-capture drag from gold loop (hit ≥48 CSS px), down-only progress, target clamp(0.10*vh,64,110), retain max, ignore extra fingers, no swipe/jump from the gesture, cancel/pause/resize/retry safe
+
+- _tool TaskCreate_: render/pull.js: gold loop + glow + cue pills, Purl reach/brace/lean poses (synthesized from existing frames), gold strand hand→fastening each frame, roll tracks partial progress, final unfurl 0.9–1.4 
+
+- _tool TaskCreate_: Touch-driven recording (arrival, touch, partial pull/release/resume, complete, unfurl, run-up, coral pickup); tutorial preserves both racers' progress; pause/resume + repeated touches no duplicates; T
+
+- _tool TaskCreate_: Reinstall SDK in this container, Maven mirror (already in settings.gradle?), build APK with complete game, verify packaging.
+
+- _tool TaskCreate_: After renderer agent reports: full run (dodge + hit/recovery branches) recordings, compare sheets for 01–07, fix mismatches, docs, honest report.
+
+
+**Claude:** Auto-save is already capturing the new agent's transcript. While it works, I'll start the Android SDK install in the background. First, the command the last session used:
+
+
+- _tool Bash_: Find previous SDK install and Gradle build commands
+
+- _tool Bash_: Download and install Android SDK components
+
+
+**Claude:** Now the simulation side of the pull stitch. Reading the stitch module and the relevant parts of the race module:
+
+
+- _tool Bash_: Read stitches.js and grep race.js for stitch handling
+
+- _tool Bash_: Read race.js header and step function
+
