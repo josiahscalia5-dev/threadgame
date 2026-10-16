@@ -16,6 +16,7 @@
   const COLUMN_ASPECT = 0.6;          // widest play column (w/h); beyond it the sides show the blurred scene
   const STRIDE_M = 2.0;               // metres per full four-frame run cycle
   const ZOOM_LIMIT = 2.5;             // most the follow camera ever magnifies a scene
+  const FADE_M = 3.0;                 // metres Purl runs into a new scene while the previous one melts away
   const RUN = ['run-left', 'run-pass-a', 'run-right', 'run-pass-b'];
   const SPOOL = { coral: 'prop.coral-thread', teal: 'prop.teal-thread', gold: 'prop.golden-thread' };
   const GLOW = { coral: '255,120,140', teal: '90,230,225', gold: '255,215,110' };
@@ -717,19 +718,34 @@
 
       if (key !== viewKey) {
         if (A) {
-          // Start of a journey between scenes: remember exactly where the camera and Purl were, and where they
-          // will be when the next scene takes over, so both ends of the move are seamless.
+          // Purl is leaving a scene: remember exactly where the camera and he were, the direction he was running
+          // and where he will appear in the next scene, so the whole journey is seamless.
           const camA = cams[A.seg.plate] ? Object.assign({}, cams[A.seg.plate]) : settle(camTarget(A.seg.plate, A.seg.path, A.f, p.laneX));
           const laneA = p.laneX;                  // Purl keeps his lane into the next scene
           const camB = settle(camTarget(B.seg.plate, B.seg.path, B.f, laneA));
-          tr = { camA: camA, camB: camB, A: A, B: B,
-                 exitPt: WW.path.racerPoint(A.seg.path, A.f, laneA, 0), entryPt: WW.path.racerPoint(B.seg.path, B.f, laneA, 0),
+          const exitPt = WW.path.racerPoint(A.seg.path, A.f, laneA, 0);
+          const back = WW.path.racerPoint(A.seg.path, Math.max(0, A.f - 0.03), laneA, 0);
+          const ds = Math.hypot(exitPt.x - back.x, exitPt.y - back.y) || 1;
+          tr = { phase: 'chase', A: A, B: B, camA: camA, camB: camB, exitPt: exitPt, dist0: p.distance,
+                 dirX: (exitPt.x - back.x) / ds, dirY: (exitPt.y - back.y) / ds,
+                 shrink: Math.max(0, Math.log(back.w / exitPt.w) / ds),           // perspective: px of width lost per px run
                  qa: purlScreen(viewOf(A.seg.plate, camA), A.seg, A.f, laneA), qb: purlScreen(viewOf(B.seg.plate, camB), B.seg, B.f, laneA) };
-        } else if (tr) {
+        } else if (tr && tr.phase === 'chase') {
+          // Purl has arrived in the next scene: the follow camera takes over exactly where the chase ended, and the
+          // previous scene keeps melting away around him while he runs on.
           cams[seg.plate] = Object.assign({}, tr.camB);
+          tr.phase = 'fade'; tr.distB0 = p.distance;
+        } else {
           tr = null;
         }
         viewKey = key;
+      }
+
+      /* Where Purl would be in the scene he left if he had kept running straight on (he never stops). */
+      function leftBehind() {
+        const d = Math.max(0, (p.distance - tr.dist0) / WW.TUNING.metresPerWidth) * tr.exitPt.w;   // plate px
+        const w = tr.exitPt.w * Math.exp(-tr.shrink * d);
+        return { x: tr.exitPt.x + tr.dirX * d, y: tr.exitPt.y + tr.dirY * d, w: w };
       }
 
       ctx.fillStyle = '#2b1810';
@@ -740,6 +756,8 @@
       if (!A) {
         // ---- inside one scene: the follow camera keeps Purl lower-centre
         const cam = follow(seg.plate, camTarget(seg.plate, seg.path, p.f, p.laneX, loopPoint(seg.plate, state)), dt);
+        const fading = tr && tr.phase === 'fade' ? U.clamp((p.distance - tr.distB0) / FADE_M, 0, 1) : 1;
+        if (fading >= 1) tr = null;
         drawBackdrop(seg.plate);
         ctx.save();
         ctx.beginPath(); ctx.rect(col.x, 0, col.w, H); ctx.clip();
@@ -748,36 +766,41 @@
         const q = purlScreen(v, seg, p.f, p.laneX);
         leanPurl = U.damp(leanPurl, travelLean(q.tx), 0.15, dt);
         q.lean = lean + leanPurl;
-        drawScene(v, state, { purl: q });
+        if (!tr) {
+          drawScene(v, state, { purl: q });
+        } else {
+          // Arriving: the new scene is already under his feet; the one he left dissolves away around him, still
+          // rushing past as if he were running on through it.
+          drawScene(v, state, {});
+          const a = leftBehind();
+          const vA = lockedView(tr.A.seg.plate, a, q, (q.w / a.w) * (1.12 + 0.18 * fading));
+          ctx.globalAlpha = 1 - U.smooth(fading);
+          drawScene(vA, state, { noLoop: true });
+          ctx.globalAlpha = 1;
+          drawRacer('purl', p, state, q.x, q.y, q.w, { lean: q.lean });
+        }
         const ahead = WW.path.racerPoint(seg.path, Math.min(1, p.f + 0.3), 0, 0);
         focus = toScreen(v, ahead.x, ahead.y - ahead.w * 0.5);
         last = { v: v, purl: q, offset: 0 };
         ctx.restore();
       } else {
-        // ---- between scenes: a chase camera. The camera rushes forward after Purl into the scene he is leaving
-        // (he comes back to his normal size and spot on screen), then the next scenery dissolves in around him at
-        // exactly that spot and size, and the follow camera carries on. Nothing slides or flips; Purl never stops.
-        const u = easeInOut(U.clamp(t / 0.55, 0, 1));
-        const fade = U.smooth(U.clamp((t - 0.5) / 0.5, 0, 1));
+        // ---- leaving: Purl keeps running on into the scene he is leaving and the camera chases after him, closing
+        // in until he is back at his normal size and spot; then the next scene appears under him (above). Nothing
+        // slides or flips and he never stops.
+        const u = easeInOut(U.clamp(t / 0.7, 0, 1));
         const q = { x: U.lerp(tr.qa.x, tr.qb.x, u), y: U.lerp(tr.qa.y, tr.qb.y, u), w: U.lerp(tr.qa.w, tr.qb.w, u) };
-        const keepMoving = 1 + 0.25 * Math.pow(U.clamp((t - 0.45) / 0.55, 0, 1), 1.6);  // scene A keeps rushing past while it fades
-        const vA = lockedView(A.seg.plate, tr.exitPt, q, q.w / tr.exitPt.w * keepMoving);
-        const vB = lockedView(B.seg.plate, tr.entryPt, q, q.w / tr.entryPt.w);
-        drawBackdrop(fade < 0.5 ? A.seg.plate : B.seg.plate);
+        const a = leftBehind();
+        const rush = 1 + 0.12 * U.smooth(U.clamp((t - 0.6) / 0.4, 0, 1));   // keeps the world streaming past at the end
+        const vA = lockedView(A.seg.plate, a, q, (q.w / a.w) * rush);
+        drawBackdrop(A.seg.plate);
         ctx.save();
         ctx.beginPath(); ctx.rect(col.x, 0, col.w, H); ctx.clip();
         drawScene(vA, state, { noLoop: true });
-        if (fade > 0) {
-          ctx.globalAlpha = fade;
-          drawScene(vB, state, { noLoop: true });
-          ctx.globalAlpha = 1;
-        }
-        const tx = U.lerp(tr.qa.tx || 0, 0, u);
-        leanPurl = U.damp(leanPurl, travelLean(tx), 0.15, dt);
+        leanPurl = U.damp(leanPurl, travelLean(U.lerp(tr.dirX, 0, u)), 0.15, dt);
         q.lean = leanPurl;
         drawRacer('purl', p, state, q.x, q.y, q.w, { lean: q.lean });
         focus = { x: q.x, y: q.y - q.w * 0.9 };
-        last = { v: fade >= 1 ? vB : null, purl: q, offset: 0 };
+        last = { v: null, purl: q, offset: 0 };
         ctx.restore();
       }
 

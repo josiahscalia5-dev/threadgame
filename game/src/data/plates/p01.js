@@ -5,16 +5,18 @@
     id: 'p01', image: 'p01', approved: '01-ribbon.png',
     camera: { zMax: 1.8, anchorY: 0.80 },
     purl: {
-      // near coral carpet → twist → lower band (up-left) → turn → upper band (right) → top curl at the tower
+      // near coral carpet → lower band → through the twist on its narrow coral fold (x ≈ 300, clear of the braid
+      // and the cream underside) → middle band up-left → upper band up-right, kept on the middle of the coral
+      // surface (measured from the painting row by row) → top band toward the tower
       path: [
-        [272, 1532, 293, 100], [302, 1290, 218, 72], [308, 1170, 175, 40],
-        [292, 1060, 142, 0], [262, 960, 128, 0], [190, 872, 118, 0], [154, 798, 112, 0],
-        [196, 740, 108, 0], [258, 682, 104, 0], [328, 620, 100, 0], [405, 599, 97, 0], [466, 594, 95, 0]
+        [272, 1532, 293, 100], [302, 1290, 218, 72], [312, 1170, 175, 40], [308, 1062, 142, 0], [291, 968, 128, 0],
+        [214, 876, 118, 0], [166, 800, 112, 0], [194, 742, 108, 0], [238, 692, 104, 0], [298, 642, 100, 0],
+        [350, 608, 97, 0], [412, 592, 95, 0], [462, 587, 94, 0]
       ],
       events: [
         { type: 'start', f: 0 },
         { type: 'hint', f: 0.004, text: 'Swipe \u2190 \u2192 to change lane \u00b7 Swipe \u2191 or tap to jump' },
-        { type: 'pickup', item: 'coral', f: 0.83, lane: 0, size: 62 },
+        { type: 'pickup', item: 'coral', f: 0.831, lane: 0, size: 62 },
         { type: 'exit', f: 0.9 }        // hand over before the ribbon's top curl runs sideways along the rail
       ]
     },
