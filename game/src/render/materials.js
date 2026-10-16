@@ -288,16 +288,22 @@
     owned.push(M.lantern, M.lanternFrame, M.gold, M.petal, M.petalGold);
 
     // distant city: warm walls with lit windows (Lambert: cheap)
-    const cw = canvas(128, 256), cx = cw.getContext('2d');
-    cx.fillStyle = '#d99a5e'; cx.fillRect(0, 0, 128, 256);
-    for (let y = 8; y < 256; y += 28) {
-      cx.fillStyle = 'rgba(120,60,30,0.35)'; cx.fillRect(0, y + 18, 128, 4);
-      for (let x = 10; x < 128; x += 26) {
-        cx.fillStyle = rnd.next() < 0.7 ? '#ffe9a8' : '#7a4a2a';
-        cx.fillRect(x, y, 8, 12);
+    // loom-city tower walls: golden planks, coloured knit bands, warm arched windows
+    const cw = canvas(128, 512), cx = cw.getContext('2d');
+    for (let i = 0; i < 8; i++) { cx.fillStyle = hex(mix(COL.woodLight, COL.wood, rnd.next() * 0.6)); cx.fillRect(i * 16, 0, 16, 512); }
+    for (let i = 0; i < 8; i++) { cx.fillStyle = 'rgba(110,55,20,0.35)'; cx.fillRect(i * 16, 0, 2, 512); }
+    const bands = [COL.teal, COL.rose, COL.gold, COL.purple, COL.cream];
+    for (let y = 0; y < 512; y += 64) {
+      cx.fillStyle = hex(bands[(y / 64) % bands.length]); cx.fillRect(0, y, 128, 10);
+      cx.fillStyle = hex(COL.goldLight); cx.fillRect(0, y + 10, 128, 3);
+      for (let x = 8; x < 128; x += 32) {
+        const lit = rnd.next() < 0.75;
+        cx.fillStyle = lit ? '#ffe7a0' : '#6a3c22';
+        cx.beginPath(); cx.moveTo(x, y + 52); cx.lineTo(x, y + 30); cx.arc(x + 7, y + 30, 7, Math.PI, 0); cx.lineTo(x + 14, y + 52); cx.fill();
+        if (lit) { cx.fillStyle = 'rgba(255,200,90,0.35)'; cx.fillRect(x - 3, y + 50, 20, 4); }
       }
     }
-    M.cityWall = new THREE.MeshLambertMaterial({ map: tex(cw), emissive: 0x6a3a1a, emissiveIntensity: 0.25 });
+    M.cityWall = new THREE.MeshLambertMaterial({ map: tex(cw), emissive: 0x7a4418, emissiveIntensity: 0.3 });
     M.cityRoof = new THREE.MeshLambertMaterial({ color: 0xd8738f, emissive: 0x5a1a30, emissiveIntensity: 0.2 });
     M.cityRoofGold = new THREE.MeshLambertMaterial({ color: 0xf0b850, emissive: 0x6a4010, emissiveIntensity: 0.25 });
     M.cityBanner = new THREE.MeshLambertMaterial({ color: 0x1f8a8f, side: THREE.DoubleSide });
