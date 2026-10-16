@@ -4063,3 +4063,25 @@ Install the new APK over the old one. If anything on your actual phone still loo
 
 Yeah, but the zip files I uploaded, did you see the zip files I uploaded? You did not do all of them I asked you to do for my game screen. It looks like the old ones, though.
 
+
+**Claude:** Yes, I saw them. The files you re-sent are the same Connected World package I opened at the start of this session. You're right that I haven't done all of it.
+
+**Done from the package:**
+- the objective text updates as soon as a thread is picked up;
+- double-tap stop and run, with Loop racing on;
+- Left/Right/Stop/Jump buttons;
+- full screen on Android;
+- Purl no longer floats over the blurred pillar.
+
+**Not done:** the main thing it asks for. Your game should look like the three new screens in the zip (Purl and Loop running side by side on one continuous road, round the tower, all the way to the flower gate). Your game still uses the old scenes, which is why it looks like the old ones.
+
+I'll put those three screens in front of you so we're looking at the same thing:
+
+
+- _tool Bash_: Make a sheet of the three target screens from the zip
+
+- _tool SendUserFile_: 
+
+
+- _tool AskUserQuestion_: 
+
