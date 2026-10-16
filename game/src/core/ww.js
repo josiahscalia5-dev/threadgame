@@ -22,7 +22,9 @@
     strideLength: 1.75,           // m per full gait cycle (two steps)
     bodyRadius: 0.5,              // m of body/rail clearance inside the walkable width
     laneStep: 1.6,                // m per steering swipe
-    steerHalfLife: 0.075,         // s; lateral position follows its target, critically damped
+    steerSpeed: 4.2,              // m/s max sideways speed while changing line (a side-step, never a pop)
+    steerAccel: 28,               // m/s² sideways acceleration
+    steerGain: 7,                 // 1/s: sideways speed eases off in proportion to the remaining distance
     jumpHeight: 0.85,             // m
     sideLoopBoost: 1.45,          // speed ribbon on the side loop: 19.5 m at ×1.45 beats 16.0 m of main by ~0.45 s
     branchWindow: 12,             // m before the fork in which the side loop is announced
@@ -67,7 +69,7 @@
     loopBranchChance: 0.5,        // chance Loop takes the side loop
     loopStumbleChance: 0.5,       // chance of one visible stumble somewhere in the race
     loopStumbleSpeed: 0.3,        // speed multiplier while stumbling (loopStumble s)
-    loopLine: [-0.9, 0.9],        // his preferred lateral line, rolled per race
+    loopLine: [0.3, 1.5],         // his preferred lateral line (right half; he starts right of Purl), rolled per race
     loopReact: [0.45, 1.3],
     loopHesitateChance: 0.22,
     loopHesitate: [0.5, 1.2],

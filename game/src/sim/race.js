@@ -91,7 +91,7 @@
 
   function racer(who, s, lateral) {
     return {
-      who: who, road: 'main', s: s, mainS: s, lateral: lateral, latTarget: lateral, limit: 2.5,
+      who: who, road: 'main', s: s, mainS: s, lateral: lateral, latTarget: lateral, latV: 0, limit: 2.5,
       speed: 0, braked: false, gait: 0, airborne: false, jumpT: 0, jumpH: 0, jumpY: 0, jumpBuffered: false,
       landedAt: -10, pos: [0, 0, 0], forward: [0, 0, 1], right: [1, 0, 0], normal: [0, 1, 0], heading: 0,
       action: 'idle', finishTime: null, rank: null, progress: 0, distance: 0, forkDone: null, branchLock: null
@@ -206,7 +206,7 @@
       if (r.branchLock === b.id && s >= b.startS) {
         const h = C.toBranch(b, s, r.lateral);
         if (h) {
-          r.road = b.id; s = h.s; r.lateral = h.lateral;
+          r.road = b.id; s = h.s; r.lateral = h.lateral;   // same world point; latV carries over (same heading ±3°)
           r.latTarget = 0;
           r.forkDone = b.id; r.branchLock = null;
           if (r.who === 'purl') st.stats.sideLoop += 1;
@@ -228,7 +228,10 @@
     const lim = WW.route.sample(C.road(r.road), r.s, 0, T.bodyRadius).limit;
     if (b && r.road === 'main' && r.branchLock === b.id) r.latTarget = Math.min(r.latTarget, -T.laneStep * 0.5);
     r.latTarget = U.clamp(r.latTarget, -lim, lim);
-    r.lateral = U.damp(r.lateral, r.latTarget, T.steerHalfLife, dt);
+    const wantV = U.clamp((r.latTarget - r.lateral) * T.steerGain, -T.steerSpeed, T.steerSpeed);
+    r.latV = U.approach(r.latV, wantV, T.steerAccel * dt);
+    r.lateral += r.latV * dt;
+    if (Math.abs(r.latTarget - r.lateral) < 1e-4 && Math.abs(r.latV) < 0.01) { r.lateral = r.latTarget; r.latV = 0; }
     pose(ctx, r);
 
     // thread spools and the finish line
@@ -364,7 +367,7 @@
       /* Put a racer on the main road at mainS/lateral (tests only; the game itself never teleports anyone). */
       teleport: function (who, mainS, lateral) {
         const r = ctx.state[who === 'loop' ? 'loop' : 'purl'];
-        r.road = 'main'; r.s = mainS; r.lateral = r.latTarget = lateral || 0; r.speed = 0;
+        r.road = 'main'; r.s = mainS; r.lateral = r.latTarget = lateral || 0; r.latV = 0; r.speed = 0;
         r.forkDone = null; r.branchLock = null;
         const b = ctx.course.branchList[0];
         if (b && mainS >= b.startS) r.forkDone = b.id;
