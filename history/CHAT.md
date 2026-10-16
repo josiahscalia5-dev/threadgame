@@ -3852,3 +3852,17 @@ The scene change still slides from one painted scene to the next past the tower.
 **Not done yet:** a new Android APK with these changes. The one in `dist/` is still your original. Say the word and I'll build it.
 
 
+---
+
+## You  2026-10-16T20:00:22.785Z
+
+And I have the APK file to see the preview on my mobile app. 
+
+
+**Claude:** I'll build the APK with your new changes now, then send it to you here so you can install it on your phone.
+
+
+- _tool Bash_: Check current APK, JDK and build script steps
+
+- _tool Bash_: Build the debug APK with the new features
+
