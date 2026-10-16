@@ -219,7 +219,11 @@ const MOMENTS = {
         for (let i = 0; i < 20; i++) r.render(st, 1 / 60);
         for (let i = 0; i < 240; i++) { const t0 = performance.now(); r.render(st, 1 / 60); ts.push(performance.now() - t0); }
         ts.sort(function (a, b) { return a - b; });
-        out[label] = { med: +ts[120].toFixed(2), p90: +ts[216].toFixed(2), max: +ts[239].toFixed(1) };
+        // + a 1-px readback forces this frame's raster synchronously (headless = CPU raster): an upper bound
+        const tf = [], g = r._R.ctx;
+        for (let i = 0; i < 60; i++) { const t0 = performance.now(); r.render(st, 1 / 60); g.getImageData(0, 0, 1, 1); tf.push(performance.now() - t0); }
+        tf.sort(function (a, b) { return a - b; });
+        out[label] = { js: +ts[120].toFixed(2), jsP90: +ts[216].toFixed(2), withRaster: +tf[30].toFixed(1) };
       };
       __H.hold(['purl.coral', 'loop.coral']); __H.go('shortcut', 0); __H.adv(0.9); __H.loopAt('shortcut', 717, 687); time('p02-ready');
       __H.go('tassels', 0); __H.adv(0.9); D.tap('tassels'); __H.adv(0.4); time('p03-lift');
