@@ -62,12 +62,6 @@ You've hit your session limit · resets 7pm (UTC)
 
 Now I'll rewrite `style.css` with the measured approved geometry (design px × `--k`), keeping the previous agent's overlay/card styling.
 
-## Route data for p06 and p07
-
-- transcript: `history/transcripts/370de19d-9b32-5c31-ac39-d89d7478db67/subagents/agent-aff5e4bcb58123cca.jsonl` (294 entries)
-
-_(no message yet)_
-
 ## Renderer: plates, camera, actors, effects
 
 - transcript: `history/transcripts/370de19d-9b32-5c31-ac39-d89d7478db67/subagents/agent-aee076b7546be423f.jsonl` (138 entries)
@@ -77,6 +71,12 @@ Now the harness: a deterministic mini-sim producing §7.1-shaped state, plus mom
 ## Simulation: race rules and Loop AI
 
 - transcript: `history/transcripts/370de19d-9b32-5c31-ac39-d89d7478db67/subagents/agent-ae84357f8296ab86f.jsonl` (144 entries)
+
+_(no message yet)_
+
+## Route data for p06 and p07
+
+- transcript: `history/transcripts/370de19d-9b32-5c31-ac39-d89d7478db67/subagents/agent-aff5e4bcb58123cca.jsonl` (302 entries)
 
 _(no message yet)_
 
