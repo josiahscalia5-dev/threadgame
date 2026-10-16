@@ -3199,3 +3199,9 @@ continue and proceed where we're at. But like I said, can you validate to me whe
 
 - _tool Bash_: Add unclamped sampling option and rerun route tests
 
+
+
+- _tool Edit_: /home/user/threadgame/game/src/core/route.js
+
+- _tool Bash_: Rerun route tests after projection refinement
+
