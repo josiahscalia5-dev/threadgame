@@ -2832,3 +2832,19 @@ I'll start by saving a recoverable checkpoint of the current game. Then I'll unp
 
 - _tool Bash_: Extract the kit into kit/connected and verify checksums
 
+
+**Claude:** All 81 checksums verify. Reading the kit's guidance docs:
+
+
+- _tool Bash_: Read the kit's main docs
+
+- _tool Bash_: Read code README, route-motion notes, reference manifest, route.json structure
+
+
+**Claude:** Now the three new visual targets and the overhead course map:
+
+
+- _tool Bash_: Render overhead SVG and sheet the three targets with it
+
+- _tool Read_: /tmp/claude-0/-home-user-threadgame/131a49c9-f445-5dda-9dd9-fdcc5c2be76a/scratchpad/view/connected-targets.jpg
+
