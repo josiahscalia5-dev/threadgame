@@ -13,6 +13,54 @@
       "w": 384,
       "h": 384,
       "source": "plate 02 rows 1000-1200, rectified"
+    },
+    "world.rope-gold": {
+      "file": "assets/world/rope-gold.webp",
+      "w": 128,
+      "h": 128,
+      "source": "plate 02 gold rope patch 715,1560-795,1640"
+    },
+    "world.tower-trunk": {
+      "file": "assets/world/tower-trunk.webp",
+      "w": 160,
+      "h": 830,
+      "source": "plate 04 tower trunk 0,420-160,1250"
+    },
+    "world.tapestry": {
+      "file": "assets/world/tapestry.webp",
+      "w": 175,
+      "h": 340,
+      "source": "target 01 tapestry 515,350-690,690"
+    },
+    "world.lantern": {
+      "file": "assets/world/lantern.webp",
+      "w": 88,
+      "h": 196,
+      "source": "target 01 lantern 462,676-550,872"
+    },
+    "world.city-opening": {
+      "file": "assets/world/city-opening.webp",
+      "w": 400,
+      "h": 390,
+      "source": "target01 city 0,330-400,720 (feathered)"
+    },
+    "world.city-gate": {
+      "file": "assets/world/city-gate.webp",
+      "w": 281,
+      "h": 410,
+      "source": "06-butterfly.png city 560,230-841,640 (feathered)"
+    },
+    "world.city-tall": {
+      "file": "assets/world/city-tall.webp",
+      "w": 231,
+      "h": 640,
+      "source": "03-tassels.png city 610,0-841,640 (feathered)"
+    },
+    "world.city-bridges": {
+      "file": "assets/world/city-bridges.webp",
+      "w": 421,
+      "h": 420,
+      "source": "04-snagged.png city 420,60-841,480 (feathered)"
     }
   } };
 })(globalThis.WW = globalThis.WW || {});
