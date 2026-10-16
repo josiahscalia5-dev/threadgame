@@ -420,9 +420,7 @@ describe('§7.6 finish and gate fallback', function () {
     const race = running(WW, 7);
     const st = race.state;
     race.debug.setLoopForm(0.5);                              // test helper only: Loop far behind
-    const evs = stepUntil(race, function (s) { return s.purl.finishTime !== null; }, 300, { each: function (r) {
-      if (r.state.snagling.state === 'hop' && !r.state.purl.airborne) return swipe(r, 'up');
-    } });
+    const evs = stepUntil(race, function (s) { return s.purl.finishTime !== null; }, 300);
     assert.equal(st.held.purl, 3);
     assert.equal(st.purl.rank, 1);
     assert.equal(st.mode, 'finished');
@@ -439,9 +437,7 @@ describe('§7.6 finish and gate fallback', function () {
     const race = running(WW, 7);
     const st = race.state;
     race.debug.setLoopForm(1.5);                              // test helper only: Loop far ahead
-    stepUntil(race, function (s) { return s.mode === 'finished'; }, 300, { each: function (r) {
-      if (r.state.snagling.state === 'hop' && !r.state.purl.airborne) return swipe(r, 'up');
-    } });
+    stepUntil(race, function (s) { return s.mode === 'finished'; }, 300);
     assert.equal(st.loop.rank, 1);
     assert.equal(st.purl.rank, 2);
     assert.deepEqual([st.result.winner, st.result.purlRank, st.result.loopRank, st.result.loopStillRacing],
@@ -453,9 +449,7 @@ describe('§7.6 finish and gate fallback', function () {
     const race = running(WW, 7);
     const st = race.state;
     race.debug.setLoopForm(0.3);
-    stepUntil(race, function (s) { return s.mode === 'finished'; }, 300, { each: function (r) {
-      if (r.state.snagling.state === 'hop' && !r.state.purl.airborne) return swipe(r, 'up');
-    } });
+    stepUntil(race, function (s) { return s.mode === 'finished'; }, 300);
     const pt = st.purl.finishTime;
     stepFor(race, T.finishWaitForLoop - 1);
     assert.equal(st.result.loopStillRacing, true);
@@ -471,20 +465,19 @@ describe('§7.6 finish and gate fallback', function () {
   test('reaching the finish incomplete: gate-blocked, "A THREAD IS MISSING", return to the earliest missing item', function () {
     const race = running(WW, 8);
     const st = race.state;
-    const dodge = function (r) { if (r.state.snagling.state === 'hop' && !r.state.purl.airborne) return swipe(r, 'up'); };
-    stepUntil(race, function (s) { return s.purl.segId === 'c-tapestry'; }, 300, { each: dodge });
+    stepUntil(race, function (s) { return s.purl.segId === 'c-tapestry'; }, 300);
     race.debug.setItem('purl.teal', { status: 'dropped', seg: 'landing', f: 0.5, lane: 0 });
-    const evs = stepUntil(race, function (s) { return s.purl.action === 'returning'; }, 30, { each: dodge });
+    const evs = stepUntil(race, function (s) { return s.purl.action === 'returning'; }, 30);
     assert.equal(types(evs, 'gate-blocked').length, 1);
     assert.equal(st.message.text, 'A THREAD IS MISSING');
     assert.equal(st.purl.finishTime, null);
     assert.equal(st.gate.state, 'closed');
     assert.deepEqual([st.transition.kind, st.transition.from, st.transition.to], ['return', 'finish', 'landing']);
-    stepUntil(race, function (s) { return !s.transition; }, 5, { each: dodge });
+    stepUntil(race, function (s) { return !s.transition; }, 5);
     assert.equal(st.purl.segId, 'landing');
     close(st.purl.f, race.info.route[st.purl.seg].loopReturn, 0.01);
     assert.equal(st.snagling.armed || st.snagling.state !== 'done', true, 'a new pass re-arms Snagling');
-    const fin = stepUntil(race, function (s) { return s.mode === 'finished'; }, 120, { each: dodge });
+    const fin = stepUntil(race, function (s) { return s.mode === 'finished'; }, 120);
     assert.deepEqual(types(fin, 'recover'), [{ type: 'recover', item: 'purl.teal' }]);
     assert.equal(st.held.purl, 3);
     assert.ok(st.purl.finishTime > 0);
@@ -493,14 +486,13 @@ describe('§7.6 finish and gate fallback', function () {
   test('the return goes to the segment entry when the missing item is not on the landing', function () {
     const race = running(WW, 8);
     const st = race.state;
-    const dodge = function (r) { if (r.state.snagling.state === 'hop' && !r.state.purl.airborne) return swipe(r, 'up'); };
-    stepUntil(race, function (s) { return s.purl.segId === 'c-tapestry'; }, 300, { each: dodge });
+    stepUntil(race, function (s) { return s.purl.segId === 'c-tapestry'; }, 300);
     race.debug.setItem('purl.coral', { status: 'uncollected' });
-    stepUntil(race, function (s) { return s.purl.action === 'returning'; }, 30, { each: dodge });
+    stepUntil(race, function (s) { return s.purl.action === 'returning'; }, 30);
     assert.equal(st.transition.to, 'ribbon');
     stepUntil(race, function (s) { return !s.transition; }, 5);
     assert.deepEqual([st.purl.segId, st.purl.f], ['ribbon', 0]);
-    stepUntil(race, function (s) { return s.mode === 'finished'; }, 300, { each: dodge });
+    stepUntil(race, function (s) { return s.mode === 'finished'; }, 300);
     assert.equal(st.held.purl, 3);
   });
 });
