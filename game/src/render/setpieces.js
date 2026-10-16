@@ -416,6 +416,46 @@
     return st;
   }
 
+  /* Coral/gold fill of the plate's own butterfly outline (P.butterfly.embroidery wing polygons), keeping the plate's
+     stitch texture (soft-light) and its gold outline; built once. */
+  function embroideryFill(R, P) {
+    const key = 'sp:embfill:' + P.id;
+    if (R.cache[key] !== undefined) return R.cache[key];
+    const polys = P.butterfly.embroidery, u = U(), img = WW.render.world.plateImg(R, P.id);
+    if (!polys || !u.imgReady(img)) return null;
+    let b = { x0: Infinity, y0: Infinity, x1: -Infinity, y1: -Infinity };
+    polys.forEach(function (q) { const bb = u.polyBox(q); b = { x0: Math.min(b.x0, bb.x0), y0: Math.min(b.y0, bb.y0), x1: Math.max(b.x1, bb.x1), y1: Math.max(b.y1, bb.y1) }; });
+    const pad = 6, x0 = Math.floor(b.x0 - pad), y0 = Math.floor(b.y0 - pad), w = Math.ceil(b.x1 - b.x0 + 2 * pad), h = Math.ceil(b.y1 - b.y0 + 2 * pad);
+    const c = u.makeCanvas(w, h), g = c.getContext('2d');
+    g.translate(-x0, -y0);
+    const cx = 131, cy = 668;
+    const gr = g.createRadialGradient(cx, cy, 4, cx, cy, 120);
+    gr.addColorStop(0, '#ffd166'); gr.addColorStop(0.28, '#f7a24a'); gr.addColorStop(0.5, '#ee5a5c'); gr.addColorStop(1, '#c42f45');
+    g.fillStyle = gr;
+    polys.forEach(function (q) { u.polyPath(g, q); g.fill(); });
+    // the tapestry's own crochet texture through the fill
+    g.globalCompositeOperation = 'soft-light';
+    const iw = img.naturalWidth || img.width, ih = img.naturalHeight || img.height;
+    g.drawImage(img, x0 * iw / 841, y0 * ih / 1870, w * iw / 841, h * ih / 1870, x0, y0, w, h);
+    g.globalCompositeOperation = 'destination-in';
+    g.fillStyle = '#000';
+    polys.forEach(function (q) { u.polyPath(g, q); g.fill(); });
+    g.globalCompositeOperation = 'source-over';
+    // scalloped gold inner stitching + body
+    g.lineCap = 'round'; g.lineJoin = 'round';
+    g.strokeStyle = 'rgba(255, 220, 120, 0.85)'; g.lineWidth = 3; g.setLineDash([2.5, 4]);
+    polys.forEach(function (q) {
+      g.save(); g.translate(cx, cy); g.scale(0.78, 0.78); g.translate(-cx, -cy); u.polyPath(g, q); g.stroke(); g.restore();
+    });
+    g.setLineDash([]);
+    g.strokeStyle = '#e9a93a'; g.lineWidth = 8;
+    g.beginPath(); g.moveTo(131, 652); g.lineTo(131, 752); g.stroke();
+    g.strokeStyle = '#ffe08a'; g.lineWidth = 3;
+    g.beginPath(); g.moveTo(130, 654); g.lineTo(130, 750); g.stroke();
+    R.cache[key] = { c: c, x: x0, y: y0 };
+    return R.cache[key];
+  }
+
   /* Embroidery on the tapestry (dormant/ready), fading as the butterfly peels off; the plate keeps the outline. */
   function drawEmbroidery(R, ctx, v, P, state) {
     const st = butterflyInfo(P, state);
@@ -428,6 +468,15 @@
     const ready = st.state === 'ready' || st.state === 'animating';
     if (ready) glow(ctx, R, 'rgba(255,206,110,0.9)', 112, 652, 150, (0.18 + 0.08 * Math.sin(R.clock * 3.2)) * (st.state === 'ready' ? 1 : 0.8));
     if (a <= 0.01) return;
+    const fill = P.butterfly.embroidery ? embroideryFill(R, P) : null;
+    if (fill) {
+      ctx.save();
+      ctx.globalAlpha = 0.95 * a;
+      ctx.drawImage(fill.c, fill.x, fill.y);
+      ctx.restore();
+      if (ready) sparkles(ctx, 120, 660, 70, 4, R.clock, 0.7 * a);
+      return;
+    }
     const c = embroideryCanvas(R), f = frameOf(R, 'feat.butterfly-closed');
     if (!c || !f) return;
     const k = B.w / f.w;
