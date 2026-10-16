@@ -3833,3 +3833,22 @@ First I'll check whether the files you just sent are the same ones I already hav
 
 - _tool TaskUpdate_: 
 
+**Claude:** I've added the features to your existing game. Your screens, backgrounds and art are unchanged; your art files and scene data are identical to your original.
+
+**What I added:**
+1. **Objective fix:** the objective changes the moment Purl picks up a thread. Before, it kept saying "Collect the coral thread" after he had it.
+2. **Double-tap brake:** double-tap and Purl stops in place in his idle pose. Double-tap again and he runs. Loop keeps racing and can pass him, and a jump while stopped stays in place.
+3. **Optional buttons:** Left, Right, Stop/Run and Jump, in your game's cream-and-gold style. They're off by default, so your screens look the same; switch them on in the Pause menu.
+4. **Scene change:** Purl no longer floats over a blurred pillar. He stays on the carpet, runs behind the tower (now drawn sharp, from your art) and comes out on the next scene's carpet.
+
+**How I checked it:**
+- I played the real game with real touches and screenshots: a double-tap stopped Purl while Loop ran 13 m, and each button worked.
+- 63 automated tests pass: your original 58 plus 5 new ones.
+- Everything is saved on GitHub, branch `ccr-41c3f304-c2djh7`.
+- The proof images I sent are also in `docs/checkpoints/connected/`.
+
+The scene change still slides from one painted scene to the next past the tower. It isn't one continuous 3D road, because that would mean replacing your screens, and you asked me not to.
+
+**Not done yet:** a new Android APK with these changes. The one in `dist/` is still your original. Say the word and I'll build it.
+
+
