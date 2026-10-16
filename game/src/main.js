@@ -186,7 +186,7 @@
   function newRace(s, autostart) {
     if (!WW.sim || !WW.sim.createRace) throw new Error('The race simulation (WW.sim) is missing.');
     seed = s != null && isFinite(+s) ? (Math.floor(+s) >>> 0) : (SEED != null ? SEED : randomSeed());
-    race = WW.sim.createRace({ seed: seed, level: WW.LEVEL, plates: WW.PLATES, tuning: WW.TUNING });
+    race = WW.sim.createRace({ seed: seed, level: WW.LEVEL, tuning: WW.TUNING });
     hud.reset();
     input.reset();
     finishedFor = 0;
@@ -314,7 +314,12 @@
 
   /* ---------- boot ---------- */
 
-  const loader = ui.createLoader(WW.ASSETS || { images: {} });
+  /* The 3D course needs no pictures; only the menu portraits and UI art are loaded (the plate paintings and rear
+     sprite atlases in WW.ASSETS belong to the plate version and are not fetched). */
+  const UI_IMAGES = /^(purlFront|loopFront|ui\.)/;
+  const loader = ui.createLoader({ images: Object.keys((WW.ASSETS && WW.ASSETS.images) || {})
+    .filter(function (k) { return UI_IMAGES.test(k); })
+    .reduce(function (o, k) { o[k] = WW.ASSETS.images[k]; return o; }, {}) });
 
   function load() {
     overlays.loading(loader.progress().fraction);
@@ -332,7 +337,7 @@
     try {
       if (!WW.render || !WW.render.createRenderer) throw new Error('The renderer (WW.render) is missing.');
       renderer = WW.render.createRenderer({
-        canvas: els.canvas, images: images, assets: WW.ASSETS, plates: WW.PLATES, level: WW.LEVEL, debug: DEBUG
+        canvas: els.canvas, level: WW.LEVEL, debug: DEBUG
       });
       if (renderer.resize) renderer.resize(L.w, L.h, window.devicePixelRatio || 1);
       overlays.drawPortraits(images, WW.ASSETS);
