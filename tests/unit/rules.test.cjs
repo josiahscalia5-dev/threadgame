@@ -560,7 +560,7 @@ describe('§7.7 Loop', function () {
     assert.deepEqual(kinds, ['loop-task', 'loop-stumble', 'loop-drop:loop.teal', 'loop-recover:loop.teal']);
     const teal = st.items['loop.teal'];
     assert.equal(teal.status, 'held');
-    close(L.f, teal.f, 1e-6);
+    assert.ok(L.f >= teal.f && L.f - teal.f < 0.003, 'he is at the spot (one step past it)');
     assert.equal(st.held.loop, 2);
     const race2 = running(WW, q.seed);
     const evs2 = stepUntil(race2, function (s) { return s.loop.segId === 'c-landing'; }, 200);
@@ -579,8 +579,9 @@ describe('§7.7 Loop', function () {
         prev = { seg: L.seg, f: L.f };
         out.push(L.seg + ':' + L.f.toFixed(9) + ':' + s.held.loop);
         return L.finishTime !== null;
-      }, 300, { each: function (r) {
-        if (dodge && r.state.snagling.state === 'hop' && !r.state.purl.airborne) return swipe(r, 'up');
+      }, 300, { dodge: dodge, each: function (r, evs) {
+        const drop = evs.filter(function (e) { return e.type === 'drop'; })[0];
+        if (drop) return swipe(r, drop.lane > r.state.purl.lane ? 'right' : 'left');
       } });
       return { out: out, hits: race.state.stats.hits };
     };

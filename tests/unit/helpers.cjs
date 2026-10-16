@@ -5,7 +5,8 @@ const { load, newRace } = require('./load.cjs');
 const DT = 1 / 60;
 
 /* Step `race` until pred(state, events) is true (checked after every step) or maxSeconds of steps have run.
-   opts.tap: tap every ready stitch immediately (default true); opts.each(race, events): per-step hook. */
+   opts.tap: tap every ready stitch immediately (default true); opts.dodge: jump 0.3 s after a Snagling reveal
+   (default: same as opts.tap); opts.each(race, events): per-step hook. */
 function stepUntil(race, pred, maxSeconds, opts) {
   opts = opts || {};
   const all = [];
@@ -14,11 +15,19 @@ function stepUntil(race, pred, maxSeconds, opts) {
     const evs = race.step(DT);
     all.push.apply(all, evs);
     if (opts.tap !== false) tapReady(race, all);
+    if (opts.dodge !== undefined ? opts.dodge : opts.tap !== false) autoDodge(race, all);
     if (opts.each) all.push.apply(all, opts.each(race, evs) || []);
     if (pred && pred(race.state, evs, all)) return all;
   }
   if (pred && !opts.noThrow) throw new Error('stepUntil: condition not reached in ' + maxSeconds + ' s');
   return all;
+}
+
+function autoDodge(race, sink) {
+  const st = race.state;
+  if (st.snagling.state === 'hop' && st.snagling.t >= 0.3 && !st.purl.airborne && !st.snagling.contactConsumed) {
+    sink.push.apply(sink, race.input({ type: 'swipe', dir: 'up' }));
+  }
 }
 
 function stepFor(race, seconds, opts) {
