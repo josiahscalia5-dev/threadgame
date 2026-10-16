@@ -30,12 +30,23 @@
     return fallback;
   }
 
+  /* Zoom baseline: the path width where the plate's approved composition is framed — the entry stop when the plate
+     has one near its start (Purl waits there, so the view at the stop equals the contain-fit), else the path start. */
+  function baseWidth(P) {
+    if (P._camW0) return P._camW0;
+    const path = P.purl.path;
+    const stop = eventF(P, 'stop', null);
+    const w = stop !== null && stop < 0.15 ? WW.path.sample(path, stop).w : path[0][2];
+    try { Object.defineProperty(P, '_camW0', { value: w, enumerable: false }); } catch (e) { /* frozen data: recompute */ }
+    return w;
+  }
+
   /* Camera target for Purl at path fraction f on plate P (lane-0 point; his lane offset shows on screen). */
   function target(fitInfo, P, f) {
     const u = U();
     const path = P.purl.path;
     const s = WW.path.sample(path, f);
-    const w0 = path[0][2];
+    const w0 = baseWidth(P);
     const zMax = (P.camera && P.camera.zMax) || 1.8;
     const anchorY = (P.camera && P.camera.anchorY) || 0.8;
     const z = u.clamp(w0 / Math.max(1, s.w), 1, zMax);

@@ -105,10 +105,10 @@
     g.globalCompositeOperation = 'source-over';
     if (g.globalCompositeOperation !== 'source-over') g.globalCompositeOperation = 'source-over';
     // pale wash, faintly tinted toward the route's own colour
-    g.fillStyle = info.kind === 'ribbon' ? 'rgba(255, 236, 234, 0.58)' : 'rgba(240, 246, 238, 0.58)';
+    g.fillStyle = info.kind === 'ribbon' ? 'rgba(255, 238, 236, 0.5)' : 'rgba(240, 248, 242, 0.5)';
     g.fillRect(0, 0, w, h);
     g.globalCompositeOperation = 'multiply';
-    g.fillStyle = info.kind === 'ribbon' ? 'rgb(252, 214, 220)' : 'rgb(214, 236, 234)';
+    g.fillStyle = info.kind === 'ribbon' ? 'rgb(250, 200, 210)' : 'rgb(200, 232, 230)';
     g.fillRect(0, 0, w, h);
     g.globalCompositeOperation = 'source-over';
     info.ghost = c;

@@ -17,8 +17,8 @@
     tassels: { dx: -40, dy: -112, text: false, side: -1 },
     butterfly: { dx: 70, dy: -100, text: false, side: 1 }
   };
-  const STITCH_W = 46;          // stitch-loop sprite width (plate px) at r = 70
-  const LOOP_RING_Y = 0.31;     // loop ring centre, fraction of the sprite height from its top
+  const STITCH_W = 58;          // stitch-loop sprite width (plate px) at r = 70 (approved 01 loop ≈ 60 px wide)
+  const LOOP_RING_Y = 0.27;     // loop ring centre, fraction of the sprite height from its top
 
   function stitchFor(R, plateId) {
     const P = R.plates[plateId];
@@ -63,12 +63,16 @@
     const pulse = 0.5 + 0.5 * Math.sin(clock * 4.2);
     ctx.save();
     ctx.globalCompositeOperation = 'lighter';
-    ctx.globalAlpha = fade * (0.42 + 0.22 * pulse);
-    const gr = r * 0.95;
+    ctx.globalAlpha = fade * (0.5 + 0.2 * pulse);
+    const gr = r * 1.15;
     ctx.drawImage(glow, x - gr, y - gr, gr * 2, gr * 2);
-    ctx.globalAlpha = fade * (0.55 + 0.3 * pulse);
-    const gr2 = r * 0.42;
-    ctx.drawImage(glow, x - gr2, y - gr2, gr2 * 2, gr2 * 2);
+    ctx.globalAlpha = fade * (0.7 + 0.3 * pulse);
+    const gr2 = r * 0.55;
+    ctx.drawImage(glow, x - gr2, y - gr2 * 0.9, gr2 * 2, gr2 * 2);
+    const core = u.glowSprite(R.cache, 'rgba(255,250,220,0.95)', 0.05);
+    ctx.globalAlpha = fade * (0.35 + 0.25 * pulse);
+    const gr3 = r * 0.3;
+    ctx.drawImage(core, x - gr3, y - gr3, gr3 * 2, gr3 * 2);
     ctx.restore();
     // pulsing gold rings
     ctx.save();
@@ -98,7 +102,7 @@
 
   function drawPill(R, ctx, x, y, k, cfg, fade, clock) {
     const u = U();
-    const font = Math.max(11, 24 * k);
+    let font = Math.max(10.5, 24 * k);
     const bob = Math.sin(clock * 2.4) * 2.5 * k;
     const cx = x + cfg.dx * k, cy = y + cfg.dy * k + bob;
     ctx.save();
@@ -106,7 +110,14 @@
     ctx.font = '800 ' + font.toFixed(1) + 'px Nunito, "Baloo 2", "Trebuchet MS", "Segoe UI", Roboto, Arial, sans-serif';
     ctx.textAlign = 'center'; ctx.textBaseline = 'middle';
     const text = 'Tap the stitch';
-    const tw = ctx.measureText(text).width;
+    let tw = ctx.measureText(text).width;
+    // fonts differ per device: fit the text to the approved width (≈128 plate px at 24 px)
+    const want = 128 * Math.max(k, 10.5 / 24);
+    if (tw > want * 1.04 || tw < want * 0.9) {
+      font = Math.max(10, font * want / tw);
+      ctx.font = '800 ' + font.toFixed(1) + 'px Nunito, "Baloo 2", "Trebuchet MS", "Segoe UI", Roboto, Arial, sans-serif';
+      tw = ctx.measureText(text).width;
+    }
     const h = font * 2.0, w = tw + font * 1.35;
     // curved arrow from the pill's lower edge down to the stitch (drawn first so the pill overlaps its root)
     const ax0 = cx - cfg.side * w * 0.02, ay0 = cy + h * 0.38;
