@@ -3825,3 +3825,11 @@ First I'll check whether the files you just sent are the same ones I already hav
 
 - _tool Bash_: Run tests and confirm GitHub has the changes
 
+
+
+- _tool Edit_: /home/user/threadgame/docs/HANDOFF.md
+
+- _tool SendUserFile_: 
+
+- _tool TaskUpdate_: 
+
