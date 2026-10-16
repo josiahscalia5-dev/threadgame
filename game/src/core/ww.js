@@ -13,28 +13,8 @@
      checked by tests/unit and tests/e2e. */
   WW.TUNING = {
     countdown: 3,
-
-    /* Connected course (metres, seconds). Character scale: Purl/Loop are ~2.0 m tall, ~2.0 m wide (render/racers.js,
-       matching their size against the carpet in the approved screens);
-       speed, stride and the chase camera (render/chase.js) are calibrated together against recordings. */
-    purlSpeed: 5.5,               // m/s auto-run
-    accelTime: 0.35,              // s from standstill to run speed (kit advanceRun accelerationTime)
-    brakeTime: 0.22,              // s from run speed to standstill (kit: 0.18–0.25)
-    strideLength: 1.75,           // m per full gait cycle (two steps)
-    bodyRadius: 0.95,             // m of body/rail clearance inside the walkable width (half a racer's width)
-    laneStep: 2.0,                // m per steering swipe (one racer's width: left · centre · right)
-    steerSpeed: 5.6,              // m/s max sideways speed while changing line (a side-step, never a pop)
-    steerAccel: 36,               // m/s² sideways acceleration
-    steerGain: 10,                // 1/s: sideways speed eases off in proportion to the remaining distance
-    jumpHeight: 1.2,              // m
-    sideLoopBoost: 1.45,          // speed ribbon on the side loop: 19.5 m at ×1.45 beats 16.0 m of main by ~0.45 s
-    branchWindow: 12,             // m before the fork in which the side loop is announced
-    branchLock: 1.5,              // m before the fork: a runner in the left lane is committed to the side loop
-    pickupReach: 1.5,             // m lateral reach to a thread spool as it is passed
-    respawnAhead: 18,             // m: a missed thread is offered again this far ahead
-    finishRunout: 10,             // m of plaza beyond the flower-gate finish line (runners slow to a stop there)
-
-    purlAccel: 9,                 // (plate-era value, kept for the Snagling/stitch modules re-integrated after review)
+    purlSpeed: 5.0,
+    purlAccel: 9,                 // m/s² when starting/stopping
     laneChangeTime: 0.22,
     jumpTime: 0.68,
     jumpAirborneAbove: 0.3,       // jump height fraction that clears Snagling's contact
@@ -65,12 +45,8 @@
     dropPickupLane: 0.6,          // |lane - dropLane| must be below this to recover a drop
     cueRepeatAfter: 4,
 
-    loopSpeed: 5.5,
-    loopSpeedJitter: 0.04,        // per course section
-    loopBranchChance: 0.5,        // chance Loop takes the side loop
-    loopStumbleChance: 0.5,       // chance of one visible stumble somewhere in the race
-    loopStumbleSpeed: 0.3,        // speed multiplier while stumbling (loopStumble s)
-    loopLine: [0.6, 1.9],         // his preferred lateral line (right half; he starts right of Purl), rolled per race
+    loopSpeed: 5.0,
+    loopSpeedJitter: 0.04,
     loopReact: [0.45, 1.3],
     loopHesitateChance: 0.22,
     loopHesitate: [0.5, 1.2],

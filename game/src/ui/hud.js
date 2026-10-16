@@ -27,10 +27,6 @@
 
   function progressOf(cum, route, racer) {
     if (!racer) return 0;
-    // Connected course: the simulation reports progress (main-road metres / finish line) directly.
-    if (typeof racer.progress === 'number' && isFinite(racer.progress)) {
-      return racer.finishTime != null ? 1 : Math.max(0, Math.min(1, racer.progress));
-    }
     const total = cum[cum.length - 1];
     if (!total) return 0;
     if (racer.finishTime != null || racer.action === 'finished') return 1;

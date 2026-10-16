@@ -1,217 +1,619 @@
-/* Wishweave Wonders — the 3D renderer (three.js r147, game/vendor/three.min.js, classic script, offline).
+/* Wishweave Wonders — renderer entry point (WW.render.createRenderer), docs/ARCHITECTURE.md §8 and §12.
 
-   Same public API main.js has always used, now drawing one continuous 3D course:
-     const r = WW.render.createRenderer({ canvas, level, debug })
-     r.resize(w, h, dpr)          CSS px; device pixel ratio capped for phones
-     r.render(state, dtReal)      draws the race state (dtReal 0 while paused: nothing moves, the frame is stable)
-     r.handleEvents(events)       pickups, jumps, landings, brake, stumble, finish → effects; pickups fly to the HUD
-     r.getTapTargets()            [] (no tap targets on the course in Milestone 1)
-     r.getLayout()                {purl:{x,y,w,h}, loop:{…}, camera:{…}} in CSS px (tests, e2e)
-     r.worldToScreen([x,y,z])     → {x, y, visible} in CSS px
-     r.reset(state)               a new race: camera snaps behind Purl, effects cleared
-     r.setDebug(on)               toggles the ground-contact / walkable-geometry view (also ?debug=geom)
+   const r = WW.render.createRenderer({ canvas, images, assets, plates, level, debug });
+   r.resize(cssW, cssH, dpr)   backing store capped at DPR 2; drawing happens in CSS px
+   r.render(state, dtReal)     one frame from read-only sim state; dtReal only drives cosmetic animation
+   r.handleEvents(events)      sim events → cosmetic effects (§12.5); pickups/drops/recoveries are also diffed from state
+   r.getTapTargets()           [{id, x, y, r}] CSS px for stitches currently 'ready' on screen (r ≥ 44)
+   r.worldToScreen(plate, x, y), r.getLayout(), r.setDebug(on)
 
-   Scene: sky dome + warm fog, hemisphere + sun lighting, the course (render/course.js), Purl and Loop drawn with the
-   approved character art (render/racers.js, render/sprites.js) with contact shadows, spools and effects (render/props.js), and the chase camera
-   (render/chase.js). A screen-space layer carries pickup fly-ups to the HUD counters.
-   WebGL context loss (Android backgrounding, GPU resets) is handled: drawing pauses and resumes on restore. */
+   Layers per plate view: framing → plate → unopened-route ghost (+roll) → depth-sorted actors/items (by ground y) with
+   occluder redraws → effects → world cues; a connector/loop/return transition draws two views split at a sweeping
+   tower column (the outgoing plate's `wipe` strip) with Purl running at his interpolated screen anchor. */
 (function (WW) {
   'use strict';
-  const R = WW.render = WW.render || {};
+  WW.render = WW.render || {};
+
+  const PW = 841, PH = 1870;
 
   function createRenderer(opts) {
-    opts = opts || {};
-    const THREE = globalThis.THREE;
-    if (!THREE) throw new Error('three.js (game/vendor/three.min.js) is missing.');
+    const u = WW.render.util, cam = WW.render.camera, world = WW.render.world, actors = WW.render.actors,
+      feats = WW.render.features, fx = WW.render.fx, sp = WW.render.setpieces || null;
     const canvas = opts.canvas;
-    const level = opts.level || WW.LEVEL;
-    const T = WW.TUNING || {};
-    let debugGeom = !!opts.debug || /[?&]debug=geom(&|$)/.test((globalThis.location && location.search) || '');
+    const R = {
+      canvas: canvas, ctx: canvas.getContext('2d'), images: opts.images || {}, assets: opts.assets || WW.ASSETS,
+      plates: opts.plates || WW.PLATES, level: opts.level || WW.LEVEL, debug: !!opts.debug, tuning: opts.tuning || WW.TUNING || {},
+      cache: {}, clock: 0, dpr: 1, fit: null, cam: null, views: [], fx: fx.create(),
+      prev: null, itemScreen: {}, readySince: {}, dropAnim: {}, trSnap: null, events: [],
+      tapTargets: [], purlScreen: null, lastPurlPose: null, sceneKey: ''
+    };
+    const ctx = R.ctx;
 
-    const gl = new THREE.WebGLRenderer({ canvas: canvas, antialias: true, powerPreference: 'high-performance' });
-    gl.outputEncoding = THREE.sRGBEncoding;
-    gl.toneMapping = THREE.NoToneMapping;          // the approved art keeps its exact colours
-    gl.setClearColor(0xffd9c2, 1);
-
-    const scene = new THREE.Scene();
-    const FOG = 0xf9d6c4;
-    scene.fog = new THREE.Fog(FOG, 55, 320);
-
-    // sky: blue zenith → warm peach horizon, soft sun glow (no fog)
-    const skyMat = new THREE.ShaderMaterial({
-      side: THREE.BackSide, depthWrite: false, fog: false,
-      uniforms: { top: { value: new THREE.Color(0x5fa8ec) }, mid: { value: new THREE.Color(0xbfdcf7) },
-                  horizon: { value: new THREE.Color(FOG) }, sunDir: { value: new THREE.Vector3(-0.35, 0.32, 0.88).normalize() } },
-      vertexShader: 'varying vec3 vDir; void main(){ vDir = normalize(position); gl_Position = projectionMatrix * modelViewMatrix * vec4(position,1.0); }',
-      fragmentShader: 'uniform vec3 top; uniform vec3 mid; uniform vec3 horizon; uniform vec3 sunDir; varying vec3 vDir;' +
-        'void main(){ float h = clamp(vDir.y, -1.0, 1.0);' +
-        ' vec3 c = h > 0.18 ? mix(mid, top, smoothstep(0.18, 0.75, h)) : mix(horizon, mid, smoothstep(-0.05, 0.18, h));' +
-        ' float sun = pow(max(dot(normalize(vDir), sunDir), 0.0), 18.0);' +
-        ' c += vec3(1.0, 0.86, 0.6) * sun * 0.55; gl_FragColor = vec4(c, 1.0); }'
-    });
-    const sky = new THREE.Mesh(new THREE.SphereGeometry(700, 32, 16), skyMat);
-    sky.renderOrder = -10;
-    scene.add(sky);
-
-    scene.add(new THREE.HemisphereLight(0xfff3e4, 0xb4706a, 0.95));
-    const sun = new THREE.DirectionalLight(0xfff0d6, 1.55);
-    sun.position.set(-30, 55, 70);
-    scene.add(sun);
-    scene.add(new THREE.AmbientLight(0xffe8e0, 0.12));
-
-    const art = R.sprites.atlas(THREE, opts.images || {}, opts.assets || WW.ASSETS);
-    const M = R.materials.create(THREE, { anisotropy: Math.min(8, gl.capabilities.getMaxAnisotropy()), images: opts.images });
-    const course = WW.route.createCourse(level.course || WW.ROUTE, { runout: T.finishRunout || 0 });
-    const world = R.course.build(THREE, course, M, { debug: debugGeom });
-    scene.add(world.group, world.debugGroup);
-
-    const rigs = { purl: R.racers.create(THREE, art, 'purl', M), loop: R.racers.create(THREE, art, 'loop', M) };
-    ['purl', 'loop'].forEach(function (k) { scene.add(rigs[k].group, rigs[k].shadow); });
-    const props = R.props.create(THREE, M, course, level, art);
-    scene.add(props.group);
-    const cam = R.chase.create(THREE, course, world.landmarks);
-
-    // debug markers: root contact crosshair + the racer's walkable limit at his position (updated per frame)
-    const debugMarks = new THREE.Group(); debugMarks.visible = debugGeom; scene.add(debugMarks);
-    function cross(color) {
-      const g = new THREE.BufferGeometry().setFromPoints([
-        new THREE.Vector3(-0.35, 0, 0), new THREE.Vector3(0.35, 0, 0), new THREE.Vector3(0, 0, -0.35), new THREE.Vector3(0, 0, 0.35),
-        new THREE.Vector3(0, 0, 0), new THREE.Vector3(0, 1.4, 0)]);
-      const l = new THREE.LineSegments(g, new THREE.LineBasicMaterial({ color: color, depthTest: false }));
-      l.renderOrder = 1000;
-      debugMarks.add(l);
-      return l;
+    /* ---------------- helpers ---------------- */
+    R.segIndexOf = function (x) { return segIndex(x); };
+    R.hudTarget = function (who) { return hudTarget(who); };
+    const route = function () { return R.level.route || []; };
+    function segIndex(x) {
+      const rt = route();
+      if (typeof x === 'number') return rt[x] ? x : -1;
+      for (let i = 0; i < rt.length; i++) if (rt[i].id === x) return i;
+      for (let i = 0; i < rt.length; i++) if (rt[i].kind === 'plate' && rt[i].plate === x) return i;
+      return -1;
     }
-    const marks = { purl: cross(0x00ff66), loop: cross(0x33aaff) };
+    function platePos(seg) { const s = route()[seg]; return s && s.kind === 'plate' ? s.plate : null; }
 
-    // screen-space layer (pickup fly-ups to the HUD counters)
-    const hudScene = new THREE.Scene();
-    const hudCam = new THREE.OrthographicCamera(0, 1, 0, 1, -10, 10);
-    const flyers = [];
-
-    let W = 1, H = 1, dprUsed = 1, t = 0, lost = false, snapNext = true, lastState = null;
-    const layout = { purl: null, loop: null, camera: null };
-    const v3 = new THREE.Vector3();
-
-    canvas.addEventListener('webglcontextlost', function (e) { e.preventDefault(); lost = true; }, false);
-    canvas.addEventListener('webglcontextrestored', function () {
-      lost = false;
-      scene.traverse(function (o) {
-        const mats = o.material ? (Array.isArray(o.material) ? o.material : [o.material]) : [];
-        mats.forEach(function (m) { m.needsUpdate = true; ['map', 'normalMap'].forEach(function (k) { if (m[k]) m[k].needsUpdate = true; }); });
-      });
-    }, false);
-
-    function project(p, out) {
-      v3.set(p[0], p[1], p[2]).project(cam.camera);
-      out = out || {};
-      out.x = (v3.x * 0.5 + 0.5) * W; out.y = (-v3.y * 0.5 + 0.5) * H;
-      out.visible = v3.z > -1 && v3.z < 1;
-      return out;
+    function resolveScene(state) {
+      const rt = route(), purl = state.purl || {};
+      let idx = purl.seg | 0;
+      if (!rt[idx]) idx = 0;
+      const seg = rt[idx] || { kind: 'plate', plate: 'p01' };
+      const tr = state.transition;
+      if (tr && (tr.kind === 'loop' || tr.kind === 'return')) {
+        const fi = segIndex(tr.from), ti = segIndex(tr.to);
+        if (fi >= 0 && ti >= 0 && platePos(fi) && platePos(ti)) {
+          return { kind: 'transition', tkind: tr.kind, fromIdx: fi, toIdx: ti, from: platePos(fi), to: platePos(ti),
+            t: u.clamp(tr.t || 0, 0, 1), style: tr.style || 'right' };
+        }
+      }
+      if (seg.kind === 'connector') {
+        let fi = idx - 1, ti = idx + 1;
+        if (!(rt[fi] && rt[fi].plate === seg.from)) fi = segIndex(seg.from);
+        if (!(rt[ti] && rt[ti].plate === seg.to)) ti = segIndex(seg.to);
+        const t = tr && tr.kind === 'connector' && typeof tr.t === 'number' ? tr.t : (purl.f || 0);
+        return { kind: 'transition', tkind: 'connector', fromIdx: fi, toIdx: ti, from: seg.from, to: seg.to,
+          t: u.clamp(t, 0, 1), style: (tr && tr.style) || seg.style || 'right' };
+      }
+      return { kind: 'plate', idx: idx, plate: seg.plate };
     }
 
-    function racerBox(r) {
-      const top = project([r.pos[0], r.pos[1] + 1.38, r.pos[2]]);
-      const feet = project([r.pos[0], r.pos[1], r.pos[2]]);
-      const side = project([r.pos[0] + r.right[0] * 0.65, r.pos[1] + 0.8, r.pos[2] + r.right[2] * 0.65]);
-      const mid = project([r.pos[0], r.pos[1] + 0.8, r.pos[2]]);
-      const w = Math.abs(side.x - mid.x) * 2;
-      return { x: feet.x, y: feet.y, w: w, h: feet.y - top.y, top: top.y, visible: feet.visible };
-    }
+    function pathFor(P, owner) { return P && P[owner] && P[owner].path; }
 
     function hudTarget(who) {
-      const el = document.getElementById(who === 'loop' ? 'hud-loop' : 'hud-purl');
-      if (!el || !canvas.getBoundingClientRect) return null;
-      const a = el.getBoundingClientRect(), c = canvas.getBoundingClientRect();
-      return { x: a.left - c.left + a.width * 0.2, y: a.top - c.top + a.height / 2 };
+      try {
+        const el = document.getElementById(who === 'loop' ? 'hud-loop' : 'hud-purl');
+        if (el && el.offsetParent !== null) {
+          const a = el.getBoundingClientRect(), c = canvas.getBoundingClientRect();
+          if (a.width > 0) return { x: a.left - c.left + a.width * 0.2, y: a.top - c.top + a.height * 0.5 };
+        }
+      } catch (e) { /* no DOM HUD (harness) */ }
+      return { x: R.fit.W * (who === 'loop' ? 0.66 : 0.33), y: R.fit.H * 0.125 };
     }
 
-    function flyToHud(who, color, from) {
-      const to = hudTarget(who);
-      if (!to || !from) return;
-      const sp = new THREE.Sprite(new THREE.SpriteMaterial({ map: M.textures.spark, color: color, transparent: true, depthTest: false }));
-      sp.scale.set(26, 26, 1);
-      hudScene.add(sp);
-      flyers.push({ s: sp, from: { x: from.x, y: from.y }, to: to, age: 0, life: 0.65 });
+    /* ---------------- state diffs → cosmetic effects ---------------- */
+    function diffState(state) {
+      const prev = R.prev || { items: {}, stitches: {} };
+      const next = { items: {}, stitches: {} };
+      const items = state.items || {};
+      for (const id in items) {
+        const it = items[id], was = prev.items[id];
+        next.items[id] = it.status;
+        if (!R.prev || was === undefined || was === it.status) continue;
+        const color = it.color || (id.split('.')[1] || 'coral');
+        const who = it.owner || (id.indexOf('loop.') === 0 ? 'loop' : 'purl');
+        const seen = R.itemScreen[id];
+        if (it.status === 'held') {
+          const recovered = was === 'dropped' && who === 'purl' && sp;
+          if (seen && R.clock - seen.at < 0.5 + (R.dt || 0)) {
+            // a recovered thread is first held up at Purl's hand (setpieces), then flies to the HUD
+            if (!recovered) fx.flyup(R.fx, actors.SPOOL[color] || actors.SPOOL.coral, seen, hudTarget(who), seen.size);
+            fx.sparkle(R.fx, seen.plate, seen.wx, seen.wy, 12, 140);
+          }
+          if (recovered) sp.onRecover(R, color);
+          delete R.dropAnim[id];
+        } else if (it.status === 'dropped') {
+          const pose = who === 'purl' ? R.lastPurlPose : R.lastLoopPose;
+          R.dropAnim[id] = { at: R.clock, from: pose || null };
+          // approved "−1 THREAD" pill above the spool's landing spot (Purl's threads only)
+          if (who === 'purl' && sp && pose) {
+            const P = R.plates[pose.plate], path = pathFor(P, 'purl');
+            if (path && segIndex(it.seg) >= 0 && platePos(segIndex(it.seg)) === pose.plate) {
+              const q = WW.path.racerPoint(path, u.clamp(it.f || 0, 0, 1), it.lane || 0, 0);
+              sp.onDrop(R, pose.plate, { x: q.x, y: q.groundY }, actors.itemSize(P, 'purl', color));
+            }
+          }
+        }
+      }
+      const sts = state.stitches || {};
+      for (const id in sts) {
+        const s = sts[id], was = prev.stitches[id];
+        next.stitches[id] = s.state;
+        // first seen ready: backdate by (up to 0.5 s of) this frame's dt so a single large manual step shows the cue
+        if (s.state === 'ready' && was !== 'ready') R.readySince[id] = R.clock - Math.min(R.dt || 0, 0.5);
+        if (R.prev && s.state === 'animating' && was !== 'animating') {
+          const pl = stitchPlate(id), S = pl && R.plates[pl].stitch;
+          if (S) fx.sparkle(R.fx, pl, S.x, S.y, 18, 220);
+        }
+      }
+      R.prev = next;
     }
 
-    function updateFlyers(dt) {
-      for (let i = flyers.length - 1; i >= 0; i--) {
-        const f = flyers[i];
-        f.age += dt;
-        const k = Math.min(1, f.age / f.life), e = k * k * (3 - 2 * k);
-        const x = f.from.x + (f.to.x - f.from.x) * e, y = f.from.y + (f.to.y - f.from.y) * e - Math.sin(Math.PI * k) * 60;
-        f.s.position.set(x, y, 0);
-        const sc = 26 + 18 * Math.sin(Math.PI * k);
-        f.s.scale.set(sc, sc, 1);
-        f.s.material.opacity = k < 0.85 ? 1 : (1 - k) / 0.15;
-        if (k >= 1) { hudScene.remove(f.s); f.s.material.dispose(); flyers.splice(i, 1); }
+    function stitchPlate(id) {
+      const def = R.level.stitches && R.level.stitches[id];
+      const idx = def ? segIndex(def.seg) : -1;
+      return idx >= 0 ? platePos(idx) : null;
+    }
+
+    function processEvents(state) {
+      const evs = R.events; R.events = [];
+      for (let i = 0; i < evs.length; i++) {
+        const e = evs[i];
+        if (!e || !e.type) continue;
+        if (sp) sp.event(R, e, state);
+        if (e.type === 'jump' && e.who !== 'loop' && R.lastPurlPose) {
+          const p = R.lastPurlPose; fx.dust(R.fx, p.plate, p.x, p.y, p.w);
+        } else if (e.type === 'stitch-open') {
+          const pl = stitchPlate(e.id), S = pl && R.plates[pl].stitch;
+          if (S) fx.sparkle(R.fx, pl, S.x, S.y - 20, 10, 160);
+        }
       }
     }
 
-    const api = {
-      three: THREE, scene: scene, course: course, world: world, rigs: rigs, cam: cam,
+    /* ---------------- world drawing ---------------- */
+    function setWorld(v) { const d = R.dpr; ctx.setTransform(d * v.s, 0, 0, d * v.s, d * v.ox, d * v.oy); }
+    function setScreen() { const d = R.dpr; ctx.setTransform(d, 0, 0, d, 0, 0); }
 
-      resize: function (w, h, dpr) {
-        W = Math.max(1, w); H = Math.max(1, h);
-        dprUsed = Math.min(dpr || 1, 2);
-        gl.setPixelRatio(dprUsed);
-        gl.setSize(W, H, false);
-        cam.resize(W / H);
-        hudCam.left = 0; hudCam.right = W; hudCam.top = 0; hudCam.bottom = H;
-        hudCam.updateProjectionMatrix();
-      },
+    function occluderList(P) {
+      const key = 'occ:' + P.id;
+      if (R.cache[key]) return R.cache[key];
+      const list = (P.occluders || []).map(function (o) { return { id: o.id, poly: o.poly, behindY: o.behindY, box: u.polyBox(o.poly) }; });
+      R.cache[key] = list;
+      return list;
+    }
 
-      render: function (state, dtReal) {
-        if (!state || lost) return;
-        lastState = state;
-        const dt = state.paused ? 0 : Math.max(0, Math.min(dtReal || 0, 0.25));
-        t += dt;
-        if (snapNext) { cam.snap(state.purl); snapNext = false; } else cam.update(state.purl, dt);
-        const camPos = cam.camera.position;
-        ['purl', 'loop'].forEach(function (k) { rigs[k].update(state[k], dt, t, { camPos: camPos }); });
-        props.update(state, dt, t, camPos);
-        world.update(t, camPos);
-        sky.position.copy(cam.camera.position);
-        if (debugGeom) {
-          ['purl', 'loop'].forEach(function (k) {
-            const r = state[k];
-            marks[k].position.set(r.pos[0], r.pos[1] - (r.jumpY || 0) + 0.02, r.pos[2]);
-            marks[k].rotation.y = r.heading;
-          });
+    function racerEntry(v, P, who, st, state) {
+      const path = pathFor(P, who);
+      if (!path) return null;
+      const f = u.clamp(st.f || 0, 0, 1);
+      const p = WW.path.racerPoint(path, f, st.laneX || 0, st.jumpH || 0);
+      const lift = p.groundY - p.y;
+      const w = p.w;
+      const opt = { clock: R.clock + (who === 'loop' ? 0.37 : 0) };
+      if (who === 'purl') {
+        const t = state.time || 0;
+        if (st.immuneUntil && t < st.immuneUntil) opt.rim = 0.35 + 0.2 * Math.sin(R.clock * 9);
+        R.purlScreen = { x: v.ox + p.x * v.s, y: v.oy + p.groundY * v.s, w: w * v.s };
+        R.lastPurlPose = { plate: v.plate, x: p.x, y: p.groundY, w: w };
+        // snagged: wobble on the spot while the yarn holds his ankles
+        if (st.action === 'tangled' || st.action === 'failed') opt.wobble = 0.085 * Math.sin(R.clock * 17) + 0.03 * Math.sin(R.clock * 5.3);
+      } else {
+        R.lastLoopPose = { plate: v.plate, x: p.x, y: p.groundY, w: w };
+      }
+      const pose = { plate: v.plate, x: p.x, groundY: p.groundY, lift: lift, w: w };
+      return {
+        y: p.groundY, who: who, x: p.x, w: w, opt: opt,
+        box: { x0: p.x - w * 0.6, y0: p.y - w * 1.15, x1: p.x + w * 0.6, y1: p.groundY + 4 },
+        draw: function (c) {
+          actors.drawRacer(R, c, who, st, p.x, p.groundY, lift, w, opt);
+          if (sp) sp.afterRacer(R, c, who, st, pose, state);
         }
-        updateFlyers(dt);
-        gl.autoClear = true;
-        gl.render(scene, cam.camera);
-        if (flyers.length) { gl.autoClear = false; gl.clearDepth(); gl.render(hudScene, hudCam); gl.autoClear = true; }
-        layout.purl = racerBox(state.purl);
-        layout.loop = racerBox(state.loop);
-        layout.camera = { x: cam.camera.position.x, y: cam.camera.position.y, z: cam.camera.position.z, fov: cam.camera.fov };
-      },
+      };
+    }
 
-      handleEvents: function (events) {
-        if (!Array.isArray(events) || !events.length) return;   // main.js also dispatches race.start()'s mode string
-        props.handleEvents(events, lastState);
-        events.forEach(function (e) {
-          if (e.type === 'pickup' && e.who === 'purl' && lastState) {
-            const p = project([lastState.purl.pos[0], lastState.purl.pos[1] + 1, lastState.purl.pos[2]]);
-            flyToHud('purl', { coral: 0xff4466, teal: 0x29d6cf, gold: 0xffc94d }[e.color] || 0xffffff, p);
+    function itemEntries(v, P, state, out) {
+      const items = state.items || {};
+      let n = 0;
+      for (const id in items) {
+        const it = items[id];
+        n++;
+        if (!it || it.status === 'held' || it.available === false) continue;
+        const owner = it.owner || (id.indexOf('loop.') === 0 ? 'loop' : 'purl');
+        const idx = segIndex(it.seg);
+        if (idx !== v.segIdx) continue;
+        const path = pathFor(P, owner);
+        if (!path) continue;
+        const color = it.color || id.split('.')[1] || 'coral';
+        const size = actors.itemSize(P, owner, color);
+        const pt = WW.path.racerPoint(path, u.clamp(it.f || 0, 0, 1), owner === 'purl' ? (it.lane || 0) : 0, 0);
+        let x = pt.x, y = pt.groundY, hover;
+        const da = R.dropAnim[id];
+        let ring = 0, rot = 0, marks = 0;
+        if (it.status === 'dropped') {
+          const age = da ? R.clock - da.at : 9;
+          if (da && da.from && da.from.plate === v.plate && age < 0.6) {
+            // knocked loose: arcs from the racer onto the carpet, tumbling (approved 04)
+            const k = age / 0.6, e = u.easeOutCubic(k);
+            x = u.lerp(da.from.x, pt.x, e); y = u.lerp(da.from.y, pt.groundY, e);
+            hover = Math.sin(k * Math.PI) * da.from.w * 0.9;
+            rot = -k * (Math.PI * 2 + 0.6);
+            marks = 1;
+          } else {
+            const b = age - 0.6;
+            // settles from its tilt, then bobs with a ring until it is picked up
+            rot = da && da.from ? -0.6 * Math.exp(-b * 3.2) * Math.cos(b * 8) : 0;
+            marks = da && da.from && b < 0.6 ? 1 - b / 0.6 : 0;
+            hover = Math.abs(Math.sin(b * 3.4)) * size * 0.16 * Math.exp(-Math.max(0, b) * 0.25) * u.smooth(b / 0.5) + 3;
+            ring = 1;
+          }
+        }
+        const phase = n * 1.7;
+        const wx = x, wy = y;
+        R.itemScreen[id] = { x: v.ox + x * v.s, y: v.oy + (y - size * 0.6) * v.s, size: size * v.s, plate: v.plate, wx: wx, wy: wy - size * 0.6, at: R.clock };
+        out.push({
+          y: wy, box: { x0: x - size, y0: y - size * 2.2, x1: x + size, y1: y + 6 },
+          draw: function (c) {
+            if (ring) drawDropRing(c, wx, wy, size);
+            if (Math.abs(rot) > 0.01) {
+              const fr = R.assets.frames[actors.SPOOL[color] || actors.SPOOL.coral], h = fr ? size * fr.h / fr.w : size * 1.4;
+              u.drawShadow(c, R.cache, wx, wy, size * 1.05, 0.42);
+              c.save(); c.translate(wx, wy - (hover || 0) - h * 0.5); c.rotate(rot);
+              actors.drawSpool(R, c, color, 0, h * 0.5, size, { clock: R.clock, phase: phase, hover: 0, shadow: false });
+              c.restore();
+            } else actors.drawSpool(R, c, color, wx, wy, size, { clock: R.clock, phase: phase, hover: hover });
+            if (marks > 0.01) drawSpeedMarks(c, wx, wy - (hover || 0) - size * 0.7, size, marks);
           }
         });
-      },
-
-      getTapTargets: function () { return []; },
-      getLayout: function () { return { w: W, h: H, dpr: dprUsed, purl: layout.purl, loop: layout.loop, camera: layout.camera }; },
-      worldToScreen: function (p) { return project(p); },
-      reset: function () { snapNext = true; t = 0; props.reset(); cam.reset(); },
-      setDebug: function (on) { debugGeom = !!on; world.debugGroup.visible = debugGeom; debugMarks.visible = debugGeom; },
-      info: function () { return { calls: gl.info.render.calls, triangles: gl.info.render.triangles, geometries: gl.info.memory.geometries, textures: gl.info.memory.textures }; },
-      dispose: function () {
-        world.dispose(); props.dispose(); rigs.purl.dispose(); rigs.loop.dispose(); M.dispose(); art.dispose(); gl.dispose();
       }
+    }
+
+    /* White motion arcs beside a tumbling spool (approved 04). */
+    function drawSpeedMarks(c, x, y, size, a) {
+      c.save();
+      c.globalAlpha = a * 0.9;
+      c.strokeStyle = '#ffffff'; c.lineCap = 'round'; c.lineWidth = Math.max(2, size * 0.05);
+      for (let s = -1; s <= 1; s += 2) {
+        for (let j = 0; j < 2; j++) {
+          const r = size * (0.62 + 0.2 * j);
+          c.beginPath(); c.arc(x, y + size * 0.3, r, s > 0 ? -0.5 : Math.PI - 0.5, s > 0 ? 0.5 : Math.PI + 0.5); c.stroke();
+        }
+      }
+      c.restore();
+    }
+
+    function drawDropRing(c, x, y, size) {
+      const ph = (R.clock * 0.9) % 1;
+      c.save();
+      for (let i = 0; i < 2; i++) {
+        const p = (ph + i * 0.5) % 1;
+        const r = size * (0.55 + 0.6 * p);
+        c.globalAlpha = (1 - p) * 0.85;
+        c.strokeStyle = '#ffe08a'; c.lineWidth = 3.5 * (1 - p * 0.5);
+        c.beginPath(); c.ellipse(x, y, r, r * 0.34, 0, 0, Math.PI * 2); c.stroke();
+      }
+      c.restore();
+    }
+
+    function loopTaskFx(v, P, st) {
+      if (st.action !== 'task' && st.action !== 'hesitate') return;
+      const ev = (P.loop && P.loop.events) || [];
+      let best = null, bd = 1e9;
+      for (let i = 0; i < ev.length; i++) {
+        if (ev[i].type !== 'task' || ev[i].x === undefined) continue;
+        if (st.task && st.task.kind && ev[i].kind !== st.task.kind) continue;
+        const d = Math.abs((ev[i].f || 0) - (st.f || 0));
+        if (d < bd) { bd = d; best = ev[i]; }
+      }
+      if (!best || best.kind === 'bypass') return;
+      const s = WW.path.sample(P.loop.path, u.clamp(st.f || 0, 0, 1)).w * 0.55;
+      const glow = u.glowSprite(R.cache, 'rgba(255,214,120,0.9)', 0.15);
+      ctx.save();
+      ctx.globalCompositeOperation = 'lighter';
+      ctx.globalAlpha = 0.45 + 0.2 * Math.sin(R.clock * 6);
+      ctx.drawImage(glow, best.x - s, best.y - s, 2 * s, 2 * s);
+      ctx.restore();
+      ctx.fillStyle = '#fff2c0';
+      for (let i = 0; i < 3; i++) {
+        const a = R.clock * 2 + i * 2.1;
+        ctx.globalAlpha = 0.5 + 0.5 * Math.sin(R.clock * 7 + i);
+        u.star(ctx, best.x + Math.cos(a) * s * 0.5, best.y + Math.sin(a) * s * 0.3, s * 0.22, a);
+      }
+      ctx.globalAlpha = 1;
+    }
+
+    /* One plate view. opts: {purl: bool, rect: {x,y,w,h}} */
+    function drawWorld(v, state, opts) {
+      const P = R.plates[v.plate];
+      if (!P) return;
+      setScreen();
+      world.drawFraming(R, ctx, v, opts.rect);
+      setWorld(v);
+      world.drawBackground(R, ctx, v, state, R.clock, null);
+      if (sp) sp.behind(R, ctx, v, state);          // props behind: previews, cameo, embroidery, gate veil
+      // depth-sorted actors
+      const list = [];
+      const purl = state.purl || {}, loop = state.loop || {};
+      if (opts.purl && (purl.seg | 0) === v.segIdx) { const e = racerEntry(v, P, 'purl', purl, state); if (e) list.push(e); }
+      // Loop is out of sight while he takes a bypass (his f holds while hidden)
+      const bypassing = loop && loop.task && loop.task.kind === 'bypass' && loop.action === 'task';
+      if (loop && !bypassing && typeof loop.seg === 'number' && loop.seg === v.segIdx && route()[loop.seg] && route()[loop.seg].kind === 'plate') {
+        const e = racerEntry(v, P, 'loop', loop, state); if (e) list.push(e);
+      }
+      itemEntries(v, P, state, list);
+      const se = feats.stitchEntry(R, v.plate, state); if (se) list.push(se);
+      if (WW.render.pull) WW.render.pull.entries(R, v, P, state, list);   // opening lesson: loop, strand, poses
+      if (sp) sp.entries(R, v, P, state, list);     // tassels, Snagling
+      list.sort(function (a, b) { return a.y - b.y; });
+      const occ = occluderList(P);
+      for (let i = 0; i < list.length; i++) {
+        const e = list[i];
+        e.draw(ctx);
+        for (let k = 0; k < occ.length; k++) {
+          const o = occ[k];
+          if (e.y < o.behindY && u.boxHit(e.box, o.box)) world.drawBackground(R, ctx, v, state, R.clock, o.poly);
+        }
+      }
+      if (sp) sp.air(R, ctx, v, state);             // butterfly, Snagling's yarn, Loop's task sparkles
+      else if (loop && loop.seg === v.segIdx) loopTaskFx(v, P, loop);
+      fx.drawWorld(R.fx, ctx, v.plate);
+      if (R.debug) drawDebugWorld(v, P);
+      setScreen();
+      // world cues
+      if (opts.cues !== false && P.stitch) {
+        const S = P.stitch, st = state.stitches && state.stitches[S.id];
+        const def = R.level.stitches && R.level.stitches[S.id];
+        if (st && st.state === 'ready' && (!def || segIndex(def.seg) === v.segIdx)) {
+          const age = R.clock - (R.readySince[S.id] === undefined ? R.clock : R.readySince[S.id]);
+          const order = Object.keys(R.level.stitches || {}).indexOf(S.id);
+          const text = order < 2 || age >= (R.tuning.cueRepeatAfter || 4);
+          if (st.interaction === 'pull' && WW.render.pull) {
+            // TOUCH → PULL: the loop is a drag target once Purl stands beside it (≥ 48 CSS px hit area)
+            WW.render.pull.drawCue(R, ctx, v, S, st, { age: age });
+            if (state.purl && state.purl.waitingFor === S.id) {
+              R.tapTargets.push({ id: S.id, kind: 'pull', x: v.ox + S.x * v.s, y: v.oy + S.y * v.s, r: Math.max(44, (S.r || 70) * v.s) });
+            }
+          } else {
+            feats.drawCue(R, ctx, v, S, { clock: R.clock, age: age, text: text });
+            R.tapTargets.push({ id: S.id, x: v.ox + S.x * v.s, y: v.oy + S.y * v.s, r: Math.max(44, (S.r || 70) * v.s) });
+          }
+        }
+      }
+      drawCallouts(v);
+      if (sp) sp.screen(R, ctx, v, state);          // approved −1 / +1 THREAD callouts
+    }
+
+    function drawCallouts(v) {
+      for (let i = 0; i < R.fx.callouts.length; i++) {
+        const c = R.fx.callouts[i];
+        if (c.plate !== v.plate) continue;
+        const k = c.life / c.max;
+        const img = R.images[c.kind === 'teal' ? 'ui.bubble-teal' : 'ui.bubble-coral'];
+        const x = v.ox + c.x * v.s, y = v.oy + c.y * v.s - u.easeOutCubic(k) * 26;
+        const w = Math.max(96, 230 * v.s), h = img && img.naturalWidth ? w * img.naturalHeight / img.naturalWidth : w * 0.3;
+        const pop = k < 0.15 ? u.easeOutBack(k / 0.15) : 1;
+        ctx.save();
+        ctx.globalAlpha = k > 0.75 ? (1 - k) / 0.25 : 1;
+        ctx.translate(x, y); ctx.scale(pop, pop);
+        if (u.imgReady(img)) ctx.drawImage(img, -w / 2, -h / 2, w, h);
+        ctx.font = '900 ' + (h * 0.4).toFixed(1) + 'px Nunito, "Baloo 2", "Trebuchet MS", Roboto, Arial, sans-serif';
+        ctx.textAlign = 'center'; ctx.textBaseline = 'middle';
+        ctx.fillStyle = '#fffaf0';
+        ctx.fillText(c.text, 0, h * 0.02);
+        ctx.restore();
+      }
+    }
+
+    /* ---------------- scenes ---------------- */
+    function drawPlateScene(state, sc, dt) {
+      const P = R.plates[sc.plate];
+      const purl = state.purl || {};
+      let tgt = cam.target(R.fit, P, u.clamp(purl.f || 0, 0, 1));
+      // finish: once Purl is through, ease back to the approved composition (07 frames the gate and both racers)
+      const reframe = purl.action === 'finished' && cam.eventF(P, 'finish', null) !== null;
+      if (reframe) tgt = cam.clampCam(R.fit, { plate: P.id, z: 1, fx: PW / 2, fy: PH / 2 });
+      if (!R.cam || R.cam.plate !== sc.plate || R.snapNext) { R.cam = { plate: tgt.plate, z: tgt.z, fx: tgt.fx, fy: tgt.fy }; R.snapNext = false; }
+      else cam.follow(R.cam, tgt, reframe ? dt * 0.3 : dt);
+      cam.clampCam(R.fit, R.cam);
+      const v = cam.view(R.fit, R.cam); v.segIdx = sc.idx;
+      R.views = [v];
+      R.trSnap = null;
+      drawWorld(v, state, { purl: true, rect: { x: 0, y: 0, w: R.fit.W, h: R.fit.H } });
+    }
+
+    function drawTransitionScene(state, sc) {
+      const Pf = R.plates[sc.from], Pt = R.plates[sc.to];
+      if (!Pf || !Pt) return;
+      const W = R.fit.W, H = R.fit.H;
+      const key = sc.tkind + ':' + sc.fromIdx + '>' + sc.toIdx;
+      let snap = R.trSnap && R.trSnap.key === key ? R.trSnap : null;
+      if (!snap) {
+        const outF = cam.exitF(Pf);
+        const live = R.cam && R.cam.plate === sc.from && sc.t < 0.25;
+        const c0 = live ? { plate: R.cam.plate, z: R.cam.z, fx: R.cam.fx, fy: R.cam.fy } : cam.target(R.fit, Pf, outF);
+        const v0 = cam.view(R.fit, c0);
+        let pose = live && R.lastPurlPose && R.lastPurlPose.plate === sc.from ? R.lastPurlPose : null;
+        if (!pose) { const p = WW.path.racerPoint(Pf.purl.path, outF, 0, 0); pose = { x: p.x, y: p.groundY, w: p.w }; }
+        snap = R.trSnap = { key: key, cam: c0, purl: { x: v0.ox + pose.x * v0.s, y: v0.oy + pose.y * v0.s, w: pose.w * v0.s } };
+      }
+      const inF = (sc.tkind === 'loop' || sc.tkind === 'return') ? cam.eventF(Pt, 'loopReturn', 0) : 0;
+      const cIn = cam.target(R.fit, Pt, inF);
+      const e = u.easeInOut(sc.t);
+      const dir = sc.style === 'left' ? -1 : 1;
+      const vOut = cam.view(R.fit, snap.cam, -dir * e * W * 0.32); vOut.segIdx = sc.fromIdx;
+      const vIn = cam.view(R.fit, cIn, dir * (1 - e) * W * 0.32); vIn.segIdx = sc.toIdx;
+      // the sweeping tower column (outgoing plate's wipe strip, nearer than the plate, motion-blurred)
+      const col = columnGeom(Pf, vOut, W, H);
+      const cw = col.cw;
+      const cx = dir > 0 ? u.lerp(W + cw * 0.5, -cw * 0.5, e) : u.lerp(-cw * 0.5, W + cw * 0.5, e);
+      const outRect = dir > 0 ? { x: 0, y: 0, w: Math.max(0, cx), h: H } : { x: cx, y: 0, w: Math.max(0, W - cx), h: H };
+      const inRect = dir > 0 ? { x: cx, y: 0, w: Math.max(0, W - cx), h: H } : { x: 0, y: 0, w: Math.max(0, cx), h: H };
+      R.views = [vIn, vOut];
+      if (outRect.w > 0) { setScreen(); ctx.save(); ctx.beginPath(); ctx.rect(outRect.x, outRect.y, outRect.w, outRect.h); ctx.clip(); drawWorld(vOut, state, { purl: false, rect: outRect, cues: false }); ctx.restore(); }
+      if (inRect.w > 0) { setScreen(); ctx.save(); ctx.beginPath(); ctx.rect(inRect.x, inRect.y, inRect.w, inRect.h); ctx.clip(); drawWorld(vIn, state, { purl: false, rect: inRect, cues: false }); ctx.restore(); }
+      setScreen();
+      drawColumn(Pf, col, snap.cam, cx);
+      // Purl keeps running at his (interpolated) screen anchor
+      const pIn = WW.path.racerPoint(Pt.purl.path, inF, 0, 0);
+      const a = snap.purl, b = { x: vIn.ox - dir * (1 - e) * W * 0.32 + pIn.x * vIn.s, y: vIn.oy + pIn.groundY * vIn.s, w: pIn.w * vIn.s };
+      const x = u.lerp(a.x, b.x, e), y = u.lerp(a.y, b.y, e), w = u.lerp(a.w, b.w, e);
+      const purl = state.purl || {};
+      const st = { action: 'transition', distance: purl.distance || 0, jumpH: purl.jumpH || 0, speed: purl.speed };
+      actors.drawRacer(R, ctx, 'purl', st, x, y, (purl.jumpH || 0) * 0.42 * w, w, { clock: R.clock });
+      R.purlScreen = { x: x, y: y, w: w };
+      R.cam = { plate: cIn.plate, z: cIn.z, fx: cIn.fx, fy: cIn.fy };
+    }
+
+    /* Column geometry: the wipe strip at ~1.12× the outgoing view scale, at most 42 % of the screen wide. */
+    function columnGeom(Pf, vOut, W, H) {
+      const wipe = Pf.wipe || { x0: 380, x1: 470 };
+      const kc = Math.max(vOut.s, H / PH) * 1.12;
+      let sx = wipe.x0, sw = wipe.x1 - wipe.x0;
+      if (sw * kc > 0.42 * W) { const nw = 0.42 * W / kc; sx = (wipe.x0 + wipe.x1) / 2 - nw / 2; sw = nw; }
+      return { sx: sx, sw: sw, kc: kc, cw: sw * kc, wipe: wipe };
+    }
+
+    /* Cached half-resolution, blurred, shaded copy of a plate's wipe strip (built once per plate). */
+    function columnCanvas(Pf) {
+      const key = 'column:' + Pf.id;
+      if (R.cache[key]) return R.cache[key];
+      const img = world.plateImg(R, Pf.id);
+      if (!u.imgReady(img)) return null;
+      const wipe = Pf.wipe || { x0: 380, x1: 470 };
+      const k = 0.5, cwid = Math.ceil((wipe.x1 - wipe.x0) * k), chei = Math.ceil(PH * k);
+      const c = u.makeCanvas(cwid, chei), g = c.getContext('2d');
+      const iw = img.naturalWidth || img.width, ih = img.naturalHeight || img.height;
+      if (u.canFilter()) g.filter = 'blur(2.5px)';
+      g.drawImage(img, wipe.x0 * iw / PW - 6, 0, (wipe.x1 - wipe.x0) * iw / PW + 12, ih, -6 * k, 0, cwid + 12 * k, chei);
+      g.filter = 'none';
+      const gr = g.createLinearGradient(0, 0, cwid, 0);
+      gr.addColorStop(0, 'rgba(34, 14, 5, 0.62)'); gr.addColorStop(0.3, 'rgba(34, 14, 5, 0.22)');
+      gr.addColorStop(0.7, 'rgba(34, 14, 5, 0.22)'); gr.addColorStop(1, 'rgba(34, 14, 5, 0.62)');
+      g.fillStyle = gr; g.fillRect(0, 0, cwid, chei);
+      R.cache[key] = { canvas: c, k: k, x0: wipe.x0 };
+      return R.cache[key];
+    }
+
+    function drawColumn(Pf, col, c0, cx) {
+      const cc = columnCanvas(Pf);
+      const cw = col.cw;
+      if (!cc || cx < -cw || cx > R.fit.W + cw) return;
+      const H = R.fit.H, kc = col.kc;
+      const srcH = Math.min(PH, H / kc);
+      const srcY = u.clamp(c0.fy - srcH / 2, 0, PH - srcH);
+      const dh = srcH * kc, dy = (H - dh) / 2;
+      const x0 = cx - cw / 2;
+      // contact shadows on both sides
+      for (let s = -1; s <= 1; s += 2) {
+        const ex = s < 0 ? x0 : x0 + cw;
+        const gw = Math.max(18, cw * 0.25);
+        const g = ctx.createLinearGradient(ex, 0, ex + s * gw, 0);
+        g.addColorStop(0, 'rgba(30, 12, 4, 0.5)'); g.addColorStop(1, 'rgba(30, 12, 4, 0)');
+        ctx.fillStyle = g;
+        ctx.fillRect(s < 0 ? ex - gw : ex, 0, gw, H);
+      }
+      const k = cc.k;
+      ctx.drawImage(cc.canvas, (col.sx - cc.x0) * k, srcY * k, col.sw * k, srcH * k, x0, dy, cw, dh);
+    }
+
+    /* ---------------- debug ---------------- */
+    function drawDebugWorld(v, P) {
+      const lw = 2 / v.s;
+      ctx.save();
+      ctx.lineWidth = lw;
+      const drawPath = function (path, color, lanes) {
+        const d = WW.path.prepare(path).dense;
+        ctx.strokeStyle = color;
+        ctx.beginPath(); d.forEach(function (q, i) { if (i) ctx.lineTo(q[0], q[1]); else ctx.moveTo(q[0], q[1]); }); ctx.stroke();
+        if (lanes) {
+          ctx.setLineDash([6 / v.s, 6 / v.s]);
+          [-1, 1].forEach(function (s) { ctx.beginPath(); d.forEach(function (q, i) { const x = q[0] + s * q[3]; if (i) ctx.lineTo(x, q[1]); else ctx.moveTo(x, q[1]); }); ctx.stroke(); });
+          ctx.setLineDash([]);
+        }
+      };
+      if (P.purl) drawPath(P.purl.path, '#ff3070', true);
+      if (P.loop) drawPath(P.loop.path, '#10e0e0', false);
+      const mark = function (path, evs, color) {
+        (evs || []).forEach(function (ev) {
+          if (typeof ev.f !== 'number') return;
+          const s = WW.path.sample(path, ev.f);
+          ctx.fillStyle = color; ctx.beginPath(); ctx.arc(s.x, s.y, 7, 0, Math.PI * 2); ctx.fill();
+          ctx.font = (12 / Math.max(0.5, v.s * 1.4)).toFixed(0) + 'px monospace'; ctx.fillStyle = '#fff';
+          ctx.fillText(ev.type + (ev.item ? ':' + ev.item : '') + (ev.kind ? ':' + ev.kind : '') + ' ' + ev.f, s.x + 9, s.y - 4);
+          if (ev.x !== undefined) { ctx.strokeStyle = color; ctx.strokeRect(ev.x - 8, ev.y - 8, 16, 16); }
+        });
+      };
+      if (P.purl) mark(P.purl.path, P.purl.events, '#ff3070');
+      if (P.loop) mark(P.loop.path, P.loop.events, '#10e0e0');
+      (P.occluders || []).forEach(function (o) {
+        ctx.strokeStyle = '#ffee00'; ctx.setLineDash([8 / v.s, 5 / v.s]); WW.render.util.polyPath(ctx, o.poly); ctx.stroke(); ctx.setLineDash([]);
+        ctx.fillStyle = 'rgba(255,238,0,0.12)'; ctx.fill();
+        ctx.beginPath(); ctx.moveTo(o.box ? o.box.x0 : o.poly[0][0], o.behindY); ctx.lineTo(PW, o.behindY); ctx.stroke();
+      });
+      const info = world.routeInfo(R, P.id);
+      if (info) { ctx.strokeStyle = '#ffffff'; const ed = u.bandEdges(info.band, 0, 1); u.polyline(ctx, ed[0]); ctx.stroke(); u.polyline(ctx, ed[1]); ctx.stroke(); }
+      if (P.stitch) { ctx.strokeStyle = '#ffd000'; ctx.beginPath(); ctx.arc(P.stitch.x, P.stitch.y, P.stitch.r, 0, Math.PI * 2); ctx.stroke(); }
+      if (P.wipe) { ctx.strokeStyle = 'rgba(255,128,0,0.8)'; ctx.strokeRect(P.wipe.x0, 0, P.wipe.x1 - P.wipe.x0, PH); }
+      ctx.restore();
+    }
+
+    function drawDebugScreen(state, sc) {
+      setScreen();
+      ctx.save();
+      R.tapTargets.forEach(function (t) { ctx.strokeStyle = '#00ff66'; ctx.lineWidth = 2; ctx.beginPath(); ctx.arc(t.x, t.y, t.r, 0, Math.PI * 2); ctx.stroke(); });
+      const p = state.purl || {}, c = R.cam || {};
+      ctx.font = '11px monospace'; ctx.fillStyle = 'rgba(0,0,0,0.6)'; ctx.fillRect(4, R.fit.H - 34, 300, 30);
+      ctx.fillStyle = '#fff';
+      ctx.fillText((sc.kind === 'plate' ? sc.plate : sc.tkind + ' ' + sc.from + '>' + sc.to + ' t=' + sc.t.toFixed(2)) +
+        ' f=' + (p.f || 0).toFixed(3) + ' lane=' + (p.laneX || 0).toFixed(2) + ' ' + (p.action || ''), 8, R.fit.H - 22);
+      ctx.fillText('z=' + (c.z || 0).toFixed(2) + ' fx=' + (c.fx || 0).toFixed(0) + ' fy=' + (c.fy || 0).toFixed(0) + ' t=' + (state.time || 0).toFixed(2), 8, R.fit.H - 9);
+      ctx.restore();
+    }
+
+    /* ---------------- public API ---------------- */
+    function resize(cssW, cssH, dpr) {
+      const d = Math.min(Math.max(dpr || 1, 1), 2);
+      cssW = Math.max(1, cssW || canvas.clientWidth || 360); cssH = Math.max(1, cssH || canvas.clientHeight || 800);
+      R.dpr = d;
+      const bw = Math.round(cssW * d), bh = Math.round(cssH * d);
+      if (canvas.width !== bw) canvas.width = bw;
+      if (canvas.height !== bh) canvas.height = bh;
+      R.fit = cam.fit(cssW, cssH);
+      R.snapNext = true;
+      R.trSnap = null;
+    }
+
+    function render(state, dtReal) {
+      if (!R.fit) resize(canvas.clientWidth, canvas.clientHeight, (typeof devicePixelRatio === 'number') ? devicePixelRatio : 1);
+      state = state || {};
+      // dtReal may be a whole manual advance (test API renders once after advance(s)); it only drives cosmetics.
+      const dt = state.paused ? 0 : u.clamp(dtReal || 0, 0, 5);
+      R.clock += dt;
+      R.dt = dt;
+      fx.update(R.fx, dt);
+      if (WW.render.pull) WW.render.pull.update(R, state, dt);
+      if (sp) sp.update(R, dt, state);
+      diffState(state);
+      processEvents(state);
+      R.tapTargets = [];
+      setScreen();
+      ctx.globalAlpha = 1; ctx.globalCompositeOperation = 'source-over';
+      ctx.fillStyle = '#2b150c';
+      ctx.fillRect(0, 0, R.fit.W, R.fit.H);
+      const sc = resolveScene(state);
+      if (sc.kind === 'plate' && R.plates[sc.plate]) drawPlateScene(state, sc, dt);
+      else if (sc.kind === 'transition') { R.tapTargets = []; drawTransitionScene(state, sc); }
+      setScreen();
+      fx.drawScreen(R.fx, ctx, R);
+      if (R.debug) drawDebugScreen(state, sc);
+    }
+
+    function getTapTargets() {
+      return R.tapTargets.map(function (t) { return { id: t.id, kind: t.kind || 'tap', x: t.x, y: t.y, r: t.r }; });
+    }
+
+    function worldToScreen(plateId, x, y) {
+      for (let i = 0; i < R.views.length; i++) {
+        const v = R.views[i];
+        if (v.plate === plateId) return { x: v.ox + x * v.s, y: v.oy + y * v.s };
+      }
+      return null;
+    }
+
+    function getLayout() {
+      const f = R.fit || cam.fit(canvas.clientWidth || 360, canvas.clientHeight || 800);
+      return { view: { x: f.x0, y: f.y0, w: PW * f.s0, h: PH * f.s0 },
+        purl: R.purlScreen ? { x: R.purlScreen.x, y: R.purlScreen.y, w: R.purlScreen.w } : null };
+    }
+
+    function handleEvents(events) {
+      if (!events || !events.length) return;
+      for (let i = 0; i < events.length; i++) R.events.push(events[i]);
+      if (R.events.length > 64) R.events.splice(0, R.events.length - 64);
+    }
+
+    return {
+      resize: resize, render: render, getTapTargets: getTapTargets, worldToScreen: worldToScreen, getLayout: getLayout,
+      handleEvents: handleEvents, setDebug: function (on) { R.debug = !!on; }, _R: R
     };
-    return api;
   }
 
-  R.createRenderer = createRenderer;
+  WW.render.createRenderer = createRenderer;
 })(globalThis.WW = globalThis.WW || {});

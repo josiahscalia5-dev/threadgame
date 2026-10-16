@@ -1,7 +1,7 @@
 /* Wishweave Wonders — boot, game loop, lifecycle and public API (docs/ARCHITECTURE.md §9, §12.5, §12.7).
 
-   Boot: layout → load + decode the art (progress, retry) → WW.render.createRenderer({canvas, images, assets, level,
-   debug}) (3D course, three.js) → WW.sim.createRace({seed, level, tuning}) in 'intro' → start overlay.
+   Boot: layout → load + decode every WW.ASSETS image (progress, retry) → WW.render.createRenderer({canvas, images,
+   assets, plates, level, debug}) → WW.sim.createRace({seed, level, plates, tuning}) in 'intro' → start overlay.
    Loop: requestAnimationFrame; fixed 1/60 s race.step() with an accumulator (max 5 steps per frame, backlog dropped);
    every events array from step()/input() goes to the HUD and to renderer.handleEvents when it exists; render every
    frame. While paused nothing is stepped and the renderer gets dtReal = 0.
@@ -186,7 +186,7 @@
   function newRace(s, autostart) {
     if (!WW.sim || !WW.sim.createRace) throw new Error('The race simulation (WW.sim) is missing.');
     seed = s != null && isFinite(+s) ? (Math.floor(+s) >>> 0) : (SEED != null ? SEED : randomSeed());
-    race = WW.sim.createRace({ seed: seed, level: WW.LEVEL, tuning: WW.TUNING });
+    race = WW.sim.createRace({ seed: seed, level: WW.LEVEL, plates: WW.PLATES, tuning: WW.TUNING });
     hud.reset();
     input.reset();
     finishedFor = 0;
@@ -314,16 +314,7 @@
 
   /* ---------- boot ---------- */
 
-  /* What the 3D course draws, all from the approved art: Purl's and Loop's rear sprite frames (purl/loop atlases),
-     the props (spools, tassels, posts, flower gate), the menu portraits and UI, plus the course textures cut from the
-     approved paintings (WW.WORLD_ART, tools/build-world-art.py). The plate paintings themselves are not loaded. */
-  const USED_IMAGES = /^(purl|loop|props|purlFront|loopFront|ui\..*)$/;
-  const loadList = {};
-  Object.keys((WW.ASSETS && WW.ASSETS.images) || {}).forEach(function (k) {
-    if (USED_IMAGES.test(k)) loadList[k] = WW.ASSETS.images[k];
-  });
-  Object.keys((WW.WORLD_ART && WW.WORLD_ART.images) || {}).forEach(function (k) { loadList[k] = WW.WORLD_ART.images[k]; });
-  const loader = ui.createLoader({ images: loadList });
+  const loader = ui.createLoader(WW.ASSETS || { images: {} });
 
   function load() {
     overlays.loading(loader.progress().fraction);
@@ -341,7 +332,7 @@
     try {
       if (!WW.render || !WW.render.createRenderer) throw new Error('The renderer (WW.render) is missing.');
       renderer = WW.render.createRenderer({
-        canvas: els.canvas, images: images, assets: WW.ASSETS, level: WW.LEVEL, debug: DEBUG
+        canvas: els.canvas, images: images, assets: WW.ASSETS, plates: WW.PLATES, level: WW.LEVEL, debug: DEBUG
       });
       if (renderer.resize) renderer.resize(L.w, L.h, window.devicePixelRatio || 1);
       overlays.drawPortraits(images, WW.ASSETS);

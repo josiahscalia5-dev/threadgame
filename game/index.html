@@ -184,27 +184,38 @@
   </defs>
 </svg>
 
-<!-- Game modules (classic scripts on globalThis.WW; docs/CONNECTED-WORLD-PLAN.md). -->
+<!-- Game modules, in the order fixed by docs/ARCHITECTURE.md §2. -->
 <script src="src/core/ww.js"></script>
-<script src="src/core/route.js"></script>
-<script src="src/core/gesture.js"></script>
-<script src="src/data/route.js"></script>
+<script src="src/core/path.js"></script>
 <script src="src/data/asset-data.js"></script>
-<script src="src/data/world-art.js"></script>
+<script src="src/data/plates/p01.js"></script>
+<script src="src/data/plates/p02.js"></script>
+<script src="src/data/plates/p03.js"></script>
+<script src="src/data/plates/p04.js"></script>
+<script src="src/data/plates/p06.js"></script>
+<script src="src/data/plates/p07.js"></script>
 <script src="src/data/level.js"></script>
 <script src="src/sim/inventory.js"></script>
+<script src="src/sim/stitches.js"></script>
+<script src="src/sim/snagling.js"></script>
 <script src="src/sim/loop-ai.js"></script>
 <script src="src/sim/race.js"></script>
 <!--RENDER-SCRIPTS-->
-<script src="vendor/three.min.js"></script>
-<script src="src/render/materials.js"></script>
-<script src="src/render/course.js"></script>
-<script src="src/render/sprites.js"></script>
-<script src="src/render/racers.js"></script>
-<script src="src/render/props.js"></script>
-<script src="src/render/chase.js"></script>
+<script src="src/render/util.js"></script>
+<script src="src/render/camera.js"></script>
+<script src="src/render/world.js"></script>
+<script src="src/render/actors.js"></script>
+<script src="src/render/fx.js"></script>
+<script src="src/render/features.js"></script>
+<script src="src/render/pull.js"></script>
+<script src="src/render/setpieces.js"></script>
 <script src="src/render/renderer.js"></script>
 <!--/RENDER-SCRIPTS-->
+<script>
+  /* UI test harness only: ?stubs=1 swaps in minimal fake WW.sim/WW.render (tests/harness/ui-stubs.js).
+     The harness is not packaged with the Android build and is never loaded without the flag. */
+  if (/[?&]stubs=1(&|$)/.test(location.search)) document.write('<script src="../tests/harness/ui-stubs.js"><\/script>');
+</script>
 <script src="src/ui/dom.js"></script>
 <script src="src/ui/loader.js"></script>
 <script src="src/ui/hud.js"></script>

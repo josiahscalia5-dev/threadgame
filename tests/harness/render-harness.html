@@ -1,0 +1,38 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no, viewport-fit=cover">
+<title>Renderer harness</title>
+<style>
+  html, body { margin: 0; height: 100%; background: #2b150c; overflow: hidden; }
+  #view { position: fixed; inset: 0; width: 100%; height: 100%; display: block; touch-action: none; }
+  #info { position: fixed; left: 4px; top: 4px; font: 11px monospace; color: #fff; background: rgba(0,0,0,.45); padding: 2px 4px; pointer-events: none; }
+</style>
+</head>
+<body>
+<canvas id="view"></canvas>
+<div id="info" hidden></div>
+<script src="../../game/src/core/ww.js"></script>
+<script src="../../game/src/core/path.js"></script>
+<script src="../../game/src/data/asset-data.js"></script>
+<script src="../../game/src/data/plates/p01.js"></script>
+<script src="../../game/src/data/plates/p02.js"></script>
+<script src="../../game/src/data/plates/p03.js"></script>
+<script src="../../game/src/data/plates/p04.js"></script>
+<script src="../../game/src/data/plates/p06.js"></script>
+<script src="../../game/src/data/plates/p07.js"></script>
+<script src="../../game/src/data/level.js"></script>
+<script src="../../game/src/render/util.js"></script>
+<script src="../../game/src/render/camera.js"></script>
+<script src="../../game/src/render/world.js"></script>
+<script src="../../game/src/render/actors.js"></script>
+<script src="../../game/src/render/fx.js"></script>
+<script src="../../game/src/render/features.js"></script>
+<script src="../../game/src/render/pull.js"></script>
+<script src="../../game/src/render/setpieces.js"></script>
+<script src="../../game/src/render/renderer.js"></script>
+<script src="render-sim.js"></script>
+<script src="render-harness.js"></script>
+</body>
+</html>

@@ -1,80 +1,215 @@
-/* Wishweave Wonders — simulation: the race on the connected course.
+/* Wishweave Wonders — simulation: the race (docs/ARCHITECTURE.md §7, §12).
 
-   const race = WW.sim.createRace({ seed, level: WW.LEVEL, tuning: WW.TUNING });
+   const race = WW.sim.createRace({ seed, level: WW.LEVEL, plates: WW.PLATES, tuning: WW.TUNING });
    race.state / race.step(dt) / race.input(ev) / race.start() / race.pause(reason) / race.resume() / race.debug
-   race.info.course  the route graph (WW.route.createCourse) the renderer and tests sample
 
-   Pure logic: no DOM, no wall clock, no Math.random. Deterministic for a seed + input sequence. Loop's random
-   choices come from their own stream (sim/loop-ai.js), so his race does not depend on what the player does.
+   Pure logic: no DOM, no wall clock, no Math.random. Deterministic for a seed + input sequence. Every route
+   fraction is read from the plate events here, at createRace time. Loop's random choices come from their own
+   stream (sim/loop-ai.js), so his race does not depend on what the player does.
 
-   Both racers live on ONE continuous course: road ('main' or the side loop id), s (metres along that road), lateral
-   (metres, + = runner's right), and mainS (equivalent main-road progress, used for race order, spools and finish).
-   There are no connectors, plates or wipes: a fork or rejoin hands the runner to the other road at the same world
-   point (WW.route.createCourse toBranch/toMain), so his position, size and the camera stay continuous.
+   Extra state fields beyond §7.1/§12 (all read-only for the renderer/UI):
+     purl.progress / loop.progress   0..1 along the racer's route to the finish trigger (race-progress thread)
+     purl.waitingFor                 stitch id while Purl stands at its stop, else null
+     purl.slowUntil, purl.jumpBuffered, loop.lane (always 0), loop.jumpT, loop.airborne, loop.form
+     transition.fromSeg/toSeg/fromPlate/toPlate/dur (for every kind; connector `from`/`to` are plate ids as in
+                                     WW.LEVEL, loop/return `from`/`to` are segment ids per §12.3)
+     items[id].segIndex/size/homeSeg/homeF, stitches[id].elapsed/openedAt/phaseT/seg/f/readyF,
+     loopTasks[key] = { key, kind, seg, segIndex, f, x, y, state: 'pending'|'react'|'hesitate'|'active'|'done', t }
+   `purl.airborne` is true for the whole jump; contact rules use jumpH.
 
-   Racer state (purl and loop; read-only for renderer/UI):
-     road, s, mainS, lateral, latTarget, limit, speed, braked, gait (0..1, stride phase driven by distance),
-     airborne, jumpT, jumpH (0..1), jumpY (m), landedAt, pos [x,y,z] (feet on the road top + jump), forward, right,
-     normal, heading, action ('idle'|'run'|'brake'|'stopped'|'jump'|'stumble'|'finished'), finishTime, rank,
-     progress (0..1 to the finish line), distance, forkDone, branchLock.
-   Purl's controls (input): {type:'steer', direction:±1} | {type:'jump'} | {type:'toggle-player-brake'} and the older
-   {type:'swipe', dir:'left'|'right'|'up'}. Steering moves the lateral target one laneStep, clamped inside the road
-   (minus body clearance); it never moves him onto another road. Near the fork, being in the left lane at the lock
-   point commits him to the side loop. A double tap toggles Purl's brake only: he decelerates to a stop in brakeTime
-   and resumes on the next toggle; Loop keeps racing. A jump while stopped jumps in place and does not resume. */
+   TUTORIAL HOLD (the first lesson, kit/pull-stitch): while Purl waits at a stop whose stitch has `tutorial: true`
+   (the opening ribbon pull) and it is not yet passable, `state.tutorial = {id, stage}` with stage
+   'touch' | 'pull' | 'unfurl' | 'settle'. During the hold the race clock does not advance and neither racer's
+   route progress, tasks or timers move (Loop keeps his exact position and speed; the renderer shows both idle).
+   Only the stitch itself (gesture, unfurl, settle) advances. When the route is ready the hold ends and both
+   racers continue from where they were. Outside the hold nothing changes: Loop stays fully autonomous. */
 (function (WW) {
   'use strict';
   const sim = WW.sim = WW.sim || {};
   const U = WW.util;
 
+  /* Sim-only tuning defaults for values that are not in WW.TUNING (WW.TUNING / createRace({tuning}) override). */
   const DEFAULTS = {
-    messageTime: 1.8,
-    hintTime: 4.5,
-    gateOpenTime: 1.2
+    laneMinSpacing: 20,          // §12.4: lane spacing (plate px) below which the path is single file
+    connectorLaneSpacing: 100,   // connectors are broad carpet turns: lanes stay available there
+    messageTime: 1.8,            // s a HUD message ("SNAGGED!", "THREAD RECOVERED", ...) stays up
+    hintTime: 4.5,               // s a plate `hint` stays up
+    gateOpenTime: 1.2,           // s for the flower gate to open once Purl arrives complete
+    returnTime: 3.0,             // s of the gate-fallback `return` transition
+    loopRecoverMin: 0.3,         // s Loop at least spends picking his dropped thread back up
+    loopAccel: null              // m/s²; null = purlAccel
   };
+
+  /* ---------- route tables ---------- */
+
+  function parseRoute(level, plates, which) {
+    const defs = which === 'purl' ? level.route : level.loopRoute;
+    if (!Array.isArray(defs) || !defs.length) throw new Error('WW.sim: level ' + which + ' route is empty');
+    let cum = 0;
+    return defs.map(function (d, i) {
+      const s = { index: i, id: d.id, kind: d.kind, length: d.length, plate: d.plate || null, from: d.from || null,
+                  to: d.to || null, style: d.style || null, def: d, path: null, startF: 0, exit: 1, finish: null,
+                  reveal: null, loopReturn: null, stops: [], pickups: [], tasks: [], hints: [], cum: 0 };
+      if (!(d.length > 0)) throw new Error('WW.sim: segment ' + d.id + ' needs a positive length');
+      if (d.kind === 'plate') {
+        const plate = plates[d.plate];
+        if (!plate || !plate[which]) throw new Error('WW.sim: plate ' + d.plate + ' has no ' + which + ' route');
+        s.path = plate[which].path;
+        const counts = {};
+        (plate[which].events || []).slice().sort(function (a, b) { return a.f - b.f; }).forEach(function (ev) {
+          switch (ev.type) {
+            case 'start': s.startF = ev.f; break;
+            case 'stop': s.stops.push({ stitch: ev.stitch, f: ev.f, readyF: ev.readyF == null ? 0 : ev.readyF }); break;
+            case 'pickup': s.pickups.push({ item: ev.item, f: ev.f, lane: ev.lane || 0, size: ev.size }); break;
+            case 'reveal': s.reveal = ev.f; break;
+            case 'loopReturn': s.loopReturn = ev.f; break;
+            case 'exit': s.exit = ev.f; break;
+            case 'finish': s.finish = ev.f; break;
+            case 'hint': s.hints.push({ f: ev.f, text: ev.text }); break;
+            case 'task': {
+              const n = counts[ev.kind] = (counts[ev.kind] || 0) + 1;
+              s.tasks.push({ key: d.id + ':' + ev.kind + (n > 1 ? n : ''), kind: ev.kind, f: ev.f, x: ev.x, y: ev.y,
+                             dur: ev.dur == null ? null : ev.dur, extra: ev.extra || 0 });
+              break;
+            }
+            default: break;
+          }
+        });
+      } else if (d.kind !== 'connector') {
+        throw new Error('WW.sim: segment ' + d.id + ' has unknown kind ' + d.kind);
+      }
+      s.cum = cum;
+      cum += (s.exit - (i === 0 ? s.startF : 0)) * s.length;
+      return s;
+    });
+  }
+
+  /* Metres from (seg, f) to the first block (blockIn(seg, f) → f or null), the end of the route, or Infinity
+     beyond `look` metres. */
+  function blockDistance(R, seg, f, blockIn, look) {
+    let d = 0;
+    for (;;) {
+      const s = R[seg];
+      const b = blockIn(seg, f);
+      if (b !== null && b <= s.exit) return d + Math.max(0, b - f) * s.length;
+      d += Math.max(0, s.exit - f) * s.length;
+      if (seg >= R.length - 1) return d;
+      if (d > look) return Infinity;
+      seg += 1; f = 0;
+    }
+  }
+
+  /* Move pos ({seg, f}) forward by dm metres, stopping at blocks, the route end, or an exit canLeave refuses.
+     Returns { spans: [{seg, f0, f1, entered}], entered: [segIndex], blocked, leftover }. */
+  function walk(R, pos, dm, blockIn, canLeave) {
+    const spans = [], entered = [];
+    let seg = pos.seg, f = pos.f, rem = dm, blocked = false;
+    let span = { seg: seg, f0: f, f1: f, entered: false };
+    spans.push(span);
+    for (;;) {
+      const s = R[seg];
+      const b = blockIn(seg, f);
+      const end = b !== null ? Math.min(b, s.exit) : s.exit;
+      const need = Math.max(0, end - f) * s.length;
+      if (rem < need) { f += rem / s.length; rem = 0; break; }
+      f = Math.max(f, end); rem -= need;
+      if (b !== null && b <= s.exit) { blocked = true; break; }
+      if (seg >= R.length - 1 || (canLeave && !canLeave(seg))) { blocked = true; break; }
+      if (rem <= 0) break;
+      span.f1 = f;
+      seg += 1; f = 0;
+      entered.push(seg);
+      span = { seg: seg, f0: 0, f1: 0, entered: true };
+      spans.push(span);
+    }
+    span.f1 = f;
+    pos.seg = seg; pos.f = f;
+    return { spans: spans, entered: entered, blocked: blocked, leftover: rem };
+  }
+
+  function crossed(span, f) {
+    return (span.entered ? f >= span.f0 - 1e-9 : f > span.f0 + 1e-12) && f <= span.f1 + 1e-12;
+  }
+
+  sim.route = { parse: parseRoute, blockDistance: blockDistance, walk: walk, crossed: crossed };
+
+  /* ---------- the race ---------- */
 
   function createRace(opts) {
     opts = opts || {};
-    const level = opts.level || WW.LEVEL;
+    const level = opts.level || WW.LEVEL, plates = opts.plates || WW.PLATES;
     const seed = opts.seed == null ? 1 : opts.seed;
     const L0 = level.loop || {};
-    const T = Object.assign({}, DEFAULTS, { loopForm: L0.form || [1, 1] }, WW.TUNING, opts.tuning || {});
-    const course = WW.route.createCourse(level.course || WW.ROUTE, { runout: T.finishRunout });
+    const T = Object.assign({}, DEFAULTS, {
+      loopForm: L0.form || [1, 1], loopBypassJitter: L0.bypassJitter || 0, loopDropAheadF: L0.dropAheadF || 0.05
+    }, WW.TUNING, opts.tuning || {});
+
+    const route = parseRoute(level, plates, 'purl');
+    const loopRoute = parseRoute(level, plates, 'loop');
+    if (loopRoute.length !== route.length) throw new Error('WW.sim: loopRoute must be index-aligned with route');
+    route.forEach(function (s, i) {
+      const l = loopRoute[i];
+      if (l.id !== s.id || l.kind !== s.kind || l.plate !== s.plate) {
+        throw new Error('WW.sim: loopRoute[' + i + '] (' + l.id + ') does not match route[' + i + '] (' + s.id + ')');
+      }
+    });
+    const segIndex = {};
+    route.forEach(function (s, i) { segIndex[s.id] = i; });
+    const finishSeg = route.filter(function (s) { return s.finish !== null; })[0];
+    if (!finishSeg) throw new Error('WW.sim: no finish event on Purl\'s route');
+    const loopFinishSeg = loopRoute.filter(function (s) { return s.finish !== null; })[0];
+    if (!loopFinishSeg) throw new Error('WW.sim: no finish event on Loop\'s route');
 
     const ctx = {
-      T: T, level: level, course: course,
-      rngLoop: WW.rng(seed), heldCounter: 0, events: [], waitUntil: Infinity
+      T: T, level: level, plates: plates, route: route, loopRoute: loopRoute, segIndex: segIndex,
+      rngLoop: WW.rng(seed), rngSnag: WW.rng(((seed >>> 0) ^ 0x5bd1e995) >>> 0),
+      heldCounter: 0, events: [], waitUntil: Infinity,
+      inventory: sim.inventory, stitches: sim.stitches,
+      purlTotal: finishSeg.cum + finishSeg.finish * finishSeg.length,
+      loopTotal: loopFinishSeg.cum + loopFinishSeg.finish * loopFinishSeg.length
     };
     ctx.emit = function (ev) { ctx.events.push(ev); return ev; };
     ctx.message = function (text, kind, dur) {
       ctx.state.message = { text: text, kind: kind || 'info', until: ctx.state.time + (dur || T.messageTime) };
     };
-    ctx.moveRacer = function (r, dt, v) { moveRacer(ctx, r, dt, v); };
+    ctx.refreshObjective = function () { refreshObjective(ctx); };
 
-    const spawn = (level.course || WW.ROUTE).spawn.s;
+    // Loop's default stitch performance = Purl's animation time for that plate's stitch.
+    loopRoute.forEach(function (seg, i) {
+      seg.tasks.forEach(function (task) {
+        if (task.kind !== 'stitch' || task.dur != null) return;
+        const id = Object.keys(level.stitches || {}).filter(function (k) { return level.stitches[k].seg === route[i].id; })[0];
+        task.dur = sim.stitches.totalTime(T, id ? (level.stitches[id].kind || id) : 'ribbon');
+      });
+      seg.tasks.forEach(function (task) { if (task.kind === 'stitch') task.dur += T.routeSettle; });
+    });
+
+    const loopInit = sim.loopAI.create(ctx);
+    const seg0 = route[0];
     const st = ctx.state = {
       mode: 'intro', paused: false, pauseReason: null, time: 0, countdown: T.countdown, seed: seed,
-      purl: racer('purl', spawn, -1.0),
-      loop: racer('loop', spawn + 0.6, 1.1),
+      purl: { seg: 0, segId: seg0.id, f: seg0.startF, lane: 0, laneX: 0, jumpT: 0, jumpH: 0, speed: 0,
+              action: 'idle', airborne: false, jumpBuffered: false, immuneUntil: 0, tangledUntil: 0, slowUntil: 0,
+              distance: 0, finishTime: null, rank: null, progress: 0, waitingFor: null, failAt: null },
+      loop: loopInit.loop,
       items: null,
       held: { purl: 0, loop: 0 },
-      stitches: {},
-      objective: '', phase: '', section: null,
-      message: null, hint: null, result: null, tutorial: null, transition: null,
-      branchPrompt: null,
+      stitches: null,
+      loopTasks: loopInit.loopTasks,
+      snagling: sim.snagling.create(ctx),
       gate: { state: 'closed', t: 0 },
-      stats: { jumps: 0, brakes: 0, steers: 0, sideLoop: 0 }
+      objective: seg0.def.objective || '', phase: seg0.def.phase || '',
+      message: null, hint: null, transition: null, result: null, tutorial: null,
+      stats: { hits: 0, dodges: 0, recoveries: 0, taps: 0, pulls: 0 }
     };
-    sim.loopAI.create(ctx, st.loop);
     st.items = sim.inventory.create(ctx);
+    st.stitches = sim.stitches.create(ctx);
     sim.inventory.recount(st);
-    pose(ctx, st.purl);
-    pose(ctx, st.loop);
-    refreshObjective(ctx);
+    updateProgress(ctx);
 
     const race = {
       state: st,
-      info: { course: course, plan: ctx.loopPlan, tuning: T },
+      info: { route: route, loopRoute: loopRoute, plan: ctx.loopPlan, tuning: T },
       events: [],
       step: function (dt) { ctx.events = []; step(ctx, dt); race.events = ctx.events; return ctx.events; },
       input: function (ev) { ctx.events = []; input(ctx, ev); return ctx.events; },
@@ -82,20 +217,11 @@
         if (st.mode === 'intro') { st.mode = 'countdown'; st.countdown = T.countdown; }
         return st.mode;
       },
-      pause: function (reason) { st.paused = true; st.pauseReason = reason || 'user'; },
+      pause: function (reason) { st.paused = true; st.pauseReason = reason || 'user'; sim.stitches.releaseAll(ctx); },
       resume: function () { st.paused = false; st.pauseReason = null; },
       debug: makeDebug(ctx)
     };
     return race;
-  }
-
-  function racer(who, s, lateral) {
-    return {
-      who: who, road: 'main', s: s, mainS: s, lateral: lateral, latTarget: lateral, latV: 0, limit: 2.5,
-      speed: 0, braked: false, gait: 0, airborne: false, jumpT: 0, jumpH: 0, jumpY: 0, jumpBuffered: false,
-      landedAt: -10, pos: [0, 0, 0], forward: [0, 0, 1], right: [1, 0, 0], normal: [0, 1, 0], heading: 0,
-      action: 'idle', finishTime: null, rank: null, progress: 0, distance: 0, forkDone: null, branchLock: null
-    };
   }
 
   /* ---------- step ---------- */
@@ -114,19 +240,61 @@
       }
       return;
     }
-    if (st.mode === 'running' || st.mode === 'finished') {
+    if (st.mode === 'running') {
+      if (tutorialHold(ctx)) {
+        // First lesson: the race clock and both racers' progress stand still; only the stitch moves.
+        sim.stitches.update(ctx, dt);
+        tutorialHold(ctx);
+        updateProgress(ctx);
+        return;
+      }
       st.time += dt;
       expire(ctx);
-      const racing = st.mode === 'running' || (st.result && st.result.loopStillRacing);
-      updatePurl(ctx, dt);
-      if (racing || st.loop.finishTime !== null) sim.loopAI.update(ctx, dt);
+      sim.stitches.update(ctx, dt);
+      const spans = updatePurl(ctx, dt);
+      sim.snagling.update(ctx, dt, spans);
+      sim.loopAI.update(ctx, dt);
       settleFinish(ctx);
-      refreshObjective(ctx);
+      tutorialHold(ctx);                 // report the lesson from the step Purl arrives in
+      const p = st.purl;
+      if (p.failAt !== null && st.mode === 'running' && st.time >= p.failAt - 1e-9) {
+        st.mode = 'failed';
+        p.action = 'failed';
+        p.speed = 0;
+        ctx.emit({ type: 'fail' });
+      }
+    } else if (st.mode === 'finished') {
+      const racing = st.result && st.result.loopStillRacing;
+      if (racing) st.time += dt;
+      expire(ctx);
+      coastPurl(ctx, dt);
+      if (racing) sim.loopAI.update(ctx, dt);
+      settleFinish(ctx);
+    } else if (st.mode === 'failed') {
+      return;
     }
     if (st.gate.state === 'opening') {
       st.gate.t = Math.min(1, st.gate.t + dt / T.gateOpenTime);
       if (st.gate.t >= 1) st.gate.state = 'open';
     }
+    updateProgress(ctx);
+  }
+
+  /* Sets state.tutorial and returns true while the first-lesson hold applies (see the header). */
+  function tutorialHold(ctx) {
+    const st = ctx.state, p = st.purl;
+    let t = null;
+    // Purl must be standing at the stop (landed, lane settled) before the world freezes around him.
+    if (p.waitingFor && p.finishTime === null && !st.transition && !p.airborne && Math.abs(p.laneX - p.lane) < 1e-3) {
+      const s = st.stitches[p.waitingFor];
+      if (s && s.tutorial && s.segIndex === p.seg && !sim.stitches.passable(ctx, s.id)) {
+        const stage = s.state === 'open' ? 'settle' : s.state === 'animating' ? 'unfurl' :
+          (s.gripping || s.pull > 0) ? 'pull' : 'touch';
+        t = { id: s.id, stage: stage };
+      }
+    }
+    st.tutorial = t;
+    return !!t;
   }
 
   function expire(ctx) {
@@ -135,180 +303,230 @@
     if (st.hint && st.time >= st.hint.until) st.hint = null;
   }
 
-  /* ---------- shared movement (both racers, same physical rules) ---------- */
-
-  function stepJump(ctx, r, dt) {
-    if (!r.airborne) return;
-    const T = ctx.T;
-    r.jumpT += dt;
-    if (r.jumpT >= T.jumpTime) {
-      r.airborne = false; r.jumpT = 0; r.jumpH = 0; r.jumpY = 0;
-      r.landedAt = ctx.state.time;
-      ctx.emit({ type: 'land', who: r.who });
-      if (r.jumpBuffered) startJump(ctx, r);
-      r.jumpBuffered = false;
-    } else {
-      r.jumpH = Math.sin(Math.PI * r.jumpT / T.jumpTime);
-      r.jumpY = r.jumpH * T.jumpHeight;
-    }
-  }
-
-  function startJump(ctx, r) {
-    r.airborne = true; r.jumpT = 0; r.jumpH = 0; r.jumpY = 0; r.jumpBuffered = false;
-    ctx.emit({ type: 'jump', who: r.who });
-  }
-
-  /* World pose of a racer from (road, s, lateral, jumpY); feet on the road top. */
-  function pose(ctx, r) {
-    const C = ctx.course, road = C.road(r.road);
-    const q = WW.route.sample(road, r.s, r.lateral, null);
-    const lim = WW.route.sample(road, r.s, 0, ctx.T.bodyRadius).limit;
-    r.limit = lim;
-    r.mainS = q.mainS;
-    r.pos = [q.position[0] + q.normal[0] * r.jumpY, q.position[1] + q.normal[1] * r.jumpY,
-             q.position[2] + q.normal[2] * r.jumpY];
-    r.forward = q.forward; r.right = q.right; r.normal = q.normal; r.heading = q.heading;
-    r.progress = U.clamp(r.mainS / C.finishS, 0, 1);
-  }
-
-  /* Lateral relative to the main road (for spools and race order), whichever road the racer is on. */
-  function mainLateral(ctx, r) {
-    if (r.road === 'main') return r.lateral;
-    const C = ctx.course;
-    return C.project(C.main, r.pos[0], r.pos[2], r.mainS, 4).lateral;
-  }
-
-  function moveRacer(ctx, r, dt, runSpeed) {
-    const T = ctx.T, C = ctx.course, st = ctx.state;
-    stepJump(ctx, r, dt);
-    const road = C.road(r.road);
-    const onBranch = r.road !== 'main';
-    const done = r.finishTime !== null;
-    const next = WW.route.advance({ s: r.s, speed: r.speed, phase: r.gait, braked: r.braked || done }, dt, {
-      runSpeed: Math.max(0.01, runSpeed), accelerationTime: T.accelTime,
-      // braking (player brake) is quick; easing off a speed ribbon or after the finish is gentle
-      brakingTime: r.braked && !done ? T.brakeTime : T.accelTime * (done ? 2.5 : 1.6),
-      strideLength: T.strideLength, routeLength: onBranch ? Infinity : C.main.length
-    });
-    const m0 = r.mainS;
-    r.speed = next.speed;
-    r.gait = next.phase;
-    r.distance += next.distanceMoved;
-    let s = next.s;
-
-    const b = C.branchList[0];
-    if (!onBranch && b) {
-      // the decision point before the fork: the left lane commits the runner to the side loop
-      if (r.forkDone !== b.id && r.branchLock === null && s >= b.startS - T.branchLock && m0 < b.startS) {
-        r.branchLock = r.latTarget <= -0.75 * T.laneStep ? b.id : 'main';
-        ctx.emit({ type: 'branch-lock', who: r.who, choice: r.branchLock });
-      }
-      if (r.branchLock === b.id && s >= b.startS) {
-        const h = C.toBranch(b, s, r.lateral);
-        if (h) {
-          r.road = b.id; s = h.s; r.lateral = h.lateral;   // same world point; latV carries over (same heading ±3°)
-          r.latTarget = 0;
-          r.forkDone = b.id; r.branchLock = null;
-          if (r.who === 'purl') st.stats.sideLoop += 1;
-          ctx.emit({ type: 'branch', who: r.who, road: b.id });
-        }
-      } else if (r.branchLock === 'main' && s >= b.startS) {
-        r.forkDone = b.id; r.branchLock = null;
-      }
-    } else if (onBranch && s >= road.length) {
-      const h = C.toMain(road, road.length, r.lateral);
-      const over = s - road.length;
-      r.road = 'main'; s = h.s + over; r.lateral = h.lateral;
-      r.latTarget = U.clamp(h.lateral, -T.laneStep, T.laneStep);
-      ctx.emit({ type: 'rejoin', who: r.who });
-    }
-    r.s = s;
-
-    // lateral follows its target smoothly inside the road actually under the runner
-    const lim = WW.route.sample(C.road(r.road), r.s, 0, T.bodyRadius).limit;
-    if (b && r.road === 'main' && r.branchLock === b.id) r.latTarget = Math.min(r.latTarget, -T.laneStep * 0.5);
-    r.latTarget = U.clamp(r.latTarget, -lim, lim);
-    const wantV = U.clamp((r.latTarget - r.lateral) * T.steerGain, -T.steerSpeed, T.steerSpeed);
-    r.latV = U.approach(r.latV, wantV, T.steerAccel * dt);
-    r.lateral += r.latV * dt;
-    if (Math.abs(r.latTarget - r.lateral) < 1e-4 && Math.abs(r.latV) < 0.01) { r.lateral = r.latTarget; r.latV = 0; }
-    pose(ctx, r);
-
-    // thread spools and the finish line
-    if (r.finishTime === null) {
-      sim.inventory.passSpools(ctx, r.who, m0, r.mainS, mainLateral(ctx, r), C.finishS);
-      if (r.mainS >= C.finishS && m0 < C.finishS) crossFinish(ctx, r, m0, dt);
-    }
-  }
-
-  function crossFinish(ctx, r, m0, dt) {
-    const st = ctx.state, C = ctx.course;
-    if (!sim.inventory.allHeld(st, r.who)) {
-      // Never a dead end: a missed thread is always re-offered on the runner's line before the line (inventory.js);
-      // if one is still missing here it is waiting at the gate.
-      sim.inventory.ownItems(st, r.who).forEach(function (it) {
-        if (it.status !== 'held') {
-          it.mainS = r.mainS; it.lateral = mainLateral(ctx, r);
-          sim.inventory.passSpools(ctx, r.who, r.mainS - 0.01, r.mainS, it.lateral, C.length);
-        }
-      });
-      if (r.who === 'purl') ctx.message(ctx.level.missingMessage || 'A THREAD IS MISSING', 'info', 2.0);
-    }
-    const frac = r.mainS > m0 ? (C.finishS - m0) / (r.mainS - m0) : 1;
-    r.finishTime = Math.max(0, st.time - dt * (1 - frac));
-    r.action = 'finished';
-    ctx.emit({ type: 'finish', who: r.who, time: r.finishTime });
-    if (r.who === 'purl') {
-      st.gate.state = 'opening'; st.gate.t = 0;
-      ctx.emit({ type: 'gate-open' });
-    }
+  function updateProgress(ctx) {
+    const st = ctx.state, p = st.purl, L = st.loop;
+    const ps = ctx.route[p.seg], ls = ctx.loopRoute[L.seg];
+    p.progress = U.clamp((ps.cum + (p.f - (p.seg === 0 ? ps.startF : 0)) * ps.length) / ctx.purlTotal, 0, 1);
+    L.progress = U.clamp((ls.cum + (L.f - (L.seg === 0 ? ls.startF : 0)) * ls.length) / ctx.loopTotal, 0, 1);
   }
 
   /* ---------- Purl ---------- */
 
-  function updatePurl(ctx, dt) {
-    const st = ctx.state, T = ctx.T, p = st.purl, C = ctx.course;
-    const v = T.purlSpeed * (p.road !== 'main' ? T.sideLoopBoost : 1);
-    moveRacer(ctx, p, dt, v);
-    if (p.finishTime !== null) p.action = 'finished';
-    else if (p.airborne) p.action = 'jump';
-    else if (p.braked) p.action = p.speed > 0.05 ? 'brake' : 'stopped';
-    else p.action = p.speed > 0.05 ? 'run' : 'idle';
+  function purlTarget(ctx) {
+    const st = ctx.state, T = ctx.T, p = st.purl;
+    if (st.time < p.tangledUntil) return 0;
+    return T.purlSpeed * (st.time < p.slowUntil ? T.slowAfterHit : 1);
+  }
 
-    // section → phase text
-    const sec = C.sectionAt(p.mainS);
-    if (sec && st.section !== sec.id) {
-      st.section = sec.id;
-      st.phase = 'LEVEL 1 · ' + ((ctx.level.sections || {})[sec.id] || sec.name.toUpperCase());
-      ctx.emit({ type: 'section', id: sec.id });
-    }
-    // the side-loop announcement (decision window before the fork)
-    const b = C.branchList[0];
-    st.branchPrompt = null;
-    if (b && p.road === 'main' && p.forkDone !== b.id && p.finishTime === null) {
-      const d = b.startS - p.mainS;
-      if (d <= T.branchWindow && d > 0) {
-        st.branchPrompt = { road: b.id, side: 'left', distance: d,
-                            locked: p.branchLock, chosen: p.branchLock ? p.branchLock === b.id : p.latTarget < 0 };
-        st.hint = { text: (ctx.level.sideLoop && ctx.level.sideLoop.hint) || 'SIDE LOOP ON THE LEFT', until: st.time + 0.2 };
+  function purlBlockIn(ctx, segIndex, f) {
+    const seg = ctx.route[segIndex];
+    let b = null;
+    for (let i = 0; i < seg.stops.length; i++) {
+      const stop = seg.stops[i];
+      if (stop.f >= f - 1e-9 && ctx.state.stitches[stop.stitch] && !sim.stitches.passable(ctx, stop.stitch)) {
+        if (b === null || stop.f < b) b = stop.f;
       }
     }
-    if (p.braked && p.speed <= 0.05 && p.finishTime === null) {
-      st.hint = { text: 'STOPPED · DOUBLE-TAP OR RUN TO GO', until: st.time + 0.2 };
+    return b;
+  }
+
+  function purlDroppedOn(ctx, segIndex) {
+    const items = ctx.state.items;
+    return Object.keys(items).some(function (id) {
+      const it = items[id];
+      return it.owner === 'purl' && it.status === 'dropped' && it.segIndex === segIndex;
+    });
+  }
+
+  /* The recovery loop (§7.5): leaving a segment that has a loopReturn while a purl.* thread lies dropped on it. */
+  function purlCanLeave(ctx, segIndex) {
+    return ctx.route[segIndex].loopReturn === null || !purlDroppedOn(ctx, segIndex);
+  }
+
+  function laneSpacing(ctx, seg, f) {
+    if (seg.kind !== 'plate') return ctx.T.connectorLaneSpacing;
+    return WW.path.sample(seg.path, f).lane;
+  }
+
+  function startJump(ctx, p) {
+    p.airborne = true; p.jumpT = 0; p.jumpH = 0; p.jumpBuffered = false;
+    ctx.emit({ type: 'jump', who: 'purl' });
+  }
+
+  function stepJump(ctx, p, dt) {
+    if (!p.airborne) return;
+    const T = ctx.T;
+    p.jumpT += dt;
+    if (p.jumpT >= T.jumpTime) {
+      p.airborne = false; p.jumpT = 0; p.jumpH = 0;
+      if (p.jumpBuffered && ctx.state.time >= p.tangledUntil) startJump(ctx, p);
+      p.jumpBuffered = false;
+    } else {
+      p.jumpH = Math.sin(Math.PI * p.jumpT / T.jumpTime);
     }
   }
 
+  function stepLane(ctx, p, dt) {
+    const T = ctx.T;
+    const seg = ctx.state.transition && ctx.state.transition.kind !== 'connector' ? null : ctx.route[p.seg];
+    if (seg && laneSpacing(ctx, seg, p.f) < T.laneMinSpacing) p.lane = 0;
+    p.laneX = U.approach(p.laneX, p.lane, dt / T.laneChangeTime);
+  }
+
+  function setTransitionFor(ctx, segIndex) {
+    const st = ctx.state, R = ctx.route, s = R[segIndex];
+    if (s.kind === 'connector') {
+      const prev = R[segIndex - 1], next = R[segIndex + 1];
+      st.transition = { kind: 'connector', from: s.from, to: s.to, style: s.style, t: st.purl.f,
+                        fromSeg: prev ? prev.id : null, toSeg: next ? next.id : null,
+                        fromPlate: s.from, toPlate: s.to, dur: s.length / ctx.T.purlSpeed };
+    } else {
+      st.transition = null;
+    }
+  }
+
+  function enterPurl(ctx, segIndex) {
+    const st = ctx.state;
+    ctx.emit({ type: 'segment', who: 'purl', segId: ctx.route[segIndex].id });
+    st.purl.segId = ctx.route[st.purl.seg].id;
+    const s = ctx.route[st.purl.seg];
+    if (s.kind === 'plate') {
+      if (s.def.phase) st.phase = s.def.phase;
+      refreshObjective(ctx);
+    }
+    setTransitionFor(ctx, st.purl.seg);
+    if (s.reveal !== null && !st.snagling.armed) sim.snagling.rearm(ctx);   // a new pass over the landing
+  }
+
   function refreshObjective(ctx) {
-    const st = ctx.state, p = st.purl, O = ctx.level.objectives || {};
-    if (p.finishTime !== null) { st.objective = ctx.level.completeObjective || 'LEVEL 1 COMPLETE'; return; }
-    const next = sim.inventory.nextMissing(st, 'purl');
-    let obj;
-    if (!next) obj = O.gate;
-    else if (next.offers > 0) obj = (O.missed || 'THE {color} THREAD IS AHEAD').replace('{color}', next.color.toUpperCase());
-    else if (st.held.purl === 0) obj = O.first;
-    else if (next.mainS - p.mainS <= (O.approach || 25)) obj = next.color === 'gold' ? O.gold : O.teal;
-    else obj = O.city;
-    st.objective = obj || '';
+    const st = ctx.state, p = st.purl, seg = ctx.route[p.seg];
+    if (p.finishTime !== null) { st.objective = ctx.level.completeObjective || seg.def.objectiveDone || st.objective; return; }
+    if (seg.kind !== 'plate') return;
+    const def = seg.def;
+    let obj = def.objective || st.objective;
+    const sid = Object.keys(st.stitches || {}).filter(function (k) { return st.stitches[k].segIndex === seg.index; })[0];
+    const stitchOpen = !sid || st.stitches[sid].state === 'open';
+    if (sid && stitchOpen && def.objectiveOpen) obj = def.objectiveOpen;
+    const own = Object.keys(st.items || {}).map(function (k) { return st.items[k]; })
+      .filter(function (it) { return it.owner === 'purl' && it.homeSeg === seg.id; });
+    if (stitchOpen && def.objectiveDone && (own.length ? own.every(function (it) { return it.status === 'held'; }) : !!sid)) {
+      obj = def.objectiveDone;
+    }
+    if (purlDroppedOn(ctx, seg.index)) obj = def.objectiveDrop || 'GET YOUR THREAD BACK';
+    st.objective = obj;
+  }
+
+  function startSpecialTransition(ctx, kind, toIndex, toF) {
+    const st = ctx.state, p = st.purl, R = ctx.route;
+    st.transition = { kind: kind, from: R[p.seg].id, to: R[toIndex].id, style: kind, t: 0,
+                      fromSeg: R[p.seg].id, toSeg: R[toIndex].id, fromPlate: R[p.seg].plate, toPlate: R[toIndex].plate,
+                      dur: kind === 'loop' ? ctx.T.recoveryLoopTime : ctx.T.returnTime, toIndex: toIndex, toF: toF };
+    p.action = kind === 'loop' ? 'looping' : 'returning';
+  }
+
+  function endSpecialTransition(ctx) {
+    const st = ctx.state, p = st.purl, tr = st.transition;
+    p.seg = tr.toIndex;
+    p.f = tr.toF;
+    st.transition = null;
+    enterPurl(ctx, p.seg);
+  }
+
+  function gateBlocked(ctx) {
+    const st = ctx.state;
+    ctx.emit({ type: 'gate-blocked' });
+    ctx.message(ctx.level.missingMessage || 'A THREAD IS MISSING', 'info', 2.4);
+    const miss = sim.inventory.earliestMissing(ctx, 'purl');
+    const toIndex = miss ? miss.segIndex : st.purl.seg;
+    const target = ctx.route[toIndex];
+    if (miss && miss.status === 'uncollected') miss.available = true;   // never a dead end
+    startSpecialTransition(ctx, 'return', toIndex, target.loopReturn !== null ? target.loopReturn : 0);
+  }
+
+  function finishPurl(ctx, seg, span) {
+    const st = ctx.state, p = st.purl;
+    const over = (span.f1 - seg.finish) * seg.length;
+    p.finishTime = Math.max(0, st.time - (p.speed > 0.01 ? over / p.speed : 0));
+    p.action = 'finished';
+    p.waitingFor = null;
+    st.gate.state = 'opening';
+    st.gate.t = 0;
+    ctx.emit({ type: 'finish', who: 'purl', time: p.finishTime });
+    ctx.emit({ type: 'gate-open' });
+    refreshObjective(ctx);
+  }
+
+  function updatePurl(ctx, dt) {
+    const st = ctx.state, T = ctx.T, p = st.purl, R = ctx.route;
+    stepJump(ctx, p, dt);
+    stepLane(ctx, p, dt);
+
+    const tr = st.transition;
+    if (tr && (tr.kind === 'loop' || tr.kind === 'return')) {
+      p.speed = U.approach(p.speed, purlTarget(ctx), T.purlAccel * dt);
+      p.distance += p.speed * dt;
+      tr.t = Math.min(1, tr.t + dt / tr.dur);
+      if (tr.t < 1) { p.action = tr.kind === 'loop' ? 'looping' : 'returning'; return []; }
+      endSpecialTransition(ctx);
+    }
+
+    const tangled = st.time < p.tangledUntil;
+    const target = purlTarget(ctx);
+    const bf = function (i, f) { return purlBlockIn(ctx, i, f); };
+    const dB = blockDistance(R, p.seg, p.f, bf, 40);
+    const vCap = Math.sqrt(2 * T.purlAccel * Math.max(0, dB));
+    if (tangled) p.speed = 0;
+    else p.speed = U.approach(p.speed, Math.min(target, vCap), T.purlAccel * dt);
+    if (p.speed > vCap) p.speed = vCap;
+
+    const res = walk(R, p, p.speed * dt, bf, function (i) { return purlCanLeave(ctx, i); });
+    p.distance += p.speed * dt - res.leftover;
+    res.entered.forEach(function (i) { enterPurl(ctx, i); });
+    if (R[p.seg].kind === 'connector' && st.transition) st.transition.t = p.f;
+
+    for (let si = 0; si < res.spans.length; si++) {
+      const span = res.spans[si], seg = R[span.seg];
+      seg.hints.forEach(function (h) {
+        if (crossed(span, h.f)) st.hint = { text: h.text, until: st.time + T.hintTime };
+      });
+      sim.inventory.purlPickups(ctx, [span]);
+      if (seg.finish !== null && p.finishTime === null && crossed(span, seg.finish)) {
+        if (sim.inventory.allHeld(st, 'purl')) finishPurl(ctx, seg, span);
+        else { gateBlocked(ctx); return res.spans.slice(0, si + 1); }
+      }
+    }
+    if (p.finishTime !== null) return res.spans;
+
+    // recovery loop: stopped at the landing exit with a dropped thread behind
+    const cur = R[p.seg];
+    if (res.blocked && cur.loopReturn !== null && p.f >= cur.exit - 1e-9 && !purlCanLeave(ctx, p.seg)) {
+      startSpecialTransition(ctx, 'loop', p.seg, cur.loopReturn);
+      return res.spans;
+    }
+
+    p.waitingFor = null;
+    if (p.speed < 0.05) {
+      cur.stops.forEach(function (stop) {
+        if (Math.abs(stop.f - p.f) * cur.length < 0.05 && st.stitches[stop.stitch] &&
+            !sim.stitches.passable(ctx, stop.stitch)) p.waitingFor = stop.stitch;
+      });
+    }
+    if (tangled || p.failAt !== null) p.action = 'tangled';
+    else if (cur.kind === 'connector') p.action = 'transition';
+    else if (p.waitingFor) p.action = 'wait';
+    else p.action = 'run';
+    return res.spans;
+  }
+
+  function coastPurl(ctx, dt) {
+    const p = ctx.state.purl, T = ctx.T;
+    stepJump(ctx, p, dt);
+    stepLane(ctx, p, dt);
+    p.speed = U.approach(p.speed, 0, T.purlAccel * dt);
+    if (p.speed <= 0) return;
+    const res = walk(ctx.route, p, p.speed * dt, function () { return null; }, null);
+    p.distance += p.speed * dt - res.leftover;
+    if (res.blocked) p.speed = 0;
   }
 
   function settleFinish(ctx) {
@@ -333,29 +551,33 @@
 
   function input(ctx, ev) {
     const st = ctx.state, p = st.purl, T = ctx.T;
-    if (!ev || st.paused || st.mode !== 'running' || p.finishTime !== null) return;
-    let type = ev.type, dir = ev.direction;
-    if (type === 'swipe') {
-      if (ev.dir === 'left' || ev.dir === 'right') { type = 'steer'; dir = ev.dir === 'left' ? -1 : 1; }
-      else if (ev.dir === 'up') type = 'jump';
-      else return;
+    if (!ev || st.paused || st.mode !== 'running') return;
+    if (ev.type === 'tap') {
+      st.stats.taps += 1;
+      sim.stitches.tap(ctx, ev.target);
+      return;
     }
-    if (type === 'steer') {
-      const b = ctx.course.branchList[0];
-      if (dir > 0 && b && p.road === 'main' && p.branchLock === b.id) return;   // committed to the side loop
-      const target = U.clamp(p.latTarget + (dir < 0 ? -1 : 1) * T.laneStep, -p.limit, p.limit);
-      if (Math.abs(target - p.latTarget) > 1e-6) {
-        p.latTarget = target;
-        st.stats.steers += 1;
-        ctx.emit({ type: 'lane', who: 'purl', lateral: target, dir: dir < 0 ? -1 : 1 });
+    if (ev.type === 'pull') {
+      // A grip can only start once Purl stands at that stitch's stop (he must be in reach of the loop).
+      if (ev.phase === 'start' && p.waitingFor !== ev.target) return;
+      if (sim.stitches.pull(ctx, ev.target, ev.phase, +ev.amount || 0)) {
+        if (ev.phase === 'start') st.stats.pulls = (st.stats.pulls || 0) + 1;
+        tutorialHold(ctx);
       }
-    } else if (type === 'jump') {
-      if (!p.airborne) { startJump(ctx, p); st.stats.jumps += 1; }
+      return;
+    }
+    if (ev.type !== 'swipe' || p.finishTime !== null || p.failAt !== null) return;
+    if (st.tutorial) return;             // standing at the first lesson: no jumps or lane changes (they would freeze)
+    if (ev.dir === 'left' || ev.dir === 'right') {
+      const special = st.transition && st.transition.kind !== 'connector';
+      const spacing = special ? T.connectorLaneSpacing : laneSpacing(ctx, ctx.route[p.seg], p.f);
+      if (spacing < T.laneMinSpacing) return;
+      const lane = U.clamp(p.lane + (ev.dir === 'left' ? -1 : 1), -1, 1);
+      if (lane !== p.lane) { p.lane = lane; ctx.emit({ type: 'lane', who: 'purl', lane: lane }); }
+    } else if (ev.dir === 'up') {
+      if (st.time < p.tangledUntil) return;
+      if (!p.airborne) startJump(ctx, p);
       else if (T.jumpTime - p.jumpT <= T.inputBufferTime) p.jumpBuffered = true;
-    } else if (type === 'toggle-player-brake' || type === 'brake') {
-      p.braked = type === 'brake' ? !!ev.on : !p.braked;
-      if (p.braked) st.stats.brakes += 1;
-      ctx.emit({ type: 'brake', who: 'purl', on: p.braked });
     }
   }
 
@@ -364,32 +586,63 @@
   function makeDebug(ctx) {
     return {
       ctx: ctx,
-      /* Put a racer on the main road at mainS/lateral (tests only; the game itself never teleports anyone). */
-      teleport: function (who, mainS, lateral) {
-        const r = ctx.state[who === 'loop' ? 'loop' : 'purl'];
-        r.road = 'main'; r.s = mainS; r.lateral = r.latTarget = lateral || 0; r.latV = 0; r.speed = 0;
-        r.forkDone = null; r.branchLock = null;
-        const b = ctx.course.branchList[0];
-        if (b && mainS >= b.startS) r.forkDone = b.id;
-        pose(ctx, r);
-        refreshObjective(ctx);
-        return r;
+      teleport: function (who, segId, f) {
+        const st = ctx.state, i = ctx.segIndex[segId];
+        if (i === undefined) throw new Error('unknown segment ' + segId);
+        if (who === 'loop') {
+          const L = st.loop;
+          L.seg = i; L.segId = segId; L.f = f || 0; L.speed = 0; L.task = null; L.hop = null;
+          L.airborne = false; L.jumpH = 0; L.action = ctx.loopRoute[i].kind === 'connector' ? 'transition' : 'run';
+        } else {
+          const p = st.purl;
+          p.seg = i; p.segId = segId; p.f = f || 0; p.speed = 0; st.transition = null;
+          setTransitionFor(ctx, i);
+          if (ctx.route[i].kind === 'plate' && ctx.route[i].def.phase) st.phase = ctx.route[i].def.phase;
+          refreshObjective(ctx);
+        }
+        updateProgress(ctx);
+        return st[who === 'loop' ? 'loop' : 'purl'];
       },
-      giveAll: function (who) {
-        who = who || 'purl';
-        sim.inventory.COLORS.forEach(function (c) {
-          const it = ctx.state.items[who + '.' + c];
-          if (it.status !== 'held') { it.status = 'held'; it.heldSeq = ++ctx.heldCounter; }
-        });
+      setItem: function (id, patch) {
+        const it = ctx.state.items[id];
+        if (!it) throw new Error('unknown item ' + id);
+        Object.assign(it, patch || {});
+        if (patch && patch.seg !== undefined) {
+          const R = it.owner === 'purl' ? ctx.route : ctx.loopRoute;
+          it.segIndex = R.findIndex(function (s) { return s.id === patch.seg; });
+        }
+        if (patch && patch.status === 'held' && !it.heldSeq) it.heldSeq = ++ctx.heldCounter;
+        if (patch && patch.status === 'dropped' && it.dropTime === null) it.dropTime = ctx.state.time;
         sim.inventory.recount(ctx.state);
         refreshObjective(ctx);
-        return ctx.state.held[who];
+        return it;
       },
-      setLoopForm: function (form) { ctx.state.loop.form = ctx.loopPlan.form = form; return form; },
-      setLoopPlan: function (patch) { Object.assign(ctx.loopPlan, patch || {}); return ctx.loopPlan; },
+      openStitch: function (id) {
+        const s = ctx.state.stitches[id];
+        s.state = 'animating'; s.elapsed = sim.stitches.totalTime(ctx.T, s.kind) + 1;
+        sim.stitches.update(ctx, 0);
+        if (s.state !== 'open') { s.state = 'animating'; }
+        s.openedAt = ctx.state.time - ctx.T.routeSettle;
+        s.settle = ctx.T.routeSettle;
+        if (s.interaction === 'pull') { s.pull = 1; s.gripping = false; }
+        return s;
+      },
+      setLoopForm: function (form) { ctx.state.loop.form = form; return form; },
+      /* JSON-safe deep copy of the state (for the e2e harness). */
       snapshot: function () { return JSON.parse(JSON.stringify(ctx.state)); },
-      loopPlan: function () { return ctx.loopPlan; },
-      course: function () { return ctx.course; }
+      /* Purl holds all three threads (helper for finish / gate tests). */
+      giveAll: function () {
+        ['coral', 'teal', 'gold'].forEach(function (c) {
+          const it = ctx.state.items['purl.' + c];
+          if (it.status !== 'held') { it.status = 'held'; it.available = true; it.heldSeq = ++ctx.heldCounter; }
+        });
+        sim.inventory.recount(ctx.state);
+        return ctx.state.held.purl;
+      },
+      /* Make Purl immune / not immune right now (seconds from now; 0 clears). */
+      setImmunity: function (seconds) { ctx.state.purl.immuneUntil = ctx.state.time + (seconds || 0); },
+      forceReveal: function () { return sim.snagling.forceReveal ? sim.snagling.forceReveal(ctx) : false; },
+      loopPlan: function () { return ctx.loopPlan; }
     };
   }
 
