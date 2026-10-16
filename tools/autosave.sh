@@ -27,7 +27,7 @@ while true; do
       git -c user.name="Claude" -c user.email="noreply@anthropic.com" commit -q -m "Auto-save $(date -u +%Y-%m-%dT%H:%M:%SZ): ${changed} changed paths
 
 Co-Authored-By: Claude Opus 5.5 <noreply@anthropic.com>
-Claude-Session: https://claude.ai/code/session_01RPbwyzH3cusTNJXb1jR8a5" || echo "commit failed $(date -u +%T)"
+Claude-Session: https://claude.ai/code/session_01GYacg796BiRjkwMthrzTeh" || echo "commit failed $(date -u +%T)"
     fi
     ahead=$(git rev-list --count "@{u}..HEAD" 2>/dev/null || echo 1)
     if [ "$ahead" != "0" ]; then
