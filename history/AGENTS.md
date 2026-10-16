@@ -82,7 +82,7 @@ You've hit your session limit · resets 8:10pm (UTC)
 
 ## Renderer M2: p02–p07 scenes
 
-- transcript: `history/transcripts/131a49c9-f445-5dda-9dd9-fdcc5c2be76a/subagents/agent-abb36e80113d6b16e.jsonl` (357 entries)
+- transcript: `history/transcripts/131a49c9-f445-5dda-9dd9-fdcc5c2be76a/subagents/agent-abb36e80113d6b16e.jsonl` (358 entries)
 
 Now plate data additions (renderer-only fields) for p02 and p03.
 
