@@ -2381,3 +2381,11 @@ Yes
 
 - _tool TaskUpdate_: 
 
+
+**Claude:** While the renderer agent works, I'll run a full race from start to finish with real touch (dodge branch) to catch problems early:
+
+
+- _tool Bash_: Run a full touch-driven race (dodge branch)
+
+- _tool Bash_: Wait for the full dodge run and show its timeline
+
