@@ -3167,3 +3167,9 @@ continue and proceed where we're at. But like I said, can you validate to me whe
 
 - _tool Bash_: Measure branch separation from main road and main heading
 
+
+
+- _tool Write_: /home/user/threadgame/tools/build-route-data.py
+
+- _tool Bash_: Generate route.js and check collectibles and landmarks
+
