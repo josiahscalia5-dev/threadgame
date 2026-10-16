@@ -70,13 +70,13 @@ _(no message yet)_
 
 ## UI: HUD, input, loop, lifecycle
 
-- transcript: `history/transcripts/370de19d-9b32-5c31-ac39-d89d7478db67/subagents/agent-ae9506e4d1065977a.jsonl` (328 entries)
+- transcript: `history/transcripts/370de19d-9b32-5c31-ac39-d89d7478db67/subagents/agent-ae9506e4d1065977a.jsonl` (339 entries)
 
-One failure is a test bug: the earlier "swipe ending on the pause button" was itself a legitimate rightward game swipe (lane → 1). Fix the check to compare against the lane before the paused swipe.
+All checks pass. Let me look at the snagged, pause, fail and cash-out captures.
 
 ## Renderer: plates, camera, actors, effects
 
-- transcript: `history/transcripts/370de19d-9b32-5c31-ac39-d89d7478db67/subagents/agent-aee076b7546be423f.jsonl` (295 entries)
+- transcript: `history/transcripts/370de19d-9b32-5c31-ac39-d89d7478db67/subagents/agent-aee076b7546be423f.jsonl` (303 entries)
 
 Now a side-by-side comparison helper, then the first capture.
 
