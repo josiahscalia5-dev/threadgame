@@ -3350,3 +3350,7 @@ continue and proceed where we're at. But like I said, can you validate to me whe
 
 - _tool Bash_: Read loader, asset image list, layout and portraits
 
+
+
+- _tool Write_: /home/user/threadgame/game/src/render/materials.js
+
