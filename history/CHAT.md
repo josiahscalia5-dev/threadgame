@@ -3783,3 +3783,21 @@ First I'll check whether the files you just sent are the same ones I already hav
 
 - _tool Bash_: Verify the new features in the real game with touch
 
+
+
+- _tool Bash_: Build a labelled sheet of the feature screenshots
+
+- _tool Read_: /home/user/threadgame/docs/checkpoints/connected/02-features-added.jpg
+
+
+
+- _tool SendUserFile_: 
+
+- _tool TaskUpdate_: 
+
+- _tool TaskUpdate_: 
+
+
+
+- _tool Bash_: Read the original transition drawing code
+
