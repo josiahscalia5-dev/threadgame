@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <!-- Dark plum host background (same as the kit viewer host); visible behind system bars. -->
+    <color name="host_background">#291B2D</color>
+
+    <style name="AppTheme" parent="android:style/Theme.Material.NoActionBar">
+        <item name="android:windowLightStatusBar">false</item>
+        <item name="android:windowActionModeOverlay">true</item>
+        <item name="android:colorAccent">#EF5679</item>
+        <item name="android:windowBackground">@color/host_background</item>
+        <item name="android:colorBackground">@color/host_background</item>
+        <item name="android:statusBarColor">@color/host_background</item>
+        <item name="android:navigationBarColor">@color/host_background</item>
+    </style>
+</resources>
