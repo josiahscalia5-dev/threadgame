@@ -3729,3 +3729,15 @@ First I'll check whether the files you just sent are the same ones I already hav
 
 - _tool Bash_: Fix objective refresh and verify with a headless race
 
+
+
+- _tool TaskUpdate_: 
+
+- _tool TaskUpdate_: 
+
+- _tool Bash_: Read the original touch input module
+
+
+
+- _tool Bash_: Read pose selection and Purl speed control
+
