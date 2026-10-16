@@ -2347,3 +2347,7 @@ Yes
 
 - _tool Bash_: Fix the packaging check and rebuild the APK
 
+
+
+- _tool Bash_: Wait for the pull lesson re-recording to finish
+
