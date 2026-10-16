@@ -10,7 +10,7 @@ const path = require('path');
   const moments = (process.argv[3] || 'stop').split(',');
   const extra = process.argv[4] ? '&' + process.argv[4] : '';
   const browser = await chromium.launch();
-  const page = await browser.newPage({ viewport: { width: 412, height: 915 }, deviceScaleFactor: 2 });
+  const page = await browser.newPage({ viewport: { width: +(process.env.VW || 412), height: +(process.env.VH || 915) }, deviceScaleFactor: +(process.env.DPR || 2) });
   const errors = [];
   page.on('console', (m) => { if (m.type() === 'error' || m.type() === 'warning') errors.push(m.text()); });
   page.on('pageerror', (e) => errors.push(String(e)));

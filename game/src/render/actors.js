@@ -42,7 +42,7 @@
     const jumpH = st.jumpH || 0;
     const clock = opts.clock || 0;
     // contact shadow (stays on the ground, shrinks with height)
-    u.drawShadow(ctx, R.cache, x, groundY, w * 0.66 * (1 - 0.35 * jumpH), (opts.alpha === undefined ? 1 : opts.alpha) * 0.5 * (1 - 0.45 * jumpH));
+    u.drawShadow(ctx, R.cache, x, groundY, w * 0.7 * (1 - 0.4 * jumpH), (opts.alpha === undefined ? 1 : opts.alpha) * 0.7 * (1 - 0.5 * jumpH));
     let sx = 1, sy = 1, rot = 0;
     const name = poseName(who, st);
     if (name === 'idle') {
