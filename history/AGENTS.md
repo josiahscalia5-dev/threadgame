@@ -64,19 +64,19 @@ _(no message yet)_
 
 ## Simulation: race rules and Loop AI
 
-- transcript: `history/transcripts/370de19d-9b32-5c31-ac39-d89d7478db67/subagents/agent-ae84357f8296ab86f.jsonl` (192 entries)
+- transcript: `history/transcripts/370de19d-9b32-5c31-ac39-d89d7478db67/subagents/agent-ae84357f8296ab86f.jsonl` (198 entries)
 
 _(no message yet)_
 
 ## UI: HUD, input, loop, lifecycle
 
-- transcript: `history/transcripts/370de19d-9b32-5c31-ac39-d89d7478db67/subagents/agent-ae9506e4d1065977a.jsonl` (323 entries)
+- transcript: `history/transcripts/370de19d-9b32-5c31-ac39-d89d7478db67/subagents/agent-ae9506e4d1065977a.jsonl` (327 entries)
 
-Now a thorough interaction test using real touch input via CDP (taps, swipes, buttons, lifecycle, fail/results flows).
+One failure is a test bug: the earlier "swipe ending on the pause button" was itself a legitimate rightward game swipe (lane → 1). Fix the check to compare against the lane before the paused swipe.
 
 ## Renderer: plates, camera, actors, effects
 
-- transcript: `history/transcripts/370de19d-9b32-5c31-ac39-d89d7478db67/subagents/agent-aee076b7546be423f.jsonl` (276 entries)
+- transcript: `history/transcripts/370de19d-9b32-5c31-ac39-d89d7478db67/subagents/agent-aee076b7546be423f.jsonl` (284 entries)
 
 Now a side-by-side comparison helper, then the first capture.
 
