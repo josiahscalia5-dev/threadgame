@@ -132,7 +132,8 @@ test('taps never move Purl; swipes never trigger stitches; early taps are ignore
 
 test('the simulation never reads the wall clock or Math.random', function () {
   for (const f of ['inventory.js', 'stitches.js', 'snagling.js', 'loop-ai.js', 'race.js']) {
-    const src = fs.readFileSync(path.join(GAME, 'src/sim', f), 'utf8');
+    const src = fs.readFileSync(path.join(GAME, 'src/sim', f), 'utf8')
+      .replace(/\/\*[\s\S]*?\*\//g, '').replace(/\/\/.*$/gm, '');
     assert.ok(!/Math\.random|Date\.|Date\(|performance\.now|setTimeout|setInterval|document\.|window\./.test(src), f);
   }
 });
