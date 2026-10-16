@@ -90,7 +90,7 @@
         const who = it.owner || (id.indexOf('loop.') === 0 ? 'loop' : 'purl');
         const seen = R.itemScreen[id];
         if (it.status === 'held') {
-          if (seen && R.clock - seen.at < 0.5) {
+          if (seen && R.clock - seen.at < 0.5 + (R.dt || 0)) {
             fx.flyup(R.fx, actors.SPOOL[color] || actors.SPOOL.coral, seen, hudTarget(who), seen.size);
             fx.sparkle(R.fx, seen.plate, seen.wx, seen.wy, 12, 140);
           }
@@ -106,7 +106,8 @@
       for (const id in sts) {
         const s = sts[id], was = prev.stitches[id];
         next.stitches[id] = s.state;
-        if (s.state === 'ready' && was !== 'ready') R.readySince[id] = R.clock;
+        // first seen ready: backdate by (up to 0.5 s of) this frame's dt so a single large manual step shows the cue
+        if (s.state === 'ready' && was !== 'ready') R.readySince[id] = R.clock - Math.min(R.dt || 0, 0.5);
         if (R.prev && s.state === 'animating' && was !== 'animating') {
           const pl = stitchPlate(id), S = pl && R.plates[pl].stitch;
           if (S) fx.sparkle(R.fx, pl, S.x, S.y, 18, 220);
@@ -497,8 +498,10 @@
     function render(state, dtReal) {
       if (!R.fit) resize(canvas.clientWidth, canvas.clientHeight, (typeof devicePixelRatio === 'number') ? devicePixelRatio : 1);
       state = state || {};
-      const dt = state.paused ? 0 : u.clamp(dtReal || 0, 0, 0.1);
+      // dtReal may be a whole manual advance (test API renders once after advance(s)); it only drives cosmetics.
+      const dt = state.paused ? 0 : u.clamp(dtReal || 0, 0, 5);
       R.clock += dt;
+      R.dt = dt;
       fx.update(R.fx, dt);
       diffState(state);
       processEvents(state);
