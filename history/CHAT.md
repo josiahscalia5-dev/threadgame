@@ -3569,3 +3569,7 @@ What are you doing? I want these to look like exactly my mobile app screens. You
 
 - _tool Edit_: /home/user/threadgame/game/src/render/sprites.js
 
+
+
+- _tool Write_: /home/user/threadgame/game/src/render/racers.js
+
