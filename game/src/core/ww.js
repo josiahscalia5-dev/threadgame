@@ -13,8 +13,25 @@
      checked by tests/unit and tests/e2e. */
   WW.TUNING = {
     countdown: 3,
-    purlSpeed: 5.0,
-    purlAccel: 9,                 // m/s² when starting/stopping
+
+    /* Connected course (metres, seconds). Character scale: Purl/Loop are ~1.1 m tall, ~0.9 m wide (render/racers.js);
+       speed, stride and the chase camera (render/chase.js) are calibrated together against recordings. */
+    purlSpeed: 5.5,               // m/s auto-run
+    accelTime: 0.35,              // s from standstill to run speed (kit advanceRun accelerationTime)
+    brakeTime: 0.22,              // s from run speed to standstill (kit: 0.18–0.25)
+    strideLength: 1.75,           // m per full gait cycle (two steps)
+    bodyRadius: 0.5,              // m of body/rail clearance inside the walkable width
+    laneStep: 1.6,                // m per steering swipe
+    steerHalfLife: 0.075,         // s; lateral position follows its target, critically damped
+    jumpHeight: 0.85,             // m
+    sideLoopBoost: 1.45,          // speed ribbon on the side loop: 19.5 m at ×1.45 beats 16.0 m of main by ~0.45 s
+    branchWindow: 12,             // m before the fork in which the side loop is announced
+    branchLock: 1.5,              // m before the fork: a runner in the left lane is committed to the side loop
+    pickupReach: 1.5,             // m lateral reach to a thread spool as it is passed
+    respawnAhead: 18,             // m: a missed thread is offered again this far ahead
+    finishRunout: 10,             // m of plaza beyond the flower-gate finish line (runners slow to a stop there)
+
+    purlAccel: 9,                 // (plate-era value, kept for the Snagling/stitch modules re-integrated after review)
     laneChangeTime: 0.22,
     jumpTime: 0.68,
     jumpAirborneAbove: 0.3,       // jump height fraction that clears Snagling's contact
