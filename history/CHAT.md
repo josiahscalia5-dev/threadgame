@@ -2017,3 +2017,15 @@ Yes
 
 - _tool Bash_: Read race.js header and step function
 
+
+
+- _tool Bash_: Read UI input module and main.js input wiring
+
+- _tool Bash_: Check SDK install result and read main.js wiring
+
+
+**Claude:** The SDK is installed. Now the level data and tuning values for the ribbon:
+
+
+- _tool Bash_: Find ribbon definitions in level, tuning and p01 data
+
