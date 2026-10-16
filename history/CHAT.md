@@ -3741,3 +3741,13 @@ First I'll check whether the files you just sent are the same ones I already hav
 
 - _tool Bash_: Read pose selection and Purl speed control
 
+
+
+- _tool Bash_: Add the double-tap brake to sim, input and main
+
+
+**Claude:** Next a test-API hook for the brake, then unit tests for both new features:
+
+
+- _tool Bash_: Add brake to the test API and read test helpers
+
