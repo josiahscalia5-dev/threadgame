@@ -3984,3 +3984,9 @@ Next I'll find out exactly why the game doesn't fill your phone's screen.
 
 - _tool Bash_: Inspect #game CSS and edge pixel colours
 
+
+**Claude:** Found it: `#game` has `contain: layout paint`, which keeps any full-screen child inside the safe area. I'll remove that one line and re-measure the edge pixels:
+
+
+- _tool Bash_: Remove CSS containment and re-measure edges
+
