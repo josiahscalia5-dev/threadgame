@@ -151,6 +151,32 @@
     }
   }
 
+  /* prop.swinging-tassel from its gold cap down (frame y ≥ CAP_Y; the gold rope replaces the striped cord), body and
+     pompom fringe shifted to the approved deep plum. */
+  const CAP_Y = 104, RING_Y = 206;
+  function tasselCanvas(R) {
+    if (R.cache['sp:tassel']) return R.cache['sp:tassel'];
+    const f = frameOf(R, 'prop.swinging-tassel'), u = U();
+    if (!f || !u.imgReady(R.images[f.img])) return null;
+    const h = f.h - CAP_Y, c = u.makeCanvas(f.w, h), g = c.getContext('2d');
+    const src = function () { g.drawImage(R.images[f.img], f.x, f.y + CAP_Y, f.w, h, 0, 0, f.w, h); };
+    src();
+    g.save();
+    g.beginPath(); g.rect(0, 280, f.w, h - 280); g.clip();
+    g.globalCompositeOperation = 'hue'; g.fillStyle = 'rgb(150, 28, 92)'; g.fillRect(0, 0, f.w, h);
+    g.globalCompositeOperation = 'multiply'; g.fillStyle = 'rgb(176, 150, 170)'; g.fillRect(0, 0, f.w, h);
+    g.restore();
+    g.save();
+    g.beginPath(); g.rect(0, 112, f.w, 168); g.clip();
+    g.globalCompositeOperation = 'multiply'; g.fillStyle = 'rgb(218, 206, 220)'; g.fillRect(0, 0, f.w, h);
+    g.restore();
+    g.globalCompositeOperation = 'destination-in';
+    src();
+    g.globalCompositeOperation = 'source-over';
+    R.cache['sp:tassel'] = c;
+    return c;
+  }
+
   function drawTassels(R, ctx, v, P, state) {
     const u = U(), st = (state.stitches && state.stitches.tassels) || { state: 'idle', lifts: [0, 0, 0] };
     const f = frameOf(R, 'prop.swinging-tassel');
@@ -169,20 +195,22 @@
       ctx.save();
       ctx.translate(T.x, beamY);
       ctx.rotate(swing);
-      drawRope(ctx, R, 0, -beamY - 20, top - beamY + h * 0.02, rw);
-      drawAt(ctx, R, 'prop.swinging-tassel', 0, top - beamY, T.w);
+      const kt = T.w / f.w, tc = tasselCanvas(R);
+      drawRope(ctx, R, 0, -beamY - 20, top - beamY + (CAP_Y + 14) * kt, rw);
+      if (tc) ctx.drawImage(tc, -f.px * kt, top - beamY + CAP_Y * kt, f.w * kt, tc.height * kt);
+      else drawAt(ctx, R, 'prop.swinging-tassel', 0, top - beamY, T.w);
       // gold halo ring on the cap while the stitch is waiting / lifting
       const ringA = cue ? (0.55 + 0.25 * Math.sin(R.clock * 4 + i)) * (1 - u.smooth(l * 1.5)) : 0;
       if (ringA > 0.01) {
-        const cy = top - beamY + h * 0.27;
+        const cy = top - beamY + RING_Y * kt;
         glow(ctx, R, 'rgba(255,214,110,0.9)', 0, cy, T.w * 0.5, ringA * 0.35);
         ctx.save();
         ctx.globalCompositeOperation = 'lighter';
         ctx.globalAlpha = ringA;
         ctx.strokeStyle = 'rgba(255, 210, 100, 0.55)'; ctx.lineWidth = 7;
-        ctx.beginPath(); ctx.ellipse(0, cy, T.w * 0.36, T.w * 0.085, 0, 0, TAU); ctx.stroke();
-        ctx.strokeStyle = 'rgba(255, 246, 200, 0.9)'; ctx.lineWidth = 2.4;
-        ctx.beginPath(); ctx.ellipse(0, cy, T.w * 0.36, T.w * 0.085, 0, 0, TAU); ctx.stroke();
+        ctx.beginPath(); ctx.ellipse(0, cy, T.w * 0.42, T.w * 0.09, 0, 0, TAU); ctx.stroke();
+        ctx.strokeStyle = 'rgba(255, 246, 200, 0.9)'; ctx.lineWidth = 2.6;
+        ctx.beginPath(); ctx.ellipse(0, cy, T.w * 0.42, T.w * 0.09, 0, 0, TAU); ctx.stroke();
         ctx.restore();
       }
       ctx.restore();
@@ -190,13 +218,15 @@
       const arA = cue ? (1 - u.smooth(l * 3)) : 0;
       if (arA > 0.01) {
         const ph = (R.clock * 0.7 + i * 0.37) % 1;
-        const ax = T.x - T.w * 0.62, ay = top + h * 0.62 - ph * T.w * 0.3, len = T.w * 0.3;
+        const ax = T.x - T.w * 0.6, len = T.w * 0.42, ay = top + h * 0.5 - ph * T.w * 0.25;
+        const aa = arA * Math.min(1, Math.sin(ph * Math.PI) * 1.6);
+        glow(ctx, R, 'rgba(255,214,110,0.9)', ax, ay + len * 0.5, len * 0.7, 0.3 * aa);
         ctx.save();
-        ctx.globalAlpha = arA * Math.sin(ph * Math.PI);
+        ctx.globalAlpha = aa;
         ctx.lineCap = 'round'; ctx.lineJoin = 'round';
         for (let pass = 0; pass < 2; pass++) {
-          ctx.strokeStyle = pass ? '#ffd35c' : 'rgba(110, 60, 10, 0.55)';
-          ctx.lineWidth = pass ? 3 : 6;
+          ctx.strokeStyle = pass ? '#ffdc6a' : 'rgba(110, 60, 10, 0.5)';
+          ctx.lineWidth = pass ? 4 : 8;
           ctx.beginPath(); ctx.moveTo(ax, ay + len); ctx.lineTo(ax, ay);
           ctx.moveTo(ax - len * 0.24, ay + len * 0.26); ctx.lineTo(ax, ay); ctx.lineTo(ax + len * 0.24, ay + len * 0.26);
           ctx.stroke();
@@ -216,7 +246,7 @@
     const cf = typeof s.contactF === 'number' ? s.contactF : (purl.f || 0);
     const c = WW.path.racerPoint(P.purl.path, u.clamp(cf, 0, 1), s.targetLane || 0, 0);
     const L = { x: c.x - 0.6 * c.w, y: c.groundY + 4, w: Math.max(150, c.w * 0.84) };
-    const M = { x: peek.x + 14, y: peek.y - 8, w: peek.w * 0.96 };
+    const M = { x: peek.x - 6, y: peek.y - 6, w: peek.w * 0.92 };   // tugging from the tower edge (approved 04)
     const t = s.t || 0;
     let p = null;
     if (s.state === 'hop') {
@@ -642,13 +672,15 @@
           for (let i = 0; i < 2; i++) {
             const a0 = R.clock * 4.2 + i * Math.PI;
             for (let pass = 0; pass < 2; pass++) {
-              ctx.globalAlpha = env * (pass ? 0.85 : 0.28);
-              ctx.strokeStyle = pass ? 'rgba(255, 236, 160, 1)' : 'rgba(255, 190, 70, 1)';
-              ctx.lineWidth = pass ? Math.max(1.5, w * 0.011) : Math.max(5, w * 0.04);
+              ctx.globalCompositeOperation = pass ? 'source-over' : 'lighter';
+              ctx.globalAlpha = env * (pass ? 0.9 : 0.35);
+              ctx.strokeStyle = pass ? 'rgb(255, 205, 80)' : 'rgba(255, 170, 40, 1)';
+              ctx.lineWidth = pass ? Math.max(2, w * 0.013) : Math.max(6, w * 0.045);
               ctx.beginPath(); ctx.ellipse(cx, cy, w * (0.66 + 0.04 * i), w * (0.5 + 0.03 * i), -0.15, a0, a0 + 2.3 + 0.6 * i); ctx.stroke();
             }
           }
           ctx.restore();
+          glow(ctx, R, 'rgba(255,200,90,0.9)', cx, cy, w * 0.8, 0.22 * env);
           sparkles(ctx, cx, cy, w * 0.62, 6, R.clock, env);
           // the recovered spool held up at Purl's hand, then it flies to the HUD
           if (age < 0.55) {
@@ -685,7 +717,9 @@
   }
 
   function onRecover(R, color) {
-    S(R).recover = { at: R.clock, color: color };
+    const sp = S(R);
+    sp.recover = { at: R.clock, color: color };
+    for (let i = sp.callouts.length - 1; i >= 0; i--) if (sp.callouts[i].kind === 'minus') sp.callouts.splice(i, 1);
   }
 
   const FONT = 'Nunito, "Baloo 2", "Trebuchet MS", "Segoe UI", Roboto, Arial, sans-serif';
@@ -709,7 +743,8 @@
       const age = R.clock - rc.at;
       const a = u.smooth(age / 0.15) * (1 - u.smooth((age - 1.1) / 0.4));
       if (a > 0.01) {
-        const x = v.ox + rc.textAt.x * v.s, y = v.oy + rc.textAt.y * v.s - age * 16;
+        const fw = Math.max(11, 24 * v.s) * 6.2;   // ≈ text width; keep it on screen (Purl may be in the right lane)
+        const x = Math.min(v.ox + rc.textAt.x * v.s, R.fit.W - fw - 6), y = v.oy + rc.textAt.y * v.s - age * 16;
         drawPlusText(R, ctx, x, y, v.s, a, age);
       }
     }

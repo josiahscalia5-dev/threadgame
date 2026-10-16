@@ -2243,3 +2243,16 @@ Yes
 
 - _tool Bash_: Fix snap target kind and rerun the pull e2e
 
+
+**Claude:** Both failures are in the test, not the game. The first frame where the lesson has ended already includes a step or two of normal racing. I'll check the clock and Loop on the last held frame instead:
+
+
+- _tool Bash_: Fix the lesson-duration checks in the pull e2e
+
+**Claude:** Now I'll look at the captured beats before recording, to check the visuals:
+
+
+- _tool Bash_: Contact sheet of the pull lesson beats (lower part)
+
+- _tool Read_: /tmp/claude-0/-home-user-threadgame/131a49c9-f445-5dda-9dd9-fdcc5c2be76a/scratchpad/view/pull1.jpg
+
