@@ -3316,3 +3316,17 @@ continue and proceed where we're at. But like I said, can you validate to me whe
 
 - _tool Bash_: Tune steering gain, tighten steering test, rerun
 
+- _tool Bash_: Show the steering test failure detail
+
+
+**Claude:** Also a test timing issue: crossing the whole 5 m road at the 4.2 m/s side-step speed takes about 1.3 s, and the test only waited 0.8 s.
+
+
+- _tool Edit_: /home/user/threadgame/tests/unit/connected.test.cjs
+
+- _tool Bash_: Run the full unit test suite again
+
+
+
+- _tool Bash_: Measure race pacing and win balance over 50 seeds
+
