@@ -3912,3 +3912,19 @@ Stop hook feedback:
 
 What happened? It looks like it didn't change nothing. Nothing looked, it looks the same thing as the old one. I asked you to make the entire screen fit fully on an Android phone device, and nothing looks like you changed. You didn't change nothing.
 
+
+**Claude:** You're right. The screen-fit part of your package isn't done; I missed it. The package says the game should fill the whole Android screen, with no side gutters and no stretching, and I didn't change that.
+
+The features I added are there, but most don't show at first glance because you asked me to keep the screens the same:
+
+- the buttons are off until you turn them on in Pause;
+- the brake only shows when you double-tap;
+- the scene change only appears when Purl reaches the end of the ribbon.
+
+Next I'll find out exactly why the game doesn't fill your phone's screen.
+
+
+- _tool Bash_: Read layout, camera fit and Android inset handling
+
+- _tool Bash_: Read computeLayout, Android window setup and framing
+
