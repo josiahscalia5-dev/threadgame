@@ -103,7 +103,10 @@
         else if (dt > 0) { damp(off, wantOff, CAM.posHalfLife, dt); damp(lookOff, wantLookOff, CAM.lookHalfLife, dt); }
         this.apply();
       },
-      apply: function () { camera.position.copy(pos); camera.lookAt(look); camera.updateMatrixWorld(); },
+      apply: function () {
+        pos.copy(anchor).add(off); look.copy(anchor).add(lookOff);
+        camera.position.copy(pos); camera.lookAt(look); camera.updateMatrixWorld();
+      },
       reset: function () { ready = false; }
     };
   }
