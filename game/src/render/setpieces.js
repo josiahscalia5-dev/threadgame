@@ -439,7 +439,9 @@
     g.drawImage(img, x0 * iw / 841, y0 * ih / 1870, w * iw / 841, h * ih / 1870, x0, y0, w, h);
     g.globalCompositeOperation = 'destination-in';
     g.fillStyle = '#000';
-    polys.forEach(function (q) { u.polyPath(g, q); g.fill(); });
+    g.beginPath();   // one path: each destination-in fill would erase the other wings
+    polys.forEach(function (q) { q.forEach(function (pt, i) { if (i) g.lineTo(pt[0], pt[1]); else g.moveTo(pt[0], pt[1]); }); g.closePath(); });
+    g.fill();
     g.globalCompositeOperation = 'source-over';
     // scalloped gold inner stitching + body
     g.lineCap = 'round'; g.lineJoin = 'round';
