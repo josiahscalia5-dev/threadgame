@@ -1231,3 +1231,19 @@ Can you make sure that everything's saved to my GitHub repository and make sure 
 
 - _tool Bash_: Time the history export and a git push
 
+
+
+- _tool Bash_: Restart auto-save with faster intervals
+
+
+**Claude:** That `pkill` matched its own command line and killed the shell. Checking what state that left:
+
+
+- _tool Bash_: Check whether any auto-save loop is running
+
+
+**Claude:** The old saver is stopped cleanly (no leftover lock, nothing unsaved). Starting the faster one:
+
+
+- _tool Bash_: Start auto-save every 3 s with history every 15 s
+
