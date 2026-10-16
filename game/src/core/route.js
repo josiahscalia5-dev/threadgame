@@ -141,7 +141,15 @@
       if (!best || d < best.dist) best = { s: lerp(a.s, b.s, t), dist: d };
     }
     if (!best) best = { s: clamp(sHint || 0, p[0].s, p[p.length - 1].s), dist: 0 };
-    const q = sample(road, best.s, 0, 0);
+    // Refine against sample()'s interpolated frame so sample(road, s, lateral) returns (x, z) exactly.
+    let q = sample(road, best.s, 0, 0);
+    for (let k = 0; k < 4; k++) {
+      const fh = Math.hypot(q.forward[0], q.forward[2]) || 1;
+      const along = ((x - q.center[0]) * q.forward[0] + (z - q.center[2]) * q.forward[2]) / fh;
+      if (Math.abs(along) < 1e-6) break;
+      best.s = clamp(best.s + along, p[0].s, p[p.length - 1].s);
+      q = sample(road, best.s, 0, 0);
+    }
     best.lateral = (x - q.center[0]) * q.right[0] + (z - q.center[2]) * q.right[2];
     return best;
   }
