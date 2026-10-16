@@ -3948,3 +3948,13 @@ Next I'll find out exactly why the game doesn't fill your phone's screen.
 
 - _tool Bash_: Check for transforms on #game and the viewport meta
 
+
+
+- _tool Bash_: Check HUD target coordinates and resize calls
+
+
+**Claude:** Everything already measures against the canvas itself, so a full-screen canvas keeps taps and HUD fly-ups lined up. Making the changes in the game:
+
+
+- _tool Bash_: Cover-fit the art and make the canvas full screen
+

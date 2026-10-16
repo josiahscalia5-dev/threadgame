@@ -13,8 +13,10 @@
   const U = function () { return WW.render.util; };
   const PW = 841, PH = 1870;
 
+  /* Cover fit: the painting fills the whole screen edge to edge — no side gutters, never stretched. On a screen whose
+     shape differs from the art's 841:1870 a little of the painting's outer edge is cropped instead. */
   function fit(W, H) {
-    const s0 = Math.min(W / PW, H / PH);
+    const s0 = Math.max(W / PW, H / PH);
     return { s0: s0, x0: (W - PW * s0) / 2, y0: (H - PH * s0) / 2, W: W, H: H };
   }
 
