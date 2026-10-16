@@ -399,9 +399,14 @@
   }
 
   function refreshObjective(ctx) {
-    const st = ctx.state, p = st.purl, seg = ctx.route[p.seg];
+    const st = ctx.state, p = st.purl;
+    let seg = ctx.route[p.seg];
     if (p.finishTime !== null) { st.objective = ctx.level.completeObjective || seg.def.objectiveDone || st.objective; return; }
-    if (seg.kind !== 'plate') return;
+    // On a connector the objective still belongs to the plate just left (e.g. a pickup right at its exit).
+    if (seg.kind !== 'plate') {
+      if (seg.index > 0 && ctx.route[seg.index - 1].kind === 'plate') seg = ctx.route[seg.index - 1];
+      else return;
+    }
     const def = seg.def;
     let obj = def.objective || st.objective;
     const sid = Object.keys(st.stitches || {}).filter(function (k) { return st.stitches[k].segIndex === seg.index; })[0];

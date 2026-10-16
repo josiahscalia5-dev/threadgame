@@ -65,6 +65,7 @@
     item.heldSeq = ++ctx.heldCounter;
     recount(st);
     ctx.emit({ type: 'pickup', item: item.id, who: item.owner });
+    if (item.owner === 'purl') ctx.refreshObjective();   // the objective changes in the same step as the counter
     return true;
   }
 
