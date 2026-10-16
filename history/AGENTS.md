@@ -32,27 +32,27 @@ I'll start by reading the architecture contract and specs.
 
 Let me compute path geometry stats to understand event positions relative to path widths.
 
-## HUD, input, loop and lifecycle
-
-- transcript: `history/transcripts/283326c9-5b0d-5733-99e1-670739471e16/subagents/agent-a9d672b8da53c089c.jsonl` (100 entries)
-
-Let me look at the UI assets.
-
-## Canvas renderer for the game
-
-- transcript: `history/transcripts/283326c9-5b0d-5733-99e1-670739471e16/subagents/agent-a28c0afa73d95130a.jsonl` (138 entries)
-
-Now let me look at the approved screenshots.
-
 ## Route data for p06 and p07
 
 - transcript: `history/transcripts/283326c9-5b0d-5733-99e1-670739471e16/subagents/agent-a19519589fd9cc420.jsonl` (99 entries)
 
 Let me look at the approved screenshots and clean plates.
 
+## HUD, input, loop and lifecycle
+
+- transcript: `history/transcripts/283326c9-5b0d-5733-99e1-670739471e16/subagents/agent-a9d672b8da53c089c.jsonl` (110 entries)
+
+Let me view the front-pose atlases to pick start-screen frames.
+
 ## Android host project and APK build
 
-- transcript: `history/transcripts/283326c9-5b0d-5733-99e1-670739471e16/subagents/agent-ad9ef4b9d2e0acf1e.jsonl` (79 entries)
+- transcript: `history/transcripts/283326c9-5b0d-5733-99e1-670739471e16/subagents/agent-ad9ef4b9d2e0acf1e.jsonl` (113 entries)
 
-Now let me create the Gradle project files.
+Now the MainActivity.
+
+## Canvas renderer for the game
+
+- transcript: `history/transcripts/283326c9-5b0d-5733-99e1-670739471e16/subagents/agent-a28c0afa73d95130a.jsonl` (158 entries)
+
+Now let me look at the approved screenshots.
 
