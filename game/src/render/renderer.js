@@ -353,10 +353,9 @@
       const dir = sc.style === 'left' ? -1 : 1;
       const vOut = cam.view(R.fit, snap.cam, -dir * e * W * 0.32); vOut.segIdx = sc.fromIdx;
       const vIn = cam.view(R.fit, cIn, dir * (1 - e) * W * 0.32); vIn.segIdx = sc.toIdx;
-      // the sweeping tower column (outgoing plate's wipe strip, a little nearer than the plate)
-      const wipe = Pf.wipe || { x0: 380, x1: 470 };
-      const kc = Math.max(vOut.s, H / PH) * 1.12;
-      const cw = (wipe.x1 - wipe.x0) * kc;
+      // the sweeping tower column (outgoing plate's wipe strip, nearer than the plate, motion-blurred)
+      const col = columnGeom(Pf, vOut, W, H);
+      const cw = col.cw;
       const cx = dir > 0 ? u.lerp(W + cw * 0.5, -cw * 0.5, e) : u.lerp(-cw * 0.5, W + cw * 0.5, e);
       const outRect = dir > 0 ? { x: 0, y: 0, w: Math.max(0, cx), h: H } : { x: cx, y: 0, w: Math.max(0, W - cx), h: H };
       const inRect = dir > 0 ? { x: cx, y: 0, w: Math.max(0, W - cx), h: H } : { x: 0, y: 0, w: Math.max(0, cx), h: H };
@@ -364,7 +363,7 @@
       if (outRect.w > 0) { setScreen(); ctx.save(); ctx.beginPath(); ctx.rect(outRect.x, outRect.y, outRect.w, outRect.h); ctx.clip(); drawWorld(vOut, state, { purl: false, rect: outRect, cues: false }); ctx.restore(); }
       if (inRect.w > 0) { setScreen(); ctx.save(); ctx.beginPath(); ctx.rect(inRect.x, inRect.y, inRect.w, inRect.h); ctx.clip(); drawWorld(vIn, state, { purl: false, rect: inRect, cues: false }); ctx.restore(); }
       setScreen();
-      drawColumn(Pf, wipe, snap.cam, cx, cw, kc);
+      drawColumn(Pf, col, snap.cam, cx);
       // Purl keeps running at his (interpolated) screen anchor
       const pIn = WW.path.racerPoint(Pt.purl.path, inF, 0, 0);
       const a = snap.purl, b = { x: vIn.ox - dir * (1 - e) * W * 0.32 + pIn.x * vIn.s, y: vIn.oy + pIn.groundY * vIn.s, w: pIn.w * vIn.s };
@@ -376,11 +375,41 @@
       R.cam = { plate: cIn.plate, z: cIn.z, fx: cIn.fx, fy: cIn.fy };
     }
 
-    function drawColumn(Pf, wipe, c0, cx, cw, kc) {
+    /* Column geometry: the wipe strip at ~1.12× the outgoing view scale, at most 42 % of the screen wide. */
+    function columnGeom(Pf, vOut, W, H) {
+      const wipe = Pf.wipe || { x0: 380, x1: 470 };
+      const kc = Math.max(vOut.s, H / PH) * 1.12;
+      let sx = wipe.x0, sw = wipe.x1 - wipe.x0;
+      if (sw * kc > 0.42 * W) { const nw = 0.42 * W / kc; sx = (wipe.x0 + wipe.x1) / 2 - nw / 2; sw = nw; }
+      return { sx: sx, sw: sw, kc: kc, cw: sw * kc, wipe: wipe };
+    }
+
+    /* Cached half-resolution, blurred, shaded copy of a plate's wipe strip (built once per plate). */
+    function columnCanvas(Pf) {
+      const key = 'column:' + Pf.id;
+      if (R.cache[key]) return R.cache[key];
       const img = world.plateImg(R, Pf.id);
-      if (!u.imgReady(img) || cx < -cw || cx > R.fit.W + cw) return;
-      const H = R.fit.H;
+      if (!u.imgReady(img)) return null;
+      const wipe = Pf.wipe || { x0: 380, x1: 470 };
+      const k = 0.5, cwid = Math.ceil((wipe.x1 - wipe.x0) * k), chei = Math.ceil(PH * k);
+      const c = u.makeCanvas(cwid, chei), g = c.getContext('2d');
       const iw = img.naturalWidth || img.width, ih = img.naturalHeight || img.height;
+      if (u.canFilter()) g.filter = 'blur(2.5px)';
+      g.drawImage(img, wipe.x0 * iw / PW - 6, 0, (wipe.x1 - wipe.x0) * iw / PW + 12, ih, -6 * k, 0, cwid + 12 * k, chei);
+      g.filter = 'none';
+      const gr = g.createLinearGradient(0, 0, cwid, 0);
+      gr.addColorStop(0, 'rgba(34, 14, 5, 0.62)'); gr.addColorStop(0.3, 'rgba(34, 14, 5, 0.22)');
+      gr.addColorStop(0.7, 'rgba(34, 14, 5, 0.22)'); gr.addColorStop(1, 'rgba(34, 14, 5, 0.62)');
+      g.fillStyle = gr; g.fillRect(0, 0, cwid, chei);
+      R.cache[key] = { canvas: c, k: k, x0: wipe.x0 };
+      return R.cache[key];
+    }
+
+    function drawColumn(Pf, col, c0, cx) {
+      const cc = columnCanvas(Pf);
+      const cw = col.cw;
+      if (!cc || cx < -cw || cx > R.fit.W + cw) return;
+      const H = R.fit.H, kc = col.kc;
       const srcH = Math.min(PH, H / kc);
       const srcY = u.clamp(c0.fy - srcH / 2, 0, PH - srcH);
       const dh = srcH * kc, dy = (H - dh) / 2;
@@ -388,19 +417,14 @@
       // contact shadows on both sides
       for (let s = -1; s <= 1; s += 2) {
         const ex = s < 0 ? x0 : x0 + cw;
-        const gw = Math.max(18, cw * 0.22);
+        const gw = Math.max(18, cw * 0.25);
         const g = ctx.createLinearGradient(ex, 0, ex + s * gw, 0);
         g.addColorStop(0, 'rgba(30, 12, 4, 0.5)'); g.addColorStop(1, 'rgba(30, 12, 4, 0)');
         ctx.fillStyle = g;
         ctx.fillRect(s < 0 ? ex - gw : ex, 0, gw, H);
       }
-      ctx.drawImage(img, wipe.x0 * iw / PW, srcY * ih / PH, (wipe.x1 - wipe.x0) * iw / PW, srcH * ih / PH, x0, dy, cw, dh);
-      // near-camera shading so the column reads as foreground
-      const g2 = ctx.createLinearGradient(x0, 0, x0 + cw, 0);
-      g2.addColorStop(0, 'rgba(40, 16, 6, 0.42)'); g2.addColorStop(0.35, 'rgba(40, 16, 6, 0.08)');
-      g2.addColorStop(0.65, 'rgba(40, 16, 6, 0.08)'); g2.addColorStop(1, 'rgba(40, 16, 6, 0.42)');
-      ctx.fillStyle = g2;
-      ctx.fillRect(x0, dy, cw, dh);
+      const k = cc.k;
+      ctx.drawImage(cc.canvas, (col.sx - cc.x0) * k, srcY * k, col.sw * k, srcH * k, x0, dy, cw, dh);
     }
 
     /* ---------------- debug ---------------- */
