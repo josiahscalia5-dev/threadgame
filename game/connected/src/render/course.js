@@ -272,8 +272,8 @@
       return g;
     }
     // the tower beside the opening rug (right of the road, as in the opening screen) and the kit's two towers
-    const qs = S(main, 11, 7.2);
-    tower({ id: 'tower-spoolwake', position: qs.position, radius: 3.4, height: 52, depth: 40, facing: facingTo(qs.position, 6), tapestryY: 8.5 });
+    const qs = S(main, 24, 8.2);
+    tower({ id: 'tower-spoolwake', position: qs.position, radius: 4.4, height: 56, depth: 40, facing: facingTo(qs.position, 14), tapestryY: 9 });
     ['tower-a', 'tower-b'].forEach(function (id) {
       const l = landmark(id);
       if (l) tower({ id: id, position: l.position, radius: l.radius, height: 40, depth: 40, facing: facingTo(l.position, l.mainS) });
@@ -345,8 +345,9 @@
       return m;
     }
     const start = S(main, 2, 0).position;
-    card('world.city-opening', -24, 330, 160, 50, false, start);
-    card('world.city-tall', -8, 300, 95, 92, true, start);
+    card('world.city-opening', -24, 330, 170, 40, false, start);
+    card('world.city-tall', -8, 300, 95, 88, true, start);
+    card('world.city-bridges', -42, 300, 150, 6, true, start);
     const ring = [
       ['world.city-bridges', -95, false], ['world.city-tall', -72, false], ['world.city-gate', -50, false],
       ['world.city-bridges', -28, true], ['world.city-opening', -8, true], ['world.city-tall', 12, true],
@@ -356,10 +357,12 @@
     ];
     ring.forEach(function (c, i) {
       const tall = c[0] === 'world.city-tall';
-      card(c[0], c[1], 360 + (i % 3) * 25, tall ? 100 : 160, tall ? 58 : 48 + (i % 2) * 6, c[2]);
-      // a higher, nearer layer between them so towers and bridges rise to the top of the view, as in the screens
+      card(c[0], c[1], 360 + (i % 3) * 25, tall ? 100 : 160, tall ? 46 : 38 + (i % 2) * 6, c[2]);
+      // a higher layer between them so towers and bridges rise to the top of the view, and a low layer of bridges
+      // and waterfalls between the road and the city, as in the screens
       const up = ring[(i + 2) % ring.length];
-      card(up[0], c[1] + 11, 300, up[0] === 'world.city-tall' ? 80 : 125, 104, !up[2]);
+      card(up[0], c[1] + 11, 300, up[0] === 'world.city-tall' ? 80 : 125, 92, !up[2]);
+      card('world.city-bridges', c[1] + 5, 280, 140, 2, i % 2 === 0);
     });
     group.add(city);
 
