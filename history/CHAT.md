@@ -3597,3 +3597,7 @@ What are you doing? I want these to look like exactly my mobile app screens. You
 
 - _tool Bash_: Retune side-step speed and fix continuity limits
 
+
+
+- _tool Bash_: Sweep camera settings and measure Purl framing
+
