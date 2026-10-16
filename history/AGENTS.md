@@ -62,21 +62,21 @@ You've hit your session limit · resets 7pm (UTC)
 
 _(no message yet)_
 
-## Renderer: plates, camera, actors, effects
-
-- transcript: `history/transcripts/370de19d-9b32-5c31-ac39-d89d7478db67/subagents/agent-aee076b7546be423f.jsonl` (110 entries)
-
-Now I have a clear picture. Let me write the renderer modules, starting with shared utilities.
-
-## Route data for p06 and p07
-
-- transcript: `history/transcripts/370de19d-9b32-5c31-ac39-d89d7478db67/subagents/agent-aff5e4bcb58123cca.jsonl` (226 entries)
-
-_(no message yet)_
-
 ## UI: HUD, input, loop, lifecycle
 
 - transcript: `history/transcripts/370de19d-9b32-5c31-ac39-d89d7478db67/subagents/agent-ae9506e4d1065977a.jsonl` (166 entries)
 
 Now `main.js` — the loop, lifecycle, public and test APIs.
+
+## Renderer: plates, camera, actors, effects
+
+- transcript: `history/transcripts/370de19d-9b32-5c31-ac39-d89d7478db67/subagents/agent-aee076b7546be423f.jsonl` (114 entries)
+
+Now I have a clear picture. Let me write the renderer modules, starting with shared utilities.
+
+## Route data for p06 and p07
+
+- transcript: `history/transcripts/370de19d-9b32-5c31-ac39-d89d7478db67/subagents/agent-aff5e4bcb58123cca.jsonl` (234 entries)
+
+_(no message yet)_
 
