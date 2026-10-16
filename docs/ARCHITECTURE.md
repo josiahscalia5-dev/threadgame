@@ -380,3 +380,7 @@ rival. Do not claim device testing that did not happen; browser/Playwright check
    `require('/opt/node22/lib/node_modules/playwright')` (Chromium preinstalled; never run `playwright install`).
    Comparison viewport: 412 × 915 CSS px at DPR 2 — the plate contain-fits almost exactly (scale 0.489), so captures
    line up with the 841 × 1870 approved PNGs.
+9. **Opening lesson (pull stitch).** The p01 ribbon is opened by TOUCH → PULL → OPEN instead of a tap, and the race
+   clock plus both racers stand still while Purl learns it (`state.tutorial`). Contract, input, rendering and tests:
+   `docs/PULL-STITCH.md`. Only the stitch with `interaction: 'pull'` behaves this way; every later stitch is tapped as
+   in §7.3, and Loop stays autonomous outside the lesson.

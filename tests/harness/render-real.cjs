@@ -139,6 +139,21 @@ const MOMENTS = {
     __H.hold(['purl.coral', 'purl.teal']); __H.go('finish', 0.3);
     __H.until(function (s) { return s.transition && s.transition.kind === 'return' && s.transition.t > 0.3; }, 8);
   },
+  'p04-loop': function () {
+    __H.hold(['purl.coral', 'purl.teal', 'loop.coral', 'loop.teal']); __H.go('landing', 0.05);
+    __H.until(function (s) { return s.snagling.state === 'tangle'; }, 8);
+    __H.until(function (s) { return s.transition && s.transition.kind === 'loop' && s.transition.t > 0.45; }, 12);
+  },
+  'loop-task': function () {
+    __H.hold(['purl.coral', 'loop.coral']); __H.go('tassels', 0);
+    WishweaveGame.debug.race.debug.teleport('loop', 'tassels', 0.25);
+    __H.until(function (s) { return s.loop.action === 'task' && s.loopTasks['tassels:stitch'].t > 0.3; }, 8);
+  },
+  'loop-hop': function () {
+    __H.hold(['purl.coral', 'purl.teal', 'loop.coral', 'loop.teal']); __H.go('landing', 0.0);
+    WishweaveGame.debug.race.debug.teleport('loop', 'landing', 0.2);
+    __H.until(function (s) { return s.loop.airborne && s.loop.jumpH > 0.8; }, 6);
+  },
   'c-landing': function () {
     __H.hold(['purl.coral', 'purl.teal']); __H.go('c-landing', 0.45); __H.adv(0.05);
   }
