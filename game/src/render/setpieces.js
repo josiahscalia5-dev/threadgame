@@ -258,6 +258,10 @@
   }
 
   function entries(R, v, P, state, list) {
+    if (P.tassels) {
+      // tassels hang between Purl's route and the central tower: in front of Loop's bridge end, behind Purl
+      list.push({ y: P.tasselDepthY || 1000, box: { x0: 0, y0: 0, x1: 0, y1: 0 }, draw: function (c) { drawTassels(R, c, v, P, state); } });
+    }
     if (!P.snagling || !state.snagling) return;
     const s = state.snagling;
     if (s.seg && R.segIndexOf && R.segIndexOf(s.seg) !== v.segIdx) return;
@@ -814,7 +818,6 @@
     if (!P) return;
     if (P.previews) drawPreviews(R, ctx, v, P, state);
     if (P.cameo) drawCameo(R, ctx, v, P, state);
-    if (P.tassels) drawTassels(R, ctx, v, P, state);
     if (P.butterfly) drawEmbroidery(R, ctx, v, P, state);
     if (P.gate) drawGate(R, ctx, v, P, state);
   }

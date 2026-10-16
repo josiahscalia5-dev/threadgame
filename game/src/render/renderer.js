@@ -18,7 +18,7 @@
 
   function createRenderer(opts) {
     const u = WW.render.util, cam = WW.render.camera, world = WW.render.world, actors = WW.render.actors,
-      feats = WW.render.features, fx = WW.render.fx;
+      feats = WW.render.features, fx = WW.render.fx, sp = WW.render.setpieces || null;
     const canvas = opts.canvas;
     const R = {
       canvas: canvas, ctx: canvas.getContext('2d'), images: opts.images || {}, assets: opts.assets || WW.ASSETS,
@@ -30,6 +30,8 @@
     const ctx = R.ctx;
 
     /* ---------------- helpers ---------------- */
+    R.segIndexOf = function (x) { return segIndex(x); };
+    R.hudTarget = function (who) { return hudTarget(who); };
     const route = function () { return R.level.route || []; };
     function segIndex(x) {
       const rt = route();
@@ -567,6 +569,7 @@
       R.dt = dt;
       fx.update(R.fx, dt);
       if (WW.render.pull) WW.render.pull.update(R, state, dt);
+      if (sp) sp.update(R, dt, state);
       diffState(state);
       processEvents(state);
       R.tapTargets = [];
