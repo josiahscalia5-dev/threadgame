@@ -38,21 +38,21 @@ Let me compute path geometry stats to understand event positions relative to pat
 
 Let me look at the approved screenshots and clean plates.
 
+## Canvas renderer for the game
+
+- transcript: `history/transcripts/283326c9-5b0d-5733-99e1-670739471e16/subagents/agent-a28c0afa73d95130a.jsonl` (162 entries)
+
+Now let me look at the approved screenshots.
+
 ## HUD, input, loop and lifecycle
 
-- transcript: `history/transcripts/283326c9-5b0d-5733-99e1-670739471e16/subagents/agent-a9d672b8da53c089c.jsonl` (110 entries)
+- transcript: `history/transcripts/283326c9-5b0d-5733-99e1-670739471e16/subagents/agent-a9d672b8da53c089c.jsonl` (126 entries)
 
-Let me view the front-pose atlases to pick start-screen frames.
+Now the stylesheet.
 
 ## Android host project and APK build
 
-- transcript: `history/transcripts/283326c9-5b0d-5733-99e1-670739471e16/subagents/agent-ad9ef4b9d2e0acf1e.jsonl` (113 entries)
+- transcript: `history/transcripts/283326c9-5b0d-5733-99e1-670739471e16/subagents/agent-ad9ef4b9d2e0acf1e.jsonl` (142 entries)
 
-Now the MainActivity.
-
-## Canvas renderer for the game
-
-- transcript: `history/transcripts/283326c9-5b0d-5733-99e1-670739471e16/subagents/agent-a28c0afa73d95130a.jsonl` (158 entries)
-
-Now let me look at the approved screenshots.
+Maven Central artifacts aren't resolving. Let me check what the proxy is doing with repo.maven.apache.org.
 
