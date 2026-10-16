@@ -16,8 +16,8 @@
   const R = WW.render = WW.render || {};
 
   const CAM = {
-    behind: 4.9,         // m behind Purl along his route
-    height: 2.45,        // m above his ground point
+    behind: 5.6,         // m behind Purl along his route
+    height: 2.6,         // m above his ground point
     lookAhead: 6.5,      // m ahead along the route
     lookHeight: 0.55,    // m above the road at the look point
     jumpFollow: 0.3,     // fraction of a jump the camera follows

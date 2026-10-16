@@ -49,7 +49,7 @@
     for (let i = 0; i < rows.length - 1; i++) {
       for (let j = 0; j < cols - 1; j++) {
         const a = i * cols + j, b = a + 1, c = a + cols, d = c + 1;
-        idx.push(a, c, b, b, c, d);
+        idx.push(a, b, c, b, d, c);          // counter-clockwise seen from above: the carpet faces up
       }
     }
     const g = new THREE.BufferGeometry();
