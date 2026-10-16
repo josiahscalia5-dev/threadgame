@@ -2888,3 +2888,7 @@ I'll start by saving a recoverable checkpoint of the current game. Then I'll unp
 
 - _tool Bash_: Skim the kit's route-motion reference code
 
+
+
+- _tool Bash_: Wait for the inspection workflow to finish
+
