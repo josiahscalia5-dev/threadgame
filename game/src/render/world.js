@@ -81,7 +81,12 @@
     const P = R.plates[plateId];
     let info = null;
     if (P && P.ribbon && P.ribbon.band) info = { kind: 'ribbon', stitch: 'ribbon', band: U().buildBand(P.ribbon.band) };
-    else if (P && P.shortcut && P.shortcut.band) info = { kind: 'shortcut', stitch: 'shortcut', band: U().buildBand(P.shortcut.band) };
+    else if (P && P.shortcut && P.shortcut.band) {
+      // p02: the runner's near part is already woven (approved 02); the roll waits at `ghostFrom` and its width is
+      // `rollK` × the band width so that at the band end it matches the plate's own roll
+      info = { kind: 'shortcut', stitch: 'shortcut', band: U().buildBand(P.shortcut.band),
+        from: P.shortcut.ghostFrom || 0, rollK: P.shortcut.rollK || 1.1 };
+    }
     if (info) {
       const b = info.band.box;
       info.box = { x0: Math.max(0, Math.floor(b.x0 - 6)), y0: Math.max(0, Math.floor(b.y0 - 6)),
@@ -159,8 +164,9 @@
     const info = routeInfo(R, v.plate);
     if (!info) return;
     const st = state && state.stitches && state.stitches[info.stitch];
-    const s = openProgress(st);
-    if (s >= 1) return;
+    const s0 = openProgress(st);
+    if (s0 >= 1) return;
+    const s = info.from ? info.from + (1 - info.from) * s0 : s0;
     const u = U(), band = info.band;
     const g = ghostCanvas(R, v.plate, info);
     // ghost (not yet woven) part
@@ -200,7 +206,7 @@
      which ties the gold strand to the roll's fastening). */
   function rollGeomInfo(info, s) {
     const p = U().bandAt(info.band, s);
-    const w = 2 * p.hw * 1.1;
+    const w = 2 * p.hw * (info.rollK || 1.1);
     const h = w * (ROLL_SUB.h / ROLL_SUB.w) * (1 - 0.32 * s);
     return { x: p.x, y: p.y, w: w, h: h, ang: Math.atan2(p.ny, p.nx) };
   }
