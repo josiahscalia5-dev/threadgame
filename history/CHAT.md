@@ -3205,3 +3205,13 @@ continue and proceed where we're at. But like I said, can you validate to me whe
 
 - _tool Bash_: Rerun route tests after projection refinement
 
+
+
+- _tool Bash_: Make fork handoff wait for an exact projection and retest
+
+
+**Claude:** All 14 route tests pass, and the fork and rejoin handoffs now move the runner by under 2 mm. Next, the 26 gesture tests:
+
+
+- _tool Bash_: Port the kit's touch tests and run them
+
