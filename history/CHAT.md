@@ -3662,3 +3662,17 @@ What about the background? It looks nothing like my original. I liked my origina
 
 - _tool Bash_: Record the restore decision in the handoff note
 
+- _tool Bash_: Confirm GitHub has the restored game and handoff note
+
+
+**Claude:** Your original game is back, exactly as it was before, with your background and all your art. The picture I just sent shows it running next to your approved screen 01.
+
+- **Checked:** every game file matches your saved original exactly, and its own 58 tests all pass.
+- **On GitHub:** the branch `ccr-41c3f304-c2djh7` now has your original game. The APK in `dist/` is your original APK.
+- **Recorded:** the handoff note now says to keep your art and background and to show you side-by-sides before any change.
+
+Because this is the original, the blurred-pillar transition between scenes is back too, since that's how the original played. The connected-road version is stored in history at commit `b36b7aa`, so nothing has to be redone if you ever want it.
+
+I won't change anything else until you tell me what you want next. If you'd still like that transition fixed, I can do it only on your existing scenes and art, without touching the backgrounds. I'll show you a before-and-after for your approval first.
+
+
