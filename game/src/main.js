@@ -89,6 +89,43 @@
     }
   });
 
+  /* ---------- optional on-screen controls (Pause menu → ON-SCREEN BUTTONS; off by default) ---------- */
+
+  const ctl = {
+    box: document.getElementById('controls'), toggle: document.getElementById('btn-controls'),
+    left: document.getElementById('ctl-left'), right: document.getElementById('ctl-right'),
+    jump: document.getElementById('ctl-jump'), run: document.getElementById('ctl-run')
+  };
+  let controlsOn = false;
+  try { controlsOn = window.localStorage.getItem('ww.controls') === '1'; } catch (e) { /* storage unavailable */ }
+  function setControls(on) {
+    controlsOn = !!on;
+    try { window.localStorage.setItem('ww.controls', controlsOn ? '1' : '0'); } catch (e) { /* storage unavailable */ }
+    if (ctl.toggle) {
+      ctl.toggle.textContent = 'ON-SCREEN BUTTONS: ' + (controlsOn ? 'ON' : 'OFF');
+      ctl.toggle.setAttribute('aria-pressed', controlsOn ? 'true' : 'false');
+    }
+    syncUI();
+  }
+  if (ctl.toggle) ctl.toggle.addEventListener('click', function () { setControls(!controlsOn); });
+  function ctlPress(fn) { return function (e) { e.preventDefault(); if (canPlay()) fn(); syncUI(); }; }
+  if (ctl.left) ctl.left.addEventListener('click', ctlPress(function () { sendSwipe('left'); }));
+  if (ctl.right) ctl.right.addEventListener('click', ctlPress(function () { sendSwipe('right'); }));
+  if (ctl.jump) ctl.jump.addEventListener('click', ctlPress(function () { sendSwipe('up'); }));
+  if (ctl.run) ctl.run.addEventListener('click', ctlPress(function () { sendBrake(); }));
+  function updateControls(s) {
+    if (!ctl.box) return;
+    const show = controlsOn && !!s && s.mode === 'running' && !s.paused && !overlays.modalOpen();
+    if (ctl.box.hidden === show) ctl.box.hidden = !show;
+    if (show && ctl.run) {
+      const label = s.purl && s.purl.braked ? 'RUN' : 'STOP';
+      if (ctl.run.textContent !== label) {
+        ctl.run.textContent = label;
+        ctl.run.setAttribute('aria-label', label === 'RUN' ? 'Run' : 'Stop Purl');
+      }
+    }
+  }
+
   /* ---------- helpers ---------- */
 
   function state() { return race ? race.state : null; }
@@ -152,6 +189,7 @@
     if (!s) return;
     hud.update(s);
     overlays.update(s, { finishedFor: finishedFor });
+    updateControls(s);
   }
 
   function flushReady() {

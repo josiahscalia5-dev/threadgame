@@ -3767,3 +3767,9 @@ First I'll check whether the files you just sent are the same ones I already hav
 
 - _tool Bash_: Read pause menu markup, button styles and wiring
 
+
+**Claude:** I'll add the option, the four buttons and the help line. The buttons get your cream-and-gold look and 52 px touch targets, and sit above the Saved Rewards strip:
+
+
+- _tool Bash_: Add optional on-screen buttons and pause menu toggle
+

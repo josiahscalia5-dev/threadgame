@@ -523,3 +523,25 @@ button { font: inherit; color: inherit; -webkit-tap-highlight-color: transparent
 @media (prefers-reduced-motion: reduce) {
   *, *::before, *::after { animation-duration: .01ms !important; animation-iteration-count: 1 !important; transition: none !important; }
 }
+
+/* ---------- Optional on-screen controls (off by default; Pause menu → ON-SCREEN BUTTONS) ---------- */
+.controls {
+  position: absolute; z-index: 25; left: 0; right: 0;
+  bottom: calc(var(--rw-bottom) + var(--rw-h) + max(6px, calc(var(--k) * 14px)));
+  display: flex; justify-content: space-between; align-items: flex-end;
+  padding: 0 max(6px, calc(var(--k) * 26px));
+  pointer-events: none;
+}
+.controls[hidden] { display: none; }
+.ctl-group { display: flex; gap: 8px; pointer-events: auto; }
+.ctl {
+  width: 52px; height: 52px; padding: 0;
+  border-radius: 50%; border: 3px solid #e2a93b;
+  background: radial-gradient(circle at 40% 35%, #fffaf0, #f2dcb2 70%, #e8c98f);
+  color: var(--brown); font: 900 24px/1 inherit; letter-spacing: 0;
+  box-shadow: 0 3px 6px rgba(60, 25, 10, .35), inset 0 -2px 0 rgba(160, 100, 30, .35);
+  opacity: .93; touch-action: manipulation;
+}
+.ctl-wide { width: auto; min-width: 64px; padding: 0 12px; border-radius: 26px; font-size: 15px; }
+.ctl:active { transform: scale(.94); }
+.ctl:focus-visible { outline: 3px solid #ffd45c; outline-offset: 2px; }

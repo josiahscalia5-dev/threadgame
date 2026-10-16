@@ -47,6 +47,18 @@
 
     <button id="btn-pause" class="btn-pause" type="button" aria-label="Pause" hidden></button>
 
+    <!-- Optional on-screen controls (Pause menu → ON-SCREEN BUTTONS). Off by default, so the screen stays as approved. -->
+    <div id="controls" class="controls" data-ui hidden>
+      <div class="ctl-group">
+        <button id="ctl-left" class="ctl" type="button" aria-label="Move left">&#8592;</button>
+        <button id="ctl-right" class="ctl" type="button" aria-label="Move right">&#8594;</button>
+      </div>
+      <div class="ctl-group">
+        <button id="ctl-run" class="ctl ctl-wide" type="button" aria-label="Stop Purl">STOP</button>
+        <button id="ctl-jump" class="ctl" type="button" aria-label="Jump">&#8593;</button>
+      </div>
+    </div>
+
     <div id="countdown" class="countdown" aria-live="assertive" hidden><span></span></div>
 
     <button id="btn-play-again" class="btn-teal btn-play-again" type="button" hidden>
@@ -108,6 +120,7 @@
           <button id="btn-resume" class="btn-teal btn-wide" type="button"><span class="face">RESUME</span></button>
           <button id="btn-restart" class="btn-cream btn-wide" type="button">RESTART</button>
           <button id="btn-help" class="btn-cream btn-wide" type="button">HOW TO PLAY</button>
+          <button id="btn-controls" class="btn-cream btn-wide" type="button" aria-pressed="false">ON-SCREEN BUTTONS: OFF</button>
         </div>
         <div class="pause-help" id="pause-help" hidden>
           <h2 class="pill title-pill">HOW TO PLAY</h2>
@@ -116,9 +129,10 @@
             <li><span class="ico ico-tap" aria-hidden="true"></span><span><b>Tap</b> a glowing stitch to unfurl ribbons, open carpets, lift tassels and wake the butterfly</span></li>
             <li><span class="ico ico-lr" aria-hidden="true">←&#8202;→</span><span><b>Swipe ← / →</b> to change lane and pick up dropped threads</span></li>
             <li><span class="ico ico-up" aria-hidden="true">↑</span><span><b>Swipe ↑</b> to jump — Snagling can tangle you</span></li>
+            <li><span class="ico ico-tap" aria-hidden="true"></span><span><b>Double-tap</b> to stop Purl, double-tap again to run. Loop keeps racing!</span></li>
             <li><span class="ico ico-goal" aria-hidden="true"><svg viewBox="0 0 40 40"><use href="#ico-flower"/></svg></span><span>Hold all <b>3 threads</b> at the flower gate. <b>Loop</b> is a computer-controlled rival.</span></li>
           </ul>
-          <p class="fine">Keyboard: ← → ↑ move · Space/Enter taps the stitch · P/Esc pause</p>
+          <p class="fine">Keyboard: ← → ↑ move · Space/Enter taps the stitch · B stop/run · P/Esc pause. On-screen buttons: Pause menu.</p>
           <button id="btn-help-back" class="btn-teal btn-wide" type="button"><span class="face">BACK</span></button>
         </div>
       </div>
