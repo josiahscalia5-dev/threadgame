@@ -124,7 +124,6 @@
     }
     const MR = THREE.MirroredRepeatWrapping;
     const ropeMat = basic(artTex('world.rope-gold', MR, MR));
-    ropeMat.map.repeat.set(2, 1);
     const trunkMat = basic(artTex('world.tower-trunk', MR, MR));
     const skirtMat = basic(M.carpet.map, { color: 0xa98a8e, side: THREE.DoubleSide });
     const tapestryMat = basic(artTex('world.tapestry'), { side: THREE.DoubleSide, transparent: false });

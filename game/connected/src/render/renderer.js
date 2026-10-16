@@ -31,16 +31,16 @@
     const gl = new THREE.WebGLRenderer({ canvas: canvas, antialias: true, powerPreference: 'high-performance' });
     gl.outputEncoding = THREE.sRGBEncoding;
     gl.toneMapping = THREE.NoToneMapping;          // the approved art keeps its exact colours
-    gl.setClearColor(0xffd9c2, 1);
+    gl.setClearColor(0xeae6f4, 1);
 
     const scene = new THREE.Scene();
-    const FOG = 0xf9d6c4;
-    scene.fog = new THREE.Fog(FOG, 55, 320);
+    const FOG = 0xeae6f4;               // the pale lavender-white haze of the painted sky near the horizon
+    scene.fog = new THREE.Fog(FOG, 90, 420);
 
     // sky: blue zenith → warm peach horizon, soft sun glow (no fog)
     const skyMat = new THREE.ShaderMaterial({
       side: THREE.BackSide, depthWrite: false, fog: false,
-      uniforms: { top: { value: new THREE.Color(0x5fa8ec) }, mid: { value: new THREE.Color(0xbfdcf7) },
+      uniforms: { top: { value: new THREE.Color(0x5b9be6) }, mid: { value: new THREE.Color(0x96ace1) },
                   horizon: { value: new THREE.Color(FOG) }, sunDir: { value: new THREE.Vector3(-0.35, 0.32, 0.88).normalize() } },
       vertexShader: 'varying vec3 vDir; void main(){ vDir = normalize(position); gl_Position = projectionMatrix * modelViewMatrix * vec4(position,1.0); }',
       fragmentShader: 'uniform vec3 top; uniform vec3 mid; uniform vec3 horizon; uniform vec3 sunDir; varying vec3 vDir;' +
@@ -62,7 +62,7 @@
     const art = R.sprites.atlas(THREE, opts.images || {}, opts.assets || WW.ASSETS);
     const M = R.materials.create(THREE, { anisotropy: Math.min(8, gl.capabilities.getMaxAnisotropy()), images: opts.images });
     const course = WW.route.createCourse(level.course || WW.ROUTE, { runout: T.finishRunout || 0 });
-    const world = R.course.build(THREE, course, M, { debug: debugGeom });
+    const world = R.course.build(THREE, course, M, { debug: debugGeom, art: art, images: opts.images || {} });
     scene.add(world.group, world.debugGroup);
 
     const rigs = { purl: R.racers.create(THREE, art, 'purl', M), loop: R.racers.create(THREE, art, 'loop', M) };
