@@ -4161,3 +4161,10 @@ I'll put those three screens in front of you so we're looking at the same thing:
 
 - _tool Bash_: Find course build call and sky settings in renderer
 
+- _tool Bash_: Wire art into renderer, set sky, write preview capture
+
+
+- _tool Bash_: Capture the connected preview opening vs target
+
+- _tool Read_: /tmp/claude-0/-home-user-threadgame/3689052e-f35d-5a30-b62d-bdfb14b60d40/scratchpad/conn/cmp1.jpg
+
