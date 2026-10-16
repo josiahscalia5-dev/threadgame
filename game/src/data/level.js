@@ -58,7 +58,7 @@
 
   /* Loop's lengths: his visible routes are the neighbouring teal ribbons/bypasses of each plate. */
   const loopLengths = {
-    'ribbon': 131, 'c-ribbon': 19, 'shortcut': 49, 'c-shortcut': 19, 'tassels': 69, 'c-tassels': 19,
+    'ribbon': 121, 'c-ribbon': 19, 'shortcut': 49, 'c-shortcut': 19, 'tassels': 69, 'c-tassels': 19,
     'landing': 38, 'c-landing': 19, 'tapestry': 45, 'c-tapestry': 19, 'finish': 30
   };
 
