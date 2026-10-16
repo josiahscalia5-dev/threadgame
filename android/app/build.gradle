@@ -1,0 +1,71 @@
+plugins { id 'com.android.application' }
+
+android {
+    namespace 'com.wishweave.wonders'
+    compileSdk 36
+
+    defaultConfig {
+        applicationId 'com.wishweave.wonders.level1'
+        minSdk 26
+        targetSdk 36
+        versionCode 1
+        versionName '1.0.0-level1'
+    }
+
+    compileOptions {
+        sourceCompatibility JavaVersion.VERSION_17
+        targetCompatibility JavaVersion.VERSION_17
+    }
+
+    // The game is copied in by bundleGame (below); there is no hand-maintained copy in src/main/assets.
+    sourceSets {
+        main { assets.srcDir layout.buildDirectory.dir('generated/gameAssets') }
+    }
+
+    // WebP/PNG/audio are already compressed; storing them uncompressed avoids inflate work at load time.
+    androidResources {
+        noCompress += ['webp', 'png', 'jpg', 'jpeg', 'mp3', 'ogg', 'm4a', 'woff2']
+    }
+
+    buildTypes {
+        release {
+            // No release signing config is defined on purpose: release builds need the owner's own keystore.
+            minifyEnabled false
+        }
+    }
+}
+
+dependencies {
+    implementation 'androidx.webkit:webkit:1.14.0'
+}
+
+// Copies the SAME game/ folder the browser build uses (../game relative to android/) into generated
+// assets under game/, served at https://appassets.androidplatform.net/assets/game/index.html.
+// Edit game/, never the generated copy. Sync also deletes files that were removed from game/.
+def gameDir = rootProject.file('../game')
+def allowIncompleteGame = (findProperty('wishweave.allowIncompleteGame') ?: 'false').toString() == 'true'
+
+def bundleGame = tasks.register('bundleGame', Sync) {
+    group = 'wishweave'
+    description = 'Copies ../game into generated Android assets under game/.'
+    into layout.buildDirectory.dir('generated/gameAssets')
+    from(gameDir) {
+        into 'game'
+        // Dev/test-only and editor files are not shipped.
+        exclude '**/.DS_Store', '**/Thumbs.db', '**/desktop.ini', '**/*.md', '**/*.map',
+                '**/node_modules/**', '**/__pycache__/**', '**/tests/**',
+                '**/*.test.js', '**/*.spec.js', '**/*.orig', '**/*.swp', '**/*~'
+    }
+    doFirst {
+        if (!new File(gameDir, 'index.html').isFile()) {
+            def message = "Missing ${gameDir}/index.html: the game entry page is not there yet."
+            if (allowIncompleteGame) {
+                logger.warn("WARNING: ${message} Building anyway (-Pwishweave.allowIncompleteGame=true).")
+            } else {
+                throw new GradleException(message +
+                    ' Build after game/ is complete, or pass -Pwishweave.allowIncompleteGame=true for a host-only test build.')
+            }
+        }
+    }
+}
+tasks.named('preBuild').configure { dependsOn bundleGame }

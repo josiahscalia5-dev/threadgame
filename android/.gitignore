@@ -1,0 +1,14 @@
+# Build outputs and machine-specific files. The Gradle wrapper (gradlew, gradlew.bat,
+# gradle/wrapper/gradle-wrapper.jar and .properties) IS committed.
+.gradle/
+.kotlin/
+build/
+**/build/
+.cxx/
+.externalNativeBuild/
+captures/
+local.properties
+.idea/
+*.iml
+*.keystore
+*.jks
