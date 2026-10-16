@@ -56,27 +56,27 @@ You've hit your session limit · resets 7pm (UTC)
 
 You've hit your session limit · resets 7pm (UTC)
 
-## UI: HUD, input, loop, lifecycle
-
-- transcript: `history/transcripts/370de19d-9b32-5c31-ac39-d89d7478db67/subagents/agent-ae9506e4d1065977a.jsonl` (190 entries)
-
-Now I'll rewrite `style.css` with the measured approved geometry (design px × `--k`), keeping the previous agent's overlay/card styling.
-
-## Renderer: plates, camera, actors, effects
-
-- transcript: `history/transcripts/370de19d-9b32-5c31-ac39-d89d7478db67/subagents/agent-aee076b7546be423f.jsonl` (138 entries)
-
-Now the harness: a deterministic mini-sim producing §7.1-shaped state, plus moment shortcuts.
-
 ## Simulation: race rules and Loop AI
 
 - transcript: `history/transcripts/370de19d-9b32-5c31-ac39-d89d7478db67/subagents/agent-ae84357f8296ab86f.jsonl` (144 entries)
 
 _(no message yet)_
 
+## Renderer: plates, camera, actors, effects
+
+- transcript: `history/transcripts/370de19d-9b32-5c31-ac39-d89d7478db67/subagents/agent-aee076b7546be423f.jsonl` (141 entries)
+
+Now the harness: a deterministic mini-sim producing §7.1-shaped state, plus moment shortcuts.
+
 ## Route data for p06 and p07
 
-- transcript: `history/transcripts/370de19d-9b32-5c31-ac39-d89d7478db67/subagents/agent-aff5e4bcb58123cca.jsonl` (302 entries)
+- transcript: `history/transcripts/370de19d-9b32-5c31-ac39-d89d7478db67/subagents/agent-aff5e4bcb58123cca.jsonl` (303 entries)
 
 _(no message yet)_
+
+## UI: HUD, input, loop, lifecycle
+
+- transcript: `history/transcripts/370de19d-9b32-5c31-ac39-d89d7478db67/subagents/agent-ae9506e4d1065977a.jsonl` (195 entries)
+
+Now update `index.html` (star icon for the counts, number spacing). The RENDER-SCRIPTS block stays untouched.
 
