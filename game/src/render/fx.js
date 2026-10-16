@@ -36,7 +36,7 @@
     for (let i = 0; i < 6; i++) {
       const dir = i % 2 ? 1 : -1;
       F.parts.push({ kind: 'dust', plate: plate, x: x + dir * rnd(F, 0, w * 0.2), y: y, vx: dir * rnd(F, 0.2, 0.6) * w, vy: -rnd(F, 0.05, 0.2) * w,
-        g: 0, drag: 3, life: 0, max: rnd(F, 0.35, 0.55), size: w * rnd(F, 0.08, 0.14), rot: 0, vr: 0, color: 'rgba(255,236,214,' });
+        g: 0, drag: 3, life: 0, max: rnd(F, 0.3, 0.5), size: w * rnd(F, 0.045, 0.08), rot: 0, vr: 0, color: 'rgba(250,226,200,' });
     }
   }
 
@@ -84,7 +84,7 @@
         ctx.restore();
       } else if (p.kind === 'dust') {
         ctx.globalAlpha = 1;
-        ctx.fillStyle = p.color + (0.45 * (1 - k)).toFixed(3) + ')';
+        ctx.fillStyle = p.color + (0.3 * (1 - k)).toFixed(3) + ')';
         ctx.beginPath(); ctx.arc(p.x, p.y, p.size * (1 + k), 0, Math.PI * 2); ctx.fill();
       }
     }

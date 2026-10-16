@@ -26,7 +26,17 @@ const path = require('path');
         const t0 = performance.now(), f0 = window.H.frames;
         setTimeout(() => res({ fps: (window.H.frames - f0) / ((performance.now() - t0) / 1000) }), 3000);
       }));
-      console.log('perf', JSON.stringify(r));
+      const ms = await page.evaluate(() => {
+        const r = window.H.renderer, st = window.H.state, out = {};
+        for (const m of ['stop', 'run', 'pickup']) {
+          window.H.goto(window.H.moments[m], 0.2);
+          const t0 = performance.now();
+          for (let i = 0; i < 120; i++) window.H.renderer.render(window.H.state, 1 / 60);
+          out[m] = +((performance.now() - t0) / 120).toFixed(2);
+        }
+        return out;
+      });
+      console.log('perf', JSON.stringify(r), 'render ms/frame', JSON.stringify(ms));
       continue;
     }
     const file = path.join(out, (isT ? m.replace(/[=.]/g, '_') : m) + '.png');
