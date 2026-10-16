@@ -70,13 +70,13 @@ Now a side-by-side comparison helper, then the first capture.
 
 ## Simulation: race rules and Loop AI
 
-- transcript: `history/transcripts/370de19d-9b32-5c31-ac39-d89d7478db67/subagents/agent-ae84357f8296ab86f.jsonl` (278 entries)
+- transcript: `history/transcripts/370de19d-9b32-5c31-ac39-d89d7478db67/subagents/agent-ae84357f8296ab86f.jsonl` (280 entries)
 
 Now the acceptance and pacing suites.
 
 ## UI: HUD, input, loop, lifecycle
 
-- transcript: `history/transcripts/370de19d-9b32-5c31-ac39-d89d7478db67/subagents/agent-ae9506e4d1065977a.jsonl` (443 entries)
+- transcript: `history/transcripts/370de19d-9b32-5c31-ac39-d89d7478db67/subagents/agent-ae9506e4d1065977a.jsonl` (451 entries)
 
-Loader retry, `file://` boot (real clock runs) and the missing-module error path all work. Re-capture tablet and landscape start overlays to confirm the zoom and icon fixes.
+Tablet card now scales; landscape fits and the arrow icon no longer wraps. Quick check that the longest objective strings fit at 360 px width.
 
