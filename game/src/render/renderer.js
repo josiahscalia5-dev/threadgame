@@ -11,8 +11,8 @@
      r.reset(state)               a new race: camera snaps behind Purl, effects cleared
      r.setDebug(on)               toggles the ground-contact / walkable-geometry view (also ?debug=geom)
 
-   Scene: sky dome + warm fog, hemisphere + sun lighting, the course (render/course.js), Purl and Loop rigs
-   (render/racers.js) with contact shadows, spools and effects (render/props.js), and the chase camera
+   Scene: sky dome + warm fog, hemisphere + sun lighting, the course (render/course.js), Purl and Loop drawn with the
+   approved character art (render/racers.js, render/sprites.js) with contact shadows, spools and effects (render/props.js), and the chase camera
    (render/chase.js). A screen-space layer carries pickup fly-ups to the HUD counters.
    WebGL context loss (Android backgrounding, GPU resets) is handled: drawing pauses and resumes on restore. */
 (function (WW) {
@@ -30,8 +30,7 @@
 
     const gl = new THREE.WebGLRenderer({ canvas: canvas, antialias: true, powerPreference: 'high-performance' });
     gl.outputEncoding = THREE.sRGBEncoding;
-    gl.toneMapping = THREE.ACESFilmicToneMapping;
-    gl.toneMappingExposure = 1.08;
+    gl.toneMapping = THREE.NoToneMapping;          // the approved art keeps its exact colours
     gl.setClearColor(0xffd9c2, 1);
 
     const scene = new THREE.Scene();
@@ -60,14 +59,15 @@
     scene.add(sun);
     scene.add(new THREE.AmbientLight(0xffe8e0, 0.12));
 
-    const M = R.materials.create(THREE, { anisotropy: Math.min(8, gl.capabilities.getMaxAnisotropy()) });
+    const art = R.sprites.atlas(THREE, opts.images || {}, opts.assets || WW.ASSETS);
+    const M = R.materials.create(THREE, { anisotropy: Math.min(8, gl.capabilities.getMaxAnisotropy()), images: opts.images });
     const course = WW.route.createCourse(level.course || WW.ROUTE, { runout: T.finishRunout || 0 });
     const world = R.course.build(THREE, course, M, { debug: debugGeom });
     scene.add(world.group, world.debugGroup);
 
-    const rigs = { purl: R.racers.create(THREE, M, 'purl'), loop: R.racers.create(THREE, M, 'loop') };
+    const rigs = { purl: R.racers.create(THREE, art, 'purl', M), loop: R.racers.create(THREE, art, 'loop', M) };
     ['purl', 'loop'].forEach(function (k) { scene.add(rigs[k].group, rigs[k].shadow); });
-    const props = R.props.create(THREE, M, course, level);
+    const props = R.props.create(THREE, M, course, level, art);
     scene.add(props.group);
     const cam = R.chase.create(THREE, course, world.landmarks);
 
@@ -167,10 +167,11 @@
         lastState = state;
         const dt = state.paused ? 0 : Math.max(0, Math.min(dtReal || 0, 0.25));
         t += dt;
-        ['purl', 'loop'].forEach(function (k) { rigs[k].update(state[k], dt, t, { runSpeed: T.purlSpeed || 5.5 }); });
-        props.update(state, dt, t);
-        world.update(t);
         if (snapNext) { cam.snap(state.purl); snapNext = false; } else cam.update(state.purl, dt);
+        const camPos = cam.camera.position;
+        ['purl', 'loop'].forEach(function (k) { rigs[k].update(state[k], dt, t, { camPos: camPos }); });
+        props.update(state, dt, t, camPos);
+        world.update(t, camPos);
         sky.position.copy(cam.camera.position);
         if (debugGeom) {
           ['purl', 'loop'].forEach(function (k) {
@@ -206,7 +207,7 @@
       setDebug: function (on) { debugGeom = !!on; world.debugGroup.visible = debugGeom; debugMarks.visible = debugGeom; },
       info: function () { return { calls: gl.info.render.calls, triangles: gl.info.render.triangles, geometries: gl.info.memory.geometries, textures: gl.info.memory.textures }; },
       dispose: function () {
-        world.dispose(); props.dispose(); rigs.purl.dispose(); rigs.loop.dispose(); M.dispose(); gl.dispose();
+        world.dispose(); props.dispose(); rigs.purl.dispose(); rigs.loop.dispose(); M.dispose(); art.dispose(); gl.dispose();
       }
     };
     return api;
