@@ -94,7 +94,7 @@ Now the sim modules (inventory, stitches, snagling, loop-ai).
 
 ## inspect:kitcode
 
-- transcript: `history/transcripts/131a49c9-f445-5dda-9dd9-fdcc5c2be76a/subagents/workflows/wf_ab6d9c83-f3e/agent-ac0f3d6b802e022c2.jsonl` (120 entries)
+- transcript: `history/transcripts/131a49c9-f445-5dda-9dd9-fdcc5c2be76a/subagents/workflows/wf_ab6d9c83-f3e/agent-ac0f3d6b802e022c2.jsonl` (135 entries)
 
 Now the route.json structure.
 
