@@ -1,0 +1,43 @@
+{
+  "date": "2026-10-16",
+  "status": "Source and geometry checks pass; playable integration not tested",
+  "unit_tests": {
+    "command": "node --test code/touch-input.test.mjs code/route-motion.test.mjs",
+    "passed": 34,
+    "failed": 0,
+    "scope": "Gesture logic, adapter lifecycle, route sampling, frame-rate-independent braking, independent racer movement and camera target math."
+  },
+  "art": {
+    "verified_files": 47,
+    "sha256_matches": true,
+    "decoded_rgba_matches_sources": true
+  },
+  "references": {
+    "verified_files": 10,
+    "sha256_matches": true,
+    "conversion": "Full-resolution high-quality lossy WebP for compact delivery."
+  },
+  "geometry": {
+    "generated_checks_passed": 22,
+    "glb_header_and_chunks": "valid",
+    "nodes": 39,
+    "meshes": 31,
+    "independent_agent_mesh_review": "passed",
+    "scope": "Deterministic spatial and mesh checks; not a physics, gameplay, renderer, or production-art acceptance test."
+  },
+  "viewer": {
+    "status": "Static local-file checks passed; browser rendering not tested",
+    "local_references_checked": 124,
+    "images": 51,
+    "missing_local_references": 0,
+    "browser_limit": "No browser executable available in this environment. Browser/device layout and Android fit remain unverified."
+  },
+  "not_verified": [
+    "Integration into the current Wishweave game",
+    "Production animation, collision and visual fidelity",
+    "Android APK build, safe insets or device performance",
+    "Live input on a physical phone",
+    "Real-money rewards service"
+  ],
+  "acceptance": "docs/ACCEPTANCE.txt"
+}

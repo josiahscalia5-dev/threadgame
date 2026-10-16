@@ -1,0 +1,711 @@
+{
+  "version": 1,
+  "type": "reused-2d-art",
+  "assets": [
+    {
+      "file": "art/characters/purl/duck.webp",
+      "source": "Wishweave-Level1-Complete-Visual-Kit/assets/individual/purl-rear/duck.png",
+      "source_sha256": "b2d4df7a5ca4892712b680c3b97304abba0d81c11bb85454e11866a99d34a296",
+      "sha256": "724fe4913721484fd2eaedd83c97ce347f41c3f68ec1d8125e2f3ddc95d89079",
+      "width": 291,
+      "height": 279,
+      "alpha": [
+        0,
+        255
+      ],
+      "decoded_rgba_identical": true,
+      "role": "Existing rear-view 2D pose, not a rigged 3D model",
+      "anchor_status": "Uncalibrated production ground/hand anchors; do not infer bottom-center guarantees foot contact."
+    },
+    {
+      "file": "art/characters/purl/idle.webp",
+      "source": "Wishweave-Level1-Complete-Visual-Kit/assets/individual/purl-rear/idle.png",
+      "source_sha256": "8ecc26da7ac0e8772fe4870eab6b497c5afdc916b17319f6263a3e4849b57d2c",
+      "sha256": "edc80895af6a0f65f2b839d496a0cad060d68f21e5c79d212ff61649b1bed54c",
+      "width": 337,
+      "height": 335,
+      "alpha": [
+        0,
+        255
+      ],
+      "decoded_rgba_identical": true,
+      "role": "Existing rear-view 2D pose, not a rigged 3D model",
+      "anchor_status": "Uncalibrated production ground/hand anchors; do not infer bottom-center guarantees foot contact."
+    },
+    {
+      "file": "art/characters/purl/jump.webp",
+      "source": "Wishweave-Level1-Complete-Visual-Kit/assets/individual/purl-rear/jump.png",
+      "source_sha256": "11a1ae7103e8601e108a96c25abe6800f5eb8f39fa6b60e7d3ec84ad56500efa",
+      "sha256": "7450587ee936257730badb88761bd757e4e37e150bd670c4c1c4b1a735182a3b",
+      "width": 370,
+      "height": 338,
+      "alpha": [
+        0,
+        255
+      ],
+      "decoded_rgba_identical": true,
+      "role": "Existing rear-view 2D pose, not a rigged 3D model",
+      "anchor_status": "Uncalibrated production ground/hand anchors; do not infer bottom-center guarantees foot contact."
+    },
+    {
+      "file": "art/characters/purl/run-left.webp",
+      "source": "Wishweave-Level1-Complete-Visual-Kit/assets/individual/purl-rear/run-left.png",
+      "source_sha256": "be35c0cebd9a9821b7c091966eb5737036ad812390a734d803b70642b14d298b",
+      "sha256": "aa907086a94e9b7c1b46dc2f835a88206c483cf887b96149948d29932633fdff",
+      "width": 332,
+      "height": 335,
+      "alpha": [
+        0,
+        255
+      ],
+      "decoded_rgba_identical": true,
+      "role": "Existing rear-view 2D pose, not a rigged 3D model",
+      "anchor_status": "Uncalibrated production ground/hand anchors; do not infer bottom-center guarantees foot contact."
+    },
+    {
+      "file": "art/characters/purl/run-pass-a.webp",
+      "source": "Wishweave-Level1-Complete-Visual-Kit/assets/individual/purl-rear/run-pass-a.png",
+      "source_sha256": "d40ce1f9299f3aa8f2acd18682ccd2c2d1f9ef1f98e2984695d57c289b150b98",
+      "sha256": "64fa36633f9013d96683ba773e8d3c62d2355bd615a208defa9675d37970456a",
+      "width": 323,
+      "height": 348,
+      "alpha": [
+        0,
+        255
+      ],
+      "decoded_rgba_identical": true,
+      "role": "Existing rear-view 2D pose, not a rigged 3D model",
+      "anchor_status": "Uncalibrated production ground/hand anchors; do not infer bottom-center guarantees foot contact."
+    },
+    {
+      "file": "art/characters/purl/run-pass-b.webp",
+      "source": "Wishweave-Level1-Complete-Visual-Kit/assets/individual/purl-rear/run-pass-b.png",
+      "source_sha256": "d34510a12885fd25d6f79b2627e49162a9118cf2aeba0173d8f3b88ca3c1ae64",
+      "sha256": "a5c1439059104447f9421170f09e55b14bf490eb3edd1124ddd3c265674bd9b2",
+      "width": 332,
+      "height": 343,
+      "alpha": [
+        0,
+        255
+      ],
+      "decoded_rgba_identical": true,
+      "role": "Existing rear-view 2D pose, not a rigged 3D model",
+      "anchor_status": "Uncalibrated production ground/hand anchors; do not infer bottom-center guarantees foot contact."
+    },
+    {
+      "file": "art/characters/purl/run-right.webp",
+      "source": "Wishweave-Level1-Complete-Visual-Kit/assets/individual/purl-rear/run-right.png",
+      "source_sha256": "99384a0f1c88e4bde2c361125de27aff60c760f5303a4e47b209bc8018eba467",
+      "sha256": "05b45889c3f3c4ee287921f0a35f6db6ca7384bbad87f924962ad1b216b14e0e",
+      "width": 328,
+      "height": 338,
+      "alpha": [
+        0,
+        255
+      ],
+      "decoded_rgba_identical": true,
+      "role": "Existing rear-view 2D pose, not a rigged 3D model",
+      "anchor_status": "Uncalibrated production ground/hand anchors; do not infer bottom-center guarantees foot contact."
+    },
+    {
+      "file": "art/characters/purl/stumble.webp",
+      "source": "Wishweave-Level1-Complete-Visual-Kit/assets/individual/purl-rear/stumble.png",
+      "source_sha256": "2a6d701f6d322b9e1bfe3a4b88f07f57e070bde7683fdca16351c140ca256cc7",
+      "sha256": "c1b8964c386d02a51e1b009b07ce71b061c01dd2c0d7db77be9d7f5b4773ed9f",
+      "width": 360,
+      "height": 334,
+      "alpha": [
+        0,
+        255
+      ],
+      "decoded_rgba_identical": true,
+      "role": "Existing rear-view 2D pose, not a rigged 3D model",
+      "anchor_status": "Uncalibrated production ground/hand anchors; do not infer bottom-center guarantees foot contact."
+    },
+    {
+      "file": "art/characters/purl/front-reference.webp",
+      "source": "Wishweave-Level1-Complete-Visual-Kit/assets/individual/purl-atlas/frame-01.png",
+      "source_sha256": "24090f641f4b7b855ee278cf761c4f957dd864afe2ccb67189b1ab6525f1e845",
+      "sha256": "bede2b15c5c877c4e61e04ec86128b79eb1ab2e0f76b28005e87133833396ccd",
+      "width": 402,
+      "height": 386,
+      "alpha": [
+        0,
+        255
+      ],
+      "decoded_rgba_identical": true,
+      "role": "Existing identity reference; no animation guarantee",
+      "anchor_status": "Uncalibrated production ground/hand anchors; do not infer bottom-center guarantees foot contact."
+    },
+    {
+      "file": "art/characters/loop/duck.webp",
+      "source": "Wishweave-Level1-Complete-Visual-Kit/assets/individual/loop-rear/duck.png",
+      "source_sha256": "d0aaae9bb7bf0ce176927d3754bb75bafc3957e2b61864f95d26f91231eabc5d",
+      "sha256": "6da4d2f6a1e25139feac33c3b008782dc83d23723e8953b290f6bbcbc8ce3070",
+      "width": 308,
+      "height": 269,
+      "alpha": [
+        0,
+        255
+      ],
+      "decoded_rgba_identical": true,
+      "role": "Existing rear-view 2D pose, not a rigged 3D model",
+      "anchor_status": "Uncalibrated production ground/hand anchors; do not infer bottom-center guarantees foot contact."
+    },
+    {
+      "file": "art/characters/loop/idle.webp",
+      "source": "Wishweave-Level1-Complete-Visual-Kit/assets/individual/loop-rear/idle.png",
+      "source_sha256": "1d3dcf03393f8b96073215168ef6757754eba577387206efb9dc20e87a4fea5c",
+      "sha256": "098882971bc40151ed02e7573b1f73b976206de5befb542439fad154d381e07f",
+      "width": 354,
+      "height": 352,
+      "alpha": [
+        0,
+        255
+      ],
+      "decoded_rgba_identical": true,
+      "role": "Existing rear-view 2D pose, not a rigged 3D model",
+      "anchor_status": "Uncalibrated production ground/hand anchors; do not infer bottom-center guarantees foot contact."
+    },
+    {
+      "file": "art/characters/loop/jump.webp",
+      "source": "Wishweave-Level1-Complete-Visual-Kit/assets/individual/loop-rear/jump.png",
+      "source_sha256": "ef7f13698a06e28c024d3debdaf1d094a2ddf098e4cbd877818c5a6ce894c5d9",
+      "sha256": "82fe4a009a4d4cc6ad25cbe1de19f73e62a027e12671b711e5f775a15dd0cbef",
+      "width": 385,
+      "height": 340,
+      "alpha": [
+        0,
+        255
+      ],
+      "decoded_rgba_identical": true,
+      "role": "Existing rear-view 2D pose, not a rigged 3D model",
+      "anchor_status": "Uncalibrated production ground/hand anchors; do not infer bottom-center guarantees foot contact."
+    },
+    {
+      "file": "art/characters/loop/run-left.webp",
+      "source": "Wishweave-Level1-Complete-Visual-Kit/assets/individual/loop-rear/run-left.png",
+      "source_sha256": "815d287d51b655e066e7d7c7658611ff4c63fa2601e0797db237b0f62ae5698b",
+      "sha256": "f93e66ff007d4add081104b3b2e8467fe15cb0fe3b57494af67ede81b20809bd",
+      "width": 341,
+      "height": 351,
+      "alpha": [
+        0,
+        255
+      ],
+      "decoded_rgba_identical": true,
+      "role": "Existing rear-view 2D pose, not a rigged 3D model",
+      "anchor_status": "Uncalibrated production ground/hand anchors; do not infer bottom-center guarantees foot contact."
+    },
+    {
+      "file": "art/characters/loop/run-pass-a.webp",
+      "source": "Wishweave-Level1-Complete-Visual-Kit/assets/individual/loop-rear/run-pass-a.png",
+      "source_sha256": "2310aff9bf9a3aeea5eb4034b33724f3a743e06fab6405bcf9bfe0c991bb9665",
+      "sha256": "6568bacc976c041c0a8fcc24a964e93b350dbf3f2706594180d399cf624a6af6",
+      "width": 345,
+      "height": 360,
+      "alpha": [
+        0,
+        255
+      ],
+      "decoded_rgba_identical": true,
+      "role": "Existing rear-view 2D pose, not a rigged 3D model",
+      "anchor_status": "Uncalibrated production ground/hand anchors; do not infer bottom-center guarantees foot contact."
+    },
+    {
+      "file": "art/characters/loop/run-pass-b.webp",
+      "source": "Wishweave-Level1-Complete-Visual-Kit/assets/individual/loop-rear/run-pass-b.png",
+      "source_sha256": "623885296e6a356a50c299aeedd405b1dc1b2567ae23a56e74155beefb2bec83",
+      "sha256": "9546397e5bc4b9b6f06f6abbf60e10b3a5915a319dbd0913e621d6de6acdda46",
+      "width": 332,
+      "height": 351,
+      "alpha": [
+        0,
+        255
+      ],
+      "decoded_rgba_identical": true,
+      "role": "Existing rear-view 2D pose, not a rigged 3D model",
+      "anchor_status": "Uncalibrated production ground/hand anchors; do not infer bottom-center guarantees foot contact."
+    },
+    {
+      "file": "art/characters/loop/run-right.webp",
+      "source": "Wishweave-Level1-Complete-Visual-Kit/assets/individual/loop-rear/run-right.png",
+      "source_sha256": "b8943385fa53c201c722536fb5e909b4774e6f6d6519df2206608746f5e068b6",
+      "sha256": "01e615850195247ba06cdf8a9fae023345299afd0285dba8528d01e34f23b775",
+      "width": 327,
+      "height": 349,
+      "alpha": [
+        0,
+        255
+      ],
+      "decoded_rgba_identical": true,
+      "role": "Existing rear-view 2D pose, not a rigged 3D model",
+      "anchor_status": "Uncalibrated production ground/hand anchors; do not infer bottom-center guarantees foot contact."
+    },
+    {
+      "file": "art/characters/loop/stumble.webp",
+      "source": "Wishweave-Level1-Complete-Visual-Kit/assets/individual/loop-rear/stumble.png",
+      "source_sha256": "5d51410804c7d9e9c18d9fddbab0c1bba47510dd2dc647fcfb5b0ef19a54c6da",
+      "sha256": "d60b384be3bd5459a168978ed05476954d04ec4bc95c198c8afe5240be691fd3",
+      "width": 388,
+      "height": 355,
+      "alpha": [
+        0,
+        255
+      ],
+      "decoded_rgba_identical": true,
+      "role": "Existing rear-view 2D pose, not a rigged 3D model",
+      "anchor_status": "Uncalibrated production ground/hand anchors; do not infer bottom-center guarantees foot contact."
+    },
+    {
+      "file": "art/characters/loop/front-reference.webp",
+      "source": "Wishweave-Level1-Complete-Visual-Kit/assets/individual/loop-atlas/frame-01.png",
+      "source_sha256": "b5da2628d8683e43ef5999da33f10c31ff5d93030aabababcc9fecadfb8564ae",
+      "sha256": "54322a18ff63d3db6ed8516f4133eafa682dcb8e5a65fbbee73f68004ca965c1",
+      "width": 341,
+      "height": 392,
+      "alpha": [
+        0,
+        255
+      ],
+      "decoded_rgba_identical": true,
+      "role": "Existing identity reference; no animation guarantee",
+      "anchor_status": "Uncalibrated production ground/hand anchors; do not infer bottom-center guarantees foot contact."
+    },
+    {
+      "file": "art/characters/snagling/frame-01.webp",
+      "source": "Wishweave-Level1-Complete-Visual-Kit/assets/individual/snagling-atlas/frame-01.png",
+      "source_sha256": "e3f1e42a50f23fd4d934d0731cb9530639e219d4dc48184c26b192c7cb797882",
+      "sha256": "1cba46d5ccc302ac6a78a25e9df7e28820c1edc7315b60327510caad5839db72",
+      "width": 319,
+      "height": 273,
+      "alpha": [
+        0,
+        255
+      ],
+      "decoded_rgba_identical": true,
+      "role": "Existing 2D enemy pose reference",
+      "anchor_status": "Uncalibrated production ground/hand anchors; do not infer bottom-center guarantees foot contact."
+    },
+    {
+      "file": "art/characters/snagling/frame-02.webp",
+      "source": "Wishweave-Level1-Complete-Visual-Kit/assets/individual/snagling-atlas/frame-02.png",
+      "source_sha256": "6cc6b6d1fa565f634eb5dcb0139592b0b0e4f421de9c601875e7cec529a56dad",
+      "sha256": "855685fe1bc290746a8611b73cd8bf16a990feb4fbdac52e678fcd9c283452ca",
+      "width": 461,
+      "height": 336,
+      "alpha": [
+        0,
+        255
+      ],
+      "decoded_rgba_identical": true,
+      "role": "Existing 2D enemy pose reference",
+      "anchor_status": "Uncalibrated production ground/hand anchors; do not infer bottom-center guarantees foot contact."
+    },
+    {
+      "file": "art/characters/snagling/frame-03.webp",
+      "source": "Wishweave-Level1-Complete-Visual-Kit/assets/individual/snagling-atlas/frame-03.png",
+      "source_sha256": "c91925cde3a102b06d32415c75bf3baf679860c9985f9220d55ce382e5e2aee3",
+      "sha256": "b2db61c4891e481c0441db418c179617952bdc7a25fc6090d3bacace73130e94",
+      "width": 435,
+      "height": 305,
+      "alpha": [
+        0,
+        255
+      ],
+      "decoded_rgba_identical": true,
+      "role": "Existing 2D enemy pose reference",
+      "anchor_status": "Uncalibrated production ground/hand anchors; do not infer bottom-center guarantees foot contact."
+    },
+    {
+      "file": "art/characters/snagling/frame-04.webp",
+      "source": "Wishweave-Level1-Complete-Visual-Kit/assets/individual/snagling-atlas/frame-04.png",
+      "source_sha256": "443235a9ded9e041b3fa1f27f9100d6d168ef148cbe0473a59fd88046bfe5cdb",
+      "sha256": "ca99292f0fc5b56181b079c3d4ed669fac4c3d10eb53dc92deee2990ba94218a",
+      "width": 419,
+      "height": 309,
+      "alpha": [
+        0,
+        255
+      ],
+      "decoded_rgba_identical": true,
+      "role": "Existing 2D enemy pose reference",
+      "anchor_status": "Uncalibrated production ground/hand anchors; do not infer bottom-center guarantees foot contact."
+    },
+    {
+      "file": "art/characters/snagling/frame-05.webp",
+      "source": "Wishweave-Level1-Complete-Visual-Kit/assets/individual/snagling-atlas/frame-05.png",
+      "source_sha256": "187f7528977763dfc063d7390fa73e30ff1514520257e5ada104747ff90348d4",
+      "sha256": "e7e2387980f7df057031e720ac2d6fe80abfda1da848138cf927b2dc4f7794b6",
+      "width": 348,
+      "height": 314,
+      "alpha": [
+        0,
+        255
+      ],
+      "decoded_rgba_identical": true,
+      "role": "Existing 2D enemy pose reference",
+      "anchor_status": "Uncalibrated production ground/hand anchors; do not infer bottom-center guarantees foot contact."
+    },
+    {
+      "file": "art/characters/snagling/frame-06.webp",
+      "source": "Wishweave-Level1-Complete-Visual-Kit/assets/individual/snagling-atlas/frame-06.png",
+      "source_sha256": "44fc525618eb9d69706011208f4ac085264de59b3133c1d5e03a70bd37d0ce1d",
+      "sha256": "f8be87696486d7b96dfe9534bce9acc4bc69b702a0de5f7d2bf1a7ea0d7d1fa2",
+      "width": 451,
+      "height": 219,
+      "alpha": [
+        0,
+        255
+      ],
+      "decoded_rgba_identical": true,
+      "role": "Existing 2D enemy pose reference",
+      "anchor_status": "Uncalibrated production ground/hand anchors; do not infer bottom-center guarantees foot contact."
+    },
+    {
+      "file": "art/characters/snagling/frame-07.webp",
+      "source": "Wishweave-Level1-Complete-Visual-Kit/assets/individual/snagling-atlas/frame-07.png",
+      "source_sha256": "f92b5f36bdbc4ff0d8dc9b65d25dab69e1e02030ed26cde298ffed7f3fd6eb66",
+      "sha256": "6092e4ab3c1213949ae20a0ec6a72e9d4fb5bc089b0191dc00e26693052f0406",
+      "width": 382,
+      "height": 330,
+      "alpha": [
+        0,
+        255
+      ],
+      "decoded_rgba_identical": true,
+      "role": "Existing 2D enemy pose reference",
+      "anchor_status": "Uncalibrated production ground/hand anchors; do not infer bottom-center guarantees foot contact."
+    },
+    {
+      "file": "art/characters/snagling/frame-08.webp",
+      "source": "Wishweave-Level1-Complete-Visual-Kit/assets/individual/snagling-atlas/frame-08.png",
+      "source_sha256": "cd8f0f66c674d86b87121edbe5dc70b00927dc7154e3f4d56c4023dede13784b",
+      "sha256": "45ba8b11f4f73618851d7648024c21b2a561277460ea661e5d2923d2226ca98b",
+      "width": 396,
+      "height": 289,
+      "alpha": [
+        0,
+        255
+      ],
+      "decoded_rgba_identical": true,
+      "role": "Existing 2D enemy pose reference",
+      "anchor_status": "Uncalibrated production ground/hand anchors; do not infer bottom-center guarantees foot contact."
+    },
+    {
+      "file": "art/props/coral-thread.webp",
+      "source": "Wishweave-Level1-Complete-Visual-Kit/assets/individual/props-atlas/coral-thread.png",
+      "source_sha256": "765000f0633ba23286f2bbc968cefd8f1b065bc065b7f0c9ad5bfb085ab4fe96",
+      "sha256": "fc0ad72551c83c752fda349c768a3c744c2fbf501212b1f4631607d1f42f9224",
+      "width": 244,
+      "height": 352,
+      "alpha": [
+        0,
+        254
+      ],
+      "decoded_rgba_identical": true,
+      "role": "Existing 2D prop image; not collision geometry",
+      "anchor_status": "Uncalibrated production ground/hand anchors; do not infer bottom-center guarantees foot contact."
+    },
+    {
+      "file": "art/props/cover-post.webp",
+      "source": "Wishweave-Level1-Complete-Visual-Kit/assets/individual/props-atlas/cover-post.png",
+      "source_sha256": "d398308005a96b0dc77b382d8cca4ae14d2ad91ee9366cf15c9cd6ce2338c1ec",
+      "sha256": "22a7a9fa5b0cab34847ee7f06d84c8595d0ebefebfe93b7d98a1e60ef403d02d",
+      "width": 192,
+      "height": 431,
+      "alpha": [
+        0,
+        254
+      ],
+      "decoded_rgba_identical": true,
+      "role": "Existing 2D prop image; not collision geometry",
+      "anchor_status": "Uncalibrated production ground/hand anchors; do not infer bottom-center guarantees foot contact."
+    },
+    {
+      "file": "art/props/flower-gate.webp",
+      "source": "Wishweave-Level1-Complete-Visual-Kit/assets/individual/props-atlas/flower-gate.png",
+      "source_sha256": "7f9485dbabd6ea1d3363cb25bf79ec2e9f63b4ab5af3fd05a1809401d9fc553a",
+      "sha256": "46c8a781fba104cb5c290f4cfcc13d4f6a3c63db6dd7a5d78ae05ffbbc4de08f",
+      "width": 535,
+      "height": 460,
+      "alpha": [
+        0,
+        254
+      ],
+      "decoded_rgba_identical": true,
+      "role": "Existing 2D prop image; not collision geometry",
+      "anchor_status": "Uncalibrated production ground/hand anchors; do not infer bottom-center guarantees foot contact."
+    },
+    {
+      "file": "art/props/golden-thread.webp",
+      "source": "Wishweave-Level1-Complete-Visual-Kit/assets/individual/props-atlas/golden-thread.png",
+      "source_sha256": "4a9806c1528ebad7a41603830a7e054993627d1fd443ccf22a281da22879756a",
+      "sha256": "7e52087b8df15a763d7d662c6d7b35011856b0a4523d683fcd55c4eba2a1bdca",
+      "width": 245,
+      "height": 354,
+      "alpha": [
+        0,
+        254
+      ],
+      "decoded_rgba_identical": true,
+      "role": "Existing 2D prop image; not collision geometry",
+      "anchor_status": "Uncalibrated production ground/hand anchors; do not infer bottom-center guarantees foot contact."
+    },
+    {
+      "file": "art/props/swinging-tassel.webp",
+      "source": "Wishweave-Level1-Complete-Visual-Kit/assets/individual/props-atlas/swinging-tassel.png",
+      "source_sha256": "815ca9efc646e58f887deb2336afd315db1533f62c94baf54b2b9d633a0ffb83",
+      "sha256": "4bc33db0628a234838b90619f0f7c370cfac0c50a3289487bd4ae04eddbc6fde",
+      "width": 323,
+      "height": 502,
+      "alpha": [
+        0,
+        254
+      ],
+      "decoded_rgba_identical": true,
+      "role": "Existing 2D prop image; not collision geometry",
+      "anchor_status": "Uncalibrated production ground/hand anchors; do not infer bottom-center guarantees foot contact."
+    },
+    {
+      "file": "art/props/teal-thread.webp",
+      "source": "Wishweave-Level1-Complete-Visual-Kit/assets/individual/props-atlas/teal-thread.png",
+      "source_sha256": "7d3b73609a0c2205cd038a2c53b2de9bc44f49f40d7a1c703d0c8afe3fad679a",
+      "sha256": "cf093b31a46fb30c1e7866bcd5a0c2797778eb426c7a565545a429b5927986a3",
+      "width": 244,
+      "height": 352,
+      "alpha": [
+        0,
+        254
+      ],
+      "decoded_rgba_identical": true,
+      "role": "Existing 2D prop image; not collision geometry",
+      "anchor_status": "Uncalibrated production ground/hand anchors; do not infer bottom-center guarantees foot contact."
+    },
+    {
+      "file": "art/features/butterfly-carrying-spool.webp",
+      "source": "Wishweave-Level1-Complete-Visual-Kit/assets/features/butterfly-carrying-spool.png",
+      "source_sha256": "0d57b9cb363eee5c89eb9523c3cbc845858fd2ca742e53a0f4cc084535c5436d",
+      "sha256": "17a7e513f9a72179ba28a898137978317669da228bbcdf5b893d5511f5dbfb02",
+      "width": 397,
+      "height": 439,
+      "alpha": [
+        0,
+        254
+      ],
+      "decoded_rgba_identical": true,
+      "role": "Existing 2D feature image",
+      "anchor_status": "Uncalibrated production ground/hand anchors; do not infer bottom-center guarantees foot contact."
+    },
+    {
+      "file": "art/features/butterfly-closed.webp",
+      "source": "Wishweave-Level1-Complete-Visual-Kit/assets/features/butterfly-closed.png",
+      "source_sha256": "5c579f6cbe417122bad872d18945a25cf3c64d8b4cf65b9257098d47b9b5f555",
+      "sha256": "37761acef56bc169cbbfd56fe680bf3ddcdab4eab4483b78a51a10ee6d8da63e",
+      "width": 364,
+      "height": 435,
+      "alpha": [
+        0,
+        254
+      ],
+      "decoded_rgba_identical": true,
+      "role": "Existing 2D feature image",
+      "anchor_status": "Uncalibrated production ground/hand anchors; do not infer bottom-center guarantees foot contact."
+    },
+    {
+      "file": "art/features/butterfly-open.webp",
+      "source": "Wishweave-Level1-Complete-Visual-Kit/assets/features/butterfly-open.png",
+      "source_sha256": "3830bd47774e695519faa44dc45732ea4fc9797ad13ef2bcbc491e8d1e3d26e5",
+      "sha256": "e25523cd1edb726c29bc02b6282de64ada377c421e7e5f92ee633a52386252a2",
+      "width": 494,
+      "height": 317,
+      "alpha": [
+        0,
+        254
+      ],
+      "decoded_rgba_identical": true,
+      "role": "Existing 2D feature image",
+      "anchor_status": "Uncalibrated production ground/hand anchors; do not infer bottom-center guarantees foot contact."
+    },
+    {
+      "file": "art/features/carpet-flat.webp",
+      "source": "Wishweave-Level1-Complete-Visual-Kit/assets/features/carpet-flat.png",
+      "source_sha256": "266341bf31a6e4f0e3799078fd3b85b58528897944f51caa305a7479773b053e",
+      "sha256": "0f61598ff3ea1efc47aef6a63b0e23b2ea3b75996b1f67e9636cdfabf9c88830",
+      "width": 470,
+      "height": 420,
+      "alpha": [
+        0,
+        254
+      ],
+      "decoded_rgba_identical": true,
+      "role": "Existing 2D feature image",
+      "anchor_status": "Uncalibrated production ground/hand anchors; do not infer bottom-center guarantees foot contact."
+    },
+    {
+      "file": "art/features/carpet-rolled.webp",
+      "source": "Wishweave-Level1-Complete-Visual-Kit/assets/features/carpet-rolled.png",
+      "source_sha256": "39e8607bc6984726b83450d5eda9fd6d8cd80c0e00aeb6ecc26093896eac6d01",
+      "sha256": "3c833758a5125d98e567bc689cece2779dacf4469a54061d43897dde11ee01de",
+      "width": 505,
+      "height": 401,
+      "alpha": [
+        0,
+        254
+      ],
+      "decoded_rgba_identical": true,
+      "role": "Existing 2D feature image",
+      "anchor_status": "Uncalibrated production ground/hand anchors; do not infer bottom-center guarantees foot contact."
+    },
+    {
+      "file": "art/features/stitch-loop.webp",
+      "source": "Wishweave-Level1-Complete-Visual-Kit/assets/features/stitch-loop.png",
+      "source_sha256": "1ba5cd7604fa973fd468f9850999e41387dcb49962211a69f654088166134bc2",
+      "sha256": "c8b5d35eb02563c106768456e026ea3fb97cdc197cec428e9185c59da3472181",
+      "width": 205,
+      "height": 358,
+      "alpha": [
+        0,
+        254
+      ],
+      "decoded_rgba_identical": true,
+      "role": "Existing 2D feature image",
+      "anchor_status": "Uncalibrated production ground/hand anchors; do not infer bottom-center guarantees foot contact."
+    },
+    {
+      "file": "art/ui/frame-01.webp",
+      "source": "Wishweave-Level1-Complete-Visual-Kit/assets/individual/ui-atlas/frame-01.png",
+      "source_sha256": "c1a42a99448bcf025a169fd75e5627fe4ac305c69506b93ed811c5f1f87dc472",
+      "sha256": "a609bad9f1c70f58adae41a99759e8894e551a2f46f0361f5a7583813f7f681a",
+      "width": 884,
+      "height": 338,
+      "alpha": [
+        0,
+        255
+      ],
+      "decoded_rgba_identical": true,
+      "role": "Existing UI artwork; verify semantic mapping visually",
+      "anchor_status": "Uncalibrated production ground/hand anchors; do not infer bottom-center guarantees foot contact."
+    },
+    {
+      "file": "art/ui/frame-02.webp",
+      "source": "Wishweave-Level1-Complete-Visual-Kit/assets/individual/ui-atlas/frame-02.png",
+      "source_sha256": "ca865dac79c72cca06b881afe3a91b059d392e55c117acd7654b0e9c2cc73391",
+      "sha256": "48ccfa47b52435c28f32b0f800f18e1d2e63473b90a948d9dd77df97bed3bacb",
+      "width": 827,
+      "height": 230,
+      "alpha": [
+        0,
+        255
+      ],
+      "decoded_rgba_identical": true,
+      "role": "Existing UI artwork; verify semantic mapping visually",
+      "anchor_status": "Uncalibrated production ground/hand anchors; do not infer bottom-center guarantees foot contact."
+    },
+    {
+      "file": "art/ui/frame-03.webp",
+      "source": "Wishweave-Level1-Complete-Visual-Kit/assets/individual/ui-atlas/frame-03.png",
+      "source_sha256": "c0615c80dfb743668b1400728f6a295a230e5fbaccf8ee9a29ef3b265abe6975",
+      "sha256": "df85224751ad326d49295e8f8db2b44f2909a82da83a6bb6779ad1a511c59b57",
+      "width": 400,
+      "height": 386,
+      "alpha": [
+        0,
+        255
+      ],
+      "decoded_rgba_identical": true,
+      "role": "Existing UI artwork; verify semantic mapping visually",
+      "anchor_status": "Uncalibrated production ground/hand anchors; do not infer bottom-center guarantees foot contact."
+    },
+    {
+      "file": "art/ui/frame-04.webp",
+      "source": "Wishweave-Level1-Complete-Visual-Kit/assets/individual/ui-atlas/frame-04.png",
+      "source_sha256": "6484e523089dc50a7fbc78f39261d2206be55f6bd9e46483f13c331ff273f706",
+      "sha256": "5be169d9e7fada73d860a578cd3c99fe93b369c52dcb35fa66ba12d8f91322d8",
+      "width": 646,
+      "height": 194,
+      "alpha": [
+        0,
+        255
+      ],
+      "decoded_rgba_identical": true,
+      "role": "Existing UI artwork; verify semantic mapping visually",
+      "anchor_status": "Uncalibrated production ground/hand anchors; do not infer bottom-center guarantees foot contact."
+    },
+    {
+      "file": "art/ui/frame-05.webp",
+      "source": "Wishweave-Level1-Complete-Visual-Kit/assets/individual/ui-atlas/frame-05.png",
+      "source_sha256": "1a07627b720e028b7b0f6664bb0fa9827c5ecf68cbe2a35b7cd2a197ef750dfd",
+      "sha256": "c36f6ce070ceecaf6457865176b465f21bf7f6ea03d6ba4d727046acf647b6b4",
+      "width": 646,
+      "height": 204,
+      "alpha": [
+        0,
+        255
+      ],
+      "decoded_rgba_identical": true,
+      "role": "Existing UI artwork; verify semantic mapping visually",
+      "anchor_status": "Uncalibrated production ground/hand anchors; do not infer bottom-center guarantees foot contact."
+    },
+    {
+      "file": "art/characters/purl/purl-reach.webp",
+      "source": "Wishweave-Pull-Stitch-Update/assets/characters/purl-reach.png",
+      "source_sha256": "63b37eaf0a316a8972e97a50c9a3d2c221edff35d8b828e540aea9cc0b28e2bc",
+      "sha256": "9db007c7bd8ba3caaf9ad502c696a5c867e7b63975934c5882da21d670538439",
+      "width": 737,
+      "height": 534,
+      "alpha": [
+        0,
+        255
+      ],
+      "decoded_rgba_identical": true,
+      "role": "Existing 2D pull pose; hand anchors require animation integration",
+      "anchor_status": "Uncalibrated production ground/hand anchors; do not infer bottom-center guarantees foot contact."
+    },
+    {
+      "file": "art/characters/purl/purl-brace.webp",
+      "source": "Wishweave-Pull-Stitch-Update/assets/characters/purl-brace.png",
+      "source_sha256": "7a2664cd3e361bb6e22d1338d4f8095f9e5e7087c070b2c0914a9cd706473b19",
+      "sha256": "c73fed38a0b98ed111517335fedeca1550d2aa7dd7d5cfda528ff9bd54e92556",
+      "width": 737,
+      "height": 534,
+      "alpha": [
+        0,
+        255
+      ],
+      "decoded_rgba_identical": true,
+      "role": "Existing 2D pull pose; hand anchors require animation integration",
+      "anchor_status": "Uncalibrated production ground/hand anchors; do not infer bottom-center guarantees foot contact."
+    },
+    {
+      "file": "art/characters/purl/purl-pull.webp",
+      "source": "Wishweave-Pull-Stitch-Update/assets/characters/purl-pull.png",
+      "source_sha256": "ea424c3a0c8d884c48e3c9b65803e89b03699d7cfd7eff42c223f09fc79ac8a2",
+      "sha256": "511d735e37d459216ed1881b0e3e9901fc3835c0743cae68312389b322f044ed",
+      "width": 737,
+      "height": 533,
+      "alpha": [
+        0,
+        255
+      ],
+      "decoded_rgba_identical": true,
+      "role": "Existing 2D pull pose; hand anchors require animation integration",
+      "anchor_status": "Uncalibrated production ground/hand anchors; do not infer bottom-center guarantees foot contact."
+    },
+    {
+      "file": "art/characters/purl/purl-release.webp",
+      "source": "Wishweave-Pull-Stitch-Update/assets/characters/purl-release.png",
+      "source_sha256": "7ba3e661b3a14b4cd6835f9a7122175ea55db3f8694091d88e7d4b76dd749674",
+      "sha256": "23bcd72369597f0f5f98bbcfbc3b09282161a365585d033cb5f71756b0a93421",
+      "width": 737,
+      "height": 533,
+      "alpha": [
+        0,
+        255
+      ],
+      "decoded_rgba_identical": true,
+      "role": "Existing 2D pull pose; hand anchors require animation integration",
+      "anchor_status": "Uncalibrated production ground/hand anchors; do not infer bottom-center guarantees foot contact."
+    }
+  ]
+}

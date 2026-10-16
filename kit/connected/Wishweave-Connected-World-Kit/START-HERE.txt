@@ -1,0 +1,25 @@
+WISHWEAVE WONDERS — CONNECTED WORLD HANDOFF
+
+Send CLAUDIA-PROMPT.txt and all numbered ZIP packages together. Extract all parts into the same folder; they share the Wishweave-Connected-World-Kit directory. Open index.html to review the images, course plan and asset catalog. The HTML is a handoff viewer, not the finished game. Its images live alongside it, so do not send the HTML alone.
+
+The target is a continuous, moderately brisk race from the opened rug to the flower gate. The camera follows Purl around real connected bends into each area. Replace the transition seen around 0:36–0:37 in recording 6746.mp4; do not preserve the old scene-by-scene motion.
+
+READY IN THIS PACKAGE
+- Three current mobile-screen concept targets: opening, connected turn, finish.
+- Existing Purl, Loop, Snagling, prop, feature and UI images, with alpha and source provenance. Individual art conversions preserve the decoded RGBA pixels.
+- A real GLB connected-course BLOCKOUT, route data, generator and overhead map. It establishes broad supported roads, a branch/rejoin and landmark positions from beginning to end.
+- An engine-independent touch input module and automated gesture tests.
+- A route sampler and distance-driven motion reference, plus tests.
+- Clear controls, animation/camera requirements and acceptance checks.
+
+STILL PRODUCTION WORK
+The GLB is simplified layout geometry, not the detailed finished city shown in the concept images. It has no rigged characters, final knit textures, full game rules, installed Android app, payout system or certified device performance. The existing character images are 2D poses, not a complete rotation-ready 3D animation rig. Their original edges/pivots require review. This package is useful source material and a construction foundation; it is not proof that Claudia's existing game has been fixed.
+
+CURRENT CONTROLS
+Automatic running. Swipe left/right to steer within the path or select a branch. Swipe up to jump. Double-tap to stop/resume Purl only; Loop continues. The separate Pause button pauses both racers and the world. Button equivalents must remain available. Swipe up does not also mean 'start moving'; that would conflict with jump.
+
+FIRST PROOF
+Before extending the renderer through the whole level, demonstrate the opened rug, tower bend, branch/rejoin and entry into the next area in one uncut playable run. Keep both runners grounded and readable, with real overtaking and no wipes. Then complete the remaining connected course. Preserve existing work in source control. Read docs/ACCEPTANCE.txt.
+
+IMAGE PRIORITY
+references/01-opening-target.webp, 02-connected-turn-target.webp and 03-finish-target.webp are the current visual direction. references/legacy-world-art contains older background paintings for materials and landmark design ONLY. Never turn those paintings back into disconnected gameplay pages. The final geometry must be adapted to be physically traversable; a single painted view cannot define every unseen side of a 3D world.

@@ -1,0 +1,59 @@
+{
+  "schema": "wishweave.course-validation.v1",
+  "passed": true,
+  "scope": "Deterministic spatial and mesh checks; not a physics, gameplay, renderer, or production-art acceptance test.",
+  "checks": {
+    "main_length_180_to_240_m": true,
+    "branch_length_12_to_20_m": true,
+    "main_width_6_m": true,
+    "six_contiguous_sections": true,
+    "main_sample_spacing_at_most_0_5_m": true,
+    "main_forward_z_monotonic": true,
+    "main_ribbon_outline_no_self_intersections": true,
+    "branch_ribbon_outline_no_self_intersections": true,
+    "main_minimum_horizontal_bend_radius_over_12_m": true,
+    "main_slope_under_8_degrees": true,
+    "branch_slope_under_8_degrees": true,
+    "branch_endpoints_exact_on_main_route": true,
+    "branch_endpoint_tangents_within_8_degrees": true,
+    "finish_equals_flowergate_origin": true,
+    "collectibles_red_teal_gold_at_15_52_80_percent": true,
+    "mesh_indices_valid": true,
+    "mesh_values_finite": true,
+    "mesh_vertex_normals_unit": true,
+    "mesh_no_degenerate_triangles": true,
+    "all_walkable_triangles_face_upward": true,
+    "collectible_marker_triangles_face_outward": true,
+    "landmark_solid_supports_off_main_walkable_floor": true
+  },
+  "metrics": {
+    "mainLengthMeters": 201.31862,
+    "branchLengthMeters": 19.543306,
+    "mainMaxSlopeDegrees": 2.540872,
+    "branchMaxSlopeDegrees": 0.197075,
+    "minimumHorizontalBendRadiusMeters": 23.123655,
+    "branchJoinAngleDegrees": [
+      2.678004,
+      2.702884
+    ],
+    "mainSampleCount": 404,
+    "branchSampleCount": 80,
+    "meshCount": 31,
+    "vertexCount": 9130,
+    "triangleCount": 4844,
+    "outlineSelfIntersections": [],
+    "branchOutlineSelfIntersections": []
+  },
+  "intentionalOverlaps": [
+    "Branch deck overlaps main deck only in the fork/rejoin connection zones. Both share the same route elevation.",
+    "Finish band sits 0.024 m above deck with its forward edge on the flowergate finish plane."
+  ],
+  "remainingWork": [
+    "Approved textured ornamental production art",
+    "Collision union at branch joins and collider bake",
+    "Character rigs and animation",
+    "Movement/controller integration",
+    "Snagling AI and butterfly behavior",
+    "Engine playtest including branch collision and camera clearance"
+  ]
+}

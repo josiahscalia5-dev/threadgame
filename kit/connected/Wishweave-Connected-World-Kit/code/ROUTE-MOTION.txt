@@ -1,0 +1,24 @@
+ROUTE AND MOTION REFERENCE
+
+route-motion.mjs is dependency-free JavaScript math. It supports the route.json in scenery/. It does not render a game or supply collision, jump physics, a rig, AI, animation blending or a camera collision system.
+
+sampleRoad(route, distance, lateral = 0, bodyRadius = 0.35)
+Pass mainRoute or a branch object. Distances and dimensions are in meters; Y is up. Returns interpolated center, supported position, forward/right/normal vectors, heading in radians, width, clamped lateral offset and equivalent mainS progress. The lateral clamp leaves the specified body-radius clearance inside the road width. This samples the design surface; use production ground/collision queries after introducing geometry that departs from it.
+
+advanceRun(state, dt, options)
+State: {s, speed, phase, braked}. dt is elapsed seconds; phase is a stride cycle fraction. Options require runSpeed; defaults are accelerationTime 0.3 s, brakingTime 0.22 s, strideLength 1.4 m, paused false, routeLength Infinity. Set all scales deliberately for the production characters. It returns a new state plus distanceMoved, with distance-driven stride phase and analytic acceleration/braking integration. At the route endpoint it stops. Use independent state for Purl and Loop. Passing paused=true freezes either state; the host must apply it to both when globally paused. Braking Purl must not brake Loop.
+
+chaseTargets(route, distance, lateral = 0, options = {})
+Returns an unsmoothed camera position and look-at target behind/above the player and ahead on the route. Defaults: behind 5.5 m, height 3.2 m, lookAhead 7 m, targetHeight 0.8 m. The host must add time-based damping, obstruction handling and portrait framing. These numbers are starting points for a blockout, not a promise of the final camera composition.
+
+Integration order:
+1. Interpret a touch intent against current game state. Queue a steering/branch target or jump, or toggle Purl's brake. Do not move a character directly in the input adapter.
+2. Update independent racer progress with elapsed simulation time. On a fork, switch from main s to local branch s at the exact connection; return to main endS at the rejoin. Do not confuse local branch s with overall race progress; use mainS.
+3. Smooth lateral movement and query the actual walkable surface. Apply jump/collision rules and a calibrated foot/root offset.
+4. Drive gait phase from actual travel. Blend idle when stopped, and use appropriate takeoff/air/landing animations while jumping. Rotate the model to its direction of travel.
+5. Smooth and collision-check the chase camera. Draw characters with correct depth and update the HUD from actual race state.
+
+Run from the kit folder:
+node --test code/touch-input.test.mjs code/route-motion.test.mjs
+
+The tests check input and reference math only. Use the acceptance checklist for real playable proof.

@@ -1,0 +1,116 @@
+{
+  "version": 1,
+  "priority": "New 01/02/03 targets supersede legacy scene layout. Preserve legacy art style only.",
+  "assets": [
+    {
+      "file": "references/01-opening-target.webp",
+      "source": "/workspace/scratch/e592d102d66f/generated_images/exec-8a30733e-7aa3-4695-81c2-176de266b8b3.png",
+      "source_sha256": "0eb41badf72ea0ca86ef8156c5050b9d488d2448bc34fb6c2b5ca951ff04db19",
+      "sha256": "a668a470628fd5006870850bbfb67824d2a65e167d8f5c67b50b87b3ed7e26bb",
+      "size": [
+        841,
+        1870
+      ],
+      "conversion": "Full resolution, high-quality lossy WebP; concept image only, not production geometry."
+    },
+    {
+      "file": "references/02-connected-turn-target.webp",
+      "source": "/workspace/scratch/e592d102d66f/generated_images/exec-d4176fae-7914-4be0-9700-7c926b5466df.png",
+      "source_sha256": "8ebddf586f89eb2d82ae7cf4fe2f45abe20b4cb5dbe13b6c76c66aaf67b5ca27",
+      "sha256": "7e6902f5c3b0dbaeba2785ddb01f524b9163b7706b25aa669ba79ac65b646e2f",
+      "size": [
+        841,
+        1870
+      ],
+      "conversion": "Full resolution, high-quality lossy WebP; concept image only, not production geometry."
+    },
+    {
+      "file": "references/03-finish-target.webp",
+      "source": "/workspace/scratch/e592d102d66f/generated_images/exec-dd5f0d3a-2917-4188-bd19-ced35027cdbc.png",
+      "source_sha256": "299728b41ea589fecb6df3bf34d67cd13dff0bf3ac1fec51bf6884689651091a",
+      "sha256": "b537995a1c806af5d4def6a3662e3c17922cff3fc771d4975de74aa33181f86d",
+      "size": [
+        841,
+        1870
+      ],
+      "conversion": "Full resolution, high-quality lossy WebP; concept image only, not production geometry."
+    },
+    {
+      "file": "references/legacy-world-art/01-ribbon.webp",
+      "source": "Wishweave-Level1-Complete-Visual-Kit/assets/backgrounds/01-ribbon.png",
+      "source_sha256": "67ba904dcb01a2c44113f92e5d10112eff755883eaf0eeccb518959795e3c37a",
+      "sha256": "edcf1692f21969c3eb4342030a73895887b54845de86e39db7de019b5367a1d9",
+      "size": [
+        841,
+        1870
+      ],
+      "conversion": "Full-resolution high-quality lossy reference. Theme/landmarks only; NEVER use sequential plates for gameplay."
+    },
+    {
+      "file": "references/legacy-world-art/02-shortcut.webp",
+      "source": "Wishweave-Level1-Complete-Visual-Kit/assets/backgrounds/02-shortcut.png",
+      "source_sha256": "556881b4c27eb86705e874cac16f87077988ffdfc91b973b50c79a1d8c0d1e0c",
+      "sha256": "54eeb98978e55bc719b505546898ab865c045fb36364a266d91fdea9852af87b",
+      "size": [
+        841,
+        1870
+      ],
+      "conversion": "Full-resolution high-quality lossy reference. Theme/landmarks only; NEVER use sequential plates for gameplay."
+    },
+    {
+      "file": "references/legacy-world-art/03-tassels.webp",
+      "source": "Wishweave-Level1-Complete-Visual-Kit/assets/backgrounds/03-tassels.png",
+      "source_sha256": "1fde6f961d42f85e058763589815ce035223c2bf22c2c7134e6a3f4895a8c571",
+      "sha256": "cba502dd2bad7dc43e6e6679928b56defc0732f61b8635f59701b2daceb1ee45",
+      "size": [
+        840,
+        1871
+      ],
+      "conversion": "Full-resolution high-quality lossy reference. Theme/landmarks only; NEVER use sequential plates for gameplay."
+    },
+    {
+      "file": "references/legacy-world-art/04-snagged.webp",
+      "source": "Wishweave-Level1-Complete-Visual-Kit/assets/backgrounds/04-snagged.png",
+      "source_sha256": "fb54defd66f2f01ff15d219bb925d294b6ac1fab0b666a909ed1efa4804fb660",
+      "sha256": "e26709693591f9fb48db1f75928c415fefb5823187e85e081a254d4a79b1052e",
+      "size": [
+        841,
+        1870
+      ],
+      "conversion": "Full-resolution high-quality lossy reference. Theme/landmarks only; NEVER use sequential plates for gameplay."
+    },
+    {
+      "file": "references/legacy-world-art/05-recovery.webp",
+      "source": "Wishweave-Level1-Complete-Visual-Kit/assets/backgrounds/05-recovery.png",
+      "source_sha256": "fb54defd66f2f01ff15d219bb925d294b6ac1fab0b666a909ed1efa4804fb660",
+      "sha256": "e26709693591f9fb48db1f75928c415fefb5823187e85e081a254d4a79b1052e",
+      "size": [
+        841,
+        1870
+      ],
+      "conversion": "Full-resolution high-quality lossy reference. Theme/landmarks only; NEVER use sequential plates for gameplay."
+    },
+    {
+      "file": "references/legacy-world-art/06-butterfly.webp",
+      "source": "Wishweave-Level1-Complete-Visual-Kit/assets/backgrounds/06-butterfly.png",
+      "source_sha256": "741425ba14c847217cd93a0619463da655cdab76072104e10308c90d9498b574",
+      "sha256": "0079e4d48557b22f3cb1d9d9b210bf392cd5f5a3cfd0b5dbea17eb4438d1e0f3",
+      "size": [
+        841,
+        1870
+      ],
+      "conversion": "Full-resolution high-quality lossy reference. Theme/landmarks only; NEVER use sequential plates for gameplay."
+    },
+    {
+      "file": "references/legacy-world-art/07-finish.webp",
+      "source": "Wishweave-Level1-Complete-Visual-Kit/assets/backgrounds/07-finish.png",
+      "source_sha256": "f392508f2b522b51081930a87a09ec496c98d6bc7c3f4a2ffc2d457744601efa",
+      "sha256": "895103ec803f5a1be7e1aa6a9c2466cd9d5d499ec8dbf36a5c425e8a17cd7680",
+      "size": [
+        839,
+        1875
+      ],
+      "conversion": "Full-resolution high-quality lossy reference. Theme/landmarks only; NEVER use sequential plates for gameplay."
+    }
+  ]
+}

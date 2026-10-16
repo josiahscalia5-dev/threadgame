@@ -2824,3 +2824,11 @@ I'll start by saving a recoverable checkpoint of the current game. Then I'll unp
 
 - _tool Bash_: Restart autosave and server; tag and push a checkpoint
 
+
+
+- _tool Bash_: List contents of the three package zips
+
+
+
+- _tool Bash_: Extract the kit into kit/connected and verify checksums
+

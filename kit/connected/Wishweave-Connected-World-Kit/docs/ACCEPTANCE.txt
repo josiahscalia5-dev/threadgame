@@ -1,0 +1,25 @@
+ACCEPTANCE — VERIFY THE RUNNING BUILD, NOT JUST THE CONCEPT IMAGES
+
+FIRST CONNECTED STRETCH
+1. Start on the opened rug. Run around the tower and onto the next connected area without any cut, page wipe, teleport or sudden perspective/character-size reset.
+2. Debug recording: show actual walkable mesh/top boundaries, root contact point and intended route under the same camera. Grounded root stays on the surface; planted feet/shadow agree. Then record the same path in normal view.
+3. Test left/right steering at a straight, bend and junction. Show lane movement/branch choice visibly, with no unsupported crossing or edge clipping.
+4. Swipe up once: one jump. Land onto the path. Swipe up while stopped: optional jump in place, no unexpected auto-resume.
+5. Double-tap: Purl brakes to idle. Loop keeps progressing and can pass. Double-tap again: Purl accelerates and resumes. Pause button freezes both; resume preserves positions.
+6. Gestures on UI do not steer/brake the player. A swipe is not interpreted as one of the taps in a double-tap. Pointer cancellation and a second finger do not create phantom gestures.
+7. Running looks grounded and directional at ordinary, accelerated and braking speeds. No whole-body waddle used as the only motion; no in-place run when stopped. Both runners satisfy the same motion quality.
+
+WHOLE LEVEL
+8. Collect three distinct required threads in separated locations. Counters and instructions update on collection. A repeated pickup cannot substitute for a missing type. Each item is physically reachable from the course.
+9. Demonstrate both avoiding Snagling and being hit. On hit, wrapping, inventory change, dropped item and recovery agree. Recovering restores the correct type; no double award. Test the agreed zero-inventory outcome explicitly.
+10. Butterfly release remains connected to the course. Avoid long repeated full-stop gates that remove the race pacing. Keep route/obstacle visibility during effects.
+11. Main and branch rejoin safely. No decorative posts/landmarks block the walkable route by accident. Show correct pillar/runner depth ordering.
+12. Reach the visible flower-gate finish line with three distinct items and cross it before completion. Stop/celebrate appropriately. Award Loop's finish independently; explain if a loss is possible. Test a run in which Loop wins.
+13. Saved rewards/cash-out status is honest. Do not infer real payouts from the placeholder bar. If rewards are added later, verify a separate settlement flow.
+
+DISPLAY AND EVIDENCE
+14. Test at least the original recording ratio (720 x 1602), a narrower portrait viewport and the user's actual Android device or a named emulator. Verify cutout/system-gesture safe areas, visible collectibles, reachable 48dp-equivalent controls, and all result controls. UI stays clear of feet and the immediate course. This is not universal Android certification.
+15. Keep the same uncut gameplay recording and runnable build tied to a named branch/commit. Show inputs. Give actual frame-time observations on tested hardware; do not claim performance from screenshots.
+
+CURRENT KIT VERIFICATION
+Local unit tests cover only pure input/route/motion behavior. Layout validation covers the generated blockout mesh and route, not the existing game, character grounding, final artwork, collisions or Android deployment. Track all remaining integration work explicitly.

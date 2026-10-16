@@ -1,0 +1,13 @@
+WHAT THESE ASSETS CAN AND CANNOT DO
+
+The three current mobile-screen images establish the art direction, framing and intended feeling. They are concept renders, not captures of a running application. They cannot prove animation, touch response, continuity or Android fit.
+
+The GLB is an actual connected 3D construction layout with named geometry. It can establish a supported route and landmarks in an engine. Its flat materials and simple landmark shapes are deliberate blockout representations. Finishing it requires the crochet surface materials, embroidered decoration, towers, rails, architecture, clouds, lighting and scenery dressing shown in the references. Distant paintings may be used as background art, but never as sequential pages that the racers traverse without a 3D floor.
+
+The 47 reusable art images are 2D with transparency where supplied. They preserve the source art's decoded pixels. They do not provide skeletons, skin weights, foot IK, motion capture, complete turn-around views or production animation clips. Purl and Loop have several rear-view poses and a front reference. Existing run-left and run-right filenames identify different foot phases, not camera directions. Do not turn a rear pose sideways to fake a curved route.
+
+For a moving camera and natural running, the preferred production solution is properly modeled and rigged Purl and Loop that match the supplied shapes, colors and yarn treatment. A directional-sprite alternative is acceptable only if adequate views, pivots, depth and ground contact are demonstrated in motion. Character identities are fixed: Purl is red with one loop tuft; Loop is teal with two loop-like ear tufts; Snagling is the purple tangled yarn creature.
+
+No final rug deformation system is supplied. A rug must unroll on the supported road, with its top height and collision synchronized; Purl's feet must stay on that top surface. Completing an animation while letting the character float along the previous painted route is not acceptable.
+
+Do not claim these files make a pixel-identical mobile game automatically. Match the visual targets closely while making the geometry physically coherent; disclose any required asset creation or visible design compromise. Review an actual moving opening segment before applying the solution across the whole level.
