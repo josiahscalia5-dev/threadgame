@@ -9,7 +9,7 @@
    right = [-t.z, 0, t.x] (the kit's [t.z, 0, -t.x] negated) and normal = right × forward (points up).
 
      const R = WW.route.prepare(WW.ROUTE.main)           a road: {id, points[{s,x,y,z,width,tangent,mainS}], length…}
-     WW.route.sample(R, s, lateral, bodyRadius)          → {s, center, position, forward, right, normal, width,
+     WW.route.sample(R, s, lateral, bodyRadius|null)     → {s, center, position, forward, right, normal, width,
                                                              lateral, limit, heading, mainS}
      WW.route.advance(state, dt, opts)                   kit advanceRun: {s, speed, phase, braked} → new state
      WW.route.chase(R, s, lateral, opts)                 kit chaseTargets (unsmoothed camera position/target)
@@ -46,6 +46,8 @@
   function sample(route, distance, lateral, bodyRadius) {
     if (lateral === undefined) lateral = 0;
     if (bodyRadius === undefined) bodyRadius = 0.35;
+    const free = bodyRadius === null;          // game addition: null = no lateral clamp (world points off the deck)
+    if (free) bodyRadius = 0;
     const p = route.points;
     if (!p || p.length < 2 || !isFinite(distance) || !isFinite(lateral) || !isFinite(bodyRadius) || bodyRadius < 0) {
       throw new TypeError('Valid route, distance and body radius required');
@@ -68,7 +70,7 @@
     const aw = a.width != null ? a.width : route.width, bw = b.width != null ? b.width : route.width;
     const width = lerp(aw, bw, t);
     const limit = Math.max(0, width / 2 - bodyRadius);
-    const offset = clamp(lateral, -limit, limit);
+    const offset = free ? lateral : clamp(lateral, -limit, limit);
     return {
       s: s, center: center,
       position: [center[0] + right[0] * offset, center[1] + right[1] * offset, center[2] + right[2] * offset],

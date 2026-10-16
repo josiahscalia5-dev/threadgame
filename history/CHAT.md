@@ -3191,3 +3191,11 @@ continue and proceed where we're at. But like I said, can you validate to me whe
 
 - _tool Bash_: Read unit test helpers and loader exports
 
+- _tool Write_: /home/user/threadgame/tests/unit/route.test.cjs
+
+- _tool Bash_: Run the route unit tests
+
+
+
+- _tool Bash_: Add unclamped sampling option and rerun route tests
+

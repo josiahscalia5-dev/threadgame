@@ -104,7 +104,7 @@ test('collectible and landmark lateral offsets reproduce the kit world positions
     near(q.position[1] + c.hover, c.position[1], 0.002);
   });
   WW.ROUTE.landmarks.filter((l) => Math.abs(l.lateral) > 0).forEach((l) => {
-    const q = R.sample(gameMain, l.mainS, l.lateral, -100);   // no clamp
+    const q = R.sample(gameMain, l.mainS, l.lateral, null);   // no clamp
     near(q.position[0], l.position[0], 0.01); near(q.position[2], l.position[2], 0.01);
   });
 });
@@ -124,13 +124,13 @@ test('fork and rejoin handoffs keep the world position (no jump)', () => {
   for (const lat of [-2.4, -1.6, -0.5, 0, 0.8]) {
     const before = R.sample(C.main, b.startS + 0.01, lat, 0);
     const h = C.toBranch(b, b.startS + 0.01, lat);
-    const after = R.sample(b, h.s, h.lateral, -100);
+    const after = R.sample(b, h.s, h.lateral, null);
     near(Math.hypot(before.position[0] - after.position[0], before.position[2] - after.position[2]), 0, 0.02);
   }
   for (const lat of [-0.8, 0, 0.8]) {
     const before = R.sample(b, b.length - 0.01, lat, 0);
     const h = C.toMain(b, b.length - 0.01, lat);
-    const after = R.sample(C.main, h.s, h.lateral, -100);
+    const after = R.sample(C.main, h.s, h.lateral, null);
     near(Math.hypot(before.position[0] - after.position[0], before.position[2] - after.position[2]), 0, 0.02);
     near(h.s, b.endS, 0.05);
   }
