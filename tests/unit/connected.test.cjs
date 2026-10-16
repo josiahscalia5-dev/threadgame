@@ -105,7 +105,7 @@ test('steering: one swipe = one laneStep of target, smooth lateral motion, clamp
   stepFor(race, 0.8);
   assert.ok(Math.abs(st.purl.lateral - (3 - T.bodyRadius)) < 0.02, 'clamped at the road edge minus body clearance');
   for (let i = 0; i < 9; i++) race.input({ type: 'swipe', dir: 'left' });
-  stepFor(race, 0.8);
+  stepFor(race, 1.8);                       // 5 m across at steerSpeed
   assert.ok(Math.abs(st.purl.lateral + (3 - T.bodyRadius)) < 0.02);
 });
 
