@@ -195,21 +195,14 @@
 <script src="src/sim/loop-ai.js"></script>
 <script src="src/sim/race.js"></script>
 <!--RENDER-SCRIPTS-->
-<script src="src/render/util.js"></script>
-<script src="src/render/camera.js"></script>
-<script src="src/render/world.js"></script>
-<script src="src/render/actors.js"></script>
-<script src="src/render/fx.js"></script>
-<script src="src/render/features.js"></script>
-<script src="src/render/pull.js"></script>
-<script src="src/render/setpieces.js"></script>
+<script src="vendor/three.min.js"></script>
+<script src="src/render/materials.js"></script>
+<script src="src/render/course.js"></script>
+<script src="src/render/racers.js"></script>
+<script src="src/render/props.js"></script>
+<script src="src/render/chase.js"></script>
 <script src="src/render/renderer.js"></script>
 <!--/RENDER-SCRIPTS-->
-<script>
-  /* UI test harness only: ?stubs=1 swaps in minimal fake WW.sim/WW.render (tests/harness/ui-stubs.js).
-     The harness is not packaged with the Android build and is never loaded without the flag. */
-  if (/[?&]stubs=1(&|$)/.test(location.search)) document.write('<script src="../tests/harness/ui-stubs.js"><\/script>');
-</script>
 <script src="src/ui/dom.js"></script>
 <script src="src/ui/loader.js"></script>
 <script src="src/ui/hud.js"></script>

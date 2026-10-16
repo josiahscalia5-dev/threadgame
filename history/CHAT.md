@@ -3382,3 +3382,19 @@ continue and proceed where we're at. But like I said, can you validate to me whe
 
 - _tool Bash_: Check canvas CSS and layout function
 
+
+**Claude:** Now the renderer itself, which keeps the same API `main.js` already calls:
+
+
+- _tool Write_: /home/user/threadgame/game/src/render/renderer.js
+
+
+**Claude:** Next I'll wire the new render scripts into `index.html` and retire the plate-renderer modules. First I'll check nothing outside the renderer still uses them:
+
+
+- _tool Bash_: Find remaining references to old render modules
+
+
+
+- _tool Bash_: Remove plate renderer files and wire new render scripts
+
