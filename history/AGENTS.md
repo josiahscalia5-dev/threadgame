@@ -14,15 +14,15 @@ Final overlays look right. Let me do a last read of both files to confirm conten
 
 Now p02. Let me write the first draft and render it.
 
-## sim
-
-- transcript: `history/transcripts/283326c9-5b0d-5733-99e1-670739471e16/subagents/workflows/wf_69291628-655/agent-a1584ac5b3a6e549e.jsonl` (38 entries)
-
-I'll start by reading the architecture contract and specs.
-
 ## data:p06-p07
 
 - transcript: `history/transcripts/283326c9-5b0d-5733-99e1-670739471e16/subagents/workflows/wf_69291628-655/agent-a450b46661a19f24c.jsonl` (93 entries)
+
+I'll start by reading the architecture contract and specs.
+
+## sim
+
+- transcript: `history/transcripts/283326c9-5b0d-5733-99e1-670739471e16/subagents/workflows/wf_69291628-655/agent-a1584ac5b3a6e549e.jsonl` (38 entries)
 
 I'll start by reading the architecture contract and specs.
 

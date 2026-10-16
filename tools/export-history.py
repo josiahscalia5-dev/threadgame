@@ -98,14 +98,27 @@ def tool_line(block):
     return '- _tool %s_: %s' % (block.get('name'), str(desc).replace('\n', ' ')[:200])
 
 
-def chat_markdown(rows, title):
+def chat_markdown(sessions, title):
     out = ['# %s' % title, '',
            '_Exported by tools/export-history.py. Screenshots are omitted; tool calls are listed by purpose. '
            'Full detail: history/transcripts/._', '']
+    for name, rows in sessions:
+        out += ['', '# Session %s' % name, '']
+        out += chat_rows(rows)
+    return '\n'.join(out) + '\n'
+
+
+def chat_rows(rows):
+    out = []
     for row in rows:
         kind = row.get('type')
         msg = row.get('message')
-        if kind == 'user' and msg:
+        att = row.get('attachment') or {}
+        if att.get('type') == 'queued_command' and isinstance(att.get('prompt'), str) \
+                and '<task-notification>' not in att['prompt']:
+            # Messages typed while Claude was busy arrive as queued commands, not user rows.
+            out += ['---', '', '## You  %s' % row.get('timestamp', ''), '', redact(att['prompt']), '']
+        elif kind == 'user' and msg:
             texts = [b.get('text', '') for b in blocks(msg) if b.get('type') == 'text']
             texts = [t for t in texts if t.strip() and not t.lstrip().startswith('<system-reminder>')]
             if texts:
@@ -118,7 +131,7 @@ def chat_markdown(rows, title):
                 elif b.get('type') == 'tool_use':
                     out.append(redact(tool_line(b)))
             out.append('')
-    return '\n'.join(out) + '\n'
+    return out
 
 
 def final_text(rows):
@@ -131,22 +144,35 @@ def final_text(rows):
 
 
 def main():
-    if not os.path.isdir(SRC):
-        print('no transcripts at', SRC)
-        return
-    agents = []
-    for dirpath, _, files in os.walk(SRC):
+    # 1. Copy this machine's transcripts (current session) into history/transcripts/. Earlier sessions'
+    #    transcripts already there are kept, so the history accumulates across sessions and containers.
+    if os.path.isdir(SRC):
+        for dirpath, _, files in os.walk(SRC):
+            for name in sorted(files):
+                path = os.path.join(dirpath, name)
+                rel = os.path.relpath(path, SRC)
+                if name.endswith('.jsonl'):
+                    rows = read_jsonl(path)
+                    cleaned = '\n'.join(json.dumps(clean(r), ensure_ascii=False) for r in rows) + '\n'
+                    write_if_changed(os.path.join(OUT, 'transcripts', rel), cleaned)
+                elif name.endswith('.meta.json') and name.startswith('agent-'):
+                    with open(path, encoding='utf-8', errors='replace') as f:
+                        write_if_changed(os.path.join(OUT, 'transcripts', rel), redact(f.read()))
+    # 2. Build CHAT.md and AGENTS.md from everything saved so far.
+    hist = os.path.join(OUT, 'transcripts')
+    sessions, agents = [], []
+    for dirpath, _, files in os.walk(hist):
         for name in sorted(files):
             if not name.endswith('.jsonl'):
                 continue
             path = os.path.join(dirpath, name)
-            rel = os.path.relpath(path, SRC)
-            rows = read_jsonl(path)
-            cleaned = '\n'.join(json.dumps(clean(r), ensure_ascii=False) for r in rows) + '\n'
-            write_if_changed(os.path.join(OUT, 'transcripts', rel), cleaned)
-            if '/subagents/' not in path and os.path.dirname(path) == SRC:
-                write_if_changed(os.path.join(OUT, 'CHAT.md'), chat_markdown(rows, 'Wishweave Wonders — main chat'))
+            rel = os.path.relpath(path, hist)
+            if os.path.dirname(path) == hist:
+                rows = read_jsonl(path)
+                first = next((r.get('timestamp') for r in rows if r.get('timestamp')), '')
+                sessions.append((first, name[:-len('.jsonl')], rows))
             elif name.startswith('agent-'):
+                rows = read_jsonl(path)
                 meta_path = path[:-len('.jsonl')] + '.meta.json'
                 meta = {}
                 if os.path.exists(meta_path):
@@ -154,7 +180,11 @@ def main():
                         meta = json.load(open(meta_path))
                     except json.JSONDecodeError:
                         pass
-                agents.append((os.path.getmtime(path), rel, meta.get('description', ''), len(rows), final_text(rows)))
+                last = next((r.get('timestamp') for r in reversed(rows) if r.get('timestamp')), '')
+                agents.append((last, rel, meta.get('description', ''), len(rows), final_text(rows)))
+    sessions.sort()
+    write_if_changed(os.path.join(OUT, 'CHAT.md'),
+                     chat_markdown([(s[1], s[2]) for s in sessions], 'Wishweave Wonders — main chat'))
     lines = ['# Build agents', '', 'Every background/workflow agent that worked on this project, newest last, with its '
              'last message (its report when finished). Full transcripts: history/transcripts/.', '']
     for _, rel, desc, count, text in sorted(agents):
