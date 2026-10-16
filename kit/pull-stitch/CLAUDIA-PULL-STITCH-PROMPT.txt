@@ -1,0 +1,31 @@
+CONTINUE MY EXISTING WISHWEAVE WONDERS GAME — APPROVED OPENING UPDATE
+
+Implement the approved TOUCH → PULL → OPEN interaction in my current Level 1 project. This is an additive change to the first opening interaction, not a new project, new theme, slideshow or redesign. Keep existing working code, route data, asset imports, tests, features and Git history. Inspect the actual architecture, then integrate this change into its existing input, simulation, renderer and HUD systems. The rest of Level 1 still needs to be completed as previously specified.
+
+Use approved/pull-stitch-approved.png as the visual authority. Read START-HERE.txt, docs/PULL-STITCH-SPEC.md, docs/ANIMATION-AND-ART.md, docs/ASSET-INTEGRATION.md and docs/ACCEPTANCE-CHECKS.md. The supplied raster cutouts and plates are working art materials; they may differ in fine texture from the approved composition. Do not change the existing scene to accommodate a mismatched derivative. Closed/opening background plates already contain their carpet roll; never place a second separate roll on top. The plates are static state guides, not a substitute for the current game's continuous renderer.
+
+WHAT I WANT THE PLAYER TO DO
+1. Purl arrives safely at the closed coral carpet. A small label says “Touch the loop.” The gold yarn loop near Purl is easy to see and touch.
+2. The player touches that loop and drags DOWN a short distance. The label becomes “Pull down,” with a short downward arrow. Purl grips the strand, plants both feet, leans back and pulls in direct response to the finger. His feet do not run or slide during the pull.
+3. The gold fastening loosens and pops open. The embroidered carpet unfurls AWAY from Purl, following the supported curved ramp up the existing tower. Show the original coral-and-gold surface appearing, not a new road or an unsupported floating strip.
+4. Remove the gesture prompt, finish laying the carpet, activate the traversable route, then resume normal running. The objective becomes “Collect the coral thread.” Opening does not award an item. Purl reaches and physically collects the coral spool to change 0/3 to 1/3.
+
+MAKE THE FIRST LESSON COMFORTABLE
+There is no timer, failure, damage, lost thread, cash change or precision penalty for this opening lesson. Pause BOTH racers' route progress and the race clock while Purl learns the gesture and the opening animation completes. Keep their idle animations and environmental motion alive. Resume both racers from their real positions when the route is ready. Do not let Loop win time while the player reads the first tutorial, teleport him, or artificially set him level with Purl. Ordinary later race sections keep Loop autonomous and the existing race behavior intact.
+
+TOUCH DETAILS
+Use a hit area at least 48 CSS pixels in each dimension, even if the gold art is smaller. An initial drag target is clamp(0.10 × game-viewport height, 64, 110) CSS pixels; tune on actual touch devices. Start only from the gold loop while Purl is in range. Capture the active pointer. Count downward movement, not upward or sideways movement. Show continuous positive progress; pulling back cannot undo the maximum reached in that gesture. Releasing early retains partial progress and lets the player touch again to finish. Ignore extra fingers and prevent one interaction from also causing a jump or lane swipe. Use touch-action control on the game canvas, not across unrelated page UI. Pointer cancellation, pause, backgrounding, resize and retry must leave a safe resumable state.
+
+COMPLETION MUST HAPPEN ONCE
+Use one persistent opening state for this attempt. Completing or retapping an already opened stitch cannot create another carpet, animation, item, score or reward. The first opening grants no speed boost. Keep any previously specified later shortcut boost restricted to its existing eligible task; do not create a second reward here. The normal three item identities remain coral, teal and gold. Opening the route and recovering a dropped item must never create a fourth item.
+
+KEEP THE APPROVED LOOK AND ROLES
+Purl is the player-controlled coral/red crochet character with one curled tuft. Loop is the teal/blue computer rival with two loop tufts. Show one of each. Loop remains a believable independent racer, not a teammate, tethered helper or another human user. Keep the camera behind and slightly above Purl, looking forward. Preserve the wooden loom city, carpet geometry, embroidery, gold borders, tassels, lighting, background depth, character scale and slim locked rewards strip. Keep the red spool at the upper landing and Loop on his own route.
+
+ART / ANIMATION REQUIREMENTS
+Use a grounded reach, two-foot braced pull, knot release and forward running transition. Fit the gold strand between the hand grip and fastening every frame. During the drag, small stitch lights and partial carpet movement may track progress, but Purl cannot enter the closed route. After completion, use an approximately 0.9–1.4 second final unfurl as a starting point; adjust to the actual path length. No abrupt road swap, character duplication, bouncy still-image sliding or stretched character art. The approved panels are keyframes, not all required animation frames. Create missing in-between motion or additional art in the current renderer as needed and report limitations honestly.
+
+DELIVER PROOF FROM THE RUNNING GAME
+Show a real touch-driven recording covering arrival, touch, partial pull/release/resume, completed pull, carpet unfurling, run-up and physical coral-spool pickup. Also show that the tutorial preserves both racers' race progress, that normal Loop movement resumes, and that pause/resume and repeated touches cannot duplicate the effect. Compare implemented TOUCH, PULL and OPEN captures against the approved triptych at a usable phone size. Report tested viewport/device sizes and any remaining mismatch. Do not describe still-image tours or authoring overlays as gameplay or claim that every Android phone was tested.
+
+The cash-out display remains locked visual UI. This update does not implement real-money rewards or a payment service. Continue the current project without replacing its other approved Level 1 features.
