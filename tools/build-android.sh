@@ -122,6 +122,10 @@ else:
     for ref in refs:
         if re.match(r'^[a-z]+:', ref, re.I) or ref.startswith('//'):
             continue  # external/data URLs are blocked by the host anyway; the game must not use them
+        if ref.startswith('../'):
+            # outside game/: the browser test harness (index.html?stubs=1 only), never part of the app
+            print(f'  dev-only reference outside game/ (not packaged, not loaded by the app): {ref}')
+            continue
         if 'assets/game/' + ref.lstrip('./') not in names:
             missing.append('assets/game/' + ref.lstrip('./') + '  (referenced by index.html)')
     print(f'index.html references {len(refs)} local files')
