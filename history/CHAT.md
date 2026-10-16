@@ -2272,3 +2272,11 @@ Yes
 
 - _tool Bash_: Reduce drag roll travel and record the pull lesson run
 
+
+
+- _tool Bash_: Run pull e2e checks at three more viewport sizes
+
+- _tool Bash_: Build approved vs running-game TOUCH/PULL/OPEN comparison
+
+- _tool Read_: /tmp/claude-0/-home-user-threadgame/131a49c9-f445-5dda-9dd9-fdcc5c2be76a/scratchpad/view/pull-compare-small.jpg
+
