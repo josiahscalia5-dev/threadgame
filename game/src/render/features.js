@@ -63,14 +63,14 @@
     const pulse = 0.5 + 0.5 * Math.sin(clock * 4.2);
     ctx.save();
     ctx.globalCompositeOperation = 'lighter';
-    ctx.globalAlpha = fade * (0.5 + 0.2 * pulse);
+    ctx.globalAlpha = fade * (0.4 + 0.15 * pulse);
     const gr = r * 1.15;
     ctx.drawImage(glow, x - gr, y - gr, gr * 2, gr * 2);
-    ctx.globalAlpha = fade * (0.7 + 0.3 * pulse);
+    ctx.globalAlpha = fade * (0.45 + 0.2 * pulse);
     const gr2 = r * 0.55;
     ctx.drawImage(glow, x - gr2, y - gr2 * 0.9, gr2 * 2, gr2 * 2);
     const core = u.glowSprite(R.cache, 'rgba(255,250,220,0.95)', 0.05);
-    ctx.globalAlpha = fade * (0.35 + 0.25 * pulse);
+    ctx.globalAlpha = fade * (0.2 + 0.15 * pulse);
     const gr3 = r * 0.3;
     ctx.drawImage(core, x - gr3, y - gr3, gr3 * 2, gr3 * 2);
     ctx.restore();
