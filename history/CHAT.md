@@ -2075,3 +2075,19 @@ Yes
 
 - _tool Bash_: Read the ribbon-dependent test bodies
 
+
+
+- _tool Bash_: Read the rest of check 2, the pacing test and pacing data
+
+
+**Claude:** The dodge-window test finds no dodges at all, so something in the bot's run changed. Running one bot race to see the timeline:
+
+
+- _tool Bash_: Run one headless bot race and print the timeline
+
+
+**Claude:** The tutorial now costs no race time: the race clock reads 0.57 s at the cue and still 0.57 s at the open. Checking the dodge-window case directly:
+
+
+- _tool Bash_: Check bot dodge stats at different max times
+
