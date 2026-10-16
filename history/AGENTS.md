@@ -56,27 +56,27 @@ You've hit your session limit · resets 7pm (UTC)
 
 You've hit your session limit · resets 7pm (UTC)
 
-## UI: HUD, input, loop, lifecycle
-
-- transcript: `history/transcripts/370de19d-9b32-5c31-ac39-d89d7478db67/subagents/agent-ae9506e4d1065977a.jsonl` (187 entries)
-
-Let me measure the rewards strip internals precisely before restyling.
-
-## Renderer: plates, camera, actors, effects
-
-- transcript: `history/transcripts/370de19d-9b32-5c31-ac39-d89d7478db67/subagents/agent-aee076b7546be423f.jsonl` (131 entries)
-
-Now I have a clear picture. Let me write the renderer modules, starting with shared utilities.
-
 ## Simulation: race rules and Loop AI
 
 - transcript: `history/transcripts/370de19d-9b32-5c31-ac39-d89d7478db67/subagents/agent-ae84357f8296ab86f.jsonl` (136 entries)
 
 _(no message yet)_
 
+## UI: HUD, input, loop, lifecycle
+
+- transcript: `history/transcripts/370de19d-9b32-5c31-ac39-d89d7478db67/subagents/agent-ae9506e4d1065977a.jsonl` (190 entries)
+
+Now I'll rewrite `style.css` with the measured approved geometry (design px × `--k`), keeping the previous agent's overlay/card styling.
+
+## Renderer: plates, camera, actors, effects
+
+- transcript: `history/transcripts/370de19d-9b32-5c31-ac39-d89d7478db67/subagents/agent-aee076b7546be423f.jsonl` (137 entries)
+
+Now the harness: a deterministic mini-sim producing §7.1-shaped state, plus moment shortcuts.
+
 ## Route data for p06 and p07
 
-- transcript: `history/transcripts/370de19d-9b32-5c31-ac39-d89d7478db67/subagents/agent-aff5e4bcb58123cca.jsonl` (286 entries)
+- transcript: `history/transcripts/370de19d-9b32-5c31-ac39-d89d7478db67/subagents/agent-aff5e4bcb58123cca.jsonl` (290 entries)
 
 _(no message yet)_
 
