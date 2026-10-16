@@ -22,7 +22,7 @@ import os
 
 REPO = os.path.abspath(os.path.join(os.path.dirname(__file__), '..'))
 SRC = os.path.join(REPO, 'kit', 'connected', 'Wishweave-Connected-World-Kit', 'scenery', 'route.json')
-OUT = os.path.join(REPO, 'game', 'src', 'data', 'route.js')
+OUT = os.path.join(REPO, 'game', 'connected', 'src', 'data', 'route.js')
 
 
 def r6(v):
