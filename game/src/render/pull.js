@@ -17,12 +17,14 @@
   WW.render = WW.render || {};
   const U = function () { return WW.render.util; };
 
-  const PARTIAL = 0.15;                                  // band fraction the roll travels during the drag
+  const PARTIAL = 0.08;                                  // band fraction the roll travels during the drag (stays
+                                                         // on the straight ramp base, horizontal, as in approved PULL)
   const HAND = { idle: [136, -165], duck: [132, -92] };  // Purl's right hand, frame px from the foot pivot
   const LABEL = { touch: 'Touch the loop', pull: 'Pull down' };
   /* Pill centre relative to the loop (plate px at zoom 1), from the approved TOUCH / PULL frames. */
   const PILL = { touch: { dx: 83, dy: -141 }, pull: { dx: 83, dy: -111 } };
   const LOOP_W = 58;                                     // gold loop sprite width (as the other stitches)
+  const LABEL_K = 1.5;                                   // lesson pills/arrows are 1.5× the later "Tap the stitch" cue (approved triptych)
   const FONT = '800 {s}px Nunito, "Baloo 2", "Trebuchet MS", "Segoe UI", Roboto, Arial, sans-serif';
 
   const metas = new WeakMap();
@@ -225,9 +227,10 @@
     const cfg = PILL[mode];
     const bob = mode === 'touch' ? Math.sin(clock * 2.4) * 2.5 * z : 0;
     const cx = x + cfg.dx * z, cy = y + cfg.dy * z + bob;
+    const zl = z * LABEL_K;
     ctx.save();
     ctx.globalAlpha = fade;
-    let font = Math.max(10.5, 24 * z);
+    const font = Math.max(13, 24 * zl);
     ctx.font = FONT.replace('{s}', font.toFixed(1));
     ctx.textAlign = 'center'; ctx.textBaseline = 'middle';
     const text = LABEL[mode];
@@ -236,19 +239,19 @@
     // arrow (behind the pill's lower edge)
     let pts;
     if (mode === 'touch') {
-      const a = { x: cx - w * 0.16, y: cy + h * 0.4 }, b = { x: x + 12 * z, y: y - 40 * z };
-      pts = quad(a, { x: a.x - 6 * z, y: a.y + (b.y - a.y) * 0.75 }, b, 12);
+      const a = { x: cx - w * 0.2, y: cy + h * 0.4 }, b = { x: x + 14 * z, y: y - 42 * z };
+      pts = quad(a, { x: a.x - 8 * z, y: a.y + (b.y - a.y) * 0.75 }, b, 12);
     } else {
-      const a = { x: cx - w * 0.22, y: cy + h * 0.42 }, b = { x: cx - w * 0.06, y: cy + h * 0.42 + 190 * z };
-      pts = cubic(a, { x: a.x - 42 * z, y: a.y + 80 * z }, { x: b.x - 26 * z, y: b.y - 64 * z }, b, 20);
+      const a = { x: cx - w * 0.24, y: cy + h * 0.42 }, b = { x: cx - w * 0.04, y: cy + h * 0.42 + 210 * z };
+      pts = cubic(a, { x: a.x - 50 * z, y: a.y + 90 * z }, { x: b.x - 30 * z, y: b.y - 70 * z }, b, 20);
     }
-    arrow(ctx, pts, z, mode === 'pull' ? k.shown : 0);
+    arrow(ctx, pts, zl, mode === 'pull' ? k.shown : 0);
     // pill
-    ctx.shadowColor = 'rgba(60, 25, 10, 0.35)'; ctx.shadowBlur = 6 * Math.max(1, z * 2); ctx.shadowOffsetY = 2;
+    ctx.shadowColor = 'rgba(60, 25, 10, 0.35)'; ctx.shadowBlur = 6 * Math.max(1, zl * 2); ctx.shadowOffsetY = 2;
     u.roundRect(ctx, cx - w / 2, cy - h / 2, w, h, h / 2);
     ctx.fillStyle = '#fbf3e4'; ctx.fill();
     ctx.shadowColor = 'transparent'; ctx.shadowBlur = 0; ctx.shadowOffsetY = 0;
-    ctx.lineWidth = Math.max(1, 1.6 * z * 2); ctx.strokeStyle = '#c7ad8b'; ctx.stroke();
+    ctx.lineWidth = Math.max(1, 1.6 * zl * 2); ctx.strokeStyle = '#c7ad8b'; ctx.stroke();
     const ins = Math.max(2.2, h * 0.12);
     u.roundRect(ctx, cx - w / 2 + ins, cy - h / 2 + ins, w - 2 * ins, h - 2 * ins, (h - 2 * ins) / 2);
     ctx.setLineDash([Math.max(2, font * 0.25), Math.max(1.5, font * 0.18)]);
