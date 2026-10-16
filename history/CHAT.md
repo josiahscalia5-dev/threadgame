@@ -3593,3 +3593,7 @@ What are you doing? I want these to look like exactly my mobile app screens. You
 
 - _tool Bash_: Scale racers to the approved size and retune sim
 
+
+
+- _tool Bash_: Retune side-step speed and fix continuity limits
+
