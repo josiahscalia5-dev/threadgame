@@ -2912,3 +2912,18 @@ Let me make sure you save everything to my GitHub. Respiratory, all the chats fr
 
 - _tool Bash_: Export latest chat history, commit, push, and verify GitHub
 
+
+**Claude:** Everything is saved and up to date on GitHub. Branch `ccr-207f431c-z9upqo` on `josiahscalia5-dev/threadgame` is at commit `a5232f7`, the same as this machine, with nothing left uncommitted or unpushed.
+
+**What's saved:**
+- **The whole app and project:** game code, art, Android app, tests, tools, docs, the latest APK in `dist/`, and the new Connected World kit you just sent (in `kit/connected/`).
+- **Chat history:** `history/CHAT.md` has all three sessions, your messages and mine, up to and including this one.
+- **Agent history:** full transcripts of every agent are in `history/transcripts/`, with a summary in `history/AGENTS.md`.
+- **Handoff note:** `docs/HANDOFF.md` says where everything is, the current state and what comes next, so a new session can continue right away.
+- **Checkpoint:** commit `635b772` on this branch is the finished picture-based version, before the Connected World rewrite.
+
+**Before you switch sessions:**
+- **Inspection still running:** the four-agent inspection of the Connected World kit is still going in this session. Its transcripts keep saving to GitHub automatically, but its final reports arrive here. If you continue elsewhere, tell me and I'll stop it so it doesn't use more credits. The new session can re-run it if needed.
+- **Auto-save stops with this session:** it runs only while this session's cloud machine is up. When you start the new session, tell it to read `docs/HANDOFF.md` first. That file includes the one command to restart auto-save on that session's branch.
+
+
