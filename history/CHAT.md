@@ -4021,3 +4021,15 @@ Building the new APK:
 
 - _tool Bash_: Build the APK and verify it has the full-screen changes
 
+
+**Claude:** The APK contains exactly the files I tested, plus the new full-screen Android code. I'll update the handoff note, then send you the comparison and the new APK.
+
+
+- _tool Edit_: /home/user/threadgame/docs/HANDOFF.md
+
+- _tool SendUserFile_: 
+
+- _tool SendUserFile_: 
+
+- _tool Bash_: Commit and push the full-screen changes
+
