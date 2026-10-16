@@ -76,7 +76,7 @@ Now the acceptance and pacing suites.
 
 ## UI: HUD, input, loop, lifecycle
 
-- transcript: `history/transcripts/370de19d-9b32-5c31-ac39-d89d7478db67/subagents/agent-ae9506e4d1065977a.jsonl` (460 entries)
+- transcript: `history/transcripts/370de19d-9b32-5c31-ac39-d89d7478db67/subagents/agent-ae9506e4d1065977a.jsonl` (461 entries)
 
 Markup is consistent and the renderer's block is intact. Final regression: rerun the full interaction suite and refresh the 412×915 side-by-sides with the final CSS.
 
