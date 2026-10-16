@@ -3682,3 +3682,40 @@ I won't change anything else until you tell me what you want next. If you'd stil
 
 @"/root/.claude/uploads/3689052e-f35d-5a30-b62d-bdfb14b60d40/f5faf27b-Wishweave-Connected-Part-02-of-03.zip" @"/root/.claude/uploads/3689052e-f35d-5a30-b62d-bdfb14b60d40/2142b301-Wishweave-Connected-Part-01-of-03.zip" @"/root/.claude/uploads/3689052e-f35d-5a30-b62d-bdfb14b60d40/4b0e8344-Wishweave-Connected-Part-01-of-03.zip" @"/root/.claude/uploads/3689052e-f35d-5a30-b62d-bdfb14b60d40/23d16d51-Wishweave-Connected-CLAUDIA-PROMPT_1.txt" Okay, well, these are the ones I originally sent you in the beginning. Now, thanks for wasting my credits. I wanted to keep my mobile app screens like they are now. Like the old ones, or what, what I have now. I just want to add these features to it. Do you have a brain? Look into it. Keep my mobile app screens like it is. But what, what's the point of channeling with you if you're such an idiot?
 
+
+**Claude:** Understood. Your screens stay exactly as they are now, and I add the features from the package on top. No new backgrounds, no 3D rebuild, no replacing your art.
+
+From your package, these are the features I'll add to the current game:
+
+1. **Brake:** double-tap stops Purl, and double-tap again makes him run. Loop keeps racing and can pass him, and a jump while stopped stays in place.
+2. **Buttons:** small Left, Right, Jump and Run-Stop buttons in your game's own button style, as well as the swipes.
+3. **Objective fix:** the objective updates the moment a thread is picked up. It currently still says "Collect the coral thread" after he has it.
+4. **Transition fix:** Purl no longer floats over a blurred pillar between scenes. I'll do this with your existing scenes only, and show you a before-and-after first.
+
+First I'll check whether the files you just sent are the same ones I already have:
+
+
+- _tool Bash_: Compare the re-sent uploads with the saved kit
+
+
+**Claude:** These are the same package files I already have saved (same prompt, same contents), so there's nothing new to unpack. I'll reset the task list to the new scope:
+
+
+- _tool TaskUpdate_: 
+
+- _tool TaskUpdate_: 
+
+- _tool TaskUpdate_: 
+
+- _tool TaskUpdate_: 
+
+- _tool TaskUpdate_: 
+
+- _tool TaskCreate_: Original game: HUD says 'Collect the coral thread' after Purl has it. inventory.collect never calls refreshObjective; refreshObjective returns early on connectors. Keep screens unchanged.
+
+- _tool TaskCreate_: Add to the original sim + input: double-tap toggles Purl's brake; Loop keeps racing and can pass; swipe up while stopped jumps in place without resuming. Taps on stitch targets still work. Unit tests.
+
+- _tool TaskCreate_: Small accessible buttons styled like the existing cream/gold UI, clear of Purl's feet and the rewards strip; screenshot vs current for approval.
+
+- _tool TaskCreate_: Within the existing plate art: Purl never drawn floating over the blurred column; he runs behind the tower (occluded) and his size stays continuous. Before/after for approval.
+
