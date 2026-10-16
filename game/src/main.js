@@ -71,6 +71,7 @@
   function handle(events) {
     if (!events.length) return;
     renderer.onEvents(events, race.state);
+    if (WW.audio) WW.audio.onEvents(events, race.state);
     for (let i = 0; i < events.length; i++) {
       const t = events[i].type;
       if ((t === 'hit' || t === 'drop') && navigator.vibrate) { try { navigator.vibrate(60); } catch (e) { /* ignore */ } }
@@ -88,14 +89,22 @@
     if (s.paused || s.mode !== 'running') return;
     handle(race.input(cmd));
   }
-  function start() { if (race && race.state.mode === 'intro') { race.start(); acc = 0; } }
+  function start() {
+    if (race && race.state.mode === 'intro') {
+      race.start(); acc = 0;
+      if (WW.audio) { WW.audio.unlock(); WW.audio.count(); }
+    }
+  }
   function pause(reason) {
     if (!race) return;
     const m = race.state.mode;
     if ((m === 'countdown' || m === 'running') && !race.state.paused) race.pause(reason || 'user');
   }
   function resume() { if (race && race.state.paused) { race.resume(); acc = 0; lastT = performance.now(); } }
-  function restart(seed) { newRace(seed); race.start(); }
+  function restart(seed) {
+    newRace(seed); race.start();
+    if (WW.audio) { WW.audio.unlock(); WW.audio.count(); }
+  }
 
   // ---------------------------------------------------------------- frame loop
   function frame(t) {
@@ -120,6 +129,8 @@
       callbacks: {
         start: start, pause: pause, resume: resume,
         restart: function () { restart(); },
+        soundOn: function () { return !WW.audio || WW.audio.isOn(); },
+        toggleSound: function () { if (WW.audio) WW.audio.setOn(!WW.audio.isOn()); },
         retryLoad: function () { location.reload(); }
       },
       renderer: { setHudAnchors: function (a) { if (renderer) renderer.setHudAnchors(a); } }
@@ -131,6 +142,8 @@
       layout();
       hud.drawPortraits(renderer.drawFrame);
       newRace();
+      // Browsers only allow sound after a gesture; any touch unlocks it.
+      app.addEventListener('pointerdown', function () { if (WW.audio) WW.audio.unlock(); }, true);
       WW.ui.attachInput(app, send, function () {
         if (!race) return;
         if (race.state.paused) resume(); else pause('user');
@@ -145,7 +158,10 @@
     window.addEventListener('resize', layout);
     window.addEventListener('orientationchange', function () { setTimeout(layout, 120); });
     if (window.visualViewport) window.visualViewport.addEventListener('resize', layout);
-    document.addEventListener('visibilitychange', function () { if (document.hidden) pause('background'); });
+    document.addEventListener('visibilitychange', function () {
+      if (document.hidden) { pause('background'); if (WW.audio) WW.audio.suspend(); }
+      else if (WW.audio) WW.audio.resume();
+    });
     window.addEventListener('pagehide', function () { pause('background'); });
     window.addEventListener('blur', function () { if (!TEST) pause('background'); });
     // iOS pinch/double-tap zoom must never move the game.

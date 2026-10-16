@@ -28,6 +28,7 @@
       start: $('ov-start'), btnStart: $('btn-start'),
       pauseOv: $('ov-pause'), pauseMenu: $('pause-menu'), pauseHelp: $('pause-help'), pauseSub: $('pause-sub'),
       btnResume: $('btn-resume'), btnRestart: $('btn-restart'), btnHelp: $('btn-help'), btnHelpBack: $('btn-help-back'),
+      btnSound: $('btn-sound'),
       fail: $('ov-fail'), btnRetry: $('btn-retry'), error: $('ov-error'), errorText: $('error-text')
     };
     const cb = opts.callbacks || {};
@@ -54,6 +55,13 @@
     tapButton(el.btnHelp, function () { show(el.pauseMenu, false); show(el.pauseHelp, true); });
     tapButton(el.btnHelpBack, function () { show(el.pauseHelp, false); show(el.pauseMenu, true); });
     tapButton(el.btnRetry, function () { cb.restart && cb.restart(); });
+    function soundLabel() {
+      const on = !cb.soundOn || cb.soundOn();
+      el.btnSound.textContent = on ? 'SOUND: ON' : 'SOUND: OFF';
+      el.btnSound.setAttribute('aria-pressed', on ? 'true' : 'false');
+    }
+    tapButton(el.btnSound, function () { cb.toggleSound && cb.toggleSound(); soundLabel(); });
+    soundLabel();
     tapButton(el.again, function () { cb.restart && cb.restart(); });
     tapButton(el.loadRetry, function () { cb.retryLoad && cb.retryLoad(); });
     tapButton(el.cashout, function () {

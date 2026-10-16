@@ -18,6 +18,7 @@
   const RUN = ['run-left', 'run-pass-a', 'run-right', 'run-pass-b'];
   const SPOOL = { coral: 'prop.coral-thread', teal: 'prop.teal-thread', gold: 'prop.golden-thread' };
   const GLOW = { coral: '255,120,140', teal: '90,230,225', gold: '255,215,110' };
+  const PILLAR = { plate: 'p04', x: 6, y: 0, w: 172, h: 1240 };   // carved tower used for scene transitions
 
   function easeInOut(t) { t = U.clamp(t, 0, 1); return t < 0.5 ? 4 * t * t * t : 1 - Math.pow(-2 * t + 2, 3) / 2; }
   function easeOut(t) { t = U.clamp(t, 0, 1); return 1 - (1 - t) * (1 - t); }
@@ -750,19 +751,22 @@
         vB2.vx = entryPt.x - (entryS.x - col.x) / vB2.s; vB2.vy = entryPt.y - entryS.y / vB2.s;
         drawScene(vA, state, { noLoop: true });
         drawScene(vB2, state, { noLoop: true });
-        // the tower column passing in front of the camera covers the seam
-        const P = PLATES[A.seg.plate], wipe = P.wipe || { x0: 380, x1: 470 };
-        const seamX = col.x + (dir > 0 ? col.w - shift : -col.w - shift + col.w);
-        const sxW = (wipe.x1 - wipe.x0);
-        const colW = Math.max(col.w * 0.34, sxW * s0 * 1.7);
+        // A wooden tower passing in front of the camera covers the seam (the same carved pillar every time:
+        // p04's left tower, wood and rope bands only), with a soft shadow either side.
+        const seamX = col.x + (dir > 0 ? col.w - shift : -shift);
         if (e > 0.02 && e < 0.98) {
-          ctx.save();
-          ctx.drawImage(images[P.image], wipe.x0, 0, sxW, DH, seamX - colW / 2, -H * 0.15, colW, H * 1.3);
-          const gr = ctx.createLinearGradient(seamX - colW / 2, 0, seamX + colW / 2, 0);
-          gr.addColorStop(0, 'rgba(30,12,4,0.55)'); gr.addColorStop(0.5, 'rgba(30,12,4,0.15)'); gr.addColorStop(1, 'rgba(30,12,4,0.55)');
+          const pw = Math.max(col.w * 0.34, 90);
+          const sh = ctx.createLinearGradient(seamX - pw, 0, seamX + pw, 0);
+          sh.addColorStop(0, 'rgba(25,10,4,0)'); sh.addColorStop(0.3, 'rgba(25,10,4,0.5)');
+          sh.addColorStop(0.7, 'rgba(25,10,4,0.5)'); sh.addColorStop(1, 'rgba(25,10,4,0)');
+          ctx.fillStyle = sh;
+          ctx.fillRect(seamX - pw, 0, pw * 2, H);
+          ctx.drawImage(images[PLATES[PILLAR.plate].image], PILLAR.x, PILLAR.y, PILLAR.w, PILLAR.h, seamX - pw / 2, -H * 0.04, pw, H * 1.08);
+          const gr = ctx.createLinearGradient(seamX - pw / 2, 0, seamX + pw / 2, 0);
+          gr.addColorStop(0, 'rgba(30,12,4,0.55)'); gr.addColorStop(0.35, 'rgba(30,12,4,0.05)');
+          gr.addColorStop(0.65, 'rgba(30,12,4,0.05)'); gr.addColorStop(1, 'rgba(30,12,4,0.6)');
           ctx.fillStyle = gr;
-          ctx.fillRect(seamX - colW / 2, 0, colW, H);
-          ctx.restore();
+          ctx.fillRect(seamX - pw / 2, 0, pw, H);
         }
         // speed streaks
         ctx.save();

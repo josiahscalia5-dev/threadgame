@@ -14,6 +14,7 @@ import android.view.Gravity;
 import android.view.View;
 import android.view.ViewGroup;
 import android.view.WindowInsets;
+import android.view.WindowInsetsController;
 import android.view.WindowManager;
 import android.webkit.ConsoleMessage;
 import android.webkit.RenderProcessGoneDetail;
@@ -45,13 +46,15 @@ import java.util.Collections;
  *   onPause  -> WishweaveGame.pause('background'), WebView.onPause(), pauseTimers()
  *   onResume -> resumeTimers(), WebView.onResume() only; the race stays paused until the player resumes
  *   Back     -> WishweaveGame.onBack(); the activity finishes only when it returns 'exit'
- *   Insets   -> system bars + display cutout applied as padding on the root view
+ *   Screen   -> immersive full screen, drawn edge to edge (behind the cutout and the hidden system bars)
+ *   Insets   -> the remaining cutout/system-bar insets are sent to the page in CSS px
+ *               (WishweaveGame.setInsets), so only the HUD keeps clear of them and the scene fills the screen
  */
 public class MainActivity extends Activity {
     private static final String TAG = "Wishweave";
     private static final String HOST = "appassets.androidplatform.net";
     static final String ENTRY = "https://" + HOST + "/assets/game/index.html";
-    private static final int BACKGROUND = Color.rgb(41, 27, 45);
+    private static final int BACKGROUND = Color.rgb(43, 24, 16);
 
     /** window.WishweaveGame && WishweaveGame.pause('background'), guarded so it can never throw. */
     private static final String JS_PAUSE =
@@ -70,6 +73,7 @@ public class MainActivity extends Activity {
 
     private FrameLayout root;
     private WebView web;
+    private int[] insetsPx = {0, 0, 0, 0};   // top, right, bottom, left (physical px) last reported by the system
     private Object backCallback;   // OnBackInvokedCallback on API 33+, kept as Object for older class verification
 
     @Override
@@ -81,8 +85,9 @@ public class MainActivity extends Activity {
         root.setBackgroundColor(BACKGROUND);
         layoutEdgeToEdge();
         setContentView(root);
-        root.setOnApplyWindowInsetsListener(this::applySafeInsets);
+        root.setOnApplyWindowInsetsListener(this::onInsets);
         root.requestApplyInsets();
+        enterImmersive();
 
         if (Build.VERSION.SDK_INT >= 33) {
             backCallback = BackApi33.register(this, this::handleBack);
@@ -94,58 +99,88 @@ public class MainActivity extends Activity {
         createGameView();
     }
 
-    // ---------------------------------------------------------------- insets
+    // ---------------------------------------------------------------- full screen + insets
 
     @SuppressWarnings("deprecation")
     private void layoutEdgeToEdge() {
         if (Build.VERSION.SDK_INT >= 28) {
             WindowManager.LayoutParams attrs = getWindow().getAttributes();
-            attrs.layoutInDisplayCutoutMode =
-                WindowManager.LayoutParams.LAYOUT_IN_DISPLAY_CUTOUT_MODE_SHORT_EDGES;
+            attrs.layoutInDisplayCutoutMode = Build.VERSION.SDK_INT >= 30
+                ? WindowManager.LayoutParams.LAYOUT_IN_DISPLAY_CUTOUT_MODE_ALWAYS
+                : WindowManager.LayoutParams.LAYOUT_IN_DISPLAY_CUTOUT_MODE_SHORT_EDGES;
             getWindow().setAttributes(attrs);
         }
         if (Build.VERSION.SDK_INT >= 30) {
             getWindow().setDecorFitsSystemWindows(false);
+        }
+        getWindow().setStatusBarColor(Color.TRANSPARENT);
+        getWindow().setNavigationBarColor(Color.TRANSPARENT);
+    }
+
+    /** Hides the status and navigation bars; a swipe from the edge shows them briefly over the game. */
+    @SuppressWarnings("deprecation")
+    private void enterImmersive() {
+        if (Build.VERSION.SDK_INT >= 30) {
+            WindowInsetsController c = getWindow().getInsetsController();
+            if (c != null) {
+                c.hide(WindowInsets.Type.systemBars());
+                c.setSystemBarsBehavior(WindowInsetsController.BEHAVIOR_SHOW_TRANSIENT_BARS_BY_SWIPE);
+            }
         } else {
             getWindow().getDecorView().setSystemUiVisibility(
-                View.SYSTEM_UI_FLAG_LAYOUT_STABLE
+                View.SYSTEM_UI_FLAG_IMMERSIVE_STICKY
+                | View.SYSTEM_UI_FLAG_FULLSCREEN
+                | View.SYSTEM_UI_FLAG_HIDE_NAVIGATION
+                | View.SYSTEM_UI_FLAG_LAYOUT_STABLE
                 | View.SYSTEM_UI_FLAG_LAYOUT_FULLSCREEN
                 | View.SYSTEM_UI_FLAG_LAYOUT_HIDE_NAVIGATION);
         }
     }
 
+    @Override
+    public void onWindowFocusChanged(boolean hasFocus) {
+        super.onWindowFocusChanged(hasFocus);
+        if (hasFocus) enterImmersive();
+    }
+
     /**
-     * The WebView viewport excludes status/navigation bars and cutouts: the root is padded by the
-     * insets and the insets are consumed, so the page's env(safe-area-inset-*) resolve to 0 and the
-     * game never double-pads.
+     * The WebView always fills the whole screen. Whatever the cutout or visible system bars still cover is
+     * reported to the page so its HUD and buttons stay clear of it; the scene itself draws underneath.
      */
     @SuppressWarnings("deprecation")
-    private WindowInsets applySafeInsets(View view, WindowInsets insets) {
+    private WindowInsets onInsets(View view, WindowInsets insets) {
+        int left, top, right, bottom;
         if (Build.VERSION.SDK_INT >= 30) {
-            Insets safe = insets.getInsets(
-                WindowInsets.Type.systemBars() | WindowInsets.Type.displayCutout());
-            view.setPadding(safe.left, safe.top, safe.right, safe.bottom);
-            return WindowInsets.CONSUMED;
-        }
-        int left = insets.getSystemWindowInsetLeft();
-        int top = insets.getSystemWindowInsetTop();
-        int right = insets.getSystemWindowInsetRight();
-        int bottom = insets.getSystemWindowInsetBottom();
-        if (Build.VERSION.SDK_INT >= 28) {
-            DisplayCutout cutout = insets.getDisplayCutout();
-            if (cutout != null) {
-                left = Math.max(left, cutout.getSafeInsetLeft());
-                top = Math.max(top, cutout.getSafeInsetTop());
-                right = Math.max(right, cutout.getSafeInsetRight());
-                bottom = Math.max(bottom, cutout.getSafeInsetBottom());
+            Insets safe = insets.getInsets(WindowInsets.Type.systemBars() | WindowInsets.Type.displayCutout());
+            left = safe.left; top = safe.top; right = safe.right; bottom = safe.bottom;
+        } else {
+            left = insets.getSystemWindowInsetLeft();
+            top = insets.getSystemWindowInsetTop();
+            right = insets.getSystemWindowInsetRight();
+            bottom = insets.getSystemWindowInsetBottom();
+            if (Build.VERSION.SDK_INT >= 28) {
+                DisplayCutout cutout = insets.getDisplayCutout();
+                if (cutout != null) {
+                    left = Math.max(left, cutout.getSafeInsetLeft());
+                    top = Math.max(top, cutout.getSafeInsetTop());
+                    right = Math.max(right, cutout.getSafeInsetRight());
+                    bottom = Math.max(bottom, cutout.getSafeInsetBottom());
+                }
             }
         }
-        view.setPadding(left, top, right, bottom);
-        WindowInsets consumed = insets.consumeSystemWindowInsets();
-        if (Build.VERSION.SDK_INT >= 28) {
-            consumed = consumed.consumeDisplayCutout();
-        }
-        return consumed;
+        insetsPx = new int[] {top, right, bottom, left};
+        sendInsets();
+        return insets;
+    }
+
+    /** WishweaveGame.setInsets(top, right, bottom, left) in CSS px; harmless if the page is not ready yet. */
+    private void sendInsets() {
+        if (web == null) return;
+        float d = getResources().getDisplayMetrics().density;
+        String js = String.format(java.util.Locale.ROOT,
+            "(function(){try{var g=window.WishweaveGame;if(g&&g.setInsets){g.setInsets(%.1f,%.1f,%.1f,%.1f);}}catch(e){}})();",
+            insetsPx[0] / d, insetsPx[1] / d, insetsPx[2] / d, insetsPx[3] / d);
+        web.evaluateJavascript(js, null);
     }
 
     // ---------------------------------------------------------------- WebView
@@ -200,6 +235,11 @@ public class MainActivity extends Activity {
             public boolean shouldOverrideUrlLoading(WebView view, WebResourceRequest request) {
                 // Stay on the local game; never open external links or other schemes.
                 return !isLocalAsset(request.getUrl());
+            }
+
+            @Override
+            public void onPageFinished(WebView view, String url) {
+                sendInsets();
             }
 
             @Override
@@ -322,6 +362,7 @@ public class MainActivity extends Activity {
             web.resumeTimers();
             web.onResume();
         }
+        enterImmersive();
         // Deliberately no WishweaveGame.resume(): the race stays paused until the player taps Resume.
     }
 
