@@ -2437,3 +2437,9 @@ Files are in `docs/checkpoints/`:
 - 2026-10-16-pull-stitch-touch-run.mp4
 
 
+---
+
+## You  2026-10-16T17:38:18.671Z
+
+Can I have the APK file to see the preview of my mobile app so I see how it looks so far?
+
