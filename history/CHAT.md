@@ -3078,3 +3078,38 @@ continue and proceed where we're at. But like I said, can you validate to me whe
 
 - _tool Bash_: Verify autosave and server are running
 
+**Claude:** Auto-save is running and pushing to this branch. Creating the task list:
+
+
+- _tool TaskCreate_: Write docs/CONNECTED-WORLD-PLAN.md (root cause, keep/replace, renderer scope). Capture the current game's blurred-pillar wipe frame from the real game; send to user.
+
+- _tool TaskCreate_: tools/build-route-data.py -> game/src/data/route.js; game/src/core/route.js (sample/advance/graph/handoff, sign fix); game/src/core/gesture.js; port kit's 34 tests; tools/check-route-vs-glb.py.
+
+- _tool TaskCreate_: Remove connectors; racer state on route graph; steer/jump/brake/branch/finish; inventory by mainS + objective refresh; Loop AI with seeded branch choice + stumble; connected.test.cjs; retarget/retire 
+
+- _tool TaskCreate_: three.js renderer with same API; crochet materials; road/rails/posts/towers/arch/branch/backdrop; chase camera; debug geometry view. Send start + bend frames vs targets 01/02.
+
+- _tool TaskCreate_: Procedural crochet characters, gait contact/push-off/swing/landing, idle, jump, brake, shadow. Send frame strip.
+
+- _tool TaskCreate_: ui/touch.js port, Left/Right/Jump/Run-Stop buttons, main.js wiring, HUD progress, help text. Send control stills.
+
+- _tool TaskCreate_: Normal + debug stills at fork, side loop, rejoin, Snagling Landing entry.
+
+- _tool TaskCreate_: tests/e2e/connected.cjs uncut normal+debug at 720x1602 and narrower; comparison sheet; APK; HANDOFF.md; commit+push; stop for review.
+
+- _tool Bash_: Check SDK install result
+
+
+**Claude:** The SDK is installed. Starting checkpoint 0: capturing the current wipe from the real game as the "before" image. First I'll look at the test API the previous e2e scripts use.
+
+
+- _tool TaskUpdate_: 
+
+- _tool Bash_: Read test API and e2e opening script
+
+
+**Claude:** The old `opening.cjs` uses a tap, but the ribbon now needs the pull gesture, so I'll check how `pull.cjs` performs it.
+
+
+- _tool Bash_: Read pull e2e script and race debug API
+
