@@ -1,7 +1,7 @@
 /* Wishweave Wonders — boot, game loop, lifecycle and public API (docs/ARCHITECTURE.md §9, §12.5, §12.7).
 
-   Boot: layout → load + decode every WW.ASSETS image (progress, retry) → WW.render.createRenderer({canvas, images,
-   assets, plates, level, debug}) → WW.sim.createRace({seed, level, plates, tuning}) in 'intro' → start overlay.
+   Boot: layout → load + decode the menu images (progress, retry) → WW.render.createRenderer({canvas, level,
+   debug}) (3D course, three.js) → WW.sim.createRace({seed, level, tuning}) in 'intro' → start overlay.
    Loop: requestAnimationFrame; fixed 1/60 s race.step() with an accumulator (max 5 steps per frame, backlog dropped);
    every events array from step()/input() goes to the HUD and to renderer.handleEvents when it exists; render every
    frame. While paused nothing is stepped and the renderer gets dtReal = 0.
