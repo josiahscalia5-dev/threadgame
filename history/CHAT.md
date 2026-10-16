@@ -2047,3 +2047,18 @@ Yes
 
 - _tool Bash_: Add tutorial hold and pull input to race.js
 
+
+- _tool Bash_: Gate pull start on arrival; mark ribbon as pull tutorial in level
+
+
+**Claude:** The HUD shows objectives exactly as written, so "Collect the coral thread" will keep the approved sentence case. Running the unit tests to see what the change breaks:
+
+
+- _tool Bash_: Run unit tests and find tap usage in bot and helpers
+
+
+**Claude:** The failures are expected: the test bot and helpers still tap the ribbon. The bot also times its reactions on the race clock, which now freezes during the tutorial. Checking the bot code:
+
+
+- _tool Bash_: Read bot and helper stitch-tap logic
+
