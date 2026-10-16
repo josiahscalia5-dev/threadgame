@@ -2443,3 +2443,11 @@ Files are in `docs/checkpoints/`:
 
 Can I have the APK file to see the preview of my mobile app so I see how it looks so far?
 
+
+**Claude:** I'll rebuild the APK from the current code first, so it includes the latest opening tweaks. The interim build is from before them. A quick check that the game loads cleanly first, since the renderer agent is still editing:
+
+
+- _tool Bash_: Smoke-test the game loads and runs every scene without errors
+
+- _tool Bash_: Rebuild the APK from the current game
+
