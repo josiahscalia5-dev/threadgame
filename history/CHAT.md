@@ -1112,3 +1112,37 @@ Deliver the complete playable level, source, and Android build if successfully b
 
 - _tool Bash_: Append lead addenda to the architecture contract
 
+
+**Claude:** Now launching the four agents in parallel. Each gets a focused brief: which files it owns, what to read and nothing else, a milestone-1 stop for the opening, and how to verify.
+
+
+- _tool Agent_: Simulation: race rules and Loop AI
+
+- _tool Agent_: Renderer: plates, camera, actors, effects
+
+- _tool Agent_: UI: HUD, input, loop, lifecycle
+
+- _tool Agent_: Route data for p06 and p07
+
+
+**Claude:** The SDK is installed. Now the Maven Central "429 Too Many Requests" blocker. I'll test whether Google's public Maven Central mirror is reachable from here:
+
+
+- _tool Bash_: Test Maven mirror reachability and SDK contents
+
+
+
+- _tool Bash_: Add Maven mirror and re-test Gradle dependency resolution
+
+
+**Claude:** The `pluginManagement` block has to come first in the file, so the helper closure can't go there. Inlining the mirror instead:
+
+
+- _tool Bash_: Retry Gradle resolution with the mirror inlined
+
+
+**Claude:** Dependency resolution now succeeds. Next, a host-only compile of the Android project (the game files are still incomplete), to flush out Java or manifest errors early:
+
+
+- _tool Bash_: Compile a host-only test APK
+
