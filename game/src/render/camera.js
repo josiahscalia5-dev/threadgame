@@ -32,12 +32,14 @@
 
   /* Zoom baseline: the path width where the plate's approved composition is framed — the entry stop when the plate
      has one near its start (Purl waits there, so the view at the stop equals the contain-fit), else the path start. */
+  const baseCache = new WeakMap();   // plate data is shared and never written to
   function baseWidth(P) {
-    if (P._camW0) return P._camW0;
+    let w = baseCache.get(P);
+    if (w) return w;
     const path = P.purl.path;
     const stop = eventF(P, 'stop', null);
-    const w = stop !== null && stop < 0.15 ? WW.path.sample(path, stop).w : path[0][2];
-    try { Object.defineProperty(P, '_camW0', { value: w, enumerable: false }); } catch (e) { /* frozen data: recompute */ }
+    w = stop !== null && stop < 0.15 ? WW.path.sample(path, stop).w : path[0][2];
+    baseCache.set(P, w);
     return w;
   }
 
