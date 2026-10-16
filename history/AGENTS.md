@@ -185,13 +185,71 @@ This matches the kit's own record in `docs/VERIFICATION.json:5-7`. The split is 
 
 ## inspect:geometry
 
-- transcript: `history/transcripts/131a49c9-f445-5dda-9dd9-fdcc5c2be76a/subagents/workflows/wf_ab6d9c83-f3e/agent-a4ee84d369e612e1c.jsonl` (24 entries)
+- transcript: `history/transcripts/131a49c9-f445-5dda-9dd9-fdcc5c2be76a/subagents/workflows/wf_ab6d9c83-f3e/agent-a4ee84d369e612e1c.jsonl` (28 entries)
 
 _(no message yet)_
 
 ## inspect:engine
 
-- transcript: `history/transcripts/131a49c9-f445-5dda-9dd9-fdcc5c2be76a/subagents/workflows/wf_ab6d9c83-f3e/agent-a5d5d56d3a9a1cf42.jsonl` (276 entries)
+- transcript: `history/transcripts/131a49c9-f445-5dda-9dd9-fdcc5c2be76a/subagents/workflows/wf_ab6d9c83-f3e/agent-a5d5d56d3a9a1cf42.jsonl` (277 entries)
 
-Now the sim modules (inventory, stitches, snagling, loop-ai).
+## 1. World representation (current engine)
+
+- **Coordinates.** All gameplay geometry is in plate pixels (841×1870), one painted image per plate (`game/src/core/ww.js:8`, `game/src/render/camera.js:14`, `game/src/render/renderer.js:17`). A racer has no world position. Its state is `{seg, f, laneX, jumpH}` (docs/ARCHITECTURE.md:45-55).
+- **Plate segments.** Each plate has its own `purl.path` and `loop.path` as `[x, y, w, lane]` control points in plate px. `w` is the sprite width at that point, so depth scale is authored by hand. `lane` is a horizontal pixel offset between lanes (`core/path.js:3-10`).
+  - The path is a Catmull-Rom spline. `f` is measured in racer widths: `len = |dp| / w` (`path.js:46-47`).
+  - Lanes are a screen-horizontal shift `x + laneX*lane`; a jump lifts the sprite by `jumpH*0.42*w` (`path.js:93-97`). Lanes do not follow the heading.
+  - Purl and Loop run on different painted paths on every plate (e.g. `data/plates/p01.js:9-12` vs `:23`). They never share a road.
+- **Events are plate fractions.** Stops, pickups, reveal, exit, finish and Loop tasks are `f` values, some with plate-px `x, y` (`p01.js:14-27`, `p04.js:23-24`, `p07.js:21,38`). `parseRoute` reads them into each segment (`sim/race.js:45-85`).
+- **Level route** (`data/level.js:38-60`) alternates six `plate` segments with five `connector` segments of 19 m each. `loopRoute` is index-aligned with Loop's own lengths (`level.js:63-73`), and `race.js:149-155` enforces that alignment.
+  - A racer advances `df = v·dt/length` (`level.js:8`).
+  - Purl's route to the finish is about 445.7 m. The five connectors make up 95 m of it (21%) and 19 s of a roughly 98 s race.
+- **What a connector is.** A segment with only `length`, `from`, `to` and `style`. `parseRoute` gives plates a path (`race.js:54-57`) but leaves a connector's `path: null` (`race.js:50`, accepted at `:78`). It has no events, no lanes in plate data and no geometry.
+  - Entering one sets `state.transition = {kind:'connector', t: f, dur: length/purlSpeed}` (`race.js:376-386`). Each step copies `t = p.f` (`race.js:485`) and sets Purl's action to `'transition'` (`race.js:515`).
+  - Loop's action on a connector is also `'transition'` (`sim/loop-ai.js:270`).
+  - **No floor geometry exists for any connector, in the sim or the renderer.** The sim even allows lane swipes there, using a made-up spacing of `connectorLaneSpacing: 100` (`race.js:34, 346-349`), which the renderer ignores.
+
+## 2. Root cause of the 0:36–0:37 "blurred pillar wipe"
+
+**Sim side**
+- When Purl walks from `ribbon` into `c-ribbon`, `enterPurl` calls `setTransitionFor` (`race.js:388-399`). From then on, `transition.t` is just Purl's progress `f` through the empty 19 m segment.
+
+**Renderer side**
+- `resolveScene` turns a connector segment into `{kind:'transition', from:'p01', to:'p02', t}` (`renderer.js:58-65`). `render` then calls `drawTransitionScene` (`renderer.js:580-582`). That function:
+  1. Freezes a snapshot of the outgoing camera and Purl's last screen pose (`renderer.js:406-415`).
+  2. Builds two flat 2D plate views, slid ±0.32·W horizontally: p01 out, p02 in (`renderer.js:418-421`).
+  3. Draws each view clipped to the rectangle on either side of a sweeping x, with racers off (`purl:false`) (`renderer.js:425-430`).
+  4. Draws the "tower column" with `drawColumn` (`renderer.js:432, 474-494`). The column is the outgoing plate's `wipe` strip (`p01.js:37`, `{x0:345, x1:560}`), blurred with `blur(2.5px)` and darkened (`columnCanvas`, `renderer.js:454-472`, blur at `:463`), scaled 1.12×, full screen height (`columnGeom`, `renderer.js:445-451`), with fake contact shadows.
+  5. Draws Purl in screen space, after everything else, at a straight interpolation between the p01-exit pose and the p02-entry pose (`renderer.js:434-440`). There is no ground under him. He is drawn on top of the blurred column.
+  6. Hard-sets the camera to the p02 entry (`renderer.js:441`).
+- Loop is drawn only when he is on a `plate` segment (`renderer.js:316-319`), so he disappears during his own connector.
+- The same code runs for the `loop` (recovery) and `return` (gate fallback) transitions (`renderer.js:51-56`; sim `race.js:419-433`).
+
+**Measured in the real game** (Playwright, 412×915, seed 1; script `/tmp/claude-0/-home-user-threadgame/131a49c9-f445-5dda-9dd9-fdcc5c2be76a/scratchpad/inspect/capture.cjs`, frame `/tmp/claude-0/-home-user-threadgame/131a49c9-f445-5dda-9dd9-fdcc5c2be76a/scratchpad/inspect/connector-t0.5.png`)
+- At t = 0.1 / 0.5 / 0.9, Purl's screen (x, y, w) is (208, 524, 84) → (188, 651, 115) → (168, 778, 146).
+- The views are p01 at s = 0.881 (zoom 1.8, the `zMax` from `p01.js:6`) and p02 at s = 0.489 (zoom 1).
+- So Purl shrinks to 84 px at the far end of each plate, then snaps back to the foreground at about 146 px. Cause: zoom `z = clamp(w0/w, 1, zMax)` (`camera.js:47-62`) plus the camera snapping when the plate changes (`renderer.js:392`).
+- Loop was on `ribbon` at t = 0.1 (drawn in the p01 strip) and on `c-ribbon` at t = 0.5 (not drawn).
+- The frame shows the blurred pillar with Purl floating over it.
+
+**Timing check** (headless sim, `/tmp/claude-0/-home-user-threadgame/131a49c9-f445-5dda-9dd9-fdcc5c2be76a/scratchpad/inspect/timing.cjs`, real `race.step`)
+
+| Moment | Wall clock after START | Race clock |
+|---|---|---|
+| Countdown ends (3 s, `ww.js:15`) | 3.0 s | 0 s |
+| Purl at the ribbon stop; lesson hold begins | 3.58 s | 0.57 s |
+| Lesson finishes (pull after L s, + 1.3 s unfurl + 0.25 s settle, `ww.js:35,42`) | 7.15 s (L = 2) | 0.57 s (frozen) |
+| `c-ribbon` entered | 32.87 s | 26.28 s |
+| Column crosses screen centre (t = 0.5) | 34.8 s | — |
+| `c-ribbon` ends | 36.67 s | 30.08 s |
+
+- Purl runs 127.2 m at `purlSpeed` 5 m/s (`ww.js:16`) to reach `c-ribbon`.
+- In general, the column crosses mid-screen at about 32.8 s + L + (time on the start screen before START).
+- So 0:36–0:37 matches **`c-ribbon` (p01→p02)** if the lesson reaction plus start-screen dwell is about 3–4 s. This is consistent but not
+
+## inspect:art
+
+- transcript: `history/transcripts/131a49c9-f445-5dda-9dd9-fdcc5c2be76a/subagents/workflows/wf_ab6d9c83-f3e/agent-a553f1494b2f06332.jsonl` (11 entries)
+
+_(no message yet)_
 
