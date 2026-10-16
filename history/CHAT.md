@@ -3233,3 +3233,11 @@ continue and proceed where we're at. But like I said, can you validate to me whe
 
 - _tool Bash_: Read HUD progress and event handling
 
+
+**Claude:** The HUD only needs one small change: prefer `racer.progress` when it's present. Now the tuning values for the connected race in `ww.js`:
+
+
+- _tool Edit_: /home/user/threadgame/game/src/core/ww.js
+
+- _tool Edit_: /home/user/threadgame/game/src/core/ww.js
+
