@@ -76,7 +76,7 @@ _(no message yet)_
 
 ## Renderer: plates, camera, actors, effects
 
-- transcript: `history/transcripts/370de19d-9b32-5c31-ac39-d89d7478db67/subagents/agent-aee076b7546be423f.jsonl` (265 entries)
+- transcript: `history/transcripts/370de19d-9b32-5c31-ac39-d89d7478db67/subagents/agent-aee076b7546be423f.jsonl` (271 entries)
 
 Now a side-by-side comparison helper, then the first capture.
 
