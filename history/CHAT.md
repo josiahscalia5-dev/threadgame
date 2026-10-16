@@ -2361,3 +2361,9 @@ Yes
 
 - _tool Bash_: Check PARTIAL value and band positions at small s
 
+
+
+- _tool Bash_: Set roll drag travel to 4.5% and re-record the lesson
+
+- _tool Bash_: Wait for the re-recording and confirm edits
+
