@@ -56,12 +56,6 @@ You've hit your session limit · resets 7pm (UTC)
 
 You've hit your session limit · resets 7pm (UTC)
 
-## UI: HUD, input, loop, lifecycle
-
-- transcript: `history/transcripts/370de19d-9b32-5c31-ac39-d89d7478db67/subagents/agent-ae9506e4d1065977a.jsonl` (179 entries)
-
-Now the stub harness. Let me quickly check the plate `stitch` fields so the fake renderer can place tap targets at authored positions.
-
 ## Renderer: plates, camera, actors, effects
 
 - transcript: `history/transcripts/370de19d-9b32-5c31-ac39-d89d7478db67/subagents/agent-aee076b7546be423f.jsonl` (122 entries)
@@ -74,9 +68,15 @@ Now I have a clear picture. Let me write the renderer modules, starting with sha
 
 _(no message yet)_
 
+## UI: HUD, input, loop, lifecycle
+
+- transcript: `history/transcripts/370de19d-9b32-5c31-ac39-d89d7478db67/subagents/agent-ae9506e4d1065977a.jsonl` (182 entries)
+
+Now the stub harness. Let me quickly check the plate `stitch` fields so the fake renderer can place tap targets at authored positions.
+
 ## Simulation: race rules and Loop AI
 
-- transcript: `history/transcripts/370de19d-9b32-5c31-ac39-d89d7478db67/subagents/agent-ae84357f8296ab86f.jsonl` (106 entries)
+- transcript: `history/transcripts/370de19d-9b32-5c31-ac39-d89d7478db67/subagents/agent-ae84357f8296ab86f.jsonl` (116 entries)
 
 _(no message yet)_
 
