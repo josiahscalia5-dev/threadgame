@@ -184,7 +184,8 @@
     });
     function road(id) { return id === 'main' || !id ? main : branches[id]; }
     const course = {
-      main: main, branches: branches, branchList: list, length: main.length, data: data,
+      main: main, branches: branches, branchList: list, length: main.length, finishS: finishS, runout: runout,
+      data: data,
       road: road,
       /* Sample a racer position; lateral is clamped to the road it is on. */
       sample: function (pos, bodyRadius) { return sample(road(pos.road), pos.s, pos.lateral, bodyRadius); },
