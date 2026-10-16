@@ -2065,3 +2065,13 @@ Yes
 
 - _tool Bash_: Teach test helpers and bot to pull the ribbon; rerun tests
 
+- _tool Bash_: Show failure details for the failing tests
+
+
+**Claude:** The tests use the ribbon tap directly in several places. Here are the ribbon-related spots in each test file:
+
+
+- _tool Bash_: Find ribbon references in the unit tests
+
+- _tool Bash_: Read the ribbon-dependent test bodies
+
