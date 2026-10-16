@@ -12,7 +12,7 @@ const N = 50;
 const comp = sweep(N, { profile: 'competent' });
 const first = sweep(N, { profile: 'first' });
 
-test('competent run (1.0 s reactions, dodge) ≈ 92–100 s race clock; first-time run (2.0 s, one hit + recovery) ≈ 105–120 s', function () {
+test('competent run (1.0 s reactions, dodge) ≈ 92–100 s race clock; first-time run (2.0 s, one hit + recovery) ≈ 100–120 s', function () {
   comp.rows.forEach(function (r) {
     assert.equal(r.mode, 'finished');
     assert.deepEqual([r.stats.hits, r.stats.dodges], [0, 1]);
@@ -22,7 +22,9 @@ test('competent run (1.0 s reactions, dodge) ≈ 92–100 s race clock; first-ti
     assert.deepEqual([r.stats.hits, r.stats.recoveries], [1, 1]);
   });
   assert.ok(comp.purlAvg >= 92 && comp.purlAvg <= 100.5, 'competent ' + comp.purlAvg);
-  assert.ok(first.purlAvg >= 104.5 && first.purlAvg <= 120, 'first-time ' + first.purlAvg);
+  // The opening lesson is untimed, so only 3 stitches carry the slower reaction: first-time ≥ competent + 3.5 s.
+  assert.ok(first.purlAvg >= 100 && first.purlAvg <= 120, 'first-time ' + first.purlAvg);
+  assert.ok(first.purlAvg - comp.purlAvg >= 3.5, 'first-time slower than competent');
   // §7.8: with the 3 s countdown a first successful attempt lands in 90–150 s
   [comp.purlAvg, first.purlAvg].forEach(function (t) { assert.ok(t + WW.TUNING.countdown >= 90 && t + WW.TUNING.countdown <= 150); });
   assert.ok(Math.abs(comp.purlAvg - P.competent.purl) < 0.5, 'documented competent time is current');

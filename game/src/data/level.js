@@ -12,16 +12,19 @@
    Pacing — race clock (s since GO), measured with `node tests/unit/bot.cjs --sweep=50 [--profile=first]` on the final
    p06/p07 data, verified by tests/unit/pacing.test.cjs (bot profiles are described in tests/unit/bot.cjs):
      profile                                                      Purl     Loop over seeds 1–50          Purl wins
-     competent  taps 1.0 s after each cue, jumps 0.3 s after reveal 99.92    94.0–116.9 (mean 103.3, sd 5.2)  36/50 (72 %)
+     competent  taps 1.0 s after each cue, jumps 0.3 s after reveal 97.93    92.2–114.6 (mean 101.3, sd 5.1)  36/50 (72 %)
      first      taps 2.0 s after each cue, one hit, steers into
-                the dropped thread 0.4 s later, same-pass recovery  105.03   (same Loop races)               16/50 (32 %)
+                the dropped thread 0.4 s later, same-pass recovery  102.05   (same Loop races)               19/50 (38 %)
    Purl's time does not depend on the seed; Loop's does (per-race form, per-segment jitter, reactions, hesitations,
-   bypass line, hop mistakes) and never on the player. Add the 3 s countdown for the wall-clock attempt length.
-   The two profiles differ by ~5 s: 4 × 1 s of extra stitch reaction + ~1.1 s for the tangle/slow-down of one hit.
-   Documented seeds (Loop's finish time; competent Purl 99.92 s, first-time Purl 105.03 s):
-     competent  Purl wins: 1 (Loop 103.11), 8 (108.93), 12 (108.15)   Loop wins: 4 (94.41), 30 (96.44), 36 (93.96)
-     first      Purl wins: 7 (114.58), 8 (108.93), 19 (111.38)        Loop wins: 1 (103.11), 2 (99.22), 4 (94.41)
-     photo finish: seed 6, Loop 105.00 vs first-time Purl 105.03
+   bypass line, hop mistakes) and never on the player. Add the 3 s countdown and the first-lesson time (the opening
+   TOUCH → PULL → OPEN: the race clock and both racers stand still until the ribbon is open) for the wall-clock
+   attempt length. The two profiles differ by ~4.1 s: 3 × 1 s of extra stitch reaction (the opening lesson is
+   untimed) + ~1.1 s for the tangle/slow-down of one hit. Loop's ribbon is 10 m shorter than before the lesson
+   became untimed, so the race balance is unchanged (he used to gain that ground while Purl opened the ribbon).
+   Documented seeds (Loop's finish time; competent Purl 97.93 s, first-time Purl 102.05 s):
+     competent  Purl wins: 1 (Loop 101.09), 7 (112.25), 8 (106.79)    Loop wins: 4 (92.56), 30 (94.66), 36 (92.21)
+     first      Purl wins: 7 (112.25), 8 (106.79), 12 (105.98)        Loop wins: 2 (97.28), 4 (92.56), 5 (99.02)
+     photo finish: seed 3, Loop 97.89 vs competent Purl 97.93
    Snagling dodge window (reaction measured from the reveal, 1/60 s steps): jump started 0.04–0.48 s after the
    reveal clears contact; a lane change started 0.00–0.41 s after it moves Purl out of the target lane in time.
    Lengths: every plate is ~15 m per racer width of its path (WW.path.widths), so Purl crosses each plate at a
@@ -91,8 +94,8 @@
     },
     /* Measured pacing and documented seeds (see the header); tests/unit/pacing.test.cjs checks them. */
     pacing: {
-      competent: { purl: 99.92, purlWins: [1, 8, 12], loopWins: [4, 30, 36] },
-      first: { purl: 105.03, purlWins: [7, 8, 19], loopWins: [1, 2, 4] }
+      competent: { purl: 97.93, purlWins: [1, 7, 8], loopWins: [4, 30, 36] },
+      first: { purl: 102.05, purlWins: [7, 8, 12], loopWins: [2, 4, 5] }
     },
     completeObjective: 'LEVEL 1 COMPLETE',
     missingMessage: 'A THREAD IS MISSING'
