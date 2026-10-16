@@ -2029,3 +2029,9 @@ Yes
 
 - _tool Bash_: Find ribbon definitions in level, tuning and p01 data
 
+
+**Claude:** `ribbonUnfurl` is already 1.3 s, inside the requested 0.9–1.4 s, and Purl's stop sits right at the plate start. Now the race's input handler:
+
+
+- _tool Bash_: Read race.js input handling and debug helpers
+
