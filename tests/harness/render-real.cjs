@@ -154,6 +154,23 @@ const MOMENTS = {
     WishweaveGame.debug.race.debug.teleport('loop', 'landing', 0.2);
     __H.until(function (s) { return s.loop.airborne && s.loop.jumpH > 0.8; }, 6);
   },
+  'p07-loopentry': function () {
+    WishweaveGame.debug.race.debug.giveAll(); __H.hold(['loop.coral', 'loop.teal', 'loop.gold']);
+    __H.go('finish', 0.1); WishweaveGame.debug.race.debug.teleport('loop', 'finish', 0.0); __H.adv(0.2);
+  },
+  'p06-loophidden': function () {
+    __H.hold(['purl.coral', 'purl.teal', 'loop.coral', 'loop.teal', 'loop.gold']); __H.go('tapestry', 0); __H.adv(0.6);
+    WishweaveGame.debug.race.debug.teleport('loop', 'tapestry', 0.9); __H.adv(0.1);
+  },
+  'p06-loopentry': function () {
+    __H.hold(['purl.coral', 'purl.teal', 'loop.coral', 'loop.teal']); __H.go('tapestry', 0); __H.adv(0.6);
+    WishweaveGame.debug.race.debug.teleport('loop', 'tapestry', 0.03); __H.adv(0.1);
+  },
+  'p02-bypass': function () {
+    __H.hold(['purl.coral', 'loop.coral']); __H.go('shortcut', 0); __H.adv(0.4);
+    WishweaveGame.debug.race.debug.teleport('loop', 'shortcut', 0.93);
+    __H.until(function (s) { return s.loop.action === 'task'; }, 4); __H.adv(0.3);
+  },
   'c-landing': function () {
     __H.hold(['purl.coral', 'purl.teal']); __H.go('c-landing', 0.45); __H.adv(0.05);
   }

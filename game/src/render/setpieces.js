@@ -334,17 +334,19 @@
     if (!h) return;
     const ax = pp.x - pp.w * 0.2, ay = pp.y - pp.w * 0.07;
     const mx = (h.x + ax) / 2, my = (h.y + ay) / 2 + Math.hypot(ax - h.x, ay - h.y) * (0.06 + 0.25 * slack) + Math.sin(R.clock * 30) * 2;
-    yarnStroke(ctx, function () { ctx.beginPath(); ctx.moveTo(h.x, h.y); ctx.quadraticCurveTo(mx, my, ax, ay); }, Math.max(4, pp.w * 0.024), a);
+    yarnStroke(ctx, function () { ctx.beginPath(); ctx.moveTo(h.x, h.y); ctx.quadraticCurveTo(mx, my, ax, ay); }, Math.max(5, pp.w * 0.032), a);
   }
 
   /* Loops of plum yarn around Purl's ankles while tangled (+ white wobble marks). */
   function drawAnkles(R, ctx, x, gy, w, a, clock) {
-    const lw = Math.max(3.5, w * 0.022);
+    const lw = Math.max(4.5, w * 0.03);
     yarnStroke(ctx, function () {
       ctx.beginPath();
-      ctx.ellipse(x - w * 0.13, gy - w * 0.075, w * 0.12, w * 0.042, -0.18, 0.15, Math.PI - 0.15);
-      ctx.moveTo(x + w * 0.28, gy - w * 0.09);
-      ctx.ellipse(x + w * 0.15, gy - w * 0.09, w * 0.13, w * 0.048, 0.22, 0, Math.PI);
+      ctx.ellipse(x - w * 0.13, gy - w * 0.075, w * 0.13, w * 0.045, -0.18, 0.15, Math.PI - 0.15);
+      ctx.moveTo(x - w * 0.02, gy - w * 0.12);
+      ctx.ellipse(x - w * 0.13, gy - w * 0.12, w * 0.11, w * 0.04, -0.1, 0, Math.PI);
+      ctx.moveTo(x + w * 0.29, gy - w * 0.09);
+      ctx.ellipse(x + w * 0.15, gy - w * 0.09, w * 0.14, w * 0.05, 0.22, 0, Math.PI);
       ctx.moveTo(x - w * 0.02, gy - w * 0.06);
       ctx.bezierCurveTo(x + w * 0.02, gy - w * 0.12, x + w * 0.06, gy - w * 0.02, x + w * 0.1, gy - w * 0.07);
       ctx.moveTo(x - w * 0.25, gy - w * 0.08);
@@ -766,7 +768,8 @@
   }
 
   function onDrop(R, plate, spot, size) {
-    callout(R, 'minus', plate, spot.x - size * 0.25, spot.y - size * 1.55 - 26, 0.15);
+    // above the landed spool, nudged outward so it clears Purl's head in the zoomed landing view
+    callout(R, 'minus', plate, spot.x + size * 0.55, spot.y - size * 1.6 - 26, 0.4);
   }
 
   function onRecover(R, color) {
@@ -796,9 +799,11 @@
       const age = R.clock - rc.at;
       const a = u.smooth(age / 0.15) * (1 - u.smooth((age - 1.1) / 0.4));
       if (a > 0.01) {
-        const fw = Math.max(11, 24 * v.s) * 6.2;   // ≈ text width; keep it on screen (Purl may be in the right lane)
-        const x = Math.min(v.ox + rc.textAt.x * v.s, R.fit.W - fw - 6), y = v.oy + rc.textAt.y * v.s - age * 16;
-        drawPlusText(R, ctx, x, y, v.s, a, age);
+        // ≈ text width; beside the held spool, or above Purl's head when that would leave the screen (right lane)
+        const fw = Math.max(11, 24 * v.s) * 6.2;
+        let x = v.ox + rc.textAt.x * v.s, y = v.oy + rc.textAt.y * v.s;
+        if (x + fw > R.fit.W - 6) { x = v.ox + (rc.textAt.x - rc.textAt.w * 0.95) * v.s - fw * 0.5; y = v.oy + (rc.textAt.y - rc.textAt.w * 0.85) * v.s; }
+        drawPlusText(R, ctx, x, y - age * 16, v.s, a, age);
       }
     }
     if (rc && rc.flyFrom && !rc.flyDone) {
