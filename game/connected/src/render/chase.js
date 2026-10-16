@@ -5,8 +5,8 @@
    ground point, plus only part of a jump, so the horizon does not bob. There is no cut, fade or reset between areas:
    the same camera follows the same continuous road from start to finish.
 
-   Framing (portrait phone, calibrated against the approved screens 02–04): Purl's feet sit at ~82 % of the screen
-   height and he is ~16 % of the screen tall, with the road running up to the city and the lotus gate above him. A narrow screen widens the vertical field of view a little so the road
+   Framing (portrait phone, calibrated against the Connected World opening screen): Purl's feet sit at ~72 % of the
+   screen height and he is ~16 % of the screen tall, with the road running up to the city and the lotus gate above him. A narrow screen widens the vertical field of view a little so the road
    keeps its width on screen.
 
      const cam = WW.render.chase.create(THREE, course, landmarks)
@@ -16,10 +16,10 @@
   const R = WW.render = WW.render || {};
 
   const CAM = {
-    behind: 6.0,         // m behind Purl along his route
+    behind: 9.5,         // m behind Purl along his route
     height: 3.6,         // m above his ground point
-    lookAhead: 9,        // m ahead along the route
-    lookHeight: 1.8,     // m above the road at the look point
+    lookAhead: 11,       // m ahead along the route
+    lookHeight: 1.6,     // m above the road at the look point
     jumpFollow: 0.3,     // fraction of a jump the camera follows
     lateralFollow: 0.55, // fraction of Purl's sideways offset the camera follows (keeps the road framed)
     posHalfLife: 0.16,   // s

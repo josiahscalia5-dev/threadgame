@@ -111,7 +111,7 @@
     }
 
     function racerBox(r) {
-      const top = project([r.pos[0], r.pos[1] + 1.38, r.pos[2]]);
+      const top = project([r.pos[0], r.pos[1] + 2.0, r.pos[2]]);   // racers are 2.0 m tall (render/racers.js)
       const feet = project([r.pos[0], r.pos[1], r.pos[2]]);
       const side = project([r.pos[0] + r.right[0] * 0.65, r.pos[1] + 0.8, r.pos[2] + r.right[2] * 0.65]);
       const mid = project([r.pos[0], r.pos[1] + 0.8, r.pos[2]]);
