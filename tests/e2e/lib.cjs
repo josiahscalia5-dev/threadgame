@@ -44,7 +44,7 @@ async function snap(g) {
     for (const k in s.stitches) stitches[k] = { state: s.stitches[k].state, phase: s.stitches[k].phase };
     const rect = document.getElementById('game').getBoundingClientRect();
     const targets = (d.renderer && d.renderer.getTapTargets ? d.renderer.getTapTargets() : [])
-      .map((t) => ({ id: t.id, x: t.x + rect.left, y: t.y + rect.top, r: t.r }));
+      .map((t) => ({ id: t.id, kind: t.kind || 'tap', x: t.x + rect.left, y: t.y + rect.top, r: t.r }));
     return {
       mode: s.mode, paused: s.paused, time: s.time, countdown: s.countdown,
       purl: { segId: s.purl.segId, f: s.purl.f, lane: s.purl.lane, laneX: s.purl.laneX, action: s.purl.action,

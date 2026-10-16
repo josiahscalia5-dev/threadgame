@@ -48,10 +48,10 @@ const arg = (k, d) => { const i = process.argv.indexOf('--' + k); return i > 0 ?
   if (rec) for (let i = 0; i < fps; i++) await rec.frame(g);
   await L.tapElement(g, '#btn-start');
   // countdown + arrival
-  let s = await L.snap(g);
+  let s = await L.snap(g), guard = 0;
   while (!(s.targets.find((t) => t.id === 'ribbon' && t.kind === 'pull'))) {
     await frames(dt); s = await L.snap(g);
-    if (s.time > 5) throw new Error('Purl never reached the ribbon loop');
+    if (++guard > 10 * fps) throw new Error('Purl never reached the ribbon loop');
   }
   let r = await ribbon();
   log('arrived: race time ' + r.time.toFixed(2) + ' s, stage ' + JSON.stringify(r.tutorial));
