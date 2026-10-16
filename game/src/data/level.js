@@ -33,10 +33,17 @@
   const loopVisibleAt = { ribbon: 0, shortcut: 0.5, tassels: 0.5, landing: 0.5, tapestry: 0.5, finish: 1 };
 
   function plateLength(plate) { return WW.path.widths(WW.PLATES[plate].purl.path) * T.metresPerWidth; }
+  function exitF(plate) {
+    const e = (WW.PLATES[plate].purl.events || []).filter(function (x) { return x.type === 'exit'; })[0];
+    return e ? e.f : 1;
+  }
   function loopPathLength(plate) { return WW.path.widths(WW.PLATES[plate].loop.path) * T.metresPerWidth; }
 
+  /* length: metres of the whole painted path (maps path fraction f to metres); run: metres Purl actually runs on
+     the segment (to the scene's exit). */
   route.forEach(function (seg) {
     seg.length = seg.kind === 'plate' ? plateLength(seg.plate) : T.connectorTime * T.purlSpeed;
+    seg.run = seg.kind === 'plate' ? seg.length * exitF(seg.plate) : seg.length;
   });
 
   const loopRoute = route.map(function (seg) {
@@ -47,7 +54,7 @@
       return out;
     }
     out.plate = seg.plate;
-    const length = seg.length;
+    const length = seg.run;              // Loop runs exactly as far as Purl does on every segment
     const span = Math.min(1, loopPathLength(seg.plate) / length), at = loopVisibleAt[seg.id];
     const a = (1 - span) * (at === undefined ? 0.5 : at);
     out.length = length;

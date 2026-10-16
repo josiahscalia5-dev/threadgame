@@ -12,7 +12,7 @@
         [418, 1120, 172, 35], [438, 1010, 130, 0], [462, 968, 110, 0], [510, 952, 104, 0]
       ],
       events: [
-        { type: 'exit', f: 1 }
+        { type: 'exit', f: 0.88 }       // hand over before the runner turns right along the far rail
       ]
     },
     loop: {

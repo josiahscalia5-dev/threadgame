@@ -26,7 +26,7 @@
   /* Static description of both routes: lengths, windows and every event converted to segment fractions. */
   function buildCourse(level, plates) {
     const purl = level.route.map(function (def, i) {
-      const s = { index: i, id: def.id, kind: def.kind, plate: def.plate || null, length: def.length, def: def };
+      const s = { index: i, id: def.id, kind: def.kind, plate: def.plate || null, length: def.length, run: def.run || def.length, def: def };
       if (def.kind === 'plate') {
         const P = plates[def.plate];
         s.path = P.purl.path;
@@ -41,7 +41,7 @@
       return s;
     });
     const loop = level.loopRoute.map(function (def, i) {
-      const s = { index: i, id: def.id, kind: def.kind, plate: def.plate || null, length: def.length, window: def.window };
+      const s = { index: i, id: def.id, kind: def.kind, plate: def.plate || null, length: def.length, run: def.length, window: def.window };
       if (def.kind === 'plate') {
         const P = plates[def.plate];
         const a = def.window[0], b = def.window[1];
@@ -62,7 +62,7 @@
     /* Start distance of every segment; `total` is the distance to the finish line (HUD progress reaches 1 there). */
     function cumulative(segs) {
       let total = 0;
-      const start = segs.map(function (s) { const v = total; total += s.length; return v; });
+      const start = segs.map(function (s) { const v = total; total += s.run; return v; });
       const last = segs[segs.length - 1];
       return { start: start, total: start[segs.length - 1] + (last.finishF !== null && last.finishF !== undefined ? last.finishF : 1) * last.length };
     }
@@ -167,7 +167,8 @@
     }
     function progressOf(cum, segs, r) {
       const s = segs[r.seg];
-      return U.clamp((cum.start[r.seg] + U.clamp(r.f, 0, 1) * s.length) / cum.total, 0, 1);
+      const along = s.kind === 'plate' && s.exitF !== undefined ? Math.min(r.f, s.exitF) : U.clamp(r.f, 0, 1);
+      return U.clamp((cum.start[r.seg] + along * s.length) / cum.total, 0, 1);
     }
 
     // ---------------------------------------------------------------- Purl

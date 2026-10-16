@@ -22,7 +22,7 @@
         { type: 'hint', f: 0, text: 'Swipe \u2190 \u2192 to move \u00b7 Swipe \u2191 to jump' },
         { type: 'loopReturn', f: 0.02 },
         { type: 'reveal', f: 0.245 },   // Purl at (445,1288), Snagling ahead-left; >= 1.5 s in when landing length >= 30 m
-        { type: 'exit', f: 1 }
+        { type: 'exit', f: 0.74 }       // before the carpet bends right and back toward the camera along the rail
       ]
     },
 

@@ -15,10 +15,10 @@
   const DW = WW.DESIGN.w, DH = WW.DESIGN.h;
   const COLUMN_ASPECT = 0.6;          // widest play column (w/h); beyond it the sides show the blurred scene
   const STRIDE_M = 2.0;               // metres per full four-frame run cycle
+  const ZOOM_LIMIT = 2.5;             // most the follow camera ever magnifies a scene
   const RUN = ['run-left', 'run-pass-a', 'run-right', 'run-pass-b'];
   const SPOOL = { coral: 'prop.coral-thread', teal: 'prop.teal-thread', gold: 'prop.golden-thread' };
   const GLOW = { coral: '255,120,140', teal: '90,230,225', gold: '255,215,110' };
-  const PILLAR = { plate: 'p04', x: 6, y: 0, w: 172, h: 1240 };   // carved tower used for scene transitions
 
   function easeInOut(t) { t = U.clamp(t, 0, 1); return t < 0.5 ? 4 * t * t * t : 1 - Math.pow(-2 * t + 2, 3) / 2; }
   function easeOut(t) { t = U.clamp(t, 0, 1); return 1 - (1 - t) * (1 - t); }
@@ -59,24 +59,33 @@
     }
 
     // ---------------------------------------------------------------- camera
-    /* Camera for Purl at f on a plate: zoom keeps him near his entry size, his feet at anchorY. When Loop is on the
-       same plate (`other`, his plate point), the zoom is limited so both racers stay in frame (a two-shot). */
+    /* Follow camera for Purl at f on a plate. The camera is described by the plate point it keeps at Purl's screen
+       spot (fx, fy: centre of the column, feet at anchorY) and a zoom z; the view is derived from those, so a zoom
+       change always happens around Purl and he stays put on screen.
+         z      keeps him near his entry size (capped at the scene's zMax); when Loop is in the same scene
+                (`other`, his plate point) the camera may pull back so Loop stays in frame, but never pans to him.
+         zFloor the least zoom at which the view can still hold Purl's feet at anchorY (near the top of a painting
+                the camera would otherwise stop and let him run up the screen). Applied after smoothing. */
     function camTarget(plateId, path, f, laneX, other) {
       const P = PLATES[plateId];
       const g = WW.path.racerPoint(path, f, (laneX || 0) * 0.35, 0);
       const anchorY = P.camera.anchorY || 0.8;
       let z = U.clamp(path[0][2] / g.w, 1, P.camera.zMax || 1.8);
-      let cx = g.x;
       if (other) {
-        const span = Math.abs(other.x - g.x) + (other.w + g.w) * 0.55;
-        z = Math.max(1, Math.min(z, col.w * 0.86 / (s0 * span)));
+        const dx = Math.abs(other.x - g.x) + other.w * 0.6;
+        z = Math.max(1, Math.min(z, (col.w * 0.47) / (s0 * dx)));
         const vspan = g.y - (other.y - other.w * 1.15);          // Loop's head stays below the HUD band
         if (vspan > 0) z = Math.max(1, Math.min(z, H * (anchorY - 0.26) / (s0 * vspan)));
-        cx = g.x * 0.55 + other.x * 0.45;
       }
-      const s = s0 * z;
-      const vx = cx - (col.w / 2) / s, vy = g.y - (H * anchorY) / s;
-      return clampCam({ z: z, vx: vx, vy: vy });
+      const zFloor = U.clamp((anchorY * H) / (g.y * s0), 1, ZOOM_LIMIT);
+      return { z: Math.max(z, zFloor), zFloor: zFloor, fx: g.x, fy: g.y, anchorY: anchorY, vx: 0, vy: 0 };
+    }
+    /* View rectangle for a camera {z, fx, fy}: the focus point at Purl's screen spot, kept inside the painting. */
+    function settle(c) {
+      const s = s0 * c.z;
+      c.vx = c.fx - (col.w / 2) / s;
+      c.vy = c.fy - (H * c.anchorY) / s;
+      return clampCam(c);
     }
     function loopPoint(plateId, state) {
       const L = state.loop, ls = LS[L.seg];
@@ -93,11 +102,12 @@
     }
     function follow(plateId, target, dt) {
       let c = cams[plateId];
-      if (!c) { cams[plateId] = c = { z: target.z, vx: target.vx, vy: target.vy }; return c; }
-      c.z = U.damp(c.z, target.z, 0.28, dt);
-      c.vx = U.damp(c.vx, target.vx, 0.12, dt);
-      c.vy = U.damp(c.vy, target.vy, 0.12, dt);
-      return clampCam(c);
+      if (!c) { cams[plateId] = c = Object.assign({}, target); return settle(c); }
+      c.z = Math.max(U.damp(c.z, target.z, 0.6, dt), target.zFloor);  // zoom eases gently, never below the floor
+      c.fx = U.damp(c.fx, target.fx, 0.08, dt);                        // the focus stays right on Purl
+      c.fy = U.damp(c.fy, target.fy, 0.08, dt);
+      c.anchorY = target.anchorY;
+      return settle(c);
     }
     /* A "view" maps plate pixels to screen: X = ox + (x - vx) * s, Y = oy + (y - vy) * s. */
     function viewOf(plateId, c, ox, oy, zoomMul) {
@@ -105,6 +115,12 @@
       return { plate: plateId, img: images[PLATES[plateId].image], s: s, vx: c.vx, vy: c.vy, ox: ox || 0, oy: oy || 0, z: c.z };
     }
     function toScreen(v, x, y) { return { x: col.x + v.ox + (x - v.vx) * v.s, y: v.oy + (y - v.vy) * v.s }; }
+    function lockedView(plateId, pt, q, sc) {
+      sc = Math.max(sc, s0);                      // never smaller than cover-fit: no empty edges
+      const c = clampCam({ z: sc / s0, vx: pt.x - (q.x - col.x) / sc, vy: pt.y - q.y / sc });
+      return viewOf(plateId, c);
+    }
+    // (cams[] entries are {z, zFloor, fx, fy, anchorY, vx, vy}; vx/vy are always derived by settle()).
 
     // ---------------------------------------------------------------- drawing helpers
     function drawPlate(v) {
@@ -315,9 +331,9 @@
         if (g >= -0.001 && g <= 1.001) {
           const pt = WW.path.racerPoint(P.loop.path, U.clamp(g, 0, 1), 0, 0);
           const sp = toScreen(v, pt.x, pt.y);
-          const lw = pt.w * v.s;
+          const lw = pt.w * v.s, ll = travelLean(pt.tx);
           list.push({ y: pt.y, draw: function () {
-            drawRacer('loop', L, state, sp.x, sp.y, lw);
+            drawRacer('loop', L, state, sp.x, sp.y, lw, { lean: ll });
             pill('LOOP', sp.x, sp.y - lw * (1.12 + (L.jumpH || 0) * 0.55), Math.max(10, Math.min(15, lw * 0.11)), 'loop', 0.92);
           } });
         }
@@ -670,8 +686,10 @@
     function purlScreen(v, seg, f, laneX) {
       const pt = WW.path.racerPoint(seg.path, f, laneX, 0);
       const sp = toScreen(v, pt.x, pt.y);
-      return { x: sp.x, y: sp.y, w: pt.w * v.s, gy: pt.y };
+      return { x: sp.x, y: sp.y, w: pt.w * v.s, gy: pt.y, tx: pt.tx };
     }
+    let leanPurl = 0;
+    function travelLean(tx) { return U.clamp((tx || 0) * 0.16, -0.13, 0.13); }
 
     function render(state, dtReal) {
       const dt = Math.min(0.1, Math.max(0, dtReal || 0));
@@ -683,24 +701,30 @@
       const lean = U.clamp((p.lane - p.laneX) * 0.22, -0.2, 0.2);
       let focus = null;
 
-      // Which view? A recovery/return loop, a connector between scenes, or a single scene.
-      let key, A = null, B = null, t = 0, dir = 1;
+      // Which view? Purl between two scenes (a connector, or the landing's recovery loop), or inside one scene.
+      let key, A = null, B = null, t = 0;
       if (p.trans) {
         const from = PS[p.trans.fromSeg], to = PS[p.trans.toSeg];
         key = 'trans:' + p.trans.kind + ':' + p.trans.fromSeg + ':' + p.trans.toSeg;
-        A = { seg: from, f: p.trans.fromF }; B = { seg: to, f: p.trans.toF }; t = p.trans.t; dir = -1;
+        A = { seg: from, f: p.trans.fromF }; B = { seg: to, f: p.trans.toF }; t = p.trans.t;
       } else if (seg.kind === 'connector') {
         const from = PS[p.seg - 1], to = PS[p.seg + 1];
         key = 'conn:' + p.seg;
-        A = { seg: from, f: from.exitF }; B = { seg: to, f: 0 }; t = p.f; dir = seg.style === 'left' ? -1 : 1;
+        A = { seg: from, f: from.exitF }; B = { seg: to, f: 0 }; t = p.f;
       } else {
         key = 'plate:' + p.seg;
       }
 
       if (key !== viewKey) {
         if (A) {
-          const camA = cams[A.seg.plate] ? Object.assign({}, cams[A.seg.plate]) : camTarget(A.seg.plate, A.seg.path, A.f, p.laneX);
-          tr = { camA: camA, camB: camTarget(B.seg.plate, B.seg.path, B.f, 0), A: A, B: B };
+          // Start of a journey between scenes: remember exactly where the camera and Purl were, and where they
+          // will be when the next scene takes over, so both ends of the move are seamless.
+          const camA = cams[A.seg.plate] ? Object.assign({}, cams[A.seg.plate]) : settle(camTarget(A.seg.plate, A.seg.path, A.f, p.laneX));
+          const laneA = p.laneX;                  // Purl keeps his lane into the next scene
+          const camB = settle(camTarget(B.seg.plate, B.seg.path, B.f, laneA));
+          tr = { camA: camA, camB: camB, A: A, B: B,
+                 exitPt: WW.path.racerPoint(A.seg.path, A.f, laneA, 0), entryPt: WW.path.racerPoint(B.seg.path, B.f, laneA, 0),
+                 qa: purlScreen(viewOf(A.seg.plate, camA), A.seg, A.f, laneA), qb: purlScreen(viewOf(B.seg.plate, camB), B.seg, B.f, laneA) };
         } else if (tr) {
           cams[seg.plate] = Object.assign({}, tr.camB);
           tr = null;
@@ -714,7 +738,7 @@
       const sx = shake > 0 ? (Math.random() - 0.5) * shake * 14 : 0, sy = shake > 0 ? (Math.random() - 0.5) * shake * 10 : 0;
 
       if (!A) {
-        // ---- single scene
+        // ---- inside one scene: the follow camera keeps Purl lower-centre
         const cam = follow(seg.plate, camTarget(seg.plate, seg.path, p.f, p.laneX, loopPoint(seg.plate, state)), dt);
         drawBackdrop(seg.plate);
         ctx.save();
@@ -722,70 +746,38 @@
         ctx.translate(sx, sy);
         const v = viewOf(seg.plate, cam);
         const q = purlScreen(v, seg, p.f, p.laneX);
-        q.lean = lean;
+        leanPurl = U.damp(leanPurl, travelLean(q.tx), 0.15, dt);
+        q.lean = lean + leanPurl;
         drawScene(v, state, { purl: q });
         const ahead = WW.path.racerPoint(seg.path, Math.min(1, p.f + 0.3), 0, 0);
         focus = toScreen(v, ahead.x, ahead.y - ahead.w * 0.5);
-        last = { v: v, purl: q };
+        last = { v: v, purl: q, offset: 0 };
         ctx.restore();
       } else {
-        // ---- whip round the tower: scene A slides out, scene B slides in, the tower column wipes the seam
-        const e = easeInOut(t);
-        const shift = e * col.w * dir;
-        drawBackdrop(e < 0.5 ? A.seg.plate : B.seg.plate);
+        // ---- between scenes: a chase camera. The camera rushes forward after Purl into the scene he is leaving
+        // (he comes back to his normal size and spot on screen), then the next scenery dissolves in around him at
+        // exactly that spot and size, and the follow camera carries on. Nothing slides or flips; Purl never stops.
+        const u = easeInOut(U.clamp(t / 0.55, 0, 1));
+        const fade = U.smooth(U.clamp((t - 0.5) / 0.5, 0, 1));
+        const q = { x: U.lerp(tr.qa.x, tr.qb.x, u), y: U.lerp(tr.qa.y, tr.qb.y, u), w: U.lerp(tr.qa.w, tr.qb.w, u) };
+        const keepMoving = 1 + 0.25 * Math.pow(U.clamp((t - 0.45) / 0.55, 0, 1), 1.6);  // scene A keeps rushing past while it fades
+        const vA = lockedView(A.seg.plate, tr.exitPt, q, q.w / tr.exitPt.w * keepMoving);
+        const vB = lockedView(B.seg.plate, tr.entryPt, q, q.w / tr.entryPt.w);
+        drawBackdrop(fade < 0.5 ? A.seg.plate : B.seg.plate);
         ctx.save();
         ctx.beginPath(); ctx.rect(col.x, 0, col.w, H); ctx.clip();
-        const push = 1 + 0.18 * e;
-        const camA = tr.camA, camB = tr.camB;
-        // zoom A about Purl's exit point so the scene seems to rush past him
-        const exitPt = WW.path.racerPoint(A.seg.path, A.f, 0, 0);
-        const vA0 = viewOf(A.seg.plate, camA);
-        const exitS = toScreen(vA0, exitPt.x, exitPt.y);
-        const vA = viewOf(A.seg.plate, camA, -shift, 0, push);
-        vA.vx = exitPt.x - (exitS.x - col.x) / vA.s; vA.vy = exitPt.y - exitS.y / vA.s;
-        const vB = viewOf(B.seg.plate, camB, (dir > 0 ? col.w : -col.w) - shift, 0, 1);
-        const pull = 1 + 0.12 * (1 - e);   // scene B settles from slightly zoomed in (never out: no empty edges)
-        const vB2 = viewOf(B.seg.plate, camB, vB.ox, 0, pull);
-        const entryPt = WW.path.racerPoint(B.seg.path, B.f, 0, 0);
-        const entryS = toScreen(viewOf(B.seg.plate, camB), entryPt.x, entryPt.y);
-        vB2.vx = entryPt.x - (entryS.x - col.x) / vB2.s; vB2.vy = entryPt.y - entryS.y / vB2.s;
         drawScene(vA, state, { noLoop: true });
-        drawScene(vB2, state, { noLoop: true });
-        // A wooden tower passing in front of the camera covers the seam (the same carved pillar every time:
-        // p04's left tower, wood and rope bands only), with a soft shadow either side.
-        const seamX = col.x + (dir > 0 ? col.w - shift : -shift);
-        if (e > 0.02 && e < 0.98) {
-          const pw = Math.max(col.w * 0.34, 90);
-          const sh = ctx.createLinearGradient(seamX - pw, 0, seamX + pw, 0);
-          sh.addColorStop(0, 'rgba(25,10,4,0)'); sh.addColorStop(0.3, 'rgba(25,10,4,0.5)');
-          sh.addColorStop(0.7, 'rgba(25,10,4,0.5)'); sh.addColorStop(1, 'rgba(25,10,4,0)');
-          ctx.fillStyle = sh;
-          ctx.fillRect(seamX - pw, 0, pw * 2, H);
-          ctx.drawImage(images[PLATES[PILLAR.plate].image], PILLAR.x, PILLAR.y, PILLAR.w, PILLAR.h, seamX - pw / 2, -H * 0.04, pw, H * 1.08);
-          const gr = ctx.createLinearGradient(seamX - pw / 2, 0, seamX + pw / 2, 0);
-          gr.addColorStop(0, 'rgba(30,12,4,0.55)'); gr.addColorStop(0.35, 'rgba(30,12,4,0.05)');
-          gr.addColorStop(0.65, 'rgba(30,12,4,0.05)'); gr.addColorStop(1, 'rgba(30,12,4,0.6)');
-          ctx.fillStyle = gr;
-          ctx.fillRect(seamX - pw / 2, 0, pw, H);
+        if (fade > 0) {
+          ctx.globalAlpha = fade;
+          drawScene(vB, state, { noLoop: true });
+          ctx.globalAlpha = 1;
         }
-        // speed streaks
-        ctx.save();
-        ctx.globalAlpha = Math.sin(e * Math.PI) * 0.35;
-        ctx.strokeStyle = '#fff4dc';
-        for (let i = 0; i < 9; i++) {
-          const yy = ((i * 97 + anim * 37) % H);
-          const len = col.w * (0.15 + ((i * 53) % 10) / 30);
-          const xx = col.x + ((i * 211 + anim * 1600 * dir) % (col.w + len)) * (dir > 0 ? -1 : 1) + (dir > 0 ? col.w + len : -len);
-          ctx.lineWidth = 1 + (i % 3);
-          ctx.beginPath(); ctx.moveTo(xx, yy); ctx.lineTo(xx + len * dir, yy); ctx.stroke();
-        }
-        ctx.restore();
-        // Purl keeps running at his screen anchor, scaling smoothly from the exit pose to the entry pose.
-        const qa = purlScreen(viewOf(A.seg.plate, camA), A.seg, A.f, 0);
-        const qb = purlScreen(viewOf(B.seg.plate, camB), B.seg, B.f, 0);
-        const q = { x: U.lerp(qa.x, qb.x, e), y: U.lerp(qa.y, qb.y, e), w: U.lerp(qa.w, qb.w, e), lean: dir * 0.12 * Math.sin(e * Math.PI) };
+        const tx = U.lerp(tr.qa.tx || 0, 0, u);
+        leanPurl = U.damp(leanPurl, travelLean(tx), 0.15, dt);
+        q.lean = leanPurl;
         drawRacer('purl', p, state, q.x, q.y, q.w, { lean: q.lean });
-        last = { v: null, purl: q };
+        focus = { x: q.x, y: q.y - q.w * 0.9 };
+        last = { v: fade >= 1 ? vB : null, purl: q, offset: 0 };
         ctx.restore();
       }
 
@@ -848,6 +840,7 @@
       setHudAnchors: function (a) { hud = a || hud; },
       getLayout: function () { return { col: { x: col.x, w: col.w }, purl: last && last.purl }; },
       getTapTargets: function () { return []; },
+      debugView: function () { return { kind: tr ? 'between' : 'scene', offset: last ? last.offset : 0, scenes: tr ? [tr.A.seg.plate, tr.B.seg.plate] : null }; },
       worldToScreen: function (plateId, x, y) { return last && last.v ? toScreen(last.v, x, y) : null; },
       drawFrame: function (c2, name, x, y, width) {
         const fr = F[name]; if (!fr) return;

@@ -15,7 +15,7 @@
         { type: 'start', f: 0 },
         { type: 'hint', f: 0.004, text: 'Swipe \u2190 \u2192 to change lane \u00b7 Swipe \u2191 or tap to jump' },
         { type: 'pickup', item: 'coral', f: 0.83, lane: 0, size: 62 },
-        { type: 'exit', f: 1 }
+        { type: 'exit', f: 0.9 }        // hand over before the ribbon's top curl runs sideways along the rail
       ]
     },
     loop: {

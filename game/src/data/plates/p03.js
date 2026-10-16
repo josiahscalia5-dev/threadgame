@@ -23,7 +23,7 @@
       events: [
         { type: 'tassels', f: 0.12 },   // the three tassels lift (staggered) as Purl starts up the approach
         { type: 'pickup', item: 'teal', f: 0.894, lane: 0, size: 71 },
-        { type: 'exit', f: 1 }
+        { type: 'exit', f: 0.93 }       // just past the teal spool, before the landing edge turns sideways
       ]
     },
 
