@@ -200,7 +200,7 @@
       gate: { state: 'closed', t: 0 },
       objective: seg0.def.objective || '', phase: seg0.def.phase || '',
       message: null, hint: null, transition: null, result: null, tutorial: null,
-      stats: { hits: 0, dodges: 0, recoveries: 0, taps: 0 }
+      stats: { hits: 0, dodges: 0, recoveries: 0, taps: 0, pulls: 0 }
     };
     st.items = sim.inventory.create(ctx);
     st.stitches = sim.stitches.create(ctx);
@@ -556,6 +556,8 @@
       return;
     }
     if (ev.type === 'pull') {
+      // A grip can only start once Purl stands at that stitch's stop (he must be in reach of the loop).
+      if (ev.phase === 'start' && p.waitingFor !== ev.target) return;
       if (sim.stitches.pull(ctx, ev.target, ev.phase, +ev.amount || 0)) {
         if (ev.phase === 'start') st.stats.pulls = (st.stats.pulls || 0) + 1;
         tutorialHold(ctx);

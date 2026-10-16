@@ -34,7 +34,7 @@
   const route = [
     { id: 'ribbon', kind: 'plate', plate: 'p01', length: 128,
       phase: 'LEVEL 1 · START', objective: 'UNFURL THE RIBBON',
-      objectiveOpen: 'GRAB THE CORAL THREAD', objectiveDone: 'FOLLOW THE RIBBON' },
+      objectiveOpen: 'Collect the coral thread', objectiveDone: 'FOLLOW THE RIBBON' },
     { id: 'c-ribbon', kind: 'connector', from: 'p01', to: 'p02', length: 19, style: 'right' },
     { id: 'shortcut', kind: 'plate', plate: 'p02', length: 55,
       phase: 'LEVEL 1 · MIDDLE', objective: 'OPEN THE SHORTCUT',
@@ -74,7 +74,7 @@
     route: route,
     loopRoute: loopRoute,
     stitches: {
-      ribbon: { seg: 'ribbon', kind: 'ribbon' },
+      ribbon: { seg: 'ribbon', kind: 'ribbon', interaction: 'pull', tutorial: true },  // TOUCH → PULL → OPEN (kit/pull-stitch)
       shortcut: { seg: 'shortcut', kind: 'shortcut' },
       tassels: { seg: 'tassels', kind: 'tassels' },
       butterfly: { seg: 'tapestry', kind: 'butterfly' }
