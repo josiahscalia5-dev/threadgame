@@ -3562,3 +3562,10 @@ What are you doing? I want these to look like exactly my mobile app screens. You
 
 - _tool Bash_: List sprite frame rectangles and pivots
 
+
+
+- _tool Write_: /home/user/threadgame/game/src/render/sprites.js
+
+
+- _tool Edit_: /home/user/threadgame/game/src/render/sprites.js
+
