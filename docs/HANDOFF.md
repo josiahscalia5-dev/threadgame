@@ -1,7 +1,20 @@
 # Wishweave Wonders: handoff (where everything is, and what's next)
 
-Updated 2026-10-16, ~18:50 UTC. Repository `josiahscalia5-dev/threadgame`, working branch **`ccr-207f431c-z9upqo`**.
-Read this first when you continue in a new session.
+Updated 2026-10-16, ~19:55 UTC. Repository `josiahscalia5-dev/threadgame`, working branch **`ccr-41c3f304-c2djh7`**
+(continues `ccr-207f431c-z9upqo`). Read this first when you continue in a new session.
+
+## Latest decision (user, ~19:50 UTC): the ORIGINAL game is restored
+
+* The user reviewed the Connected World 3D rebuild and asked for their original game back. `game/`, `tests/`,
+  `android/` and `dist/` now match checkpoint **`635b772`** exactly (verified: empty diff; its 58/58 unit tests pass;
+  screenshot `docs/checkpoints/connected/01-original-restored.jpg` next to approved screen 01).
+* What the user objected to: the 3D version did not look like their approved screens — it used invented models,
+  textures, towers and a background with buildings they never had. Do NOT replace their art or background with
+  invented scenery. Any future change must keep their approved look and be shown side by side with their screens
+  before going further (the user wants every screen change shown and validated).
+* The 3D connected-road work (route graph, ported kit input/route code with 34 kit tests, connected race sim,
+  three.js renderer, art-derived carpet tool) is preserved at commit **`b36b7aa`** if it is ever wanted again.
+  The blurred-pillar transition between scenes is therefore back as it was in the original.
 
 ## Saved history
 

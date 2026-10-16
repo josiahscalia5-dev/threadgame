@@ -3652,3 +3652,13 @@ What about the background? It looks nothing like my original. I liked my origina
 
 - _tool Bash_: Run original tests and screenshot the restored game
 
+- _tool Read_: /home/user/threadgame/docs/checkpoints/connected/01-original-restored.jpg
+
+
+**Claude:** Your original game is back, with your original background, and its own 58 tests all pass. I'll send you the side-by-side and update the handoff note so the next session knows the decision.
+
+
+- _tool SendUserFile_: 
+
+- _tool Bash_: Record the restore decision in the handoff note
+
