@@ -7,28 +7,33 @@
     purl: {
       // near coral carpet → twist → lower band (up-left) → turn → upper band (right) → top curl at the tower
       path: [
-        [272, 1532, 293, 100], [290, 1400, 255, 90], [305, 1280, 215, 70], [308, 1170, 175, 40],
-        [292, 1060, 142, 0], [262, 960, 128, 0], [190, 870, 118, 0], [150, 780, 112, 0],
-        [200, 680, 106, 0], [300, 616, 102, 0], [400, 600, 98, 0], [466, 597, 95, 0]
+        [272, 1532, 293, 100], [302, 1290, 218, 72], [308, 1170, 175, 40],
+        [292, 1060, 142, 0], [262, 960, 128, 0], [190, 872, 118, 0], [154, 798, 112, 0],
+        [196, 740, 108, 0], [258, 682, 104, 0], [328, 620, 100, 0], [405, 599, 97, 0], [466, 594, 95, 0]
       ],
       events: [
         { type: 'start', f: 0 },
-        { type: 'stop', stitch: 'ribbon', f: 0.004, readyF: 0 },
-        { type: 'pickup', item: 'coral', f: 0.85, lane: 0, size: 62 },
+        { type: 'stop', stitch: 'ribbon', f: 0.006, readyF: 0 },
+        { type: 'pickup', item: 'coral', f: 0.83, lane: 0, size: 62 },
         { type: 'exit', f: 1 }
       ]
     },
     loop: {
       // teal ribbon: approved spot → up-left to the tower → behind the tower column
-      path: [[726, 1068, 145], [668, 990, 130], [610, 925, 116], [565, 890, 108], [520, 876, 102]],
+      path: [[726, 1068, 145], [692, 990, 130], [652, 935, 117], [608, 898, 107], [565, 880, 100], [512, 871, 95]],
       events: [
-        { type: 'task', kind: 'stitch', f: 0.02, x: 640, y: 1105 },
+        { type: 'task', kind: 'stitch', f: 0.02, x: 636, y: 1108 },
         { type: 'pickup', item: 'coral', f: 0.6, size: 60 }
       ]
     },
     stitch: { id: 'ribbon', x: 417, y: 1405, r: 70 },
-    ribbon: { band: [[330, 1135, 150], [320, 1050, 110], [275, 955, 105], [185, 862, 100], [150, 780, 95], [205, 680, 80], [300, 626, 60], [400, 608, 52], [466, 600, 42]] },
-    occluders: [],
+    ribbon: { band: [[345, 1132, 145], [345, 1052, 125], [278, 955, 105], [172, 862, 100], [165, 790, 85], [252, 706, 48], [330, 628, 60], [405, 608, 52], [466, 600, 42]] },
+    occluders: [
+      // near-left railing post: hides Purl's left side when he runs in lane -1 beyond it
+      { id: 'left-post', poly: [[38, 1214], [58, 1190], [88, 1180], [116, 1192], [128, 1226], [128, 1436], [112, 1456], [38, 1456]], behindY: 1450 },
+      // central tower trunk: Loop slips behind it at the top of the teal ribbon
+      { id: 'tower', poly: [[450, 742], [556, 742], [559, 800], [556, 868], [561, 1008], [450, 1008]], behindY: 1010 }
+    ],
     wipe: { x0: 345, x1: 560 }
   };
 })(globalThis.WW = globalThis.WW || {});
