@@ -3241,3 +3241,15 @@ continue and proceed where we're at. But like I said, can you validate to me whe
 
 - _tool Edit_: /home/user/threadgame/game/src/core/ww.js
 
+
+**Claude:** Now `level.js`, rewritten for the connected course:
+
+
+- _tool Write_: /home/user/threadgame/game/src/data/level.js
+
+
+**Claude:** Now the inventory, rewritten for spool stations on the course. It keeps the old rules for distinct IDs and drop/recover:
+
+
+- _tool Write_: /home/user/threadgame/game/src/sim/inventory.js
+
