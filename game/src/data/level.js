@@ -18,34 +18,34 @@
   'use strict';
 
   const route = [
-    { id: 'ribbon', kind: 'plate', plate: 'p01', length: 82,
+    { id: 'ribbon', kind: 'plate', plate: 'p01', length: 128,
       phase: 'LEVEL 1 · START', objective: 'UNFURL THE RIBBON',
       objectiveOpen: 'GRAB THE CORAL THREAD', objectiveDone: 'FOLLOW THE RIBBON' },
-    { id: 'c-ribbon', kind: 'connector', from: 'p01', to: 'p02', length: 15, style: 'right' },
-    { id: 'shortcut', kind: 'plate', plate: 'p02', length: 46,
+    { id: 'c-ribbon', kind: 'connector', from: 'p01', to: 'p02', length: 19, style: 'right' },
+    { id: 'shortcut', kind: 'plate', plate: 'p02', length: 55,
       phase: 'LEVEL 1 · MIDDLE', objective: 'OPEN THE SHORTCUT',
       objectiveOpen: 'CROSS THE SHORTCUT' },
-    { id: 'c-shortcut', kind: 'connector', from: 'p02', to: 'p03', length: 15, style: 'right' },
-    { id: 'tassels', kind: 'plate', plate: 'p03', length: 58,
+    { id: 'c-shortcut', kind: 'connector', from: 'p02', to: 'p03', length: 19, style: 'right' },
+    { id: 'tassels', kind: 'plate', plate: 'p03', length: 69,
       phase: 'LEVEL 1', objective: 'LIFT THE TASSELS',
       objectiveOpen: 'GRAB THE TEAL THREAD', objectiveDone: 'RUN TO THE LANDING' },
-    { id: 'c-tassels', kind: 'connector', from: 'p03', to: 'p04', length: 15, style: 'right' },
-    { id: 'landing', kind: 'plate', plate: 'p04', length: 40,
+    { id: 'c-tassels', kind: 'connector', from: 'p03', to: 'p04', length: 19, style: 'right' },
+    { id: 'landing', kind: 'plate', plate: 'p04', length: 38,
       phase: 'LEVEL 1', objective: 'CROSS THE LANDING',
       objectiveDrop: 'GET YOUR THREAD BACK' },
-    { id: 'c-landing', kind: 'connector', from: 'p04', to: 'p06', length: 15, style: 'right' },
-    { id: 'tapestry', kind: 'plate', plate: 'p06', length: 44,
+    { id: 'c-landing', kind: 'connector', from: 'p04', to: 'p06', length: 19, style: 'right' },
+    { id: 'tapestry', kind: 'plate', plate: 'p06', length: 45,
       phase: 'LEVEL 1', objective: 'WAKE THE EMBROIDERY',
       objectiveOpen: 'GRAB THE GOLDEN THREAD', objectiveDone: 'RACE TO THE FLOWER GATE' },
-    { id: 'c-tapestry', kind: 'connector', from: 'p06', to: 'p07', length: 15, style: 'right' },
-    { id: 'finish', kind: 'plate', plate: 'p07', length: 36,
+    { id: 'c-tapestry', kind: 'connector', from: 'p06', to: 'p07', length: 19, style: 'right' },
+    { id: 'finish', kind: 'plate', plate: 'p07', length: 27,
       phase: 'LEVEL 1', objective: 'REACH THE FLOWER GATE', objectiveDone: 'LEVEL 1 COMPLETE' }
   ];
 
   /* Loop's lengths: his visible routes are the neighbouring teal ribbons/bypasses of each plate. */
   const loopLengths = {
-    'ribbon': 80, 'c-ribbon': 15, 'shortcut': 44, 'c-shortcut': 15, 'tassels': 56, 'c-tassels': 15,
-    'landing': 44, 'c-landing': 15, 'tapestry': 44, 'c-tapestry': 15, 'finish': 40
+    'ribbon': 131, 'c-ribbon': 19, 'shortcut': 49, 'c-shortcut': 19, 'tassels': 69, 'c-tassels': 19,
+    'landing': 38, 'c-landing': 19, 'tapestry': 45, 'c-tapestry': 19, 'finish': 30
   };
 
   const loopRoute = route.map(function (seg) {
@@ -71,7 +71,7 @@
        `extra` seconds). Both are symmetric — he is never slowed to guarantee a Purl win. A WW.TUNING value with
        the same name (loopForm, loopBypassJitter, loopDropAheadF) overrides these if it is ever added there. */
     loop: {
-      form: [0.92, 1.08],
+      form: [0.89, 1.11],
       bypassJitter: 0.4,
       dropAheadF: 0.05
     },
