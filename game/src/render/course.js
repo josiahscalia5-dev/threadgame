@@ -450,32 +450,47 @@
 
     /* ---- distant loom city: towers, roofs, bridges, islands, waterfalls (instanced, Lambert) ---- */
     const city = new THREE.Group(); city.name = 'distant-city';
-    const cyl = new THREE.CylinderGeometry(1, 1.08, 1, 12); cyl.translate(0, 0.5, 0);
-    const cone = new THREE.ConeGeometry(1.3, 1, 12); cone.translate(0, 0.5, 0);
-    const dome = new THREE.SphereGeometry(1.25, 12, 8, 0, Math.PI * 2, 0, Math.PI / 2);
-    owned.push(cyl, cone, dome);
+    const cyl = new THREE.CylinderGeometry(1, 1.06, 1, 14, 1, true); cyl.translate(0, 0.5, 0);
+    const ring = new THREE.CylinderGeometry(1.35, 1.35, 0.06, 14); ring.translate(0, 0.5, 0);
+    const cone = new THREE.ConeGeometry(1.25, 1, 14); cone.translate(0, 0.5, 0);
+    const dome = new THREE.SphereGeometry(1.2, 14, 9, 0, Math.PI * 2, 0, Math.PI / 2);
+    const spike = new THREE.ConeGeometry(0.22, 1, 8); spike.translate(0, 0.5, 0);
+    owned.push(cyl, ring, cone, dome, spike);
     const cityTowers = [];
-    for (let i = 0; i < 140 && cityTowers.length < 90; i++) {
-      const s = rnd.next() * main.length, side = rnd.next() < 0.5 ? -1 : 1;
-      const off = side * (34 + Math.pow(rnd.next(), 1.4) * 110);
-      const q = S(main, s, off);
-      if (nearRoad(q.position[0], q.position[2], 28)) continue;
-      const r = 1.6 + rnd.next() * 3.2, h = 12 + rnd.next() * 42;
-      cityTowers.push({ x: q.position[0], y: q.position[1] - 14 - rnd.next() * 10, z: q.position[2], r: r, h: h, gold: rnd.next() < 0.35, dome: rnd.next() < 0.4 });
+    for (let i = 0; i < 400 && cityTowers.length < 150; i++) {
+      const s = -20 + rnd.next() * (main.length + 60), side = rnd.next() < 0.5 ? -1 : 1;
+      const off = side * (42 + Math.pow(rnd.next(), 1.3) * 170);
+      const q = S(main, Math.max(0, Math.min(main.length, s)), off);
+      const along = s < 0 ? s : s > main.length ? s - main.length : 0;
+      const x = q.position[0] + q.forward[0] * along, z = q.position[2] + q.forward[2] * along;
+      if (nearRoad(x, z, 34)) continue;
+      const r = 1.0 + rnd.next() * 1.9, h = 16 + rnd.next() * 46;
+      cityTowers.push({ x: x, y: q.position[1] - 22 - rnd.next() * 12, z: z, r: r, h: h, dome: rnd.next() < 0.45 });
     }
-    const walls = new THREE.InstancedMesh(cyl, M.cityWall, cityTowers.length);
-    const roofs = new THREE.InstancedMesh(cone, M.cityRoof, cityTowers.length);
-    const goldRoofs = new THREE.InstancedMesh(dome, M.cityRoofGold, cityTowers.length);
+    const n = cityTowers.length;
+    const walls = new THREE.InstancedMesh(cyl, M.cityWall, n);
+    const rings = new THREE.InstancedMesh(ring, M.cityRoofGold, n * 2);
+    const roofs = new THREE.InstancedMesh(cone, M.cityRoof, n);
+    const goldRoofs = new THREE.InstancedMesh(dome, M.cityRoofGold, n);
+    const spikes = new THREE.InstancedMesh(spike, M.cityRoofGold, n);
     let nr = 0, ng = 0;
     cityTowers.forEach(function (t, i) {
-      dummy.position.set(t.x, t.y, t.z); dummy.rotation.set(0, 0, 0); dummy.scale.set(t.r, t.h + 14, t.r); dummy.updateMatrix();
+      const top = t.y + t.h + 22;
+      dummy.rotation.set(0, rnd.next() * 6.28, 0);
+      dummy.position.set(t.x, t.y, t.z); dummy.scale.set(t.r, t.h + 22, t.r); dummy.updateMatrix();
       walls.setMatrixAt(i, dummy.matrix);
-      dummy.position.set(t.x, t.y + t.h + 14, t.z);
-      if (t.dome) { dummy.scale.set(t.r, t.r * 1.1, t.r); dummy.updateMatrix(); goldRoofs.setMatrixAt(ng++, dummy.matrix); }
-      else { dummy.scale.set(t.r, t.r * 2.4, t.r); dummy.updateMatrix(); roofs.setMatrixAt(nr++, dummy.matrix); }
+      [0.55, 0.85].forEach(function (k, j) {
+        dummy.position.set(t.x, t.y + (t.h + 22) * k, t.z); dummy.scale.set(t.r, 1, t.r); dummy.updateMatrix();
+        rings.setMatrixAt(i * 2 + j, dummy.matrix);
+      });
+      dummy.position.set(t.x, top, t.z);
+      if (t.dome) { dummy.scale.set(t.r, t.r * 1.2, t.r); dummy.updateMatrix(); goldRoofs.setMatrixAt(ng++, dummy.matrix); }
+      else { dummy.scale.set(t.r, t.r * 2.6, t.r); dummy.updateMatrix(); roofs.setMatrixAt(nr++, dummy.matrix); }
+      dummy.position.set(t.x, top + (t.dome ? t.r * 1.1 : t.r * 2.5), t.z); dummy.scale.set(t.r, t.r * 2.2, t.r); dummy.updateMatrix();
+      spikes.setMatrixAt(i, dummy.matrix);
     });
     roofs.count = nr; goldRoofs.count = ng;
-    city.add(walls, roofs, goldRoofs);
+    city.add(walls, rings, roofs, goldRoofs, spikes);
     // rope bridges between neighbouring city towers
     const bridgeGeo = new THREE.BoxGeometry(1, 0.5, 1.6); owned.push(bridgeGeo);
     const bridges = [];
