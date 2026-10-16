@@ -64,19 +64,19 @@ _(no message yet)_
 
 ## Renderer: plates, camera, actors, effects
 
-- transcript: `history/transcripts/370de19d-9b32-5c31-ac39-d89d7478db67/subagents/agent-aee076b7546be423f.jsonl` (141 entries)
+- transcript: `history/transcripts/370de19d-9b32-5c31-ac39-d89d7478db67/subagents/agent-aee076b7546be423f.jsonl` (142 entries)
 
 Now the harness: a deterministic mini-sim producing §7.1-shaped state, plus moment shortcuts.
 
 ## Route data for p06 and p07
 
-- transcript: `history/transcripts/370de19d-9b32-5c31-ac39-d89d7478db67/subagents/agent-aff5e4bcb58123cca.jsonl` (303 entries)
+- transcript: `history/transcripts/370de19d-9b32-5c31-ac39-d89d7478db67/subagents/agent-aff5e4bcb58123cca.jsonl` (306 entries)
 
 _(no message yet)_
 
 ## UI: HUD, input, loop, lifecycle
 
-- transcript: `history/transcripts/370de19d-9b32-5c31-ac39-d89d7478db67/subagents/agent-ae9506e4d1065977a.jsonl` (195 entries)
+- transcript: `history/transcripts/370de19d-9b32-5c31-ac39-d89d7478db67/subagents/agent-ae9506e4d1065977a.jsonl` (206 entries)
 
-Now update `index.html` (star icon for the counts, number spacing). The RENDER-SCRIPTS block stays untouched.
+The renderer agent has already updated their block; my edit preserved it. Let me start the local server and write a Playwright capture script.
 
