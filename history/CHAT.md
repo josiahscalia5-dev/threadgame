@@ -2091,3 +2091,9 @@ Yes
 
 - _tool Bash_: Check bot dodge stats at different max times
 
+
+**Claude:** The bot's 75 s step budget now includes the 3 s countdown and the frozen tutorial, so the run stops just before the dodge. Applying the test updates and adding a pull/tutorial test suite:
+
+
+- _tool Bash_: Update tests for the pull interaction and tutorial hold
+
