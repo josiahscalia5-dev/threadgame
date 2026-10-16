@@ -1290,3 +1290,24 @@ You may see this warning again while the agents are working. It fires whenever a
 
 How is it going 
 
+
+**Claude:** Checking what each agent has written so far:
+
+
+- _tool Bash_: List new game files and each agent's latest note
+
+
+**Claude:** It's going well. All four agents are actively writing, about 12 minutes in. None has reached its first milestone yet, so nothing is combined or playable yet.
+
+| Agent | Progress so far |
+|---|---|
+| **Simulation** | The core race engine is written (26 KB), plus thread inventory, stitch interactions and Loop's AI. Snagling is just a placeholder so far, as planned for its second stage. It has started its headless tests. |
+| **Interface** | It has written the HUD, touch input, overlays and asset loader, and is now writing the main game loop, pause/lifecycle and the test hooks I'll use for recordings. |
+| **Renderer** | It finished studying the approved screens and has written its first modules: camera, world/plates, characters and effects. It's now building the opening scene. |
+| **Butterfly and finish route data** | It's actively measuring and placing positions against approved screens 6 and 7. It hasn't saved its files yet. |
+
+Next, when the simulation, renderer and interface report their opening milestone, I'll combine them and run the opening with real touch input. Then I'll send you screenshots from the running game next to approved screen 1, before sending the agents on to the rest of the level.
+
+All of this is being saved to GitHub every few seconds.
+
+
