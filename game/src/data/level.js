@@ -9,13 +9,11 @@
    finish, Loop's tasks...) lives in the plate data (WW.PLATES[plate].purl/loop.events) and is read by the sim at
    createRace time — nothing here repeats a plate fraction.
 
-   Pacing (tuned with tests/unit/bot.cjs; the measured table is in that file's header):
-     competent run (stitch reaction ~1 s, dodges)      race clock ~ 93 s
-     first-time run (reaction ~2 s, one hit + recovery) race clock ~100 s
-     Loop                                               ~ 96 s, spread by his per-race form and his own fallible tasks
-   Purl crosses every plate at roughly the same on-screen pace (length ≈ 12–14 m per racer width of the plate's
-   path, see WW.path.widths) except the short landing/finish plates, which keep enough room for the Snagling
-   reveal (≥ 1.5 s after entering the landing) and for the final sprint. Connectors are ~3 s turns around a tower. */
+   Pacing (measured with tests/unit/bot.cjs, milestone 1 — Snagling not active yet; final table in milestone 2):
+     competent run (stitch reaction 1 s)   race clock ~85.5 s       first-time reaction 2 s   ~89.5 s
+     Loop over seeds 1–50                  81.5–96.7 s (avg 87.5)   Purl wins 34/50 resp. 13/50
+   Connectors are ~3 s turns around a tower. Objective texts: `objective` on entry, `objectiveOpen` once the
+   plate's stitch is open, `objectiveDone` once its thread is held, `objectiveDrop` while a thread lies dropped. */
 (function (WW) {
   'use strict';
 
