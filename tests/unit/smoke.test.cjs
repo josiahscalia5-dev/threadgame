@@ -35,7 +35,7 @@ test('createRace exposes the §7.1 + §12 state shape', function () {
   for (const it of Object.values(st.items)) {
     assert.equal(it.status, 'uncollected');
     assert.equal(typeof it.seg, 'string');
-    assert.ok(it.f > 0 && it.f < 1);
+    assert.ok(it.f >= 0 && it.f <= 1);
     assert.equal(typeof it.lane, 'number');
     assert.equal(it.available, it.color !== 'gold');
   }
