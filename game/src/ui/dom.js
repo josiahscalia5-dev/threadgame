@@ -112,6 +112,9 @@
     g.style.width = L.w + 'px';
     g.style.height = L.h + 'px';
     g.style.setProperty('--k', L.k.toFixed(4));
+    // Overlay cards are authored for a ~412 × 915 phone; larger columns (tablets) scale them up, never down.
+    L.ovZoom = Math.max(1, Math.min(1.6, Math.min(L.w / 412, L.h / 915)));
+    g.style.setProperty('--ov-zoom', L.ovZoom.toFixed(3));
     g.classList.toggle('is-column', L.column);
     g.classList.toggle('is-short', L.short);
     g.classList.toggle('is-tiny', L.tiny);
