@@ -3271,3 +3271,14 @@ continue and proceed where we're at. But like I said, can you validate to me whe
 
 - _tool Write_: /home/user/threadgame/game/src/sim/race.js
 
+
+
+- _tool Bash_: Fix branch lock threshold and view index.html scripts
+
+
+
+- _tool Bash_: Update index.html sim scripts and test loader fallback
+
+
+- _tool Bash_: Clean loader and run a headless race end to end
+
