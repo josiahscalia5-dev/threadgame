@@ -14,6 +14,7 @@ import android.view.Gravity;
 import android.view.View;
 import android.view.ViewGroup;
 import android.view.WindowInsets;
+import android.view.WindowInsetsController;
 import android.view.WindowManager;
 import android.webkit.ConsoleMessage;
 import android.webkit.RenderProcessGoneDetail;
@@ -45,7 +46,10 @@ import java.util.Collections;
  *   onPause  -> WishweaveGame.pause('background'), WebView.onPause(), pauseTimers()
  *   onResume -> resumeTimers(), WebView.onResume() only; the race stays paused until the player resumes
  *   Back     -> WishweaveGame.onBack(); the activity finishes only when it returns 'exit'
- *   Insets   -> system bars + display cutout applied as padding on the root view
+ *   Screen   -> full screen: the status and navigation bars are hidden (a swipe shows them briefly) and the game
+ *               draws edge to edge, behind the camera cutout too. The cutout and the gesture-bar area are passed
+ *               to the page as CSS variables --safe-top/right/bottom/left (CSS px) so only the HUD keeps clear of
+ *               them; the painted world fills the whole screen.
  */
 public class MainActivity extends Activity {
     private static final String TAG = "Wishweave";
@@ -70,6 +74,7 @@ public class MainActivity extends Activity {
 
     private FrameLayout root;
     private WebView web;
+    private int safeL, safeT, safeR, safeB;   // px: display cutout + mandatory system-gesture insets
     private Object backCallback;   // OnBackInvokedCallback on API 33+, kept as Object for older class verification
 
     @Override
@@ -81,6 +86,7 @@ public class MainActivity extends Activity {
         root.setBackgroundColor(BACKGROUND);
         layoutEdgeToEdge();
         setContentView(root);
+        hideSystemBars();
         root.setOnApplyWindowInsetsListener(this::applySafeInsets);
         root.requestApplyInsets();
 
@@ -114,38 +120,81 @@ public class MainActivity extends Activity {
         }
     }
 
+    /** Full screen: hide the status and navigation bars; a swipe from the edge shows them briefly. */
+    @SuppressWarnings("deprecation")
+    private void hideSystemBars() {
+        if (Build.VERSION.SDK_INT >= 30) {
+            WindowInsetsController c = getWindow().getInsetsController();
+            if (c != null) {
+                c.hide(WindowInsets.Type.systemBars());
+                c.setSystemBarsBehavior(WindowInsetsController.BEHAVIOR_SHOW_TRANSIENT_BARS_BY_SWIPE);
+            }
+        } else {
+            getWindow().getDecorView().setSystemUiVisibility(
+                View.SYSTEM_UI_FLAG_LAYOUT_STABLE
+                | View.SYSTEM_UI_FLAG_LAYOUT_FULLSCREEN
+                | View.SYSTEM_UI_FLAG_LAYOUT_HIDE_NAVIGATION
+                | View.SYSTEM_UI_FLAG_FULLSCREEN
+                | View.SYSTEM_UI_FLAG_HIDE_NAVIGATION
+                | View.SYSTEM_UI_FLAG_IMMERSIVE_STICKY);
+        }
+    }
+
+    @Override
+    public void onWindowFocusChanged(boolean hasFocus) {
+        super.onWindowFocusChanged(hasFocus);
+        if (hasFocus) hideSystemBars();   // dialogs and the bars' own swipe reveal can bring them back
+    }
+
     /**
-     * The WebView viewport excludes status/navigation bars and cutouts: the root is padded by the
-     * insets and the insets are consumed, so the page's env(safe-area-inset-*) resolve to 0 and the
-     * game never double-pads.
+     * The WebView fills the whole screen (no padding). The areas the HUD must keep clear of — the camera cutout
+     * and the gesture bar — are measured here and handed to the page (pushSafeInsets); the insets are consumed so
+     * the page never counts them twice.
      */
     @SuppressWarnings("deprecation")
     private WindowInsets applySafeInsets(View view, WindowInsets insets) {
+        view.setPadding(0, 0, 0, 0);
+        int l = 0, t = 0, r = 0, b = 0;
         if (Build.VERSION.SDK_INT >= 30) {
             Insets safe = insets.getInsets(
-                WindowInsets.Type.systemBars() | WindowInsets.Type.displayCutout());
-            view.setPadding(safe.left, safe.top, safe.right, safe.bottom);
-            return WindowInsets.CONSUMED;
-        }
-        int left = insets.getSystemWindowInsetLeft();
-        int top = insets.getSystemWindowInsetTop();
-        int right = insets.getSystemWindowInsetRight();
-        int bottom = insets.getSystemWindowInsetBottom();
-        if (Build.VERSION.SDK_INT >= 28) {
-            DisplayCutout cutout = insets.getDisplayCutout();
-            if (cutout != null) {
-                left = Math.max(left, cutout.getSafeInsetLeft());
-                top = Math.max(top, cutout.getSafeInsetTop());
-                right = Math.max(right, cutout.getSafeInsetRight());
-                bottom = Math.max(bottom, cutout.getSafeInsetBottom());
+                WindowInsets.Type.displayCutout() | WindowInsets.Type.mandatorySystemGestures());
+            l = safe.left; t = safe.top; r = safe.right; b = safe.bottom;
+        } else {
+            if (Build.VERSION.SDK_INT >= 29) {
+                android.graphics.Insets g = insets.getMandatorySystemGestureInsets();
+                l = g.left; t = g.top; r = g.right; b = g.bottom;
+            }
+            if (Build.VERSION.SDK_INT >= 28) {
+                DisplayCutout cutout = insets.getDisplayCutout();
+                if (cutout != null) {
+                    l = Math.max(l, cutout.getSafeInsetLeft());
+                    t = Math.max(t, cutout.getSafeInsetTop());
+                    r = Math.max(r, cutout.getSafeInsetRight());
+                    b = Math.max(b, cutout.getSafeInsetBottom());
+                }
             }
         }
-        view.setPadding(left, top, right, bottom);
-        WindowInsets consumed = insets.consumeSystemWindowInsets();
-        if (Build.VERSION.SDK_INT >= 28) {
-            consumed = consumed.consumeDisplayCutout();
+        if (l != safeL || t != safeT || r != safeR || b != safeB) {
+            safeL = l; safeT = t; safeR = r; safeB = b;
+            pushSafeInsets();
         }
+        if (Build.VERSION.SDK_INT >= 30) return WindowInsets.CONSUMED;
+        WindowInsets consumed = insets.consumeSystemWindowInsets();
+        if (Build.VERSION.SDK_INT >= 28) consumed = consumed.consumeDisplayCutout();
         return consumed;
+    }
+
+    /** Sends the safe insets to the page as CSS px (--safe-top/right/bottom/left) and lets it re-layout. */
+    private void pushSafeInsets() {
+        if (web == null) return;
+        float d = getResources().getDisplayMetrics().density;
+        String js = "(function(){try{var s=document.documentElement.style;"
+            + "s.setProperty('--safe-top','" + Math.round(safeT / d) + "px');"
+            + "s.setProperty('--safe-right','" + Math.round(safeR / d) + "px');"
+            + "s.setProperty('--safe-bottom','" + Math.round(safeB / d) + "px');"
+            + "s.setProperty('--safe-left','" + Math.round(safeL / d) + "px');"
+            + "window.dispatchEvent(new Event('resize'));}catch(e){}})();";
+        web.evaluateJavascript(js, null);
     }
 
     // ---------------------------------------------------------------- WebView
@@ -200,6 +249,11 @@ public class MainActivity extends Activity {
             public boolean shouldOverrideUrlLoading(WebView view, WebResourceRequest request) {
                 // Stay on the local game; never open external links or other schemes.
                 return !isLocalAsset(request.getUrl());
+            }
+
+            @Override
+            public void onPageFinished(WebView view, String url) {
+                pushSafeInsets();   // the page starts without the host's safe insets
             }
 
             @Override
@@ -318,6 +372,7 @@ public class MainActivity extends Activity {
     @Override
     protected void onResume() {
         super.onResume();
+        hideSystemBars();
         if (web != null) {
             web.resumeTimers();
             web.onResume();
