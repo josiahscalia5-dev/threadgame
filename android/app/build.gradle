@@ -1,16 +1,24 @@
 plugins { id 'com.android.application' }
 
+// -Pwishweave.preview=connected builds the separate "Wishweave Preview" app: a different application id (so it
+// installs next to the game), its own label, and it opens game/connected/index.html (the connected-road preview).
+def previewConnected = (findProperty('wishweave.preview') ?: '').toString() == 'connected'
+
 android {
     namespace 'com.wishweave.wonders'
     compileSdk 36
 
     defaultConfig {
-        applicationId 'com.wishweave.wonders.level1'
+        applicationId previewConnected ? 'com.wishweave.wonders.level1.connected' : 'com.wishweave.wonders.level1'
         minSdk 26
         targetSdk 36
         versionCode 1
-        versionName '1.0.0-level1'
+        versionName previewConnected ? '1.0.0-connected-preview' : '1.0.0-level1'
+        manifestPlaceholders = [appLabel: previewConnected ? 'Wishweave Preview' : '@string/app_name']
+        buildConfigField 'String', 'GAME_PAGE', previewConnected ? '"connected/index.html"' : '"index.html"'
     }
+
+    buildFeatures { buildConfig true }
 
     compileOptions {
         sourceCompatibility JavaVersion.VERSION_17

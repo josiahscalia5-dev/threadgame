@@ -54,7 +54,8 @@ import java.util.Collections;
 public class MainActivity extends Activity {
     private static final String TAG = "Wishweave";
     private static final String HOST = "appassets.androidplatform.net";
-    static final String ENTRY = "https://" + HOST + "/assets/game/index.html";
+    /** The game page: index.html, or connected/index.html in the "Wishweave Preview" build (app/build.gradle). */
+    static final String ENTRY = "https://" + HOST + "/assets/game/" + BuildConfig.GAME_PAGE;
     private static final int BACKGROUND = Color.rgb(41, 27, 45);
 
     /** window.WishweaveGame && WishweaveGame.pause('background'), guarded so it can never throw. */

@@ -3,7 +3,7 @@
     <!-- Local-only game host: the game is served from packaged assets. No INTERNET permission,
          no payment or account services. -->
     <application
-        android:label="@string/app_name"
+        android:label="${appLabel}"
         android:icon="@mipmap/ic_launcher"
         android:roundIcon="@mipmap/ic_launcher_round"
         android:theme="@style/AppTheme"

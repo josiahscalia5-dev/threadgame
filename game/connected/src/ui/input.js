@@ -4,7 +4,7 @@
      surface,                 // the game canvas: gestures must START here (buttons and overlays never start one)
      getTargets(),            // renderer.getTapTargets(): [{id, x, y, r}] in CSS px relative to the canvas
      enabled(),               // false while an overlay owns the screen or the race is not running
-     onTap(id, point), onSwipe(dir), onPauseKey(), onKeyTap(),
+     onTap(id, point), onSwipe(dir), onPauseKey(), onKeyTap(), onDoubleTap(point),
      onPullStart(id), onPullMove(id, amount), onPullEnd(id, amount, cancelled)
    });
 
@@ -12,7 +12,9 @@
      swipe  dominant-axis movement ≥ SWIPE_PX fires as soon as it is reached (during the move), then the gesture is
             spent — it can never also become a tap;
      tap    released with total movement < TAP_PX within TAP_MS → hit-test the ready stitches with a generous radius;
-            a tap never moves Purl and a miss does nothing.
+            a tap never moves Purl. Two quick taps that both miss every stitch (within DOUBLE_MS and DOUBLE_PX of each
+            other) are a double tap → onDoubleTap (Purl's brake / run toggle). A tap on a stitch, a swipe or a pull
+            in between cancels a half-made double tap.
      pull   (the opening TOUCH → PULL lesson) a press that starts ON a target of kind 'pull' (the gold loop, hit
             radius ≥ 48 CSS px) becomes a pull: only downward movement counts, amount = the largest downward drag
             so far / PULL target distance clamp(0.10 × canvas height, 64, 110) CSS px (never decreases within the
@@ -20,7 +22,7 @@
             the game becoming disabled (pause, overlay, background) → onPullEnd(…, cancelled). A pull is never
             also a tap or a swipe, so it cannot jump Purl or change his lane.
    A second finger while one is down is ignored. Pointer capture keeps a swipe that ends over a button from clicking it.
-   Keyboard (desktop testing): ← → ↑ ↓ / A D W S swipe, Space/Enter taps the ready stitch, P/Esc pause. */
+   Keyboard (desktop testing): ← → ↑ ↓ / A D W S swipe, Space/Enter taps the ready stitch, B brake/run, P/Esc pause. */
 (function (WW) {
   'use strict';
 
@@ -33,6 +35,7 @@
   const HIT_MIN = 56;       // and never less than 56 CSS px from the target centre
   const PULL_HIT_MIN = 48;  // a pull starts within max(1.15 × radius, 48) CSS px of the gold loop
   const PULL_MIN = 64, PULL_MAX = 110, PULL_FRAC = 0.10;   // drag target: clamp(0.10 × height, 64, 110) CSS px
+  const DOUBLE_MS = 320, DOUBLE_PX = 40;                  // double tap: second tap within 320 ms and 40 CSS px
 
   function pullHit(targets, x, y) {
     let best = null, bestD = Infinity;
@@ -70,6 +73,7 @@
   function createInput(opts) {
     const surface = opts.surface;
     let g = null; // active gesture
+    let lastMiss = null; // first tap of a possible double tap
     const stats = { taps: 0, swipes: 0, misses: 0, ignored: 0, pulls: 0 };
 
     function enabled() { return !opts.enabled || opts.enabled(); }
@@ -91,6 +95,7 @@
         if (hit) {
           const h = surface.getBoundingClientRect().height || surface.clientHeight || 640;
           g.pull = hit.id;
+          lastMiss = null;
           g.amount = 0;
           g.dist = Math.min(PULL_MAX, Math.max(PULL_MIN, PULL_FRAC * h));
           stats.pulls++;
@@ -130,6 +135,7 @@
       if (g.spent) return;
       if (Math.max(Math.abs(dx), Math.abs(dy)) >= SWIPE_PX) {
         g.spent = true;
+        lastMiss = null;
         fireSwipe(swipeDir(dx, dy));
       }
     }
@@ -166,7 +172,20 @@
       if (!enabled()) { stats.ignored++; return; }
       const targets = opts.getTargets ? opts.getTargets() : [];
       const hit = hitTest(targets, x, y);
-      if (!hit) { stats.misses++; opts.onMiss && opts.onMiss({ x: x, y: y }); return; }
+      if (!hit) {
+        stats.misses++;
+        const now = performance.now();
+        if (lastMiss && now - lastMiss.t <= DOUBLE_MS && Math.hypot(x - lastMiss.x, y - lastMiss.y) <= DOUBLE_PX) {
+          lastMiss = null;
+          stats.doubleTaps = (stats.doubleTaps || 0) + 1;
+          opts.onDoubleTap && opts.onDoubleTap({ x: x, y: y });
+          return;
+        }
+        lastMiss = { t: now, x: x, y: y };
+        opts.onMiss && opts.onMiss({ x: x, y: y });
+        return;
+      }
+      lastMiss = null;
       stats.taps++;
       opts.onTap && opts.onTap(hit.id, { x: x, y: y });
     }
@@ -174,6 +193,11 @@
     function key(e) {
       if (e.defaultPrevented || e.altKey || e.ctrlKey || e.metaKey) return;
       const k = e.key;
+      if ((k === 'b' || k === 'B') && enabled()) {
+        e.preventDefault();
+        if (!e.repeat) opts.onDoubleTap && opts.onDoubleTap(null);
+        return;
+      }
       if (k === 'p' || k === 'P' || k === 'Escape') {
         e.preventDefault();
         opts.onPauseKey && opts.onPauseKey(k);
@@ -211,11 +235,11 @@
     window.addEventListener('keydown', key);
 
     return {
-      hitTest: hitTest, stats: stats, reset: function () { g = null; },
+      hitTest: hitTest, stats: stats, reset: function () { g = null; lastMiss = null; },
       /* Pause/overlay/background: end an active pull as cancelled (partial progress stays in the sim). */
       cancelPull: function () { if (g && g.pull) { endPull(true); g = null; } },
       active: function () { return g ? { pull: g.pull || null, amount: g.amount || 0, dist: g.dist || 0 } : null; },
-      thresholds: { TAP_PX: TAP_PX, TAP_MS: TAP_MS, SWIPE_PX: SWIPE_PX, HIT_SCALE: HIT_SCALE, HIT_PAD: HIT_PAD, HIT_MIN: HIT_MIN,
+      thresholds: { DOUBLE_MS: DOUBLE_MS, DOUBLE_PX: DOUBLE_PX, TAP_PX: TAP_PX, TAP_MS: TAP_MS, SWIPE_PX: SWIPE_PX, HIT_SCALE: HIT_SCALE, HIT_PAD: HIT_PAD, HIT_MIN: HIT_MIN,
                     PULL_HIT_MIN: PULL_HIT_MIN, PULL_MIN: PULL_MIN, PULL_MAX: PULL_MAX, PULL_FRAC: PULL_FRAC }
     };
   }

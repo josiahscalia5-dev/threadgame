@@ -1,7 +1,10 @@
 #!/usr/bin/env bash
 # Builds the Wishweave Wonders Level 1 debug APK from android/ (which packages ../game).
 #
-#   tools/build-android.sh [--allow-incomplete-game] [extra gradle args...]
+#   tools/build-android.sh [--preview] [--allow-incomplete-game] [extra gradle args...]
+#
+#   --preview   build the separate "Wishweave Preview" app (opens game/connected/index.html, installs next to the
+#               game) as dist/wishweave-wonders-connected-preview.apk
 #
 # Environment (all optional):
 #   ANDROID_HOME   Android SDK (default /opt/android-sdk; needs platforms;android-36, build-tools;35.0.0)
@@ -9,7 +12,8 @@
 #                  then `gradle` on PATH). The build itself always runs through ./gradlew (Gradle 8.13).
 #   JAVA_HOME      JDK 17+ with javac (the system default is used otherwise)
 #
-# Output: dist/wishweave-wonders-level1-debug.apk (+ .sha256), debug-signed with the local debug keystore.
+# Output: dist/wishweave-wonders-level1-debug.apk, or dist/wishweave-wonders-connected-preview.apk with --preview
+# (+ .sha256), debug-signed with the local debug keystore.
 set -euo pipefail
 
 GRADLE_VERSION=8.13
@@ -24,14 +28,20 @@ APK_SRC="$ANDROID_DIR/app/build/outputs/apk/debug/app-debug.apk"
 APK_OUT="$DIST_DIR/wishweave-wonders-level1-debug.apk"
 
 ALLOW_INCOMPLETE=0
+PREVIEW=0
 GRADLE_ARGS=()
 for arg in "$@"; do
   case "$arg" in
     --allow-incomplete-game) ALLOW_INCOMPLETE=1 ;;
-    -h|--help) sed -n '2,13p' "${BASH_SOURCE[0]}" | sed 's/^# \{0,1\}//'; exit 0 ;;
+    --preview) PREVIEW=1 ;;
+    -h|--help) sed -n '2,16p' "${BASH_SOURCE[0]}" | sed 's/^# \{0,1\}//'; exit 0 ;;
     *) GRADLE_ARGS+=("$arg") ;;
   esac
 done
+if [ "$PREVIEW" = 1 ]; then
+  GRADLE_ARGS+=("-Pwishweave.preview=connected")
+  APK_OUT="$DIST_DIR/wishweave-wonders-connected-preview.apk"
+fi
 if [ "$ALLOW_INCOMPLETE" = 1 ]; then
   GRADLE_ARGS+=("-Pwishweave.allowIncompleteGame=true")
 fi
@@ -107,9 +117,9 @@ if [ -n "$AAPT2" ]; then
 fi
 
 log "Packaged game files"
-python3 - "$APK_OUT" "$ALLOW_INCOMPLETE" <<'PY'
-import re, sys, zipfile
-apk, allow_incomplete = sys.argv[1], sys.argv[2] == '1'
+python3 - "$APK_OUT" "$ALLOW_INCOMPLETE" "$PREVIEW" <<'PY'
+import posixpath, re, sys, zipfile
+apk, allow_incomplete, preview = sys.argv[1], sys.argv[2] == '1', sys.argv[3] == '1'
 names = set(zipfile.ZipFile(apk).namelist())
 game = sorted(n for n in names if n.startswith('assets/game/'))
 print(f'{len(game)} files under assets/game/')
@@ -136,6 +146,28 @@ if 'assets/game/src/data/asset-data.js' in names:
         if 'assets/game/' + f.lstrip('./') not in names:
             missing.append('assets/game/' + f + '  (WW.ASSETS image)')
     print(f'asset-data.js lists {len(files)} image files')
+if preview:
+    # The preview app opens connected/index.html. Its <base href="../"> resolves every reference against game/.
+    page = 'assets/game/connected/index.html'
+    if page not in names:
+        missing.append(page + '  (the preview app\'s entry page)')
+    else:
+        html = zipfile.ZipFile(apk).read(page).decode('utf-8', 'replace')
+        base = re.search(r'<base\b[^>]*\bhref\s*=\s*["\']([^"\']*)', html, re.I)
+        root = posixpath.normpath(posixpath.join('assets/game/connected', base.group(1) if base else '.'))
+        refs = [r for r in re.findall(r'<(?:script|link|img)\b[^>]*?\b(?:src|href)\s*=\s*["\']([^"\'#?]+)', html, re.I)
+                if not re.match(r'^[a-z]+:', r, re.I) and not r.startswith('//')]
+        for ref in refs:
+            if posixpath.normpath(posixpath.join(root, ref)) not in names:
+                missing.append(posixpath.join(root, ref) + '  (referenced by connected/index.html)')
+        print(f'connected/index.html references {len(refs)} local files')
+    if 'assets/game/connected/src/data/world-art.js' in names:
+        data = zipfile.ZipFile(apk).read('assets/game/connected/src/data/world-art.js').decode('utf-8', 'replace')
+        files = sorted(set(re.findall(r'"file"\s*:\s*"([^"]+)"', data)))
+        for f in files:
+            if 'assets/game/' + f not in names:
+                missing.append('assets/game/' + f + '  (WW.WORLD_ART image)')
+        print(f'world-art.js lists {len(files)} image files')
 for n in game[:8]:
     print('  ' + n)
 if len(game) > 8:

@@ -65,6 +65,7 @@
     enabled: function () { return canPlay(); },
     onTap: function (id) { sendTap(id); },
     onSwipe: function (dir) { sendSwipe(dir); },
+    onDoubleTap: function () { if (race) dispatch(race.input({ type: 'toggle-player-brake' })); },
     onPullStart: function (id) { sendPull(id, 'start', 0); },
     onPullMove: function (id, amount) { sendPull(id, 'move', amount); },
     onPullEnd: function (id, amount, cancelled) { sendPull(id, cancelled ? 'cancel' : 'end', amount); },
@@ -278,10 +279,16 @@
 
   /* ---------- layout ---------- */
 
+  /* The canvas covers the whole screen (style.css #view), so the renderer gets the canvas's own size. */
+  function viewSize() {
+    const c = els.canvas;
+    return { w: Math.max(1, c.clientWidth || L.w), h: Math.max(1, c.clientHeight || L.h) };
+  }
+
   function relayout() {
     L = dom.layout(els);
     if (renderer && renderer.resize) {
-      try { renderer.resize(L.w, L.h, window.devicePixelRatio || 1); } catch (e) { report(e); }
+      try { const v = viewSize(); renderer.resize(v.w, v.h, window.devicePixelRatio || 1); } catch (e) { report(e); }
     }
     dirty = true;
     if (renderer && race) { try { draw(0); } catch (e) { report(e); } }
@@ -343,7 +350,7 @@
       renderer = WW.render.createRenderer({
         canvas: els.canvas, images: images, assets: WW.ASSETS, level: WW.LEVEL, debug: DEBUG
       });
-      if (renderer.resize) renderer.resize(L.w, L.h, window.devicePixelRatio || 1);
+      if (renderer.resize) { const v = viewSize(); renderer.resize(v.w, v.h, window.devicePixelRatio || 1); }
       overlays.drawPortraits(images, WW.ASSETS);
       booted = true;
       newRace(SEED, false);
