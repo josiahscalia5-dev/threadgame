@@ -18,7 +18,7 @@
         [420, 1092, 147, 0]      // gate threshold
       ],
       events: [
-        { type: 'finish', f: 0 }
+        { type: 'finish', f: 0.5802 }   // (403,1222) w 184 = approved Purl
       ]
     },
 
@@ -35,7 +35,7 @@
         [500, 1100, 151]         // gate threshold, right of Purl's line
       ],
       events: [
-        { type: 'finish', f: 0 }
+        { type: 'finish', f: 0.4081 }   // (647,1328) w 214 = approved Loop
       ]
     },
 
