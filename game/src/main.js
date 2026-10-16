@@ -107,7 +107,11 @@
     }
     syncUI();
   }
-  if (ctl.toggle) ctl.toggle.addEventListener('click', function () { setControls(!controlsOn); });
+  if (ctl.toggle) {
+    ctl.toggle.textContent = 'ON-SCREEN BUTTONS: ' + (controlsOn ? 'ON' : 'OFF');
+    ctl.toggle.setAttribute('aria-pressed', controlsOn ? 'true' : 'false');
+    ctl.toggle.addEventListener('click', function () { setControls(!controlsOn); });
+  }
   function ctlPress(fn) { return function (e) { e.preventDefault(); if (canPlay()) fn(); syncUI(); }; }
   if (ctl.left) ctl.left.addEventListener('click', ctlPress(function () { sendSwipe('left'); }));
   if (ctl.right) ctl.right.addEventListener('click', ctlPress(function () { sendSwipe('right'); }));

@@ -538,7 +538,7 @@ button { font: inherit; color: inherit; -webkit-tap-highlight-color: transparent
   width: 52px; height: 52px; padding: 0;
   border-radius: 50%; border: 3px solid #e2a93b;
   background: radial-gradient(circle at 40% 35%, #fffaf0, #f2dcb2 70%, #e8c98f);
-  color: var(--brown); font: 900 24px/1 inherit; letter-spacing: 0;
+  color: var(--brown); font-family: inherit; font-weight: 900; font-size: 24px; line-height: 1; letter-spacing: 0;
   box-shadow: 0 3px 6px rgba(60, 25, 10, .35), inset 0 -2px 0 rgba(160, 100, 30, .35);
   opacity: .93; touch-action: manipulation;
 }
