@@ -3223,3 +3223,13 @@ continue and proceed where we're at. But like I said, can you validate to me whe
 
 - _tool Bash_: Run route-vs-GLB geometry check
 
+
+**Claude:** The kit's walkable top matches my route-built road to within 1.4 mm, on both the main road and the side loop. Task 2 is done.
+
+
+- _tool TaskUpdate_: 
+
+- _tool TaskUpdate_: 
+
+- _tool Bash_: Read HUD progress and event handling
+
