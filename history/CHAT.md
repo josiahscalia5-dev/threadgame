@@ -2135,3 +2135,15 @@ Yes
 
 - _tool Bash_: Read the level.js pacing header
 
+- _tool Bash_: Update documented pacing and seeds; rerun tests
+
+
+**Claude:** All 58 unit tests pass. The simulation side is done.
+
+
+- _tool TaskUpdate_: 
+
+- _tool TaskUpdate_: 
+
+- _tool Bash_: Read the renderer stitch/cue feature module
+
