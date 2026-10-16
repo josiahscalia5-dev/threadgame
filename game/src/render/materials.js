@@ -195,9 +195,25 @@
 
     const M = { THREE: THREE, COL: COL, textures: {} };
 
-    // carpet: one 6 m × 6 m tile, 48 × 48 bobbles
-    M.carpet = stitchMat(bobbles(768, 768, 48, 48, carpetAt, rnd, { brick: true }), { bump: 2.6 });
-    M.sideLoop = stitchMat(bobbles(384, 768, 22, 48, sideLoopAt, rnd, { brick: true }), { bump: 2.4 });
+    // carpets: the approved painted carpets themselves (tools/build-world-art.py), unlit so their colours stay exact.
+    // u spans the road width once (gold borders on both edges); v runs along the road, mirrored so tiles join.
+    function artCarpet(key, fallback) {
+      const img = opts.images && opts.images[key];
+      if (!img) return fallback();
+      const t = new THREE.Texture(img);
+      t.encoding = THREE.sRGBEncoding; t.anisotropy = aniso;
+      t.wrapS = THREE.ClampToEdgeWrapping; t.wrapT = THREE.MirroredRepeatWrapping;
+      t.needsUpdate = true; owned.push(t);
+      const m = new THREE.MeshBasicMaterial({ map: t, toneMapped: false });
+      owned.push(m);
+      return m;
+    }
+    M.carpet = artCarpet('world.carpet-main', function () {
+      return stitchMat(bobbles(768, 768, 48, 48, carpetAt, rnd, { brick: true }), { bump: 2.6 });
+    });
+    M.sideLoop = artCarpet('world.carpet-side', function () {
+      return stitchMat(bobbles(384, 768, 22, 48, sideLoopAt, rnd, { brick: true }), { bump: 2.4 });
+    });
     M.sideLoop.polygonOffset = true; M.sideLoop.polygonOffsetFactor = -2; M.sideLoop.polygonOffsetUnits = -2;
 
     // braided gold rope (u around, v along)

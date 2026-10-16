@@ -18,26 +18,21 @@
   const HEX = { coral: 0xff4466, red: 0xff4466, teal: 0x29d6cf, gold: 0xffc94d, purl: 0xff5a6e, loop: 0x2fd3cc,
                 dust: 0xf3d6b4, star: 0xfff2a0, confetti: [0xff5a8a, 0xffd34d, 0x35d3c8, 0xffffff] };
 
-  function create(THREE, M, course, level) {
+  function create(THREE, M, course, level, art) {
     const group = new THREE.Group(); group.name = 'props';
     const owned = [];
     const main = course.main;
     const S = function (s, lat) { return WW.route.sample(main, s, lat, null); };
 
-    function spoolMesh(color, scale) {
-      const g = new THREE.Group();
-      const wood = M.gold;
-      const core = new THREE.Mesh(new THREE.CylinderGeometry(0.24, 0.24, 0.46, 24), M.spool(color));
-      const rimA = new THREE.Mesh(new THREE.CylinderGeometry(0.34, 0.34, 0.07, 28), wood);
-      const rimB = rimA.clone();
-      rimA.position.y = 0.26; rimB.position.y = -0.26;
-      const bead = new THREE.Mesh(new THREE.TorusGeometry(0.34, 0.03, 8, 28), M.rope);
-      bead.rotation.x = Math.PI / 2; bead.position.y = 0.26;
-      const beadB = bead.clone(); beadB.position.y = -0.26;
-      owned.push(core.geometry, rimA.geometry, bead.geometry);
-      g.add(core, rimA, rimB, bead, beadB);
-      g.scale.setScalar(scale || 1);
-      return g;
+    /* The approved spool art (props atlas) standing on the carpet, facing the camera. */
+    const SPOOL_FRAME = { coral: 'prop.coral-thread', teal: 'prop.teal-thread', gold: 'prop.golden-thread' };
+    const billboards = [];
+    function spoolMesh(color, height) {
+      const f = art.frame(SPOOL_FRAME[color]);
+      const m = new THREE.Mesh(art.geometry(SPOOL_FRAME[color], height / f.h), art.material('props'));
+      m.renderOrder = 4;
+      billboards.push(m);
+      return m;
     }
     function glowSprite(color, size) {
       const sp = new THREE.Sprite(new THREE.SpriteMaterial({ map: M.textures.glow, color: color, transparent: true, depthWrite: false,
@@ -57,11 +52,12 @@
     const stations = (level.threads || []).map(function (th) {
       const sp = th.spool, q = S(sp.mainS, sp.lateral);
       const g = new THREE.Group();
-      const spool = spoolMesh(th.color, 1.15);
-      const glow = glowSprite(HEX[th.color], 2.4);
-      const ring = ringDecal(HEX[th.color], 0.75);
+      const spool = spoolMesh(th.color, 0.62);
+      const glow = glowSprite(HEX[th.color], 1.6);
+      glow.position.y = 0.32;
+      const ring = ringDecal(HEX[th.color], 0.6);
       g.add(spool, glow);
-      g.position.set(q.position[0], q.position[1] + sp.hover, q.position[2]);
+      g.position.set(q.position[0], q.position[1], q.position[2]);   // stands on the carpet, as in the approved art
       ring.position.set(q.position[0], q.position[1] + 0.03, q.position[2]); ring.rotation.x = -Math.PI / 2;
       group.add(g, ring);
       return { color: th.color, group: g, spool: spool, glow: glow, base: g.position.clone(), q: q };
@@ -72,7 +68,8 @@
     function offerFor(item) {
       if (offers[item.id]) return offers[item.id];
       const g = new THREE.Group();
-      g.add(spoolMesh(item.color, 0.8), glowSprite(HEX[item.color], 1.6));
+      const glow = glowSprite(HEX[item.color], 1.2); glow.position.y = 0.25;
+      g.add(spoolMesh(item.color, 0.48), glow);
       const ring = ringDecal(HEX[item.owner], 0.55);
       group.add(g, ring);
       offers[item.id] = { group: g, ring: ring };
@@ -122,12 +119,15 @@
     }
     let lastState = null;
 
-    function update(state, dt, t) {
+    const wp = new THREE.Vector3();
+    function update(state, dt, t, camPos) {
       lastState = state;
       stations.forEach(function (st, i) {
-        st.spool.rotation.y = t * 1.6 + i;
-        st.group.position.y = st.base.y + Math.sin(t * 2.2 + i) * 0.08;
-        st.glow.material.opacity = 0.55 + 0.2 * Math.sin(t * 3 + i);
+        st.glow.material.opacity = 0.45 + 0.2 * Math.sin(t * 3 + i);
+      });
+      if (camPos) billboards.forEach(function (m) {
+        m.getWorldPosition(wp);
+        m.rotation.y = Math.atan2(camPos.x - wp.x, camPos.z - wp.z) - (m.parent ? m.parent.rotation.y : 0);
       });
       // re-offered threads
       const seen = {};
@@ -137,8 +137,7 @@
           const o = offerFor(it);
           const q = S(it.mainS, it.lateral);
           o.group.visible = o.ring.visible = true;
-          o.group.position.set(q.position[0], q.position[1] + 0.75 + Math.sin(t * 2.5) * 0.06, q.position[2]);
-          o.group.children[0].rotation.y = t * 2;
+          o.group.position.set(q.position[0], q.position[1], q.position[2]);
           o.ring.position.set(q.position[0], q.position[1] + 0.03, q.position[2]); o.ring.rotation.x = -Math.PI / 2;
           seen[id] = true;
         }
@@ -175,8 +174,8 @@
         if (e.type === 'pickup' && r) {
           const st = stations.filter(function (x) { return x.color === e.color; })[0];
           const it = state.items[e.item];
-          let from = st ? [st.group.position.x, st.group.position.y, st.group.position.z] : r.pos;
-          if (it && it.offers > 0) { const q = S(it.mainS, it.lateral); from = [q.position[0], q.position[1] + 0.75, q.position[2]]; }
+          let from = st ? [st.group.position.x, st.group.position.y + 0.35, st.group.position.z] : r.pos;
+          if (it && it.offers > 0) { const q = S(it.mainS, it.lateral); from = [q.position[0], q.position[1] + 0.3, q.position[2]]; }
           stream(from, e.who, HEX[e.color] || 0xffffff, 14);
           burst([r.pos[0], r.pos[1], r.pos[2]], 10, { color: HEX[e.color], y: 0.9, speed: 1.6, up: 2, life: 0.6, size: 0.22 });
         } else if ((e.type === 'jump' || e.type === 'land') && r) {

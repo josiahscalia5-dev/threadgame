@@ -120,7 +120,7 @@
     add(new THREE.Mesh(deckTop(THREE, vis, vis.points[0].s, main.length, { tile: 6 }), M.carpet)).name = 'Road_Main_Top';
     add(new THREE.Mesh(deckSkirt(THREE, vis, vis.points[0].s, main.length, 0.55), M.deckSide)).name = 'Road_Main_Skirt';
     if (b) {
-      add(new THREE.Mesh(deckTop(THREE, b, 0, b.length, { tile: 6, lift: 0.012, crown: 0.012 }), M.sideLoop)).name = 'Road_SideLoop_Top';
+      add(new THREE.Mesh(deckTop(THREE, b, 0, b.length, { tile: b.width, lift: 0.012, crown: 0.012 }), M.sideLoop)).name = 'Road_SideLoop_Top';
       add(new THREE.Mesh(deckSkirt(THREE, b, 0, b.length, 0.45), M.deckSide)).name = 'Road_SideLoop_Skirt';
     }
     // braided gold trims on every deck edge
