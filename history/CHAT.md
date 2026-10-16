@@ -1973,3 +1973,15 @@ Yes
 
 [Image: original 2512x915, displayed at 2000x729. Multiply coordinates by 1.26 to map to original image.]
 
+
+
+- _tool ToolSearch_: select:TaskCreate,TaskUpdate,TaskList
+
+- _tool Bash_: Extract the lead's messages to agents from the old transcript
+
+
+**Claude:** I'll also pull the renderer's original brief, so a new renderer agent gets the same instructions.
+
+
+- _tool Bash_: Extract the original renderer agent brief
+
