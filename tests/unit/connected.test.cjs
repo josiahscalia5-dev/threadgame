@@ -85,7 +85,8 @@ test('one continuous road: no position jump, no size reset, feet on the deck, fr
       }
     }
   });
-  assert.ok(maxStep < WW.TUNING.purlSpeed * WW.TUNING.sideLoopBoost * 1.25, 'fastest per-step move ' + maxStep.toFixed(2) + ' m/s');
+  const vmax = Math.hypot(WW.TUNING.purlSpeed * WW.TUNING.sideLoopBoost * 1.1, WW.TUNING.steerSpeed);
+  assert.ok(maxStep < vmax * 1.05, 'fastest per-step move ' + maxStep.toFixed(2) + ' m/s (limit ' + vmax.toFixed(2) + ')');
   assert.ok(maxOff <= 1e-6, 'left the deck by ' + maxOff);
 });
 
@@ -205,7 +206,8 @@ test('side loop: staying left at the fork takes it continuously, it rejoins, and
   assert.deepEqual(side.roads, ['main', 'tassel-bypass']);
   assert.ok(side.prompt && main.prompt, 'the side loop is announced before the fork');
   assert.ok(side.events.some((e) => e.type === 'branch') && side.events.some((e) => e.type === 'rejoin'));
-  assert.ok(side.maxV < T.purlSpeed * T.sideLoopBoost * 1.1, 'continuous through fork and rejoin (' + side.maxV.toFixed(2) + ' m/s)');
+  const vmax = Math.hypot(T.purlSpeed * T.sideLoopBoost, T.steerSpeed);   // running + side-stepping at once
+  assert.ok(side.maxV < vmax * 1.05, 'continuous through fork and rejoin (' + side.maxV.toFixed(2) + ' m/s)');
   assert.ok(side.time < main.time - 0.25, 'side loop ' + side.time.toFixed(2) + ' s vs main ' + main.time.toFixed(2) + ' s');
 });
 

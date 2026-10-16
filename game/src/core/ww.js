@@ -23,8 +23,8 @@
     strideLength: 1.75,           // m per full gait cycle (two steps)
     bodyRadius: 0.95,             // m of body/rail clearance inside the walkable width (half a racer's width)
     laneStep: 2.0,                // m per steering swipe (one racer's width: left · centre · right)
-    steerSpeed: 4.2,              // m/s max sideways speed while changing line (a side-step, never a pop)
-    steerAccel: 28,               // m/s² sideways acceleration
+    steerSpeed: 5.6,              // m/s max sideways speed while changing line (a side-step, never a pop)
+    steerAccel: 36,               // m/s² sideways acceleration
     steerGain: 10,                // 1/s: sideways speed eases off in proportion to the remaining distance
     jumpHeight: 1.2,              // m
     sideLoopBoost: 1.45,          // speed ribbon on the side loop: 19.5 m at ×1.45 beats 16.0 m of main by ~0.45 s
