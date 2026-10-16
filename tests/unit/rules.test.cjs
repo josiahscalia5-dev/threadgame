@@ -17,13 +17,24 @@ describe('§7.2 movement and input', function () {
     assert.equal(st.purl.action, 'wait');
     assert.equal(st.purl.waitingFor, 'ribbon');
     assert.ok(st.purl.f <= stopF + 1e-9);
-    assert.ok(st.loop.distance > 50, 'Loop keeps racing while Purl waits');
-    race.input({ type: 'tap', target: 'ribbon' });
+    H.activate(race, 'ribbon');
     stepUntil(race, function (s) { return s.stitches.ribbon.state === 'open'; }, 5, { tap: false });
     stepFor(race, T.routeSettle - 0.05);
     assert.ok(st.purl.f <= stopF + 1e-9, 'still settling');
     stepFor(race, 0.3);
     assert.ok(st.purl.f > stopF, 'moving after routeSettle');
+  });
+
+  test('outside the first lesson Loop keeps racing (and the clock runs) while Purl waits at a stop', function () {
+    const race = running(WW, 2);
+    const st = race.state;
+    stepUntil(race, function (s) { return s.purl.waitingFor === 'shortcut'; }, 60);
+    const t0 = st.time, d0 = st.loop.distance;
+    stepFor(race, 6);
+    assert.equal(st.purl.waitingFor, 'shortcut');
+    assert.equal(st.tutorial, null);
+    close(st.time - t0, 6, 1e-6, 'race clock');
+    assert.ok(st.loop.distance > d0 + 20, 'Loop keeps racing while Purl waits');
   });
 
   test('swipes change the lane by one where the path has lanes; laneX follows over laneChangeTime', function () {
@@ -101,7 +112,9 @@ describe('§7.3 stitch interactions', function () {
       evs.forEach(function (e) { if (e.type === 'stitch-open') opened[e.id] = { t: s.time, held: s.held.purl }; });
       return !!opened.shortcut;
     }, 100);
-    close(opened.ribbon.t - st.stitches.ribbon.tappedAt, T.ribbonUnfurl, DT + 1e-9, 'ribbon');
+    // the ribbon unfurls inside the first-lesson hold (race clock frozen): measure it in sim steps
+    close(st.stitches.ribbon.elapsed, T.ribbonUnfurl, DT + 1e-9, 'ribbon');
+    assert.equal(opened.ribbon.t, st.stitches.ribbon.tappedAt, 'no race time passes during the lesson');
     close(opened.shortcut.t - st.stitches.shortcut.tappedAt, T.shortcutUnroll, DT + 1e-9, 'shortcut');
     assert.equal(opened.shortcut.held, 1);
     assert.equal(st.held.purl, 1);
@@ -199,7 +212,8 @@ describe('§7.4 inventory', function () {
     assert.equal(st.held.purl, 1);
     assert.equal(st.held.loop, 1);
     const race2 = running(WW, 2);
-    race2.debug.setItem('purl.teal', { seg: 'ribbon', f: 0.05 });  // on Loop's ribbon f, never his to take
+    race2.debug.teleport('purl', 'shortcut', 0);                  // Purl elsewhere (no first-lesson hold) …
+    race2.debug.setItem('purl.teal', { seg: 'ribbon', f: 0.05 });  // … on Loop's ribbon f, never his to take
     stepUntil(race2, function (s) { return s.loop.f > 0.2; }, 30, { tap: false });
     assert.equal(race2.state.items['purl.teal'].status, 'uncollected');
     assert.equal(race2.state.held.loop, 0);

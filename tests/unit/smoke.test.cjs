@@ -123,8 +123,12 @@ test('taps never move Purl; swipes never trigger stitches; early taps are ignore
   assert.equal(st.purl.f, f);
   assert.deepEqual(race.input({ type: 'tap', target: 'shortcut' }), []);   // not ready yet: ignored
   assert.equal(st.stitches.shortcut.state, 'idle');
-  assert.deepEqual(race.input({ type: 'tap', target: 'ribbon' }), [{ type: 'stitch-tap', id: 'ribbon' }]);
-  assert.deepEqual(race.input({ type: 'tap', target: 'ribbon' }), []);     // no double activation
+  assert.deepEqual(race.input({ type: 'tap', target: 'ribbon' }), []);     // the opening ribbon is pulled, not tapped
+  assert.deepEqual(race.input({ type: 'pull', target: 'ribbon', phase: 'start' }), [{ type: 'pull-start', id: 'ribbon', pull: 0 }]);
+  assert.deepEqual(race.input({ type: 'pull', target: 'ribbon', phase: 'move', amount: 1 }),
+    [{ type: 'stitch-tap', id: 'ribbon' }, { type: 'pull-complete', id: 'ribbon' }]);
+  assert.deepEqual(race.input({ type: 'pull', target: 'ribbon', phase: 'start' }), []);     // no double activation
+  assert.deepEqual(race.input({ type: 'tap', target: 'ribbon' }), []);
   assert.equal(st.purl.f, f);
   stepFor(race, WW.TUNING.ribbonUnfurl + WW.TUNING.routeSettle + 0.5);
   assert.ok(st.purl.f > f);

@@ -52,7 +52,7 @@ test('dodge window: a jump or a lane change started 0.25–0.35 s after the reve
   const windowOf = function (dodge) {
     const ok = [];
     for (let k = 0; k <= 42; k++) {
-      const r = runBot({ WW: WW, seed: 1, profile: 'competent', dodge: dodge, dodgeDelay: k / 60, maxTime: 75 });
+      const r = runBot({ WW: WW, seed: 1, profile: 'competent', dodge: dodge, dodgeDelay: k / 60, maxTime: 85 });
       ok.push(r.stats.dodges === 1 && r.stats.hits === 0);
     }
     const lo = ok.indexOf(true), hi = ok.lastIndexOf(true);

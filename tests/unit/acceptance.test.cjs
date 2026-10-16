@@ -20,13 +20,14 @@ test('check 2: ribbon and shortcut connect before Purl crosses; he never walks a
   const st = race.state;
   let prev = { seg: st.purl.seg, f: st.purl.f };
   const ready = {};
+  let clock = 0;
   stepUntil(race, function (s) {
     const p = s.purl;
     for (const id of Object.keys(s.stitches)) {
       const k = s.stitches[id];
       if (p.seg === k.segIndex && p.f > k.f + 1e-9) {
         assert.equal(k.state, 'open', id + ' must be open before Purl passes its stop');
-        assert.ok(s.time >= k.openedAt + WW.TUNING.routeSettle - 1e-9);
+        assert.ok(k.settle >= WW.TUNING.routeSettle - 1e-9);
       }
     }
     if (!s.transition || s.transition.kind === 'connector') {
@@ -36,12 +37,13 @@ test('check 2: ribbon and shortcut connect before Purl crosses; he never walks a
     prev = { seg: p.seg, f: p.f };
     return s.mode === 'finished';
   }, 400, { tap: false, each: function (r) {
-    // a slow player: taps each stitch 4 s after its cue
+    // a slow player: opens each stitch 4 s (of their own time) after its cue
     const s = r.state, out = [];
+    clock += H.DT;
     for (const id of Object.keys(s.stitches)) {
       if (s.stitches[id].state !== 'ready') continue;
-      if (ready[id] === undefined) ready[id] = s.time;
-      if (s.time >= ready[id] + 4) out.push.apply(out, r.input({ type: 'tap', target: id }));
+      if (ready[id] === undefined) ready[id] = clock;
+      if (clock >= ready[id] + 4) out.push.apply(out, H.activate(r, id));
     }
     return out;
   }, dodge: true });
