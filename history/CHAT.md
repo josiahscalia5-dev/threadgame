@@ -3751,3 +3751,7 @@ First I'll check whether the files you just sent are the same ones I already hav
 
 - _tool Bash_: Add brake to the test API and read test helpers
 
+- _tool Write_: /home/user/threadgame/tests/unit/features.test.cjs
+
+- _tool Bash_: Run all unit tests including the new feature tests
+

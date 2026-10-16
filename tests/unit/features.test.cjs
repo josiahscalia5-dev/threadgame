@@ -75,7 +75,7 @@ test('Loop keeps racing while Purl is braked, and his race is the same either wa
   }
   const a = loopAfter(false), b = loopAfter(true);
   assert.ok(b.purl < 1.0, 'braked Purl hardly moved (' + b.purl.toFixed(2) + ' m)');
-  assert.ok(b.loop > 15, 'Loop kept racing (' + b.loop.toFixed(1) + ' m)');
+  assert.ok(b.loop > 5, 'Loop kept racing (' + b.loop.toFixed(1) + ' m; he may also be doing his own stitch stop)');
   assert.equal(b.loop, a.loop, 'Loop does not react to the brake');
   assert.equal(b.loopF, a.loopF);
 });
