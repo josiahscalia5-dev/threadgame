@@ -4,7 +4,8 @@
      moment=<name>   jump to a named beat (see H.moments after load), or T=<seconds of wall clock incl. countdown>
      play=1          run in real time from the chosen moment (speed=<x> time scale)
      debug=1         renderer debug drawing;  info=1 shows the clock
-     react, snag=hit|dodge, lanes=t:lane,t:lane, jumps=t,t   scripted inputs (times are race seconds)            */
+     react, snag=hit|dodge, lanes=t:lane,t:lane, jumps=t,t   scripted inputs (times are race seconds)
+     set=loop.f:0.9,purl.laneX:-1   force state fields after every step            */
 (function () {
   'use strict';
   const q = new URLSearchParams(location.search);
@@ -33,6 +34,15 @@
         images[k] = im;
       });
     })).then(function () { return Promise.all(Object.keys(images).map(function (k) { return images[k].decode ? images[k].decode().catch(function () {}) : 0; })); });
+  }
+
+  /* set=loop.f:0.92,purl.lane:-1 forces fields after every sim step (for occlusion / lane checks). */
+  const sets = (q.get('set') || '').split(',').filter(Boolean).map(function (kv) {
+    const a = kv.split(':'), path = a[0].split('.'), v = a[1];
+    return { path: path, v: isNaN(+v) ? v : +v };
+  });
+  function applySets(st) {
+    sets.forEach(function (s) { let o = st; for (let i = 0; i < s.path.length - 1; i++) o = o[s.path[i]]; o[s.path[s.path.length - 1]] = s.v; });
   }
 
   let renderer = null, sim = null, wall = 0;
@@ -93,7 +103,7 @@
     const dt = 1 / 60;
     let t = 0, n = 0;
     while (t < T - 1e-9) {
-      sim.step(dt); t += dt; n++;
+      sim.step(dt); applySets(sim.state); t += dt; n++;
       const evs = sim.events.splice(0);
       if (t >= T - warm) {
         renderer.handleEvents(evs);
@@ -118,7 +128,7 @@
     function frame(now) {
       const dtr = Math.min(0.1, (now - last) / 1000); last = now;
       const steps = Math.round(dtr * speed * 60);
-      for (let i = 0; i < steps; i++) { sim.step(1 / 60); renderer.handleEvents(sim.events.splice(0)); }
+      for (let i = 0; i < steps; i++) { sim.step(1 / 60); applySets(sim.state); renderer.handleEvents(sim.events.splice(0)); }
       wall += steps / 60;
       renderer.render(sim.state, dtr * speed);
       showInfo();
