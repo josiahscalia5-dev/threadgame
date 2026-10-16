@@ -13,6 +13,13 @@ four points measured on its edges (inside the gold rope borders):
                     512 × 512 px = the 6 m road width × 6 m along the road (mirrored along the road in the game).
   carpet-side.webp  plate 02 (shortcut), rows 1000–1200: the teal carpet with pink/gold flowers (the side loop).
                     384 × 384 px = the 2.6 m side-loop width × 2.6 m.
+Plain crops (no rectification), from the clean plates and from the Connected World kit's opening target (01):
+  rope-gold.webp    plate 02, the thick gold bobble rope (repeated along the rail ropes)
+  tower-trunk.webp  plate 04, the wooden tower trunk with its red/teal/gold knit bands (wrapped on tower cylinders)
+  tapestry.webp     target 01, the teal tapestry with pink leaves and its gold fringe (hung on the towers)
+  lantern.webp      target 01, the glowing tower lantern
+  city-*.webp       the golden loom city with the lotus gate, cut from target 01 and plates 03/04/06, with soft
+                    transparent edges so the cards blend into one another and into the sky behind the course
 """
 import os
 
@@ -61,6 +68,26 @@ def write_index():
     print('wrote', os.path.relpath(path, REPO))
 
 
+TARGET01 = os.path.join(REPO, 'kit', 'connected', 'Wishweave-Connected-World-Kit', 'references', '01-opening-target.webp')
+
+
+def crop(src, box):
+    path = TARGET01 if src == 'target01' else os.path.join(PLATES, src)
+    return Image.open(path).convert('RGB').crop(box)
+
+
+def feathered(img, frac=0.14):
+    """RGBA copy whose alpha fades to 0 over `frac` of each edge (smoothstep)."""
+    w, h = img.size
+    x = np.linspace(0, 1, w); y = np.linspace(0, 1, h)
+    def ramp(t):
+        t = np.clip(np.minimum(t, 1 - t) / frac, 0, 1)
+        return t * t * (3 - 2 * t)
+    a = (np.outer(ramp(y), ramp(x)) * 255).astype(np.uint8)
+    out = img.convert('RGBA'); out.putalpha(Image.fromarray(a))
+    return out
+
+
 def main():
     os.makedirs(OUT, exist_ok=True)
     # The far edge of each quad is the top of the tile; flipping makes the tile run "away" from the camera
@@ -69,6 +96,15 @@ def main():
     save(main_carpet.transpose(Image.FLIP_TOP_BOTTOM), 'carpet-main.webp', 'plate 03 rows 1180-1440, rectified')
     side = rectify('02-shortcut.png', [(300, 1000), (560, 1000), (605, 1200), (160, 1200)], (384, 384))
     save(side.transpose(Image.FLIP_TOP_BOTTOM), 'carpet-side.webp', 'plate 02 rows 1000-1200, rectified')
+    save(crop('02-shortcut.png', (715, 1560, 795, 1640)).resize((128, 128), Image.BICUBIC), 'rope-gold.webp',
+         'plate 02 gold rope patch 715,1560-795,1640')
+    save(crop('04-snagged.png', (0, 420, 160, 1250)), 'tower-trunk.webp', 'plate 04 tower trunk 0,420-160,1250')
+    save(crop('target01', (515, 350, 690, 690)), 'tapestry.webp', 'target 01 tapestry 515,350-690,690')
+    save(crop('target01', (462, 676, 550, 872)), 'lantern.webp', 'target 01 lantern 462,676-550,872')
+    cities = [('city-opening', 'target01', (0, 330, 400, 720)), ('city-gate', '06-butterfly.png', (560, 230, 841, 640)),
+              ('city-tall', '03-tassels.png', (610, 0, 841, 640)), ('city-bridges', '04-snagged.png', (420, 60, 841, 480))]
+    for name, src, box in cities:
+        save(feathered(crop(src, box)), name + '.webp', '%s city %d,%d-%d,%d (feathered)' % ((src,) + box), quality=88)
     write_index()
 
 
