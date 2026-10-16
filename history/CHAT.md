@@ -1637,3 +1637,15 @@ That "other Claude session" is an agent working inside this same session — a s
 
 - _tool Read_: /tmp/claude-0/-home-user-threadgame/370de19d-9b32-5c31-ac39-d89d7478db67/scratchpad/render/cmp-game-stop.png
 
+
+
+- _tool Bash_: Start game server and check the test API exists
+
+
+**Claude:** The test hooks are in place. Here's a script that plays the opening with real touch, captures each beat, and records a short video:
+
+
+- _tool Write_: /home/user/threadgame/tests/e2e/opening.cjs
+
+- _tool Bash_: Play the opening with real touch and record it
+

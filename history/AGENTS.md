@@ -68,15 +68,15 @@ _(no message yet)_
 
 Now a side-by-side comparison helper, then the first capture.
 
-## Simulation: race rules and Loop AI
-
-- transcript: `history/transcripts/370de19d-9b32-5c31-ac39-d89d7478db67/subagents/agent-ae84357f8296ab86f.jsonl` (251 entries)
-
-Now the acceptance and pacing suites.
-
 ## UI: HUD, input, loop, lifecycle
 
-- transcript: `history/transcripts/370de19d-9b32-5c31-ac39-d89d7478db67/subagents/agent-ae9506e4d1065977a.jsonl` (411 entries)
+- transcript: `history/transcripts/370de19d-9b32-5c31-ac39-d89d7478db67/subagents/agent-ae9506e4d1065977a.jsonl` (424 entries)
 
-The sim outcome differs between a DPR 1 desktop context and the DPR 2 mobile context with identical inputs — something outside the sim is affecting it. Let me pin that down.
+Works with the real renderer. I'll drop the duplicate "LOOP —" from the ranks pill in the timeout case (keeping it in the times pill).
+
+## Simulation: race rules and Loop AI
+
+- transcript: `history/transcripts/370de19d-9b32-5c31-ac39-d89d7478db67/subagents/agent-ae84357f8296ab86f.jsonl` (265 entries)
+
+Now the acceptance and pacing suites.
 
