@@ -2343,3 +2343,7 @@ Yes
 
 - _tool Bash_: Wait for the APK build to finish and show output
 
+
+
+- _tool Bash_: Fix the packaging check and rebuild the APK
+
