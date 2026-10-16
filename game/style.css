@@ -239,7 +239,8 @@ button { font: inherit; color: inherit; -webkit-tap-highlight-color: transparent
   position: absolute; top: 50%; width: 1.5em; height: 1.5em; transform: translateY(-50%); z-index: 2;
   filter: drop-shadow(0 .05em .06em rgba(90, 45, 10, .45));
 }
-.result-title .orn.l { left: -.62em; } .result-title .orn.r { right: -.62em; }
+.result-title .orn { width: 1.55em; height: 1.55em; }
+.result-title .orn.l { left: -.78em; } .result-title .orn.r { right: -.78em; }
 .result-ranks, .result-times { gap: .45em; padding: .16em 1.4em 0; }
 .result-ranks {
   font-size: max(11.5px, calc(var(--k) * 24px));
@@ -319,17 +320,17 @@ button { font: inherit; color: inherit; -webkit-tap-highlight-color: transparent
 
 /* PLAY AGAIN (approved 07), just above the rewards strip. */
 .btn-play-again {
-  --bh: max(56px, calc(var(--k) * 94px));
+  --bh: max(46px, calc(var(--k) * 94px));
   position: absolute; z-index: 30; left: 50%; transform: translateX(-50%);
   bottom: calc(var(--rw-bottom) + var(--rw-h) + max(6px, calc(var(--k) * 12px)));
-  width: max(236px, calc(var(--k) * 392px));
-  font-size: max(17px, calc(var(--k) * 34px));
+  width: max(196px, calc(var(--k) * 392px));
+  font-size: max(16px, calc(var(--k) * 37px));
   animation: rise .45s cubic-bezier(.2, 1.4, .4, 1);
 }
 .btn-play-again .face { font-size: 1em; }
 .btn-play-again:active { transform: translateX(-50%) translateY(1px) scale(.98); }
-.btn-play-again .orn { width: 1.55em; height: 1.55em; }
-.btn-play-again .orn.l { left: -.5em; } .btn-play-again .orn.r { right: -.5em; }
+.btn-play-again .orn { width: 1.45em; height: 1.45em; }
+.btn-play-again .orn.l { left: -.62em; } .btn-play-again .orn.r { right: -.62em; }
 @keyframes rise { from { transform: translateX(-50%) translateY(30px); opacity: 0; } to { transform: translateX(-50%); opacity: 1; } }
 
 /* ---------- Saved rewards strip (placeholder only; locked cash out) ---------- */
