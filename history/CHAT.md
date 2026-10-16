@@ -3866,3 +3866,17 @@ And I have the APK file to see the preview on my mobile app.
 
 - _tool Bash_: Build the debug APK with the new features
 
+
+**Claude:** The APK built cleanly. Before sending it, I'll check it really contains the new changes and not old files:
+
+
+- _tool Bash_: Verify the APK contains the new game files
+
+
+**Claude:** The APK contains the new game files, byte-for-byte the same as what I tested. One last check is the oldest Android version it supports:
+
+
+- _tool Bash_: Check minimum Android version and that the APK is pushed
+
+- _tool SendUserFile_: 
+
