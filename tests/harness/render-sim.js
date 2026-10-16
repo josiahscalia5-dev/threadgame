@@ -21,7 +21,7 @@
     opts = opts || {};
     const react = opts.react === undefined ? 1.6 : opts.react;
     const route = L.route, lroute = L.loopRoute;
-    const times = { segStart: { 0: 3 }, loopSegStart: {}, stitch: {}, item: {} };
+    const times = { segStart: { 0: 0 }, loopSegStart: {}, stitch: {}, item: {} };
     const items = {};
     let seq = 0;
     route.forEach(function (seg) {
