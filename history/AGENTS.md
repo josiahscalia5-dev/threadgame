@@ -76,7 +76,7 @@ Now the acceptance and pacing suites.
 
 ## UI: HUD, input, loop, lifecycle
 
-- transcript: `history/transcripts/370de19d-9b32-5c31-ac39-d89d7478db67/subagents/agent-ae9506e4d1065977a.jsonl` (461 entries)
+- transcript: `history/transcripts/370de19d-9b32-5c31-ac39-d89d7478db67/subagents/agent-ae9506e4d1065977a.jsonl` (469 entries)
 
-Markup is consistent and the renderer's block is intact. Final regression: rerun the full interaction suite and refresh the 412×915 side-by-sides with the final CSS.
+HUD placement, sizes and results layout now match approved 01/07 closely. Final housekeeping: confirm nothing under `kit/` changed, list my files, and stop my server.
 
