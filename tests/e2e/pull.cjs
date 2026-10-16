@@ -137,13 +137,13 @@ const arg = (k, d) => { const i = process.argv.indexOf('--' + k); return i > 0 ?
   await frames(0.25);
   await shot('3a-unfurling');
   let events = [];
-  const waitOpen = async () => {
-    for (let i = 0; i < 90; i++) { r = await ribbon(); if (!r.tutorial) return; await frames(dt); }
-  };
-  await waitOpen();
-  r = await ribbon();
-  check(r.time === hold0.time, 'the whole lesson took no race time (' + t0.toFixed(3) + ')');
-  check(r.loop.f === hold0.loop.f, 'Loop resumes from his real, held position (f ' + r.loop.f.toFixed(4) + ')');
+  let lastHeld = r;
+  for (let i = 0; i < 90; i++) { r = await ribbon(); if (!r.tutorial) break; lastHeld = r; await frames(dt); }
+  // lastHeld = the final frame of the lesson (stage 'settle'): nothing raced during the whole lesson
+  check(lastHeld.time === hold0.time, 'the whole lesson took no race time (' + hold0.time.toFixed(3) + ' → ' + lastHeld.time.toFixed(3) + ')');
+  check(lastHeld.loop.f === hold0.loop.f && lastHeld.loop.distance === hold0.loop.distance,
+    'Loop held his real position through the lesson (f ' + lastHeld.loop.f.toFixed(4) + ')');
+  check(r.time - hold0.time < 0.1 && r.loop.f >= hold0.loop.f, 'both racers continue from where they were');
   check(r.held === 0 && r.items === 6, 'opening awards nothing: still 0/3, six item IDs');
   check(r.objective === 'Collect the coral thread', 'objective "' + r.objective + '"');
   await frames(0.25);
