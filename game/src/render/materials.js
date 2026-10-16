@@ -275,6 +275,7 @@
     owned.push(M.tapestry);
 
     M.deckSide = stitchMat(knit(128, 64, 12, 4, function (u, v) { return v < 0.5 ? COL.mauve : shade(COL.mauve, 0.8); }, rnd), { bump: 2 });
+    M.deckSide.side = THREE.DoubleSide;
     M.lantern = new THREE.MeshStandardMaterial({ color: 0xffe2a0, emissive: 0xffb84a, emissiveIntensity: 1.6, roughness: 0.5 });
     M.lanternFrame = new THREE.MeshStandardMaterial({ color: 0x8a5426, roughness: 0.6, metalness: 0.2 });
     M.gold = new THREE.MeshStandardMaterial({ color: 0xf2b53c, roughness: 0.45, metalness: 0.35 });
