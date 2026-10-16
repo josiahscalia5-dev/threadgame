@@ -158,9 +158,23 @@
     return best;
   }
 
-  /* The race course: main road + branches, positions {road: id, s, lateral}. */
-  function createCourse(data) {
+  /* The race course: main road + branches, positions {road: id, s, lateral}.
+     opts.runout: metres of flat plaza appended beyond the finish line along the finish heading, so runners cross the
+     line and slow down instead of stopping dead on it (course.finishS stays the kit's finish; main.length grows). */
+  function createCourse(data, opts) {
     const main = prepare(data.main);
+    const finishS = main.length;
+    const runout = opts && opts.runout > 0 ? opts.runout : 0;
+    if (runout) {
+      const end = main.points[main.points.length - 1];
+      const th = Math.hypot(end.tangent[0], end.tangent[2]);
+      const t = [end.tangent[0] / th, 0, end.tangent[2] / th];
+      for (let d = 0.5; d <= runout + 1e-9; d += 0.5) {
+        main.points.push({ s: finishS + d, x: end.x + t[0] * d, y: end.y, z: end.z + t[2] * d, width: end.width,
+                           tangent: t, runout: true });
+      }
+      main.length = finishS + runout;
+    }
     const branches = {};
     const list = (data.branches || []).map(function (b) {
       const r = prepare(b);
