@@ -62,21 +62,21 @@ You've hit your session limit · resets 7pm (UTC)
 
 _(no message yet)_
 
-## UI: HUD, input, loop, lifecycle
-
-- transcript: `history/transcripts/370de19d-9b32-5c31-ac39-d89d7478db67/subagents/agent-ae9506e4d1065977a.jsonl` (319 entries)
-
-Now a thorough interaction test using real touch input via CDP (taps, swipes, buttons, lifecycle, fail/results flows).
-
 ## Simulation: race rules and Loop AI
 
 - transcript: `history/transcripts/370de19d-9b32-5c31-ac39-d89d7478db67/subagents/agent-ae84357f8296ab86f.jsonl` (192 entries)
 
 _(no message yet)_
 
+## UI: HUD, input, loop, lifecycle
+
+- transcript: `history/transcripts/370de19d-9b32-5c31-ac39-d89d7478db67/subagents/agent-ae9506e4d1065977a.jsonl` (323 entries)
+
+Now a thorough interaction test using real touch input via CDP (taps, swipes, buttons, lifecycle, fail/results flows).
+
 ## Renderer: plates, camera, actors, effects
 
-- transcript: `history/transcripts/370de19d-9b32-5c31-ac39-d89d7478db67/subagents/agent-aee076b7546be423f.jsonl` (271 entries)
+- transcript: `history/transcripts/370de19d-9b32-5c31-ac39-d89d7478db67/subagents/agent-aee076b7546be423f.jsonl` (276 entries)
 
 Now a side-by-side comparison helper, then the first capture.
 
