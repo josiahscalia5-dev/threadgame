@@ -419,7 +419,7 @@
       const dir = sc.style === 'left' ? -1 : 1;
       const vOut = cam.view(R.fit, snap.cam, -dir * e * W * 0.32); vOut.segIdx = sc.fromIdx;
       const vIn = cam.view(R.fit, cIn, dir * (1 - e) * W * 0.32); vIn.segIdx = sc.toIdx;
-      // the sweeping tower column (outgoing plate's wipe strip, nearer than the plate, motion-blurred)
+      // the sweeping tower column (outgoing plate's tower strip, nearer than the plate)
       const col = columnGeom(Pf, vOut, W, H);
       const cw = col.cw;
       const cx = dir > 0 ? u.lerp(W + cw * 0.5, -cw * 0.5, e) : u.lerp(-cw * 0.5, W + cw * 0.5, e);
@@ -460,7 +460,7 @@
       return { sx: sx, sw: sw, kc: kc, cw: sw * kc, wipe: wipe };
     }
 
-    /* Cached half-resolution, blurred, shaded copy of a plate's wipe strip (built once per plate). */
+    /* Cached half-resolution, edge-shaded copy of a plate's tower strip (built once per plate). */
     function columnCanvas(Pf) {
       const key = 'column:' + Pf.id;
       if (R.cache[key]) return R.cache[key];
@@ -470,12 +470,11 @@
       const k = 0.5, cwid = Math.ceil((wipe.x1 - wipe.x0) * k), chei = Math.ceil(PH * k);
       const c = u.makeCanvas(cwid, chei), g = c.getContext('2d');
       const iw = img.naturalWidth || img.width, ih = img.naturalHeight || img.height;
-      if (u.canFilter()) g.filter = 'blur(2.5px)';
+      // the tower as painted (no blur): it is the pillar Purl runs behind, not a smeared wipe
       g.drawImage(img, wipe.x0 * iw / PW - 6, 0, (wipe.x1 - wipe.x0) * iw / PW + 12, ih, -6 * k, 0, cwid + 12 * k, chei);
-      g.filter = 'none';
       const gr = g.createLinearGradient(0, 0, cwid, 0);
-      gr.addColorStop(0, 'rgba(34, 14, 5, 0.62)'); gr.addColorStop(0.3, 'rgba(34, 14, 5, 0.22)');
-      gr.addColorStop(0.7, 'rgba(34, 14, 5, 0.22)'); gr.addColorStop(1, 'rgba(34, 14, 5, 0.62)');
+      gr.addColorStop(0, 'rgba(34, 14, 5, 0.45)'); gr.addColorStop(0.25, 'rgba(34, 14, 5, 0.08)');
+      gr.addColorStop(0.75, 'rgba(34, 14, 5, 0.08)'); gr.addColorStop(1, 'rgba(34, 14, 5, 0.45)');
       g.fillStyle = gr; g.fillRect(0, 0, cwid, chei);
       R.cache[key] = { canvas: c, k: k, x0: wipe.x0 };
       return R.cache[key];
