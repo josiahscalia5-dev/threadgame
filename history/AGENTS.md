@@ -62,21 +62,21 @@ You've hit your session limit · resets 7pm (UTC)
 
 _(no message yet)_
 
-## Renderer: plates, camera, actors, effects
-
-- transcript: `history/transcripts/370de19d-9b32-5c31-ac39-d89d7478db67/subagents/agent-aee076b7546be423f.jsonl` (207 entries)
-
-Now a side-by-side comparison helper, then the first capture.
-
 ## Simulation: race rules and Loop AI
 
 - transcript: `history/transcripts/370de19d-9b32-5c31-ac39-d89d7478db67/subagents/agent-ae84357f8296ab86f.jsonl` (171 entries)
 
 _(no message yet)_
 
+## Renderer: plates, camera, actors, effects
+
+- transcript: `history/transcripts/370de19d-9b32-5c31-ac39-d89d7478db67/subagents/agent-aee076b7546be423f.jsonl` (212 entries)
+
+Now a side-by-side comparison helper, then the first capture.
+
 ## UI: HUD, input, loop, lifecycle
 
-- transcript: `history/transcripts/370de19d-9b32-5c31-ac39-d89d7478db67/subagents/agent-ae9506e4d1065977a.jsonl` (268 entries)
+- transcript: `history/transcripts/370de19d-9b32-5c31-ac39-d89d7478db67/subagents/agent-ae9506e4d1065977a.jsonl` (271 entries)
 
 DOM centres match the approved targets to <0.5 design px. Now let me compare text glyph extents inside the pills (font metrics may shift text).
 
