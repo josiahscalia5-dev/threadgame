@@ -1146,3 +1146,31 @@ Deliver the complete playable level, source, and Android build if successfully b
 
 - _tool Bash_: Compile a host-only test APK
 
+- _tool Bash_: Show APK badging summary and packaging check
+
+
+
+- _tool Bash_: Remove the host-only test APK
+
+
+
+- _tool Write_: /home/user/threadgame/tests/e2e/lib.cjs
+
+
+**Claude:** Now the automated touch player that drives full runs, captures the seven approved moments and optionally records video:
+
+
+- _tool Write_: /home/user/threadgame/tests/e2e/play.cjs
+
+
+**Claude:** And the comparison-sheet tool that pairs each captured moment with its approved screen:
+
+
+- _tool Write_: /home/user/threadgame/tools/compare-approved.py
+
+
+**Claude:** While the agents work, I'll review the Android host code, since I now own it:
+
+
+- _tool Bash_: Skim Android host for lifecycle, insets and loader
+
