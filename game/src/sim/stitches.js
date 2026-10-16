@@ -70,8 +70,7 @@
       ctx.inventory.deliver(ctx, 'purl', s.segIndex);
     }
     ctx.emit({ type: 'stitch-open', id: s.id });
-    const seg = ctx.route[s.segIndex];
-    if (seg.def.objectiveOpen && ctx.state.purl.seg === s.segIndex) ctx.state.objective = seg.def.objectiveOpen;
+    ctx.refreshObjective();
   }
 
   function animate(ctx, s, dt) {

@@ -204,7 +204,6 @@
     }
     if (frozen) return;
 
-    const seg0 = R[L.seg];
     const bf = function (i, f) { return blockIn(ctx, i, f); };
     const dBlock = sim.route.blockDistance(R, L.seg, L.f, bf, 40);
     const vCap = Math.sqrt(2 * accel * Math.max(0, dBlock));
@@ -212,7 +211,6 @@
       L.speed = U.approach(L.speed, Math.min(target, vCap), accel * dt);
     }
     if (L.speed > vCap) L.speed = vCap;
-    void seg0;
     const res = sim.route.walk(R, L, L.speed * dt, bf, null);
     L.distance += L.speed * dt;
     res.entered.forEach(function (i) { enter(ctx, L, i); });
@@ -231,7 +229,7 @@
         } else if (task.kind === 'bypass') {
           const p = ctx.loopPlan.tasks[task.key];
           ts.state = 'active'; ts.t = 0;
-          L.f = Math.min(L.f, task.f);     // the extra travel happens at the bypass point, out of sight
+          // the extra travel happens here, at the bypass point, out of sight (f holds, he keeps running)
           L.task = { kind: 'bypass', key: task.key, segIndex: span.seg, dur: p.extra, until: now + p.extra };
           L.action = 'task';
           ctx.emit({ type: 'loop-task', kind: 'bypass', key: task.key });
@@ -272,14 +270,5 @@
     if (L.action !== 'stumble') L.action = R[L.seg].kind === 'connector' ? 'transition' : 'run';
   }
 
-  /* Post-finish: slow to a stop on his route. */
-  function coast(ctx, dt) {
-    const L = ctx.state.loop, T = ctx.T;
-    L.speed = U.approach(L.speed, 0, (T.loopAccel || T.purlAccel) * dt);
-    if (L.speed <= 0) return;
-    sim.route.walk(ctx.loopRoute, L, L.speed * dt, function () { return null; }, null);
-    L.distance += L.speed * dt;
-  }
-
-  sim.loopAI = { create: create, update: update, coast: coast, rollPlan: rollPlan };
+  sim.loopAI = { create: create, update: update, rollPlan: rollPlan };
 })(globalThis.WW = globalThis.WW || {});

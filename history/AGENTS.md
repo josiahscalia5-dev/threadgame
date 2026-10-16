@@ -62,21 +62,21 @@ You've hit your session limit · resets 7pm (UTC)
 
 Now let me write the UI modules. Starting with `dom.js` (element refs, layout/--k, small helpers).
 
-## Renderer: plates, camera, actors, effects
-
-- transcript: `history/transcripts/370de19d-9b32-5c31-ac39-d89d7478db67/subagents/agent-aee076b7546be423f.jsonl` (98 entries)
-
-Now I have a clear picture. Let me write the renderer modules, starting with shared utilities.
-
-## Simulation: race rules and Loop AI
-
-- transcript: `history/transcripts/370de19d-9b32-5c31-ac39-d89d7478db67/subagents/agent-ae84357f8296ab86f.jsonl` (70 entries)
-
-_(no message yet)_
-
 ## Route data for p06 and p07
 
 - transcript: `history/transcripts/370de19d-9b32-5c31-ac39-d89d7478db67/subagents/agent-aff5e4bcb58123cca.jsonl` (201 entries)
 
 _(no message yet)_
+
+## Simulation: race rules and Loop AI
+
+- transcript: `history/transcripts/370de19d-9b32-5c31-ac39-d89d7478db67/subagents/agent-ae84357f8296ab86f.jsonl` (77 entries)
+
+_(no message yet)_
+
+## Renderer: plates, camera, actors, effects
+
+- transcript: `history/transcripts/370de19d-9b32-5c31-ac39-d89d7478db67/subagents/agent-aee076b7546be423f.jsonl` (105 entries)
+
+Now I have a clear picture. Let me write the renderer modules, starting with shared utilities.
 
