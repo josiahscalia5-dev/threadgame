@@ -1,0 +1,62 @@
+/* Shared helpers for the rule tests (not a test file itself). */
+'use strict';
+const { load, newRace } = require('./load.cjs');
+
+const DT = 1 / 60;
+
+/* Step `race` until pred(state, events) is true (checked after every step) or maxSeconds of steps have run.
+   opts.tap: tap every ready stitch immediately (default true); opts.each(race, events): per-step hook. */
+function stepUntil(race, pred, maxSeconds, opts) {
+  opts = opts || {};
+  const all = [];
+  const n = Math.round((maxSeconds == null ? 600 : maxSeconds) / DT);
+  for (let i = 0; i < n; i++) {
+    const evs = race.step(DT);
+    all.push.apply(all, evs);
+    if (opts.tap !== false) tapReady(race, all);
+    if (opts.each) all.push.apply(all, opts.each(race, evs) || []);
+    if (pred && pred(race.state, evs, all)) return all;
+  }
+  if (pred && !opts.noThrow) throw new Error('stepUntil: condition not reached in ' + maxSeconds + ' s');
+  return all;
+}
+
+function stepFor(race, seconds, opts) {
+  return stepUntil(race, null, seconds, Object.assign({ tap: false }, opts || {}));
+}
+
+function tapReady(race, sink) {
+  const st = race.state;
+  Object.keys(st.stitches).forEach(function (id) {
+    if (st.stitches[id].state === 'ready') {
+      const evs = race.input({ type: 'tap', target: id });
+      if (sink) sink.push.apply(sink, evs);
+    }
+  });
+}
+
+/* A running race (countdown done). */
+function running(WW, seed, tuning) {
+  const race = newRace(WW, seed == null ? 1 : seed, tuning);
+  race.start();
+  stepUntil(race, function (st) { return st.mode === 'running'; }, 10, { tap: false });
+  return race;
+}
+
+/* Real race with instant taps until Purl stands on the landing (coral + teal held). */
+function toLanding(WW, seed, tuning) {
+  const race = running(WW, seed, tuning);
+  stepUntil(race, function (st) { return st.purl.segId === 'landing'; }, 200);
+  return race;
+}
+
+/* Continue until Snagling reveals; returns the events up to and including the reveal. */
+function toReveal(race) {
+  return stepUntil(race, function (st, evs) { return evs.some(function (e) { return e.type === 'reveal'; }); }, 30);
+}
+
+function types(evs, type) { return evs.filter(function (e) { return e.type === type; }); }
+
+function swipe(race, dir) { return race.input({ type: 'swipe', dir: dir }); }
+
+module.exports = { load, newRace, DT, stepUntil, stepFor, tapReady, running, toLanding, toReveal, types, swipe };
