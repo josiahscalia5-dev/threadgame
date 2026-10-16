@@ -4033,3 +4033,33 @@ Building the new APK:
 
 - _tool Bash_: Commit and push the full-screen changes
 
+**Claude:** You were right: the game didn't fill your phone screen, and that's now fixed. I've sent the new APK and a before/after picture above, and everything is saved on GitHub.
+
+**What was wrong:**
+1. **Black bars:** the app squeezed the game between your phone's status bar and navigation bar, leaving bars at the top and bottom.
+2. **Blurred strips:** the painting was fitted by its height, so blurred strips filled the sides.
+
+**What I changed:**
+- **Full screen:** the app now hides the status and navigation bars. Swipe from the top or bottom edge if you need them.
+- **Edge to edge:** your art fills the whole screen, behind the camera notch too, and is never stretched. On a screen shaped differently from the art, a sliver of the painting's outer edge is trimmed instead.
+- **HUD:** the pause button, counters and Saved Rewards bar stay clear of the notch and the gesture bar.
+
+**How I checked it:**
+- I tested in Chromium at three common Android screen sizes (412×915, 360×800 and 393×873) with a notch and gesture bar simulated, not on a real phone. There's no Android emulator available here.
+- The objective fix, double-tap stop, buttons and scene change were rechecked in the new layout and all still work.
+- All 63 automated tests pass.
+
+**On the earlier features:** you didn't see them because they're mostly hidden until used:
+- the buttons only appear after you turn them on in Pause → "ON-SCREEN BUTTONS: ON";
+- the stop only shows when you double-tap the carpet;
+- the scene fix only appears when Purl reaches the end of the ribbon.
+
+Install the new APK over the old one. If anything on your actual phone still looks cut off or wrong, send me a screenshot and I'll fix that exact spot.
+
+
+---
+
+## You  2026-10-16T20:11:06.868Z
+
+Yeah, but the zip files I uploaded, did you see the zip files I uploaded? You did not do all of them I asked you to do for my game screen. It looks like the old ones, though.
+
