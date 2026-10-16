@@ -243,13 +243,13 @@ This matches the kit's own record in `docs/VERIFICATION.json:5-7`. The split is 
 
 ## inspect:geometry
 
-- transcript: `history/transcripts/131a49c9-f445-5dda-9dd9-fdcc5c2be76a/subagents/workflows/wf_ab6d9c83-f3e/agent-a4ee84d369e612e1c.jsonl` (32 entries)
+- transcript: `history/transcripts/131a49c9-f445-5dda-9dd9-fdcc5c2be76a/subagents/workflows/wf_ab6d9c83-f3e/agent-a4ee84d369e612e1c.jsonl` (33 entries)
 
 _(no message yet)_
 
 ## inspect:art
 
-- transcript: `history/transcripts/131a49c9-f445-5dda-9dd9-fdcc5c2be76a/subagents/workflows/wf_ab6d9c83-f3e/agent-a553f1494b2f06332.jsonl` (59 entries)
+- transcript: `history/transcripts/131a49c9-f445-5dda-9dd9-fdcc5c2be76a/subagents/workflows/wf_ab6d9c83-f3e/agent-a553f1494b2f06332.jsonl` (60 entries)
 
 Now the game's runtime atlases and asset data.
 
