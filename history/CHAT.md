@@ -1940,3 +1940,12 @@ Yes
 
 - _tool Bash_: Inspect the preview HTML with embedded data stripped
 
+
+
+- _tool Bash_: Save Pull Stitch inputs to the kit and extract the three frames
+
+
+- _tool Bash_: Build a sheet of the three pull frames next to approved 01
+
+- _tool Read_: /tmp/claude-0/-home-user-threadgame/131a49c9-f445-5dda-9dd9-fdcc5c2be76a/scratchpad/view/pull-vs-01.jpg
+
