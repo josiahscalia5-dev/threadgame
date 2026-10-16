@@ -424,6 +424,7 @@
       },
       tap: function (id) { const ev = sendTap(id); syncUI(); return ev; },
       swipe: function (dir) { const ev = sendSwipe(dir); syncUI(); return ev; },
+      brake: function (on) { const ev = sendBrake(on); syncUI(); return ev; },
       targets: function () { return targets(); },
       screenshotReady: function () {
         return new Promise(function (resolve) { readyWaiters.push(resolve); flushReady(); });
