@@ -4,15 +4,20 @@
      node tests/unit/bot.cjs [--seed=N] [--react=S] [--profile=competent|first] [--quiet]
      node tests/unit/bot.cjs --sweep=N [--profile=...]      # seeds 1..N, finish times and win share
 
-   Profiles: competent = taps each stitch `react` s (default 1.0) after its cue appears (state 'ready') and dodges
-   Snagling; first = react 2.0 s and takes one hit, then recovers the dropped thread. (Snagling rules arrive in
-   milestone 2; until then the landing is crossed without an attack.) Timeline rows: race clock, racer, event. */
+   Profiles (options can override any field, e.g. --react=1.5 --dodge=lane --dodgeDelay=0.4):
+     competent  taps each stitch `react` = 1.0 s after its cue appears (stitch state 'ready'); dodges Snagling
+                with a jump (`dodge`: 'jump' | 'lane') started `dodgeDelay` = 0.3 s after the reveal
+     first      react 2.0 s; does not react to Snagling (one hit), then steers into the dropped thread's lane
+                `steerDelay` = 0.4 s after the drop and recovers it on the same pass
+     none       like competent but never swipes (for rule tests)
+   Timeline rows: race clock, racer, event. */
 'use strict';
 const { load, newRace } = require('./load.cjs');
 
 const PROFILES = {
-  competent: { react: 1.0, snag: 'dodge' },
-  first: { react: 2.0, snag: 'hit' }
+  competent: { react: 1.0, snag: 'dodge', dodge: 'jump', dodgeDelay: 0.3, steerDelay: 0.4 },
+  first: { react: 2.0, snag: 'hit', dodge: 'jump', dodgeDelay: 0.3, steerDelay: 0.4 },
+  none: { react: 1.0, snag: 'ignore', dodge: 'jump', dodgeDelay: 0.3, steerDelay: 0.4 }
 };
 
 function runBot(opts) {
@@ -55,10 +60,34 @@ function runBot(opts) {
   };
   race.start();
   const policy = opts.policy || null;   // optional hook(race, events, bot) for rule tests
+  const p = st.purl;
+  const todo = [];                      // scheduled reactions {at, fn}
+  let steerLane = null;
+  const swipe = function (dir) { log(race.input({ type: 'swipe', dir: dir })); };
+  const react = function (evs) {
+    evs.forEach(function (e) {
+      if (e.type === 'reveal' && prof.snag === 'dodge') {
+        todo.push({ at: st.time + prof.dodgeDelay, fn: function () {
+          if (prof.dodge === 'lane') swipe(p.lane >= 1 ? 'left' : 'right');
+          else swipe('up');
+          add('purl', 'dodge by ' + prof.dodge);
+        } });
+      }
+      if (e.type === 'drop' && prof.snag !== 'ignore') {
+        todo.push({ at: st.time + prof.steerDelay, fn: function () { steerLane = e.lane; add('purl', 'steer to lane ' + e.lane); } });
+      }
+      if (e.type === 'recover') steerLane = null;
+    });
+  };
   const maxSteps = Math.round((opts.maxTime || 400) / dt);
   for (let i = 0; i < maxSteps; i++) {
     const evs = race.step(dt);
     log(evs);
+    react(evs);
+    for (let k = todo.length - 1; k >= 0; k--) {
+      if (st.time >= todo[k].at - 1e-9) { const job = todo[k]; todo.splice(k, 1); job.fn(); }
+    }
+    if (steerLane !== null && p.lane !== steerLane) swipe(p.lane < steerLane ? 'right' : 'left');
     Object.keys(st.stitches).forEach(function (id) {
       const s = st.stitches[id];
       if (s.state === 'ready' && readyAt[id] === undefined) { readyAt[id] = st.time; add('purl', 'cue ' + id); }
@@ -104,7 +133,8 @@ if (require.main === module) {
     if (m) args[m[1]] = m[2] === undefined ? true : m[2];
   });
   const opts = { profile: args.profile || 'competent' };
-  if (args.react !== undefined) opts.react = Number(args.react);
+  ['react', 'dodgeDelay', 'steerDelay'].forEach(function (k) { if (args[k] !== undefined) opts[k] = Number(args[k]); });
+  if (args.dodge) opts.dodge = args.dodge;
   if (args.sweep) {
     const s = sweep(Number(args.sweep), opts);
     s.rows.forEach(function (r) {
