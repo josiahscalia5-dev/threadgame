@@ -428,15 +428,25 @@
       R.views = [vIn, vOut];
       if (outRect.w > 0) { setScreen(); ctx.save(); ctx.beginPath(); ctx.rect(outRect.x, outRect.y, outRect.w, outRect.h); ctx.clip(); drawWorld(vOut, state, { purl: false, rect: outRect, cues: false }); ctx.restore(); }
       if (inRect.w > 0) { setScreen(); ctx.save(); ctx.beginPath(); ctx.rect(inRect.x, inRect.y, inRect.w, inRect.h); ctx.clip(); drawWorld(vIn, state, { purl: false, rect: inRect, cues: false }); ctx.restore(); }
-      setScreen();
-      drawColumn(Pf, col, snap.cam, cx);
-      // Purl keeps running at his (interpolated) screen anchor
+      // Purl keeps running ON THE CARPET of the scene he is in, and goes BEHIND the tower column while it passes —
+      // never drawn floating over it. Until the column reaches him he stays at his exit point on the outgoing scene
+      // (moving with it); once it has passed he is at his entry point on the incoming scene and comes out from
+      // behind the tower. Each pose is clipped to its own scene, and the column is drawn over both.
       const pIn = WW.path.racerPoint(Pt.purl.path, inF, 0, 0);
-      const a = snap.purl, b = { x: vIn.ox - dir * (1 - e) * W * 0.32 + pIn.x * vIn.s, y: vIn.oy + pIn.groundY * vIn.s, w: pIn.w * vIn.s };
-      const x = u.lerp(a.x, b.x, e), y = u.lerp(a.y, b.y, e), w = u.lerp(a.w, b.w, e);
+      const a = { x: snap.purl.x - dir * e * W * 0.32, y: snap.purl.y, w: snap.purl.w };
+      const b = { x: vIn.ox + pIn.x * vIn.s, y: vIn.oy + pIn.groundY * vIn.s, w: pIn.w * vIn.s };
+      const onOut = dir > 0 ? a.x < cx : a.x > cx;
+      const pose = onOut ? a : b, rect = onOut ? outRect : inRect;
       const purl = state.purl || {};
       const st = { action: 'transition', distance: purl.distance || 0, jumpH: purl.jumpH || 0, speed: purl.speed };
-      actors.drawRacer(R, ctx, 'purl', st, x, y, (purl.jumpH || 0) * 0.42 * w, w, { clock: R.clock });
+      if (rect.w > 0) {
+        setScreen(); ctx.save(); ctx.beginPath(); ctx.rect(rect.x, rect.y, rect.w, rect.h); ctx.clip();
+        actors.drawRacer(R, ctx, 'purl', st, pose.x, pose.y, (purl.jumpH || 0) * 0.42 * pose.w, pose.w, { clock: R.clock });
+        ctx.restore();
+      }
+      setScreen();
+      drawColumn(Pf, col, snap.cam, cx);
+      const x = pose.x, y = pose.y, w = pose.w;
       R.purlScreen = { x: x, y: y, w: w };
       R.cam = { plate: cIn.plate, z: cIn.z, fx: cIn.fx, fy: cIn.fy };
     }
