@@ -56,27 +56,27 @@ You've hit your session limit · resets 7pm (UTC)
 
 You've hit your session limit · resets 7pm (UTC)
 
+## Renderer: plates, camera, actors, effects
+
+- transcript: `history/transcripts/370de19d-9b32-5c31-ac39-d89d7478db67/subagents/agent-aee076b7546be423f.jsonl` (177 entries)
+
+Now a side-by-side comparison helper, then the first capture.
+
 ## Simulation: race rules and Loop AI
 
-- transcript: `history/transcripts/370de19d-9b32-5c31-ac39-d89d7478db67/subagents/agent-ae84357f8296ab86f.jsonl` (144 entries)
+- transcript: `history/transcripts/370de19d-9b32-5c31-ac39-d89d7478db67/subagents/agent-ae84357f8296ab86f.jsonl` (146 entries)
 
 _(no message yet)_
 
 ## UI: HUD, input, loop, lifecycle
 
-- transcript: `history/transcripts/370de19d-9b32-5c31-ac39-d89d7478db67/subagents/agent-ae9506e4d1065977a.jsonl` (231 entries)
+- transcript: `history/transcripts/370de19d-9b32-5c31-ac39-d89d7478db67/subagents/agent-ae9506e4d1065977a.jsonl` (235 entries)
 
 Close overall. Let me zoom into the rewards strip to inspect the vertical seam artifacts at the pill caps.
 
 ## Route data for p06 and p07
 
-- transcript: `history/transcripts/370de19d-9b32-5c31-ac39-d89d7478db67/subagents/agent-aff5e4bcb58123cca.jsonl` (328 entries)
+- transcript: `history/transcripts/370de19d-9b32-5c31-ac39-d89d7478db67/subagents/agent-aff5e4bcb58123cca.jsonl` (343 entries)
 
 _(no message yet)_
-
-## Renderer: plates, camera, actors, effects
-
-- transcript: `history/transcripts/370de19d-9b32-5c31-ac39-d89d7478db67/subagents/agent-aee076b7546be423f.jsonl` (171 entries)
-
-Now a side-by-side comparison helper, then the first capture.
 
