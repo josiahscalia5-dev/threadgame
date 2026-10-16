@@ -22,8 +22,8 @@
         [458, 1051, 118, 0]      // exit: right along the round end, toward the tower base
       ],
       events: [
-        { type: 'stop', stitch: 'butterfly', f: 0, readyF: 0 },
-        { type: 'pickup', item: 'gold', f: 0, lane: 0, size: 70 },
+        { type: 'stop', stitch: 'butterfly', f: 0.0927, readyF: 0 },   // = approved Purl (400,1457) w 300
+        { type: 'pickup', item: 'gold', f: 0.8071, lane: 0, size: 70 },  // (392,1045) = approved spool
         { type: 'exit', f: 1 }
       ]
     },
@@ -41,8 +41,8 @@
         [522, 930, 84]           // hidden behind the tower
       ],
       events: [
-        { type: 'task', kind: 'stitch', f: 0, x: 0, y: 0, dur: 2.7 },
-        { type: 'pickup', item: 'gold', f: 0, size: 50 }
+        { type: 'task', kind: 'stitch', f: 0.751, x: 527, y: 920, dur: 2.7 },  // at (612,940); sparkle on the bridge-end post's ball top
+        { type: 'pickup', item: 'gold', f: 0.821, size: 50 }                // (586,936), before the tower edge
       ]
     },
 
