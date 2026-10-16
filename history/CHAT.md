@@ -2451,3 +2451,22 @@ Can I have the APK file to see the preview of my mobile app so I see how it look
 
 - _tool Bash_: Rebuild the APK from the current game
 
+- _tool SendUserFile_: 
+
+
+**Claude:** I've sent you the APK above, rebuilt just now from the current code, so it includes the Pull Stitch opening. I checked that every scene loads without errors first. It's also saved on GitHub as `dist/wishweave-wonders-level1-debug.apk` on branch `ccr-207f431c-z9upqo`.
+
+**To install on an Android phone (Android 8.0 or newer):**
+1. Open the downloaded file on the phone.
+2. If Android blocks it, allow your browser or file app to "install unknown apps" when prompted. This is normal for test builds that don't come from the Play Store.
+3. Tap Install, then open **Wishweave Wonders**.
+
+**What to expect:**
+- **Unfinished scenes:** the full level is playable from start to finish: the Pull Stitch opening, the shortcut, tassels, Snagling, butterfly, and finish with real results. The scenes after the opening are still being finished by the renderer agent. Some, like the tassels lifting, Snagling's attack, the butterfly flight and the flower gate, may look plain or incomplete in this build.
+- **Not phone-tested:** I've only tested in a desktop browser at phone sizes, not on a real phone. Tell me if anything looks wrong on your device, like layout, notch spacing or touch response.
+- **No internet:** the app doesn't need or ask for internet access. Cash Out stays locked.
+- **Updates:** it's a test (debug) build, so later versions I send will install over it.
+
+When the renderer agent finishes, I'll build an updated APK with the completed scenes.
+
+
