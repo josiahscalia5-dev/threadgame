@@ -16,6 +16,8 @@
      items[id].segIndex/size/homeSeg/homeF, stitches[id].elapsed/openedAt/phaseT/seg/f/readyF,
      loopTasks[key] = { key, kind, seg, segIndex, f, x, y, state: 'pending'|'react'|'hesitate'|'active'|'done', t }
    `purl.airborne` is true for the whole jump; contact rules use jumpH.
+   purl.braked: the double-tap brake ({type:'brake'} toggles it, {type:'brake', on} sets it). Purl decelerates to a stop
+   in brakeTime and stands ('stopped', idle pose); Loop is unaffected. A jump while stopped stays in place.
 
    TUTORIAL HOLD (the first lesson, kit/pull-stitch): while Purl waits at a stop whose stitch has `tutorial: true`
    (the opening ribbon pull) and it is not yet passable, `state.tutorial = {id, stage}` with stage
@@ -37,6 +39,7 @@
     gateOpenTime: 1.2,           // s for the flower gate to open once Purl arrives complete
     returnTime: 3.0,             // s of the gate-fallback `return` transition
     loopRecoverMin: 0.3,         // s Loop at least spends picking his dropped thread back up
+    brakeTime: 0.22,             // s for Purl's double-tap brake to bring him from run speed to a stop
     loopAccel: null              // m/s²; null = purlAccel
   };
 
@@ -190,7 +193,7 @@
       mode: 'intro', paused: false, pauseReason: null, time: 0, countdown: T.countdown, seed: seed,
       purl: { seg: 0, segId: seg0.id, f: seg0.startF, lane: 0, laneX: 0, jumpT: 0, jumpH: 0, speed: 0,
               action: 'idle', airborne: false, jumpBuffered: false, immuneUntil: 0, tangledUntil: 0, slowUntil: 0,
-              distance: 0, finishTime: null, rank: null, progress: 0, waitingFor: null, failAt: null },
+              distance: 0, finishTime: null, rank: null, progress: 0, waitingFor: null, failAt: null, braked: false },
       loop: loopInit.loop,
       items: null,
       held: { purl: 0, loop: 0 },
@@ -315,6 +318,9 @@
   function purlTarget(ctx) {
     const st = ctx.state, T = ctx.T, p = st.purl;
     if (st.time < p.tangledUntil) return 0;
+    // Double-tap brake: Purl stops (Loop keeps racing). Never mid-way through a scene change: the brake takes
+    // effect once he is back on a plate's carpet.
+    if (p.braked && ctx.route[p.seg].kind !== 'connector') return 0;
     return T.purlSpeed * (st.time < p.slowUntil ? T.slowAfterHit : 1);
   }
 
@@ -481,7 +487,10 @@
     const dB = blockDistance(R, p.seg, p.f, bf, 40);
     const vCap = Math.sqrt(2 * T.purlAccel * Math.max(0, dB));
     if (tangled) p.speed = 0;
-    else p.speed = U.approach(p.speed, Math.min(target, vCap), T.purlAccel * dt);
+    else {
+      const braking = p.braked && target === 0 && p.speed > 0;
+      p.speed = U.approach(p.speed, Math.min(target, vCap), (braking ? T.purlSpeed / T.brakeTime : T.purlAccel) * dt);
+    }
     if (p.speed > vCap) p.speed = vCap;
 
     const res = walk(R, p, p.speed * dt, bf, function (i) { return purlCanLeave(ctx, i); });
@@ -519,7 +528,10 @@
     if (tangled || p.failAt !== null) p.action = 'tangled';
     else if (cur.kind === 'connector') p.action = 'transition';
     else if (p.waitingFor) p.action = 'wait';
+    else if (p.braked && p.speed <= 0.05) p.action = 'stopped';   // drawn in the idle pose: no running on the spot
+    else if (p.braked) p.action = 'brake';
     else p.action = 'run';
+    if (p.action === 'stopped' && !st.message) st.hint = { text: 'STOPPED · DOUBLE-TAP TO RUN', until: st.time + 0.2 };
     return res.spans;
   }
 
@@ -569,6 +581,13 @@
         if (ev.phase === 'start') st.stats.pulls = (st.stats.pulls || 0) + 1;
         tutorialHold(ctx);
       }
+      return;
+    }
+    if (ev.type === 'brake') {
+      // Double tap (or the RUN/STOP button): toggles Purl's brake only — Loop keeps racing.
+      if (st.tutorial || p.finishTime !== null || p.failAt !== null) return;
+      p.braked = ev.on === undefined ? !p.braked : !!ev.on;
+      ctx.emit({ type: 'brake', who: 'purl', on: p.braked });
       return;
     }
     if (ev.type !== 'swipe' || p.finishTime !== null || p.failAt !== null) return;

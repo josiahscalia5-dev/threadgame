@@ -65,6 +65,7 @@
     enabled: function () { return canPlay(); },
     onTap: function (id) { sendTap(id); },
     onSwipe: function (dir) { sendSwipe(dir); },
+    onDoubleTap: function () { sendBrake(); },
     onPullStart: function (id) { sendPull(id, 'start', 0); },
     onPullMove: function (id, amount) { sendPull(id, 'move', amount); },
     onPullEnd: function (id, amount, cancelled) { sendPull(id, cancelled ? 'cancel' : 'end', amount); },
@@ -237,6 +238,11 @@
   function sendPull(id, phase, amount) {
     if (!race || id == null) return [];
     return dispatch(race.input({ type: 'pull', target: id, phase: phase, amount: amount })) || [];
+  }
+
+  function sendBrake(on) {
+    if (!race) return [];
+    return dispatch(race.input(on === undefined ? { type: 'brake' } : { type: 'brake', on: !!on })) || [];
   }
 
   function sendSwipe(dir) {
