@@ -648,3 +648,17 @@ Stop hook feedback:
 
 - _tool Bash_: Start continuous GitHub auto-save loop
 
+- _tool Bash_: Confirm the first auto-save push landed
+
+
+**Claude:** Auto-save is running, and the first push (`a0acb23`) is confirmed on GitHub. What's saved:
+
+- **The whole project:** game code, art, kit, docs, tools, the Android project and the APK once it's built. Every file each agent writes is committed and pushed to `ccr-78a11afa-tcuf5u` in your private repo `josiahscalia5-dev/threadgame` within 30 seconds.
+- **Our chat:** `history/CHAT.md` is a readable copy of everything we've said, refreshed every 2 minutes.
+- **Agent history:** `history/AGENTS.md` lists every build agent with its task and latest report. The full transcripts of our chat and every agent are in `history/transcripts/`. Screenshots embedded in the transcripts are left out, which keeps them at 12 MB instead of 65 MB. Anything that looks like a password or API key is blanked out; I checked and nothing real was found.
+
+**Why not every second:** that would mean thousands of near-empty commits and could hit GitHub's push limits. Every 30 seconds means at most 30 seconds of work is ever unsaved. The saver runs in 2-hour stretches and I restart it each time it stops.
+
+**Build status:** five agents are working in parallel on the simulation, renderer, interface and Android host, plus the route data for the butterfly and finish plates. Route data for the ribbon, shortcut, tassel and Snagling plates is done and saved.
+
+
