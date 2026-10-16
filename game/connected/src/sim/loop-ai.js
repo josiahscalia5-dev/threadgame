@@ -65,7 +65,7 @@
       if (L.mainS >= from) {
         const key = 'fork:' + b.id;
         if (L.seen[key] == null) L.seen[key] = st.time;
-        if (st.time - L.seen[key] >= plan.branchReact) want = -T.laneStep;
+        if (st.time - L.seen[key] >= plan.branchReact) want = sim.sideOf(b) * T.laneStep;
       }
     }
     if (L.road !== 'main') want = 0;

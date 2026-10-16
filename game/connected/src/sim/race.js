@@ -135,6 +135,10 @@
     if (st.hint && st.time >= st.hint.until) st.hint = null;
   }
 
+  /* -1 when the side loop leaves the main road to the runner's left, +1 to the right. */
+  function sideOf(b) { return b && b.side === 'right' ? 1 : -1; }
+  sim.sideOf = sideOf;
+
   /* ---------- shared movement (both racers, same physical rules) ---------- */
 
   function stepJump(ctx, r, dt) {
@@ -200,7 +204,7 @@
     if (!onBranch && b) {
       // the decision point before the fork: the left lane commits the runner to the side loop
       if (r.forkDone !== b.id && r.branchLock === null && s >= b.startS - T.branchLock && m0 < b.startS) {
-        r.branchLock = r.latTarget <= -0.75 * T.laneStep ? b.id : 'main';
+        r.branchLock = sideOf(b) * r.latTarget >= 0.75 * T.laneStep ? b.id : 'main';
         ctx.emit({ type: 'branch-lock', who: r.who, choice: r.branchLock });
       }
       if (r.branchLock === b.id && s >= b.startS) {
@@ -226,7 +230,9 @@
 
     // lateral follows its target smoothly inside the road actually under the runner
     const lim = WW.route.sample(C.road(r.road), r.s, 0, T.bodyRadius).limit;
-    if (b && r.road === 'main' && r.branchLock === b.id) r.latTarget = Math.min(r.latTarget, -T.laneStep * 0.5);
+    if (b && r.road === 'main' && r.branchLock === b.id) {
+      r.latTarget = sideOf(b) < 0 ? Math.min(r.latTarget, -T.laneStep * 0.5) : Math.max(r.latTarget, T.laneStep * 0.5);
+    }
     r.latTarget = U.clamp(r.latTarget, -lim, lim);
     const wantV = U.clamp((r.latTarget - r.lateral) * T.steerGain, -T.steerSpeed, T.steerSpeed);
     r.latV = U.approach(r.latV, wantV, T.steerAccel * dt);
@@ -288,7 +294,7 @@
     if (b && p.road === 'main' && p.forkDone !== b.id && p.finishTime === null) {
       const d = b.startS - p.mainS;
       if (d <= T.branchWindow && d > 0) {
-        st.branchPrompt = { road: b.id, side: 'left', distance: d,
+        st.branchPrompt = { road: b.id, side: b.side || 'left', distance: d,
                             locked: p.branchLock, chosen: p.branchLock ? p.branchLock === b.id : p.latTarget < 0 };
         st.hint = { text: (ctx.level.sideLoop && ctx.level.sideLoop.hint) || 'SIDE LOOP ON THE LEFT', until: st.time + 0.2 };
       }
@@ -342,7 +348,7 @@
     }
     if (type === 'steer') {
       const b = ctx.course.branchList[0];
-      if (dir > 0 && b && p.road === 'main' && p.branchLock === b.id) return;   // committed to the side loop
+      if (b && dir === -sideOf(b) && p.road === 'main' && p.branchLock === b.id) return;   // committed to the side loop
       const target = U.clamp(p.latTarget + (dir < 0 ? -1 : 1) * T.laneStep, -p.limit, p.limit);
       if (Math.abs(target - p.latTarget) > 1e-6) {
         p.latTarget = target;

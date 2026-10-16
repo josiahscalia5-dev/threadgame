@@ -51,7 +51,7 @@
     /* The Tassel side loop: a teal speed ribbon, announced before the fork. */
     sideLoop: {
       id: R.branches[0].id,
-      hint: '← STAY LEFT FOR THE SIDE LOOP'
+      hint: R.branches[0].side === 'right' ? 'STAY RIGHT FOR THE SIDE LOOP →' : '← STAY LEFT FOR THE SIDE LOOP'
     },
 
     /* Loop is a fallible computer rival; nothing about him depends on the player. form = whole-race pace
