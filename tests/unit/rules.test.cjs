@@ -28,7 +28,9 @@ describe('§7.2 movement and input', function () {
   test('outside the first lesson Loop keeps racing (and the clock runs) while Purl waits at a stop', function () {
     const race = running(WW, 2);
     const st = race.state;
-    stepUntil(race, function (s) { return s.purl.waitingFor === 'shortcut'; }, 60);
+    stepUntil(race, function (s) { return s.purl.waitingFor === 'shortcut'; }, 60, { tap: false, each: function (r) {
+      return r.state.stitches.ribbon.state === 'ready' ? H.activate(r, 'ribbon') : [];
+    } });
     const t0 = st.time, d0 = st.loop.distance;
     stepFor(race, 6);
     assert.equal(st.purl.waitingFor, 'shortcut');

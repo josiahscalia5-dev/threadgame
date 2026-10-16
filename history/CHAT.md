@@ -2106,3 +2106,13 @@ Yes
 
 - _tool Bash_: Show details of failing pull and rules subtests
 
+
+**Claude:** Two of these are simple: `state.tutorial` is only refreshed at the start of the next step, and my new test opens the shortcut too early. I'll look at the jump test:
+
+
+- _tool Bash_: Read the jump buffering test
+
+
+
+- _tool Bash_: Fix hold start conditions and swipe handling; rerun tests
+

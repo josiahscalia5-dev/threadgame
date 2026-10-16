@@ -255,6 +255,7 @@
       sim.snagling.update(ctx, dt, spans);
       sim.loopAI.update(ctx, dt);
       settleFinish(ctx);
+      tutorialHold(ctx);                 // report the lesson from the step Purl arrives in
       const p = st.purl;
       if (p.failAt !== null && st.mode === 'running' && st.time >= p.failAt - 1e-9) {
         st.mode = 'failed';
@@ -283,7 +284,8 @@
   function tutorialHold(ctx) {
     const st = ctx.state, p = st.purl;
     let t = null;
-    if (p.waitingFor && p.finishTime === null && !st.transition) {
+    // Purl must be standing at the stop (landed, lane settled) before the world freezes around him.
+    if (p.waitingFor && p.finishTime === null && !st.transition && !p.airborne && Math.abs(p.laneX - p.lane) < 1e-3) {
       const s = st.stitches[p.waitingFor];
       if (s && s.tutorial && s.segIndex === p.seg && !sim.stitches.passable(ctx, s.id)) {
         const stage = s.state === 'open' ? 'settle' : s.state === 'animating' ? 'unfurl' :
@@ -565,6 +567,7 @@
       return;
     }
     if (ev.type !== 'swipe' || p.finishTime !== null || p.failAt !== null) return;
+    if (st.tutorial) return;             // standing at the first lesson: no jumps or lane changes (they would freeze)
     if (ev.dir === 'left' || ev.dir === 'right') {
       const special = st.transition && st.transition.kind !== 'connector';
       const spacing = special ? T.connectorLaneSpacing : laneSpacing(ctx, ctx.route[p.seg], p.f);
