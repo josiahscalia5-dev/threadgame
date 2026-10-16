@@ -200,7 +200,7 @@
     if (!onBranch && b) {
       // the decision point before the fork: the left lane commits the runner to the side loop
       if (r.forkDone !== b.id && r.branchLock === null && s >= b.startS - T.branchLock && m0 < b.startS) {
-        r.branchLock = r.latTarget <= -0.8 * T.laneStep / 1.6 && r.lateral < 0 ? b.id : 'main';
+        r.branchLock = r.latTarget <= -0.75 * T.laneStep ? b.id : 'main';
         ctx.emit({ type: 'branch-lock', who: r.who, choice: r.branchLock });
       }
       if (r.branchLock === b.id && s >= b.startS) {
@@ -226,7 +226,7 @@
 
     // lateral follows its target smoothly inside the road actually under the runner
     const lim = WW.route.sample(C.road(r.road), r.s, 0, T.bodyRadius).limit;
-    if (r.road === 'main' && r.branchLock === b.id) r.latTarget = Math.min(r.latTarget, -T.laneStep * 0.5);
+    if (b && r.road === 'main' && r.branchLock === b.id) r.latTarget = Math.min(r.latTarget, -T.laneStep * 0.5);
     r.latTarget = U.clamp(r.latTarget, -lim, lim);
     r.lateral = U.damp(r.lateral, r.latTarget, T.steerHalfLife, dt);
     pose(ctx, r);
