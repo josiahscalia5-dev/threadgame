@@ -2290,3 +2290,5 @@ Yes
 
 - _tool Bash_: Check machine resources and the rest of the build script
 
+- _tool Bash_: Run a test Android APK build
+
