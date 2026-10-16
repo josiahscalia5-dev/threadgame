@@ -7,6 +7,10 @@ const vm = require('node:vm');
 
 const GAME = path.resolve(__dirname, '../../game');
 const FALLBACK = [
+  'src/core/ww.js', 'src/core/route.js', 'src/core/gesture.js', 'src/data/route.js', 'src/data/asset-data.js',
+  'src/data/level.js', 'src/sim/inventory.js', 'src/sim/loop-ai.js', 'src/sim/race.js'
+];
+const OLD_FALLBACK = [
   'src/core/ww.js', 'src/core/path.js', 'src/data/asset-data.js',
   'src/data/plates/p01.js', 'src/data/plates/p02.js', 'src/data/plates/p03.js', 'src/data/plates/p04.js',
   'src/data/plates/p06.js', 'src/data/plates/p07.js', 'src/data/level.js',
