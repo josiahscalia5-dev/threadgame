@@ -68,15 +68,15 @@ _(no message yet)_
 
 I'll start by reading the architecture doc and the core files.
 
-## UI: HUD, input, loop, lifecycle
-
-- transcript: `history/transcripts/370de19d-9b32-5c31-ac39-d89d7478db67/subagents/agent-ae9506e4d1065977a.jsonl` (142 entries)
-
-Now let me write the UI modules. Starting with `dom.js` (element refs, layout/--k, small helpers).
-
 ## Route data for p06 and p07
 
-- transcript: `history/transcripts/370de19d-9b32-5c31-ac39-d89d7478db67/subagents/agent-aff5e4bcb58123cca.jsonl` (183 entries)
+- transcript: `history/transcripts/370de19d-9b32-5c31-ac39-d89d7478db67/subagents/agent-aff5e4bcb58123cca.jsonl` (191 entries)
 
 _(no message yet)_
+
+## UI: HUD, input, loop, lifecycle
+
+- transcript: `history/transcripts/370de19d-9b32-5c31-ac39-d89d7478db67/subagents/agent-ae9506e4d1065977a.jsonl` (148 entries)
+
+Now let me write the UI modules. Starting with `dom.js` (element refs, layout/--k, small helpers).
 
