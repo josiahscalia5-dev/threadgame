@@ -662,3 +662,48 @@ Stop hook feedback:
 **Build status:** five agents are working in parallel on the simulation, renderer, interface and Android host, plus the route data for the butterfly and finish plates. Route data for the ribbon, shortcut, tassel and Snagling plates is done and saved.
 
 
+---
+
+## You  2026-10-16T15:10:28.402Z
+
+<task-notification>
+<task-id>a9d672b8da53c089c</task-id>
+<tool-use-id>toolu_01MQHpC1tcf8ysFgWadRZekp</tool-use-id>
+<output-file>/tmp/claude-0/-home-user-threadgame/283326c9-5b0d-5733-99e1-670739471e16/tasks/a9d672b8da53c089c.output</output-file>
+<status>failed</status>
+<summary>Agent "HUD, input, loop and lifecycle" failed: Agent terminated early due to an API error: You've hit your session limit · resets 7pm (UTC) (error type rate_limit, HTTP 429, request id req_011Cg68Sjgf9ekmokkRUy6Rg, model sent to the API: claude-opus-5-5)</summary>
+<note>A task-notification fires each time this agent stops with no live background children of its own. The user can send it another message and resume it, so the same task-id may notify more than once. This agent's work so far is saved. The limit resets at 7pm (UTC). Once its requests are accepted again, send the agent a message (SendMessage) to let it continue from where it stopped instead of starting a new agent.</note>
+<result>Now the stylesheet.</result>
+</task-notification>
+
+**Claude:** You've hit your session limit · resets 7pm (UTC)
+
+
+---
+
+## You  2026-10-16T15:10:37.490Z
+
+<task-notification>
+<task-id>ad9ef4b9d2e0acf1e</task-id>
+<tool-use-id>toolu_015DKPVEcqjBBnoj6gQimyhs</tool-use-id>
+<output-file>/tmp/claude-0/-home-user-threadgame/283326c9-5b0d-5733-99e1-670739471e16/tasks/ad9ef4b9d2e0acf1e.output</output-file>
+<status>failed</status>
+<summary>Agent "Android host project and APK build" failed: Agent terminated early due to an API error: You've hit your session limit · resets 7pm (UTC) (error type rate_limit, HTTP 429, request id req_011Cg68TR3ktXew9zgzcHF8i, model sent to the API: claude-opus-5-5)</summary>
+<note>A task-notification fires each time this agent stops with no live background children of its own. The user can send it another message and resume it, so the same task-id may notify more than once. This agent's work so far is saved. The limit resets at 7pm (UTC). Once its requests are accepted again, send the agent a message (SendMessage) to let it continue from where it stopped instead of starting a new agent.</note>
+<result>Still failing on many Maven Central artifacts. Let me see which HTTP statuses Gradle is actually getting.</result>
+</task-notification>
+
+---
+
+## You  2026-10-16T15:10:39.432Z
+
+<task-notification>
+<task-id>a783bebd59988aa1d</task-id>
+<tool-use-id>toolu_01Qx5YAyDex4DDb1f1BSTqjX</tool-use-id>
+<output-file>/tmp/claude-0/-home-user-threadgame/283326c9-5b0d-5733-99e1-670739471e16/tasks/a783bebd59988aa1d.output</output-file>
+<status>failed</status>
+<summary>Agent "Simulation and level route" failed: Agent terminated early due to an API error: You've hit your session limit · resets 7pm (UTC) (error type rate_limit, HTTP 429, request id req_011Cg68TZdwc2AQBUrBC9zZP, model sent to the API: claude-opus-5-5)</summary>
+<note>A task-notification fires each time this agent stops with no live background children of its own. The user can send it another message and resume it, so the same task-id may notify more than once. This agent's work so far is saved. The limit resets at 7pm (UTC). Once its requests are accepted again, send the agent a message (SendMessage) to let it continue from where it stopped instead of starting a new agent.</note>
+<result>No consumer code exists yet, so I'll write to the contract. Starting with `level.js` (initial lengths; I'll tune them with the bot later).</result>
+</task-notification>
+
