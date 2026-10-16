@@ -2884,3 +2884,7 @@ I'll start by saving a recoverable checkpoint of the current game. Then I'll unp
 
 - _tool TaskCreate_: Uncut normal + debug-geometry recordings from one commit showing left/right, jump, brake with Loop passing, resume, opening bend, entry into the next area; 720x1602 + narrow viewport; APK; honest repo
 
+- _tool TaskUpdate_: 
+
+- _tool Bash_: Skim the kit's route-motion reference code
+
