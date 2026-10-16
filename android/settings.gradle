@@ -1,9 +1,21 @@
+// Google's public mirror of Maven Central is listed before Maven Central: repo.maven.apache.org rate-limits
+// (HTTP 429) some shared/cloud networks, including the one this project was built on. Maven Central stays as
+// the fallback, so builds elsewhere are unaffected.
 pluginManagement {
-    repositories { google(); mavenCentral(); gradlePluginPortal() }
+    repositories {
+        google()
+        maven { url 'https://maven-central.storage-download.googleapis.com/maven2/' }
+        mavenCentral()
+        gradlePluginPortal()
+    }
 }
 dependencyResolutionManagement {
     repositoriesMode.set(RepositoriesMode.FAIL_ON_PROJECT_REPOS)
-    repositories { google(); mavenCentral() }
+    repositories {
+        google()
+        maven { url 'https://maven-central.storage-download.googleapis.com/maven2/' }
+        mavenCentral()
+    }
 }
 rootProject.name = 'WishweaveWondersLevel1'
 include ':app'
