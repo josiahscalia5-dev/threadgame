@@ -122,16 +122,19 @@ test('fork and rejoin handoffs keep the world position (no jump)', () => {
   const C = R.createCourse(WW.ROUTE);
   const b = C.branchList[0];
   for (const lat of [-2.4, -1.6, -0.5, 0, 0.8]) {
-    const before = R.sample(C.main, b.startS + 0.01, lat, 0);
-    const h = C.toBranch(b, b.startS + 0.01, lat);
+    // walk forward in 1/60 s steps at 6 m/s until the handoff is possible, as the race does
+    let s = b.startS, h = null;
+    while (!(h = C.toBranch(b, s, lat))) s += 0.1;
+    assert.ok(s - b.startS < 0.25, 'handoff for lateral ' + lat + ' waited ' + (s - b.startS).toFixed(2) + ' m');
+    const before = R.sample(C.main, s, lat, null);
     const after = R.sample(b, h.s, h.lateral, null);
-    near(Math.hypot(before.position[0] - after.position[0], before.position[2] - after.position[2]), 0, 0.02);
+    near(Math.hypot(before.position[0] - after.position[0], before.position[2] - after.position[2]), 0, 0.002);
   }
   for (const lat of [-0.8, 0, 0.8]) {
     const before = R.sample(b, b.length - 0.01, lat, 0);
     const h = C.toMain(b, b.length - 0.01, lat);
     const after = R.sample(C.main, h.s, h.lateral, null);
-    near(Math.hypot(before.position[0] - after.position[0], before.position[2] - after.position[2]), 0, 0.02);
+    near(Math.hypot(before.position[0] - after.position[0], before.position[2] - after.position[2]), 0, 0.002);
     near(h.s, b.endS, 0.05);
   }
 });

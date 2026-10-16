@@ -142,15 +142,19 @@
     }
     if (!best) best = { s: clamp(sHint || 0, p[0].s, p[p.length - 1].s), dist: 0 };
     // Refine against sample()'s interpolated frame so sample(road, s, lateral) returns (x, z) exactly.
-    let q = sample(road, best.s, 0, 0);
-    for (let k = 0; k < 4; k++) {
+    let q = sample(road, best.s, 0, 0), along = 0;
+    for (let k = 0; k < 6; k++) {
       const fh = Math.hypot(q.forward[0], q.forward[2]) || 1;
-      const along = ((x - q.center[0]) * q.forward[0] + (z - q.center[2]) * q.forward[2]) / fh;
-      if (Math.abs(along) < 1e-6) break;
-      best.s = clamp(best.s + along, p[0].s, p[p.length - 1].s);
+      along = ((x - q.center[0]) * q.forward[0] + (z - q.center[2]) * q.forward[2]) / fh;
+      if (Math.abs(along) < 1e-7) break;
+      const next = clamp(best.s + along / fh, p[0].s, p[p.length - 1].s);
+      if (next === best.s) break;
+      best.s = next;
       q = sample(road, best.s, 0, 0);
     }
     best.lateral = (x - q.center[0]) * q.right[0] + (z - q.center[2]) * q.right[2];
+    best.before = along < -1e-4 && best.s <= p[0].s;          // the point lies before the road's start
+    best.after = along > 1e-4 && best.s >= p[p.length - 1].s; // … or past its end
     return best;
   }
 
@@ -173,15 +177,18 @@
       /* Equivalent main-road progress of a position. */
       mainS: function (pos) { return pos.road === 'main' || !pos.road ? pos.s : sample(road(pos.road), pos.s).mainS; },
       project: project,
-      /* Handoff at a fork: main (s ≥ branch.startS) → the branch, keeping the world point. */
+      /* Handoff at a fork: a main-road point (s ≥ branch.startS) → the same world point on the branch, or null while
+         that point still projects before the branch start (a runner far from the centre line meets the 2.7° fork a
+         little later; switching then keeps the position exact instead of snapping it). */
       toBranch: function (branch, s, lateral) {
-        const q = sample(main, s, lateral, 0);
+        const q = sample(main, s, lateral, null);
         const local = project(branch, q.position[0], q.position[2], s - branch.startS, 4);
+        if (local.before) return null;
         return { road: branch.id, s: local.s, lateral: local.lateral };
       },
       /* Handoff at a rejoin: branch end → main, keeping the world point. */
       toMain: function (branch, s, lateral) {
-        const q = sample(branch, s, lateral, 0);
+        const q = sample(branch, s, lateral, null);
         const m = project(main, q.position[0], q.position[2], branch.endS, 4);
         return { road: 'main', s: m.s, lateral: m.lateral };
       },
