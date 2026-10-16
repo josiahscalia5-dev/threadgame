@@ -2209,3 +2209,11 @@ Yes
 
 - _tool Bash_: Add pull-stitch hooks to renderer, world, actors, features, html, css
 
+
+**Claude:** The hooks are in. I'll tell the renderer agent which lines are mine, so it doesn't remove them by accident:
+
+
+- _tool ToolSearch_: select:SendMessage
+
+- _tool SendMessage_: 
+
