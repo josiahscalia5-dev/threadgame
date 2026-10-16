@@ -2306,3 +2306,19 @@ Yes
 
 - _tool Bash_: Check viewport runs and APK build progress
 
+
+**Claude:** 360×640 and 393×852 both pass all 24 checks. Waiting for the tablet run and the APK build.
+
+
+- _tool TaskUpdate_: 
+
+- _tool TaskUpdate_: 
+
+- _tool Bash_: Show viewport run results and drag targets
+
+
+**Claude:** All four sizes pass every check: 412×915, 360×640, 393×852 and 800×1280. The drag target scales from 64 to 110 CSS px as designed. Waiting for the APK build.
+
+
+- _tool ToolSearch_: select:Monitor
+
