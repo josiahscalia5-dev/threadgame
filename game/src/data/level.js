@@ -58,8 +58,12 @@
        multiplier, rolled per seed (symmetric: he is never slowed to guarantee a Purl win). */
     loop: { form: [0.93, 1.07] },
 
-    /* Measured pacing (tests/unit/connected.test.cjs keeps it honest); filled in by tests/unit/bot.cjs --course. */
-    pacing: null,
+    /* Measured pacing, race clock after GO, seeds 1–50, 1/60 s steps (tests/unit/connected.test.cjs checks the
+       balance stays two-sided). Milestone 1 has no Snagling/butterfly stops yet, so the race is short.
+         Purl, main line, steering onto each spool, no brake, no side loop: 36.41 s (seed-independent)
+         Loop: 33.50–39.27 s (mean 36.27); takes the side loop 26/50; stumbles 29/50
+         that Purl wins 22/50; the side loop is worth ~0.45 s to either racer. */
+    pacing: { purlMainLine: 36.41, loop: [33.50, 39.27], purlWins: 22, of: 50 },
 
     completeObjective: 'LEVEL 1 COMPLETE',
     missingMessage: 'A THREAD IS MISSING'
