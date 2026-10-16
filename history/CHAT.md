@@ -3928,3 +3928,11 @@ Next I'll find out exactly why the game doesn't fill your phone's screen.
 
 - _tool Bash_: Read computeLayout, Android window setup and framing
 
+
+
+- _tool Bash_: Read camera target/clamp logic and check for KVM
+
+
+
+- _tool Bash_: Capture the current game as it sits on a phone
+
