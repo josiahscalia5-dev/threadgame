@@ -71,6 +71,16 @@
       cur.lerp(want, k);
     }
 
+    /* The damping works on the camera's OFFSET from Purl's ground point, not on its absolute position: at a steady
+       run along a straight the offset is constant, so the camera never trails further behind as he speeds up
+       (no shrinking Purl); bends and side-steps change the offset and are eased in smoothly. */
+    const anchor = new THREE.Vector3(), off = new THREE.Vector3(), lookOff = new THREE.Vector3();
+    const wantOff = new THREE.Vector3(), wantLookOff = new THREE.Vector3();
+    function setAnchor(r) {
+      const n = r.normal || [0, 1, 0], j = r.jumpY || 0;
+      anchor.set(r.pos[0] - n[0] * j, r.pos[1] - n[1] * j, r.pos[2] - n[2] * j);
+    }
+
     return {
       camera: camera,
       CAM: CAM,
@@ -81,11 +91,16 @@
         camera.fov = CAM.vfov * (1 + (k - 1) * 0.6);
         camera.updateProjectionMatrix();
       },
-      snap: function (r) { targets(r); pos.copy(wantPos); look.copy(wantLook); ready = true; this.apply(); },
+      snap: function (r) {
+        targets(r); setAnchor(r);
+        off.copy(wantPos).sub(anchor); lookOff.copy(wantLook).sub(anchor);
+        ready = true; this.apply();
+      },
       update: function (r, dt) {
-        targets(r);
-        if (!ready) { pos.copy(wantPos); look.copy(wantLook); ready = true; }
-        else if (dt > 0) { damp(pos, wantPos, CAM.posHalfLife, dt); damp(look, wantLook, CAM.lookHalfLife, dt); }
+        targets(r); setAnchor(r);
+        wantOff.copy(wantPos).sub(anchor); wantLookOff.copy(wantLook).sub(anchor);
+        if (!ready) { off.copy(wantOff); lookOff.copy(wantLookOff); ready = true; }
+        else if (dt > 0) { damp(off, wantOff, CAM.posHalfLife, dt); damp(lookOff, wantLookOff, CAM.lookHalfLife, dt); }
         this.apply();
       },
       apply: function () { camera.position.copy(pos); camera.lookAt(look); camera.updateMatrixWorld(); },
