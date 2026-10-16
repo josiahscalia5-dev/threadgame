@@ -3282,3 +3282,9 @@ continue and proceed where we're at. But like I said, can you validate to me whe
 
 - _tool Bash_: Clean loader and run a headless race end to end
 
+
+
+- _tool Bash_: List existing unit test names
+
+- _tool Bash_: List existing plate-era unit test names
+
