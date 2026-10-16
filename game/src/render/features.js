@@ -31,6 +31,7 @@
     if (!S) return null;
     const st = (state.stitches && state.stitches[S.id]) || { state: 'idle', t: 0 };
     if (st.state === 'open') return null;
+    if (st.interaction === 'pull') return null;     // the opening lesson's gold loop is drawn by pull.js
     const fr = R.assets.frames['feat.stitch-loop'];
     if (!fr) return null;
     const w = STITCH_W * (S.r || 70) / 70, h = w * fr.h / fr.w;

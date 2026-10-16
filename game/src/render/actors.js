@@ -35,7 +35,8 @@
   /* Draws a racer with feet at (x, groundY) lifted by `lift` (same units as w). opts: {alpha, rim, wobble, clock}. */
   function drawRacer(R, ctx, who, st, x, groundY, lift, w, opts) {
     opts = opts || {};
-    const u = U(), fr = R.assets.frames[who + '.' + poseName(who, st)];
+    const name = opts.pose || poseName(who, st);    // opts.pose: lesson poses from pull.js
+    const u = U(), fr = R.assets.frames[who + '.' + name];
     if (!fr) return;
     const img = R.images[fr.img];
     const scale = scaleFor(who, w);
@@ -44,12 +45,14 @@
     // contact shadow (stays on the ground, shrinks with height)
     u.drawShadow(ctx, R.cache, x, groundY, w * 0.7 * (1 - 0.4 * jumpH), (opts.alpha === undefined ? 1 : opts.alpha) * 0.7 * (1 - 0.5 * jumpH));
     let sx = 1, sy = 1, rot = 0;
-    const name = poseName(who, st);
     if (name === 'idle') {
       const b = Math.sin(clock * 2 * Math.PI / 1.7 + (who === 'loop' ? 1.3 : 0));
       sy = 1 + 0.018 * b; sx = 1 - 0.008 * b;
     }
     if (opts.wobble) rot = opts.wobble;
+    if (opts.rot) rot += opts.rot;                  // lean about the feet (pull.js)
+    if (opts.sx) sx *= opts.sx;
+    if (opts.sy) sy *= opts.sy;
     const y = groundY - lift;
     ctx.save();
     ctx.translate(x, y);

@@ -105,10 +105,11 @@
     g.globalCompositeOperation = 'source-over';
     if (g.globalCompositeOperation !== 'source-over') g.globalCompositeOperation = 'source-over';
     // pale wash, faintly tinted toward the route's own colour
-    g.fillStyle = info.kind === 'ribbon' ? 'rgba(255, 238, 236, 0.5)' : 'rgba(240, 248, 242, 0.5)';
+    // ribbon: the cream, not-yet-woven crochet of the approved TOUCH/PULL frames
+    g.fillStyle = info.kind === 'ribbon' ? 'rgba(255, 247, 232, 0.55)' : 'rgba(240, 248, 242, 0.5)';
     g.fillRect(0, 0, w, h);
     g.globalCompositeOperation = 'multiply';
-    g.fillStyle = info.kind === 'ribbon' ? 'rgb(250, 200, 210)' : 'rgb(200, 232, 230)';
+    g.fillStyle = info.kind === 'ribbon' ? 'rgb(250, 230, 200)' : 'rgb(200, 232, 230)';
     g.fillRect(0, 0, w, h);
     g.globalCompositeOperation = 'source-over';
     info.ghost = c;
@@ -148,6 +149,7 @@
   /* Roll position along the band: 0 closed (roll at the start), 1 open (gone). */
   function openProgress(st) {
     if (!st) return 0;
+    if (st.interaction === 'pull' && WW.render.pull) return WW.render.pull.openProgress(st);   // opening lesson (pull.js)
     if (st.state === 'open') return 1;
     if (st.state === 'animating') return U().easeInOut(st.t || 0);
     return 0;
@@ -194,17 +196,27 @@
     drawRoll(R, ctx, info, s, st);
   }
 
+  /* Roll geometry at band fraction s: centre point on the band, drawn size and rotation (shared with pull.js,
+     which ties the gold strand to the roll's fastening). */
+  function rollGeomInfo(info, s) {
+    const p = U().bandAt(info.band, s);
+    const w = 2 * p.hw * 1.1;
+    const h = w * (ROLL_SUB.h / ROLL_SUB.w) * (1 - 0.32 * s);
+    return { x: p.x, y: p.y, w: w, h: h, ang: Math.atan2(p.ny, p.nx) };
+  }
+  function rollGeom(R, plateId, s) {
+    const info = routeInfo(R, plateId);
+    return info ? rollGeomInfo(info, s) : null;
+  }
+
   function drawRoll(R, ctx, info, s, st) {
     const c = rollCanvas(R, info.kind);
     if (!c) return;
     const u = U();
-    const p = u.bandAt(info.band, s);
     const t = st && st.state === 'animating' ? (st.t || 0) : 0;
     const fade = 1 - u.smooth((t - 0.86) / 0.14);
     if (fade <= 0) return;
-    const w = 2 * p.hw * 1.1;
-    const h = w * (ROLL_SUB.h / ROLL_SUB.w) * (1 - 0.32 * s);
-    const ang = Math.atan2(p.ny, p.nx);
+    const p = rollGeomInfo(info, s), w = p.w, h = p.h, ang = p.ang;
     ctx.save();
     ctx.translate(p.x, p.y);
     ctx.rotate(ang);
@@ -241,6 +253,7 @@
   WW.render.world = {
     drawFraming: drawFraming, drawPlate: drawPlate, drawBackground: drawBackground,
     drawRouteGhost: drawRouteGhost, routeInfo: routeInfo, openProgress: openProgress, framingCanvas: framingCanvas,
+    rollGeom: rollGeom,
     plateImg: plateImg
   };
 })(globalThis.WW = globalThis.WW || {});

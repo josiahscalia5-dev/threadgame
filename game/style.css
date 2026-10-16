@@ -65,7 +65,7 @@ button { font: inherit; color: inherit; -webkit-tap-highlight-color: transparent
   width: 100%; height: 100%;
   overflow: hidden;
   background: #1d120c;
-  touch-action: none;
+  /* touch-action: none lives on the game canvas (#view) only, not on the surrounding UI */
   user-select: none; -webkit-user-select: none;
   -webkit-touch-callout: none;
   -webkit-tap-highlight-color: transparent;

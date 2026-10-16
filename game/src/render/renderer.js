@@ -163,7 +163,7 @@
         R.lastPurlPose = { plate: v.plate, x: p.x, y: p.groundY, w: w };
       }
       return {
-        y: p.groundY, who: who,
+        y: p.groundY, who: who, x: p.x, w: w, opt: opt,
         box: { x0: p.x - w * 0.6, y0: p.y - w * 1.15, x1: p.x + w * 0.6, y1: p.groundY + 4 },
         draw: function (c) { actors.drawRacer(R, c, who, st, p.x, p.groundY, lift, w, opt); }
       };
@@ -269,6 +269,7 @@
       }
       itemEntries(v, P, state, list);
       const se = feats.stitchEntry(R, v.plate, state); if (se) list.push(se);
+      if (WW.render.pull) WW.render.pull.entries(R, v, P, state, list);   // opening lesson: loop, strand, poses
       list.sort(function (a, b) { return a.y - b.y; });
       const occ = occluderList(P);
       for (let i = 0; i < list.length; i++) {
@@ -291,8 +292,16 @@
           const age = R.clock - (R.readySince[S.id] === undefined ? R.clock : R.readySince[S.id]);
           const order = Object.keys(R.level.stitches || {}).indexOf(S.id);
           const text = order < 2 || age >= (R.tuning.cueRepeatAfter || 4);
-          feats.drawCue(R, ctx, v, S, { clock: R.clock, age: age, text: text });
-          R.tapTargets.push({ id: S.id, x: v.ox + S.x * v.s, y: v.oy + S.y * v.s, r: Math.max(44, (S.r || 70) * v.s) });
+          if (st.interaction === 'pull' && WW.render.pull) {
+            // TOUCH → PULL: the loop is a drag target once Purl stands beside it (≥ 48 CSS px hit area)
+            WW.render.pull.drawCue(R, ctx, v, S, st, { age: age });
+            if (state.purl && state.purl.waitingFor === S.id) {
+              R.tapTargets.push({ id: S.id, kind: 'pull', x: v.ox + S.x * v.s, y: v.oy + S.y * v.s, r: Math.max(44, (S.r || 70) * v.s) });
+            }
+          } else {
+            feats.drawCue(R, ctx, v, S, { clock: R.clock, age: age, text: text });
+            R.tapTargets.push({ id: S.id, x: v.ox + S.x * v.s, y: v.oy + S.y * v.s, r: Math.max(44, (S.r || 70) * v.s) });
+          }
         }
       }
       drawCallouts(v);
@@ -503,6 +512,7 @@
       R.clock += dt;
       R.dt = dt;
       fx.update(R.fx, dt);
+      if (WW.render.pull) WW.render.pull.update(R, state, dt);
       diffState(state);
       processEvents(state);
       R.tapTargets = [];
@@ -518,7 +528,9 @@
       if (R.debug) drawDebugScreen(state, sc);
     }
 
-    function getTapTargets() { return R.tapTargets.map(function (t) { return { id: t.id, x: t.x, y: t.y, r: t.r }; }); }
+    function getTapTargets() {
+      return R.tapTargets.map(function (t) { return { id: t.id, kind: t.kind || 'tap', x: t.x, y: t.y, r: t.r }; });
+    }
 
     function worldToScreen(plateId, x, y) {
       for (let i = 0; i < R.views.length; i++) {

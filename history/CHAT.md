@@ -2203,3 +2203,9 @@ Yes
 
 - _tool Write_: /home/user/threadgame/game/src/render/pull.js
 
+
+**Claude:** Now the small hooks in the existing renderer files. Each file is re-read just before it is patched, because the renderer agent may be editing them too:
+
+
+- _tool Bash_: Add pull-stitch hooks to renderer, world, actors, features, html, css
+
