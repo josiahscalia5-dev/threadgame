@@ -12,6 +12,18 @@ Updated 2026-10-16, ~19:55 UTC. Repository `josiahscalia5-dev/threadgame`, worki
   textures, towers and a background with buildings they never had. Do NOT replace their art or background with
   invented scenery. Any future change must keep their approved look and be shown side by side with their screens
   before going further (the user wants every screen change shown and validated).
+* Then (user, ~19:55 UTC): "keep my screens as they are, just add the features". Added to the ORIGINAL game, art and
+  scene data untouched (`game/assets`, `game/src/data` identical to `635b772`); 63/63 unit tests:
+  - objective updates in the same step as a pickup (also on connectors) — `sim/inventory.js`, `sim/race.js`;
+  - double-tap brake/run for Purl only (`{type:'brake'}`, brakeTime 0.22 s, idle pose, Loop keeps racing, jump while
+    stopped stays in place, not mid scene change, not during the opening lesson) — `sim/race.js`, `ui/input.js`,
+    `main.js`, `tests/unit/features.test.cjs`;
+  - optional Left/Right/Stop-Run/Jump buttons, OFF by default (Pause menu → ON-SCREEN BUTTONS) — `index.html`,
+    `style.css`, `main.js`;
+  - scene change: Purl stays on the outgoing carpet, runs behind the (now sharp, not blurred) tower and comes out on
+    the next carpet — never drawn floating over it — `render/renderer.js` drawTransitionScene/columnCanvas.
+  Proof images: `docs/checkpoints/connected/02-features-added.jpg`, `03-transition-before-after.jpg`.
+  Not yet done: a new APK with these changes (`tools/build-android.sh`; the SDK is installed in this container).
 * The 3D connected-road work (route graph, ported kit input/route code with 34 kit tests, connected race sim,
   three.js renderer, art-derived carpet tool) is preserved at commit **`b36b7aa`** if it is ever wanted again.
   The blurred-pillar transition between scenes is therefore back as it was in the original.
