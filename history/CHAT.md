@@ -3366,3 +3366,13 @@ continue and proceed where we're at. But like I said, can you validate to me whe
 
 - _tool Write_: /home/user/threadgame/game/src/render/racers.js
 
+
+**Claude:** I left some dead lines in `placeLeg` while working out the rotation sign. Cleaning that up:
+
+
+- _tool Edit_: /home/user/threadgame/game/src/render/racers.js
+
+- _tool Edit_: /home/user/threadgame/game/src/render/racers.js
+
+- _tool Edit_: /home/user/threadgame/game/src/render/racers.js
+
