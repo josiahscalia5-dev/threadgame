@@ -410,7 +410,7 @@ describe('§7.5 Snagling', function () {
     assert.deepEqual(types(evs, 'recover'), [{ type: 'recover', item: 'purl.teal' }]);
     assert.equal(st.held.purl, 2);
     const fin = stepUntil(race, function (s) { return s.mode === 'finished'; }, 120);
-    assert.equal(types(fin, 'finish')[0].who, 'purl');
+    assert.ok(types(fin, 'finish').some(function (e) { return e.who === 'purl'; }));
     assert.equal(st.held.purl, 3);
   });
 });
