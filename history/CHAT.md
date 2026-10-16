@@ -2190,3 +2190,10 @@ Yes
 
 - _tool Bash_: Check pointer-events, overscroll and viewport settings
 
+
+
+- _tool Bash_: List fx and util helper functions
+
+
+- _tool Bash_: Read bandAt, util exports and sparkle helper
+
