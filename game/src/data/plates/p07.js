@@ -25,7 +25,8 @@
     /* Loop: from behind the right foreground post across the terrace's right side to the gate's right half. */
     loop: {
       path: [
-        [720, 1478, 258],        // entry, behind the right foreground post
+        [756, 1560, 280],        // entry: climbing onto the terrace behind the right foreground post and railing
+        [721, 1478, 258],
         [688, 1405, 238],
         [647, 1328, 214],        // approved Loop (finish)
         [606, 1250, 194],
