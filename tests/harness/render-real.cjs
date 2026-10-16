@@ -54,6 +54,7 @@ function pageHelpers() {
 
 /* Moments: each runs in a freshly started race. Approved Loop positions come from the plate comments. */
 const MOMENTS = {
+  'p01-ready': function () { __H.adv(2.0); },
   'p02-ready': function () {
     __H.hold(['purl.coral', 'loop.coral']); __H.go('shortcut', 0); __H.adv(0.9);
     __H.loopAt('shortcut', 717, 687); __H.adv(0.15);
