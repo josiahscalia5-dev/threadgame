@@ -3990,3 +3990,17 @@ Next I'll find out exactly why the game doesn't fill your phone's screen.
 
 - _tool Bash_: Remove CSS containment and re-measure edges
 
+
+**Claude:** The edge pixels are now different colours at every point, meaning they're your painting, not the flat brown from before. Building the final before/after picture to check by eye:
+
+
+- _tool Bash_: Build the full-screen before/after sheet
+
+- _tool Read_: /home/user/threadgame/docs/checkpoints/connected/04-full-screen-before-after.jpg
+
+---
+
+## You  2026-10-16T20:09:34.684Z
+
+[Image: original 2230x890, displayed at 2000x798. Multiply coordinates by 1.11 to map to original image.]
+
