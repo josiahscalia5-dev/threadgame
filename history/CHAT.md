@@ -2860,3 +2860,11 @@ I'll start by saving a recoverable checkpoint of the current game. Then I'll unp
 
 - _tool Bash_: Check whether three.js can be fetched for offline bundling
 
+
+
+- _tool Workflow_: 
+
+
+
+- _tool Bash_: Fetch three.js r147 via npm pack and extract the build
+

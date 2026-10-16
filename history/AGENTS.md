@@ -86,3 +86,15 @@ You've hit your session limit · resets 8:10pm (UTC)
 
 Now plate data additions (renderer-only fields) for p02 and p03.
 
+## inspect:engine
+
+- transcript: `history/transcripts/131a49c9-f445-5dda-9dd9-fdcc5c2be76a/subagents/workflows/wf_ab6d9c83-f3e/agent-a5d5d56d3a9a1cf42.jsonl` (26 entries)
+
+_(no message yet)_
+
+## inspect:kitcode
+
+- transcript: `history/transcripts/131a49c9-f445-5dda-9dd9-fdcc5c2be76a/subagents/workflows/wf_ab6d9c83-f3e/agent-ac0f3d6b802e022c2.jsonl` (22 entries)
+
+_(no message yet)_
+
