@@ -2389,3 +2389,9 @@ Yes
 
 - _tool Bash_: Wait for the full dodge run and show its timeline
 
+
+
+- _tool Bash_: Run a full race on the hit-and-recovery branch
+
+- _tool Bash_: Wait for the hit-branch run and show results
+
