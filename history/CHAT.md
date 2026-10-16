@@ -3880,3 +3880,29 @@ And I have the APK file to see the preview on my mobile app.
 
 - _tool SendUserFile_: 
 
+**Claude:** I've sent you the APK above; it's ready to install. It's your original game with the four features added, and it's also saved on GitHub at `dist/wishweave-wonders-level1-debug.apk`.
+
+**To install:** tap the file on your phone. If Android asks, allow your browser or Files app to "install unknown apps". It needs Android 8.0 or newer and is about 8.3 MB.
+
+I opened the APK and confirmed it contains exactly the game files I tested. I haven't been able to run it on a real phone here.
+
+**What to try:**
+- **Stop / run:** double-tap anywhere on the carpet (not on a stitch). Purl stops and Loop keeps running. Double-tap again to run.
+- **Buttons:** tap Pause, then "ON-SCREEN BUTTONS: ON" to show ← → STOP ↑ at the bottom. They're off unless you turn them on.
+- **Objective:** after the coral thread, the objective changes straight away to "FOLLOW THE RIBBON".
+- **Scene change:** after the ribbon, Purl runs behind the tower and comes out on the next carpet instead of floating over a blurred pillar.
+
+
+---
+
+## You  2026-10-16T20:02:11.974Z
+
+Stop hook feedback:
+[~/.claude/stop-hook-git-check.sh]: There are 1 unpushed commit(s) on branch 'ccr-41c3f304-c2djh7'. Please push these changes to the remote repository.
+
+
+- _tool Bash_: Push the remaining commit to GitHub
+
+**Claude:** Everything is pushed to GitHub, with nothing left unpushed on branch `ccr-41c3f304-c2djh7`. The commit the hook flagged was the background auto-save's latest history save; it went up a moment later.
+
+
