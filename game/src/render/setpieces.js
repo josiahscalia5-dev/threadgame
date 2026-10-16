@@ -153,7 +153,7 @@
 
   /* prop.swinging-tassel from its gold cap down (frame y ≥ CAP_Y; the gold rope replaces the striped cord), body and
      pompom fringe shifted to the approved deep plum. */
-  const CAP_Y = 104, RING_Y = 206;
+  const CAP_Y = 104, RING_Y = 214;
   function tasselCanvas(R) {
     if (R.cache['sp:tassel']) return R.cache['sp:tassel'];
     const f = frameOf(R, 'prop.swinging-tassel'), u = U();
@@ -191,18 +191,20 @@
       const h = T.w * f.h / f.w;
       const swing = Math.sin(R.clock * 1.35 + i * 1.9) * 0.022 * (1 - 0.5 * l) +
         Math.sin(Math.PI * Math.min(1, l * 1.2)) * 0.06 * Math.sin(R.clock * 7 + i);
-      const rw = Math.max(7, T.w * 0.06);
+      const rw = Math.max(8, T.w * 0.075);
       ctx.save();
       ctx.translate(T.x, beamY);
       ctx.rotate(swing);
       const kt = T.w / f.w, tc = tasselCanvas(R);
-      drawRope(ctx, R, 0, -beamY - 20, top - beamY + (CAP_Y + 14) * kt, rw);
-      if (tc) ctx.drawImage(tc, -f.px * kt, top - beamY + CAP_Y * kt, f.w * kt, tc.height * kt);
+      // the approved tassels are longer than the sprite: cap → fringe spans the whole authored height from the anchor
+      const ky = f.h / (f.h - CAP_Y);
+      drawRope(ctx, R, 0, -beamY - 20, top - beamY + 10 * kt, rw);
+      if (tc) ctx.drawImage(tc, -f.px * kt, top - beamY, f.w * kt, tc.height * kt * ky);
       else drawAt(ctx, R, 'prop.swinging-tassel', 0, top - beamY, T.w);
       // gold halo ring on the cap while the stitch is waiting / lifting
       const ringA = cue ? (0.55 + 0.25 * Math.sin(R.clock * 4 + i)) * (1 - u.smooth(l * 1.5)) : 0;
       if (ringA > 0.01) {
-        const cy = top - beamY + RING_Y * kt;
+        const cy = top - beamY + (RING_Y - CAP_Y) * kt * (f.h / (f.h - CAP_Y));
         glow(ctx, R, 'rgba(255,214,110,0.9)', 0, cy, T.w * 0.5, ringA * 0.35);
         ctx.save();
         ctx.globalCompositeOperation = 'lighter';
