@@ -68,15 +68,15 @@ _(no message yet)_
 
 _(no message yet)_
 
-## UI: HUD, input, loop, lifecycle
-
-- transcript: `history/transcripts/370de19d-9b32-5c31-ac39-d89d7478db67/subagents/agent-ae9506e4d1065977a.jsonl` (289 entries)
-
-Results layout matches 07 closely. Let me check the PLAY AGAIN region and the "Loop is still racing…" state.
-
 ## Renderer: plates, camera, actors, effects
 
-- transcript: `history/transcripts/370de19d-9b32-5c31-ac39-d89d7478db67/subagents/agent-aee076b7546be423f.jsonl` (237 entries)
+- transcript: `history/transcripts/370de19d-9b32-5c31-ac39-d89d7478db67/subagents/agent-aee076b7546be423f.jsonl` (245 entries)
 
 Now a side-by-side comparison helper, then the first capture.
+
+## UI: HUD, input, loop, lifecycle
+
+- transcript: `history/transcripts/370de19d-9b32-5c31-ac39-d89d7478db67/subagents/agent-ae9506e4d1065977a.jsonl` (297 entries)
+
+PLAY AGAIN is too large/high because the 56 px minimum overrides the approved 46 px size. Let me fix that and enlarge the flower ornaments, then view the "still racing" state.
 
