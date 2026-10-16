@@ -62,21 +62,21 @@ You've hit your session limit · resets 7pm (UTC)
 
 _(no message yet)_
 
-## Renderer: plates, camera, actors, effects
-
-- transcript: `history/transcripts/370de19d-9b32-5c31-ac39-d89d7478db67/subagents/agent-aee076b7546be423f.jsonl` (152 entries)
-
-Now the harness: a deterministic mini-sim producing §7.1-shaped state, plus moment shortcuts.
-
 ## UI: HUD, input, loop, lifecycle
 
-- transcript: `history/transcripts/370de19d-9b32-5c31-ac39-d89d7478db67/subagents/agent-ae9506e4d1065977a.jsonl` (217 entries)
+- transcript: `history/transcripts/370de19d-9b32-5c31-ac39-d89d7478db67/subagents/agent-ae9506e4d1065977a.jsonl` (224 entries)
 
-The renderer agent has already updated their block; my edit preserved it. Let me start the local server and write a Playwright capture script.
+Working end to end with stubs. Let me build a side-by-side comparison of the HUD against approved 01 (top ~25% and the bottom strip).
 
 ## Route data for p06 and p07
 
-- transcript: `history/transcripts/370de19d-9b32-5c31-ac39-d89d7478db67/subagents/agent-aff5e4bcb58123cca.jsonl` (309 entries)
+- transcript: `history/transcripts/370de19d-9b32-5c31-ac39-d89d7478db67/subagents/agent-aff5e4bcb58123cca.jsonl` (321 entries)
 
 _(no message yet)_
+
+## Renderer: plates, camera, actors, effects
+
+- transcript: `history/transcripts/370de19d-9b32-5c31-ac39-d89d7478db67/subagents/agent-aee076b7546be423f.jsonl` (169 entries)
+
+Now a side-by-side comparison helper, then the first capture.
 
