@@ -65,6 +65,9 @@
     enabled: function () { return canPlay(); },
     onTap: function (id) { sendTap(id); },
     onSwipe: function (dir) { sendSwipe(dir); },
+    onPullStart: function (id) { sendPull(id, 'start', 0); },
+    onPullMove: function (id, amount) { sendPull(id, 'move', amount); },
+    onPullEnd: function (id, amount, cancelled) { sendPull(id, cancelled ? 'cancel' : 'end', amount); },
     onPauseKey: function () {
       if (!race) return;
       if (race.state.paused) {
@@ -73,6 +76,10 @@
     },
     onKeyTap: function () {
       const t = targets();
+      if (t.length && t[0].kind === 'pull') {     // desktop testing: Space/Enter performs the whole pull
+        sendPull(t[0].id, 'start', 0); sendPull(t[0].id, 'move', 1); sendPull(t[0].id, 'end', 1);
+        return;
+      }
       if (t.length) { sendTap(t[0].id); return; }
       const st = race && race.state && race.state.stitches;
       if (st) {
@@ -203,6 +210,7 @@
   function doPause(reason) {
     const s = state();
     if (!booted || !canPause(s)) return false;
+    input.cancelPull();
     dispatch(race.pause(reason || 'user'));
     acc = 0;
     dirty = true;
@@ -224,6 +232,11 @@
   function sendTap(id) {
     if (!race || id == null) return [];
     return dispatch(race.input({ type: 'tap', target: id })) || [];
+  }
+
+  function sendPull(id, phase, amount) {
+    if (!race || id == null) return [];
+    return dispatch(race.input({ type: 'pull', target: id, phase: phase, amount: amount })) || [];
   }
 
   function sendSwipe(dir) {
