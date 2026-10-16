@@ -25,14 +25,18 @@ function runBot(opts) {
   const timeline = [];
   const readyAt = {};
   const add = function (who, what) { timeline.push({ t: st.time, who: who, what: what }); };
+  const held = { purl: 0, loop: 0 };   // counted from the events so a row shows the count at that moment
   const log = function (evs) {
     evs.forEach(function (e) {
+      const owner = e.item ? e.item.split('.')[0] : null;
+      if (e.type === 'pickup' || e.type === 'recover' || e.type === 'loop-recover') held[owner] += 1;
+      if (e.type === 'drop' || e.type === 'loop-drop') held[owner] -= 1;
       switch (e.type) {
         case 'go': add('race', 'GO'); break;
         case 'segment': add(e.who, 'enter ' + e.segId); break;
         case 'stitch-tap': add('purl', 'tap ' + e.id); break;
-        case 'stitch-open': add('purl', 'open ' + e.id + ' (held ' + st.held.purl + '/3)'); break;
-        case 'pickup': add(e.item.split('.')[0], 'pickup ' + e.item + ' → ' + st.held[e.item.split('.')[0]] + '/3'); break;
+        case 'stitch-open': add('purl', 'open ' + e.id + ' (held ' + held.purl + '/3)'); break;
+        case 'pickup': add(owner, 'pickup ' + e.item + ' → ' + held[owner] + '/3'); break;
         case 'drop': add('purl', 'drop ' + e.item); break;
         case 'recover': add('purl', 'recover ' + e.item); break;
         case 'reveal': add('snag', 'reveal'); break;
