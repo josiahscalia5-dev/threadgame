@@ -3215,3 +3215,11 @@ continue and proceed where we're at. But like I said, can you validate to me whe
 
 - _tool Bash_: Port the kit's touch tests and run them
 
+
+**Claude:** All 26 gesture tests pass. That makes 34/34 kit tests passing against the ported code, plus 6 new route-graph tests. Next, the tool that checks my road against the kit's 3D model:
+
+
+- _tool Write_: /home/user/threadgame/tools/check-route-vs-glb.py
+
+- _tool Bash_: Run route-vs-GLB geometry check
+
