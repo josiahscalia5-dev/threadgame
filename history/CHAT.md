@@ -3436,3 +3436,12 @@ continue and proceed where we're at. But like I said, can you validate to me whe
 
 - _tool Edit_: /home/user/threadgame/game/src/render/chase.js
 
+
+
+- _tool Edit_: /home/user/threadgame/game/src/render/materials.js
+
+- _tool Edit_: /home/user/threadgame/game/src/render/course.js
+
+
+- _tool Bash_: Recapture frames after skirt, camera and city fixes
+
