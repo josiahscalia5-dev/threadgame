@@ -3,15 +3,15 @@
 #
 #   tools/autosave.sh [interval-seconds] [history-every-n-cycles]
 #
-# Every interval (default 30 s) it commits any change in the repository and pushes
-# the current branch; every n-th cycle (default 4, i.e. every 2 minutes) it first
+# Every interval (default 3 s) it commits any change in the repository and pushes
+# the current branch; every n-th cycle (default 5, i.e. about every 15 s) it first
 # refreshes history/ (chat + agent transcripts) with tools/export-history.py.
 # A lock file keeps it from colliding with manual commits that use the same lock:
 #   ( flock 9; git ... ) 9>.git/autosave.lock
 set -u
 cd "$(dirname "$0")/.."
-INTERVAL=${1:-30}
-HIST_EVERY=${2:-4}
+INTERVAL=${1:-3}
+HIST_EVERY=${2:-5}
 BRANCH=$(git rev-parse --abbrev-ref HEAD)
 n=0
 while true; do

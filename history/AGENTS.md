@@ -68,15 +68,15 @@ I'll start by reading the architecture doc and the core files.
 
 Let me look at the approved screenshots.
 
-## Simulation: race rules and Loop AI
-
-- transcript: `history/transcripts/370de19d-9b32-5c31-ac39-d89d7478db67/subagents/agent-ae84357f8296ab86f.jsonl` (62 entries)
-
-_(no message yet)_
-
 ## Route data for p06 and p07
 
 - transcript: `history/transcripts/370de19d-9b32-5c31-ac39-d89d7478db67/subagents/agent-aff5e4bcb58123cca.jsonl` (175 entries)
+
+_(no message yet)_
+
+## Simulation: race rules and Loop AI
+
+- transcript: `history/transcripts/370de19d-9b32-5c31-ac39-d89d7478db67/subagents/agent-ae84357f8296ab86f.jsonl` (66 entries)
 
 _(no message yet)_
 

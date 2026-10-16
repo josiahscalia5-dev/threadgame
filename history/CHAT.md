@@ -1247,3 +1247,9 @@ Can you make sure that everything's saved to my GitHub repository and make sure 
 
 - _tool Bash_: Start auto-save every 3 s with history every 15 s
 
+
+**Claude:** Saving is running at the faster pace: the last four pushes landed 6–20 seconds apart. I'll make these the script's defaults so any future restart keeps the faster pace:
+
+
+- _tool Bash_: Set faster auto-save defaults in the script
+
