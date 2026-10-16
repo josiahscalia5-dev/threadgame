@@ -102,6 +102,11 @@ button { font: inherit; color: inherit; -webkit-tap-highlight-color: transparent
   filter: drop-shadow(0 .1em .16em rgba(75, 35, 28, .38));
   margin: 0;
 }
+/* Cream underlay inside the 9-slice: hides the hairline anti-aliasing gaps between border-image pieces. */
+.pill, .rewards, .btn-teal, .btn-cream {
+  border-radius: 999px;
+  background: linear-gradient(#f6e8d0, #f6e8d0) center / calc(100% - 4px) calc(100% - 4px) no-repeat;
+}
 
 /* ---------- HUD ---------- */
 .hud {
@@ -290,7 +295,6 @@ button { font: inherit; color: inherit; -webkit-tap-highlight-color: transparent
   border-image-source: url("assets/ui/pill.webp");
   border-image-slice: 96 100 fill;
   border-image-repeat: stretch;
-  background: none;
   font-weight: 900; letter-spacing: .04em;
   cursor: pointer; touch-action: manipulation;
   filter: drop-shadow(0 3px 4px rgba(60, 25, 10, .42));
