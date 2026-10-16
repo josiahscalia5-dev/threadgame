@@ -189,7 +189,7 @@
       },
 
       handleEvents: function (events) {
-        if (!events || !events.length) return;
+        if (!Array.isArray(events) || !events.length) return;   // main.js also dispatches race.start()'s mode string
         props.handleEvents(events, lastState);
         events.forEach(function (e) {
           if (e.type === 'pickup' && e.who === 'purl' && lastState) {

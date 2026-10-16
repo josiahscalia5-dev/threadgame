@@ -3406,3 +3406,11 @@ continue and proceed where we're at. But like I said, can you validate to me whe
 
 - _tool Bash_: Filter loaded images and drop plate args in main.js
 
+
+**Claude:** Now the HUD progress thread, which should read the sim's `progress` directly:
+
+
+- _tool Edit_: /home/user/threadgame/game/src/ui/hud.js
+
+- _tool Bash_: Update main.js header and capture first 3D frames
+
