@@ -3805,3 +3805,15 @@ First I'll check whether the files you just sent are the same ones I already hav
 
 - _tool Bash_: Check how the camera view applies a slide offset
 
+
+**Claude:** The slide offset adds straight to the view position, so Purl can be pinned to whichever scene he's standing in. Making the change:
+
+
+- _tool Edit_: /home/user/threadgame/game/src/render/renderer.js
+
+- _tool Bash_: Draw the transition tower sharp instead of blurred
+
+
+
+- _tool Bash_: Use full-res tower strip and capture the new transition
+

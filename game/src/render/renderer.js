@@ -467,7 +467,7 @@
       const img = world.plateImg(R, Pf.id);
       if (!u.imgReady(img)) return null;
       const wipe = Pf.wipe || { x0: 380, x1: 470 };
-      const k = 0.5, cwid = Math.ceil((wipe.x1 - wipe.x0) * k), chei = Math.ceil(PH * k);
+      const k = 1, cwid = Math.ceil((wipe.x1 - wipe.x0) * k), chei = Math.ceil(PH * k);
       const c = u.makeCanvas(cwid, chei), g = c.getContext('2d');
       const iw = img.naturalWidth || img.width, ih = img.naturalHeight || img.height;
       // the tower as painted (no blur): it is the pillar Purl runs behind, not a smeared wipe
