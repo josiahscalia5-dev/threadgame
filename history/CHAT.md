@@ -1174,3 +1174,60 @@ Deliver the complete playable level, source, and Android build if successfully b
 
 - _tool Bash_: Skim Android host for lifecycle, insets and loader
 
+
+**Claude:** The host matches the contract. One thing to verify: on Android 16 (target SDK 36), `onBackPressed()` is no longer called, so Back must go through `OnBackInvokedCallback`. Checking:
+
+
+- _tool Bash_: Inspect Back handling in the Android host
+
+
+**Claude:** Back handling is correct on old and new Android versions. Could I test the APK on an Android emulator here? That needs hardware virtualization:
+
+
+- _tool Bash_: Check for KVM support for an Android emulator
+
+
+
+- _tool ToolSearch_: select:TaskCreate,TaskUpdate,TaskList
+
+- _tool TaskList_: 
+
+- _tool TaskCreate_: After sim/render/UI milestone 1: integrate, run in browser, real screenshots of opening, compare with approved 01, send to user.
+
+- _tool TaskCreate_: Message agents to continue M2; integrate p02-p07, Snagling, butterfly, gate, results.
+
+- _tool TaskCreate_: tests/e2e/play.cjs dodge + hit branches, compare-approved sheets, fix size/placement/perspective/UI differences; pause/background, insets, fail, both outcomes.
+
+- _tool TaskCreate_: Android SDK installed + Maven mirror fix done (host-only build OK). Build the final APK, record full run + dodge + hit/recovery MP4s, docs, honest limitations.
+
+
+**Claude:** I'm waiting on the four agents now. Each will report when it reaches its milestone, and I'll combine the pieces as soon as they're in. Status so far:
+
+- **Agents running in parallel:**
+  - simulation: race rules, threads, Snagling, Loop's AI
+  - renderer: scenes, camera, characters, effects
+  - interface/input/game loop
+  - route data for the butterfly and finish screens
+- **Each stops when the opening works.** I'll combine them, send you screenshots of the opening from the running game, then send them on to the remaining sections.
+- **Android is no longer blocked by the build setup.** I reinstalled the SDK. Maven Central is still refusing requests from this network ("429 Too Many Requests"), so the build now uses Google's public copy of it first. A test compile of the Android app succeeded. I deleted that test APK because it contained no working game.
+- **Can't test on a device here:** this machine has no virtualization, so I can't run an Android emulator. The final APK will be built but not run on a phone here, and I'll say so in the final report.
+- **Test tools are ready:** an automated touch player that plays full runs (both the dodge and the getting-hit branches) and records video, plus a tool that puts each captured moment next to its approved screen.
+- **Auto-save is back on:** every 30 seconds to `ccr-3132632e-hygdla`, and the saved chat history now covers both sessions.
+
+
+---
+
+## You  2026-10-16T15:31:22.651Z
+
+Can you make sure that everything's saved to my GitHub repository and make sure all the agents history that's building right now and make sure all the chat history we did and my entire mobile app, game app, and project is saved in every task or response from you or the agent that's, you know, that's building right now. So I want to make sure everything's saved every second to my GitHub repository.
+
+
+**Claude:** Checking that the saving is actually happening, including the agents that are building right now:
+
+
+- _tool Bash_: Verify auto-save loop, recent pushes and agent history
+
+
+
+- _tool Bash_: Time the history export and a git push
+
