@@ -3489,3 +3489,15 @@ What are you doing? I want these to look like exactly my mobile app screens. You
 
 [Image: original 2170x667, displayed at 2000x615. Multiply coordinates by 1.08 to map to original image.]
 
+
+
+- _tool TaskUpdate_: User (after interrupt): match the 7 earlier approved screens using THEIR real art in the connected run. Replace my procedural characters with their rear sprite frames (billboards on the 3D road, dista
+
+- _tool TaskUpdate_: Gold rope, knit-banded posts, lanterns, purple tassels, wooden towers with teal tapestries, the golden city/lotus gate/waterfalls/clouds backdrop — all taken from the user's paintings/props. Side-by-s
+
+- _tool Bash_: Read the visual kit manifest and individual art list
+
+- _tool Bash_: Make a sheet of the real character and prop sprites
+
+- _tool Read_: /tmp/claude-0/-home-user-threadgame/3689052e-f35d-5a30-b62d-bdfb14b60d40/scratchpad/sprites.png
+
