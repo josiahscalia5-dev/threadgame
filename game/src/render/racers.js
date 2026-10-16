@@ -3,7 +3,7 @@
    Each racer is the user's own rear-view sprite frames from the visual kit (purl/loop atlases: idle, run-left,
    run-pass-a, run-right, run-pass-b, jump, duck, stumble), standing on the 3D road at its foot pivot and facing the
    chase camera (which is always behind the runners). Sizes keep the art's own proportions: 1 px of the atlas =
-   K metres, so Purl's idle frame is 1.35 m tall on the 6 m road.
+   K metres, so Purl's idle frame is 2.0 m tall on the 6 m road (his size against the carpet in the approved screens).
 
    Frame choice follows the simulation:
      running   the four run frames in the art's order (run-left → run-pass-a → run-right → run-pass-b), advanced by
@@ -21,7 +21,8 @@
   'use strict';
   const R = WW.render = WW.render || {};
 
-  const K = 1.35 / 335;           // metres per atlas pixel (Purl's idle frame is 335 px tall → 1.35 m)
+  const K = 2.0 / 335;            // metres per atlas pixel: Purl's idle frame (335 px) is 2.0 m tall — the approved
+                                  // screens show the carpet ≈ 2.7 Purl-widths wide, i.e. Purl ≈ 2 m on the 6 m road
   const RUN = ['run-left', 'run-pass-a', 'run-right', 'run-pass-b'];
 
   function create(THREE, art, who, M) {
@@ -35,7 +36,7 @@
 
     const shadowMat = new THREE.MeshBasicMaterial({ map: M.textures.shadow, transparent: true, depthWrite: false, toneMapped: false,
                                                     polygonOffset: true, polygonOffsetFactor: -6, polygonOffsetUnits: -6 });
-    const shadow = new THREE.Mesh(new THREE.PlaneGeometry(1.25, 0.9), shadowMat);
+    const shadow = new THREE.Mesh(new THREE.PlaneGeometry(1.85, 1.3), shadowMat);
     shadow.renderOrder = 2;
     const st = { landT: 10, prevAir: false, lean: 0, frame: 'idle' };
 

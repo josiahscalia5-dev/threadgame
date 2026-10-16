@@ -73,11 +73,12 @@
     const P = st.purl;
     if (P.road === L.road) {
       const ahead = P.mainS - L.mainS;
-      if (ahead > -0.6 && ahead < 2.4 && Math.abs(P.lateral - want) < 1.1 && P.finishTime === null) {
+      const gap = 2 * ctx.T.bodyRadius + 0.05;          // side by side, not overlapping
+      if (ahead > -0.9 && ahead < 3.0 && Math.abs(P.lateral - want) < gap && P.finishTime === null) {
         const side = P.lateral > want ? -1 : 1;
-        let alt = P.lateral + side * 1.25;
-        const lim = L.limit != null ? L.limit : 2.5;
-        if (Math.abs(alt) > lim) alt = P.lateral - side * 1.25;
+        let alt = P.lateral + side * gap;
+        const lim = L.limit != null ? L.limit : 2.05;
+        if (Math.abs(alt) > lim) alt = P.lateral - side * gap;
         want = alt;
       }
     }

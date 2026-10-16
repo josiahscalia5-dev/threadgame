@@ -54,8 +54,8 @@
     const spawn = (level.course || WW.ROUTE).spawn.s;
     const st = ctx.state = {
       mode: 'intro', paused: false, pauseReason: null, time: 0, countdown: T.countdown, seed: seed,
-      purl: racer('purl', spawn, -0.8),
-      loop: racer('loop', spawn + 0.6, 0.8),
+      purl: racer('purl', spawn, -1.0),
+      loop: racer('loop', spawn + 0.6, 1.1),
       items: null,
       held: { purl: 0, loop: 0 },
       stitches: {},
