@@ -3958,3 +3958,9 @@ Next I'll find out exactly why the game doesn't fill your phone's screen.
 
 - _tool Bash_: Cover-fit the art and make the canvas full screen
 
+
+**Claude:** Next the Android side. I'll read the rest of the activity (WebView setup, page-loaded callback and lifecycle) so the full-screen and safe-area changes fit into it:
+
+
+- _tool Bash_: Read WebView client and lifecycle code
+
