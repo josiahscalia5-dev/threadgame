@@ -3759,3 +3759,11 @@ First I'll check whether the files you just sent are the same ones I already hav
 
 - _tool Bash_: Relax Loop distance threshold and rerun tests
 
+
+
+- _tool TaskUpdate_: 
+
+- _tool TaskUpdate_: 
+
+- _tool Bash_: Read pause menu markup, button styles and wiring
+
