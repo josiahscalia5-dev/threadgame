@@ -2147,3 +2147,16 @@ Yes
 
 - _tool Bash_: Read the renderer stitch/cue feature module
 
+
+**Claude:** Now the renderer core: how the cue, tap targets, Purl and the ribbon roll are wired.
+
+
+- _tool Bash_: Map renderer.js functions and feature hooks
+
+- _tool Bash_: Map world.js ribbon code and actors.js poses
+
+- _tool Bash_: Read ribbon ghost/roll drawing and racer drawing code
+
+
+- _tool Bash_: Read racer entries, world drawing and render loop
+
