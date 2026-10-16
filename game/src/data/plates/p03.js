@@ -46,6 +46,10 @@
 
     stitch: { id: 'tassels', x: 571, y: 1365, r: 70 },
 
+    /* renderer-only: rope pivot height (the beam the lifts end under); tassels hang between Purl's route and the
+       tower, so they sort in front of Loop's bridge end (depth y) */
+    tasselBeamY: 205, tasselDepthY: 1000,
+
     /* TOP anchors (approved bottoms minus w * 498/319); lifts raise each top to just under the upper beam (~y 220). */
     tassels: [
       { x: 221, y: 390, w: 173, lift: 170 },

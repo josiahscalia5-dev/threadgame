@@ -24,9 +24,14 @@
       ]
     },
     stitch: { id: 'shortcut', x: 490, y: 1328, r: 70 },
-    shortcut: { band: [[404, 1338, 268], [411, 1200, 244], [427, 1100, 200], [445, 1000, 150], [455, 955, 126], [465, 936, 124]] },
+    shortcut: { band: [[404, 1338, 268], [411, 1200, 244], [427, 1100, 200], [445, 1000, 150], [455, 955, 126], [465, 936, 124]],
+      // renderer-only: the unwoven (ghosted) part starts mid-runner, as in approved 02 the near runner is laid; roll width
+      // = rollK × band width (the plate's far roll is ≈ 0.9 × the band width)
+      ghostFrom: 0.5, rollK: 0.9 },
     previews: [{ item: 'teal', x: 405, y: 724, size: 65 }],
-    cameo: { x: 211, y: 742, w: 130 },
+    cameo: { x: 211, y: 742, w: 130,
+      // renderer-only: visible area (everything right of the far-left post), so Snagling peeks from behind it
+      clip: [[168, 560], [360, 560], [360, 752], [188, 752], [184, 728], [170, 712]] },
     occluders: [
       // big plum tassel hanging over the bypass end
       { id: 'big-tassel', poly: [[428, 410], [470, 382], [530, 420], [600, 455], [642, 500], [646, 560], [622, 596], [580, 618], [540, 630], [496, 626], [462, 602], [436, 562], [426, 480]], behindY: 700 },
