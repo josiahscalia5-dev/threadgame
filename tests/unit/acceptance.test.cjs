@@ -93,7 +93,7 @@ test('check 5: the butterfly delivers the gold onto reachable carpet ahead; 3/3 
   assert.ok(gold.f > b.f && gold.f < seg.exit, 'on Purl\'s path between his stop and the exit');
   let tapHeld = null, pickT = null;
   stepUntil(race, function (s, evs) {
-    if (types(evs, 'stitch-tap').some(function (e) { return e.id === 'butterfly'; })) tapHeld = s.held.purl;
+    if (b.state === 'animating' && tapHeld === null) tapHeld = s.held.purl;   // the step after the tap
     if (types(evs, 'pickup').some(function (e) { return e.item === 'purl.gold'; })) pickT = s.time;
     return pickT !== null;
   }, 300);

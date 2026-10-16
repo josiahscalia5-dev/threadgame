@@ -196,7 +196,7 @@
       if (R.loopRank != null) {
         ranks = purlRank <= R.loopRank ? P(purlRank) + dot + Lp(R.loopRank) : Lp(R.loopRank) + dot + P(purlRank);
       } else {
-        ranks = P(purlRank) + (R.loopStillRacing ? '' : dot + '<span class="l">LOOP —</span>');
+        ranks = P(purlRank);   // Loop still racing (chip below) or out of time (times pill shows "LOOP —")
       }
       dom.setHTML(els.ranks, ranks);
       const waiting = R.loopStillRacing && R.loopTime == null;
