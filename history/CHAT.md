@@ -4103,3 +4103,15 @@ I'll put those three screens in front of you so we're looking at the same thing:
 
 - _tool Bash_: List the connected-road files saved at b36b7aa
 
+
+**Claude:** I'll copy those files into the separate preview folder. Shared items (three.js, your atlases, the style) stay in one place, and your current game files aren't touched.
+
+
+- _tool Bash_: Restore the connected code into game/connected preview
+
+
+**Claude:** The art tool still writes into your current game's folder, so I'll point it at the preview folder, then check which character scale and camera settings were saved:
+
+
+- _tool Bash_: Fix tool output paths and check saved scale/camera
+
