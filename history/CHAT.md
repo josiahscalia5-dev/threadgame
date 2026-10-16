@@ -3113,3 +3113,9 @@ continue and proceed where we're at. But like I said, can you validate to me whe
 
 - _tool Bash_: Read pull e2e script and race debug API
 
+
+**Claude:** I'll write a one-off capture script in the scratchpad: play the real game, skip the pull lesson through the debug API, and grab frames as Purl crosses the first connector.
+
+
+- _tool Bash_: Capture the current game's connector wipe at three moments
+
