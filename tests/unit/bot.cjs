@@ -1,0 +1,120 @@
+#!/usr/bin/env node
+/* Headless bot: plays a full Level 1 race with the shipped data and prints a timeline.
+
+     node tests/unit/bot.cjs [--seed=N] [--react=S] [--profile=competent|first] [--quiet]
+     node tests/unit/bot.cjs --sweep=N [--profile=...]      # seeds 1..N, finish times and win share
+
+   Profiles: competent = taps each stitch `react` s (default 1.0) after its cue appears (state 'ready') and dodges
+   Snagling; first = react 2.0 s and takes one hit, then recovers the dropped thread. (Snagling rules arrive in
+   milestone 2; until then the landing is crossed without an attack.) Timeline rows: race clock, racer, event. */
+'use strict';
+const { load, newRace } = require('./load.cjs');
+
+const PROFILES = {
+  competent: { react: 1.0, snag: 'dodge' },
+  first: { react: 2.0, snag: 'hit' }
+};
+
+function runBot(opts) {
+  opts = opts || {};
+  const prof = Object.assign({}, PROFILES[opts.profile || 'competent'], opts);
+  const WW = opts.WW || load();
+  const race = newRace(WW, opts.seed == null ? 1 : opts.seed, opts.tuning);
+  const st = race.state;
+  const dt = 1 / 60;
+  const timeline = [];
+  const readyAt = {};
+  const add = function (who, what) { timeline.push({ t: st.time, who: who, what: what }); };
+  const log = function (evs) {
+    evs.forEach(function (e) {
+      switch (e.type) {
+        case 'go': add('race', 'GO'); break;
+        case 'segment': add(e.who, 'enter ' + e.segId); break;
+        case 'stitch-tap': add('purl', 'tap ' + e.id); break;
+        case 'stitch-open': add('purl', 'open ' + e.id + ' (held ' + st.held.purl + '/3)'); break;
+        case 'pickup': add(e.item.split('.')[0], 'pickup ' + e.item + ' → ' + st.held[e.item.split('.')[0]] + '/3'); break;
+        case 'drop': add('purl', 'drop ' + e.item); break;
+        case 'recover': add('purl', 'recover ' + e.item); break;
+        case 'reveal': add('snag', 'reveal'); break;
+        case 'hit': add('snag', 'hit'); break;
+        case 'dodge': add('snag', 'dodge'); break;
+        case 'fail': add('purl', 'FAIL'); break;
+        case 'loop-task': add('loop', 'task ' + e.kind); break;
+        case 'loop-stumble': add('loop', 'stumble'); break;
+        case 'loop-drop': add('loop', 'drop ' + e.item); break;
+        case 'loop-recover': add('loop', 'recover ' + e.item); break;
+        case 'gate-blocked': add('purl', 'gate blocked'); break;
+        case 'finish': timeline.push({ t: e.time, who: e.who, what: 'FINISH ' + e.time.toFixed(2) + ' s' }); break;
+        default: break;
+      }
+    });
+  };
+  race.start();
+  const policy = opts.policy || null;   // optional hook(race, events, bot) for rule tests
+  const maxSteps = Math.round((opts.maxTime || 400) / dt);
+  for (let i = 0; i < maxSteps; i++) {
+    const evs = race.step(dt);
+    log(evs);
+    Object.keys(st.stitches).forEach(function (id) {
+      const s = st.stitches[id];
+      if (s.state === 'ready' && readyAt[id] === undefined) { readyAt[id] = st.time; add('purl', 'cue ' + id); }
+      if (s.state === 'ready' && st.time >= readyAt[id] + prof.react - 1e-9) log(race.input({ type: 'tap', target: id }));
+    });
+    if (policy) log(policy(race, evs, { prof: prof, add: add }) || []);
+    if (st.mode === 'failed') break;
+    if (st.mode === 'finished' && !st.result.loopStillRacing) break;
+  }
+  return {
+    seed: opts.seed == null ? 1 : opts.seed, profile: opts.profile || 'competent', react: prof.react,
+    timeline: timeline, result: st.result, mode: st.mode, held: Object.assign({}, st.held),
+    purlTime: st.purl.finishTime, loopTime: st.loop.finishTime, stats: Object.assign({}, st.stats), race: race
+  };
+}
+
+function fmt(run) {
+  const lines = run.timeline.map(function (r) {
+    return ('      ' + r.t.toFixed(2)).slice(-7) + '  ' + (r.who + '     ').slice(0, 5) + ' ' + r.what;
+  });
+  const r = run.result;
+  lines.push('result: ' + (r ? 'Purl ' + r.purlTime.toFixed(2) + ' s (#' + r.purlRank + '), Loop ' +
+    (r.loopTime === null ? 'did not finish' : r.loopTime.toFixed(2) + ' s (#' + r.loopRank + ')') +
+    ', winner ' + r.winner : run.mode));
+  return lines.join('\n');
+}
+
+function sweep(n, opts) {
+  const WW = load();
+  const rows = [];
+  for (let seed = 1; seed <= n; seed++) rows.push(runBot(Object.assign({}, opts, { seed: seed, WW: WW })));
+  const wins = rows.filter(function (r) { return r.result && r.result.winner === 'purl'; }).length;
+  const avg = function (k) { return rows.reduce(function (a, r) { return a + (r[k] || 0); }, 0) / rows.length; };
+  const lt = rows.map(function (r) { return r.loopTime; }).filter(function (x) { return x !== null; });
+  return { rows: rows, purlWins: wins, n: n, purlAvg: avg('purlTime'),
+           loopMin: Math.min.apply(null, lt), loopMax: Math.max.apply(null, lt), loopAvg: avg('loopTime') };
+}
+
+if (require.main === module) {
+  const args = {};
+  process.argv.slice(2).forEach(function (a) {
+    const m = /^--([^=]+)(?:=(.*))?$/.exec(a);
+    if (m) args[m[1]] = m[2] === undefined ? true : m[2];
+  });
+  const opts = { profile: args.profile || 'competent' };
+  if (args.react !== undefined) opts.react = Number(args.react);
+  if (args.sweep) {
+    const s = sweep(Number(args.sweep), opts);
+    s.rows.forEach(function (r) {
+      console.log('seed ' + String(r.seed).padStart(3) + '  purl ' + (r.purlTime || 0).toFixed(2) + '  loop ' +
+        (r.loopTime === null ? '  dnf ' : r.loopTime.toFixed(2)) + '  ' + (r.result ? r.result.winner : r.mode));
+    });
+    console.log(opts.profile + ': Purl wins ' + s.purlWins + '/' + s.n + ', Purl avg ' + s.purlAvg.toFixed(2) +
+      ' s, Loop ' + s.loopMin.toFixed(2) + '–' + s.loopMax.toFixed(2) + ' (avg ' + s.loopAvg.toFixed(2) + ')');
+  } else {
+    opts.seed = args.seed === undefined ? 1 : Number(args.seed);
+    const run = runBot(opts);
+    if (!args.quiet) console.log('seed ' + run.seed + ', profile ' + run.profile + ', react ' + run.react + ' s');
+    console.log(args.quiet ? fmt(run).split('\n').pop() : fmt(run));
+  }
+}
+
+module.exports = { runBot: runBot, sweep: sweep, fmt: fmt, PROFILES: PROFILES };
