@@ -242,10 +242,16 @@ describe('§7.5 Snagling', function () {
     assert.equal(s.armed, false);
     close(s.contactF, st.purl.f + st.purl.speed * T.snagRevealToContact / seg.length, 1e-9);
     swipe(race, 'right');                                     // leave lane -1 in time
-    const rest = stepUntil(race, function (x) { return x.snagling.state === 'done'; }, 5, { tap: false });
+    const t0 = st.time;
+    let t1 = null;
+    const rest = stepUntil(race, function (x) {
+      if (t1 === null && x.snagling.state === 'retreat') t1 = x.time;
+      return x.snagling.state === 'done';
+    }, 5, { tap: false });
     assert.deepEqual(types(rest, 'dodge'), [{ type: 'dodge' }]);
     assert.equal(s.result, 'dodge');
-    close(st.time - (rest.length ? 0 : 0), st.time, 0);
+    close(t1 - t0, T.snagRevealToContact + T.snagContactWindow, DT + 1e-9, 'hop');
+    close(st.time - t1, T.snagRetreat, DT + 1e-9, 'retreat');
   });
 
   test('no reveal while a stitch lock holds Purl; it reveals once the stop is passable', function () {
@@ -296,11 +302,15 @@ describe('§7.5 Snagling', function () {
     const race = toLanding(WW, 4);
     const st = race.state;
     toReveal(race);
-    const evs = stepUntil(race, function (s) { return s.snagling.state !== 'hop'; }, 2, { tap: false });
+    let hitT = null;
+    const evs = stepUntil(race, function (s, e) {
+      if (e.some(function (x) { return x.type === 'hit'; })) hitT = s.time;
+      return s.snagling.state !== 'hop';
+    }, 2, { tap: false });
     assert.equal(types(evs, 'hit').length, 1);
     assert.equal(types(evs, 'drop').length, 1);
     assert.equal(st.held.purl, 1);
-    close(st.purl.immuneUntil - st.time, T.hitImmunity - (st.time - st.purl.immuneUntil + T.hitImmunity), 1);
+    close(st.purl.immuneUntil, hitT + T.hitImmunity, 1e-9);
     race.debug.forceReveal();                                 // a second attack inside the immunity
     const again = stepUntil(race, function (s) { return s.snagling.state !== 'hop'; }, 2, { tap: false });
     assert.ok(st.time < st.purl.immuneUntil);
