@@ -76,7 +76,7 @@ Now the acceptance and pacing suites.
 
 ## UI: HUD, input, loop, lifecycle
 
-- transcript: `history/transcripts/370de19d-9b32-5c31-ac39-d89d7478db67/subagents/agent-ae9506e4d1065977a.jsonl` (474 entries)
+- transcript: `history/transcripts/370de19d-9b32-5c31-ac39-d89d7478db67/subagents/agent-ae9506e4d1065977a.jsonl` (476 entries)
 
 HUD placement, sizes and results layout now match approved 01/07 closely. Final housekeeping: confirm nothing under `kit/` changed, list my files, and stop my server.
 
