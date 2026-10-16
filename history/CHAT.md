@@ -4172,3 +4172,9 @@ I'll put those three screens in front of you so we're looking at the same thing:
 
 - _tool Bash_: Find code that assumes the side loop is on the left
 
+
+**Claude:** Generating the mirrored road map, and making the sim and Loop handle the side loop being on whichever side the map says. After mirroring it's on the right.
+
+
+- _tool Bash_: Mirror the course data and verify positions and handedness
+
