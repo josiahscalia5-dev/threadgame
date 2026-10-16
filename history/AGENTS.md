@@ -76,7 +76,7 @@ Now the harness: a deterministic mini-sim producing §7.1-shaped state, plus mom
 
 ## Simulation: race rules and Loop AI
 
-- transcript: `history/transcripts/370de19d-9b32-5c31-ac39-d89d7478db67/subagents/agent-ae84357f8296ab86f.jsonl` (140 entries)
+- transcript: `history/transcripts/370de19d-9b32-5c31-ac39-d89d7478db67/subagents/agent-ae84357f8296ab86f.jsonl` (144 entries)
 
 _(no message yet)_
 

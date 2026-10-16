@@ -1445,3 +1445,15 @@ That "other Claude session" is an agent working inside this same session — a s
 
 - _tool SendMessage_: 
 
+
+**Claude:** That notification is for the milestone-1 stop; the agent has already resumed on milestone 2. While the others work, I'll spot-check the simulation myself:
+
+
+- _tool Bash_: Run sim unit tests and a headless bot race
+
+
+**Claude:** The simulation checks out. Its tests pass, and a headless race with first-time reactions (2-second taps) finished in 88.4 s, with Purl first at 88.42 s and Loop second at 93.97 s. The butterfly-to-gold pickup timing now reflects the new butterfly-screen route data, so that agent has saved its work too.
+
+I'm waiting for the renderer and interface agents to reach the opening milestone. Then I'll combine everything and send you the first screenshots from the running game.
+
+
