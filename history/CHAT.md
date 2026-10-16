@@ -3308,3 +3308,11 @@ continue and proceed where we're at. But like I said, can you validate to me whe
 
 - _tool Bash_: Locate per-step position jumps in the sim
 
+
+
+- _tool Bash_: Use speed-limited side-steps and rerun tests
+
+
+
+- _tool Bash_: Tune steering gain, tighten steering test, rerun
+

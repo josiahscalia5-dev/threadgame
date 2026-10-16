@@ -96,9 +96,11 @@ test('steering: one swipe = one laneStep of target, smooth lateral motion, clamp
   race.input({ type: 'steer', direction: 1 });
   assert.equal(st.purl.latTarget, t0 + T.laneStep);
   let prev = st.purl.lateral, maxD = 0;
-  stepFor(race, 0.6, (s) => { maxD = Math.max(maxD, Math.abs(s.purl.lateral - prev)); prev = s.purl.lateral; });
-  assert.ok(Math.abs(st.purl.lateral - st.purl.latTarget) < 0.01, 'reaches the target');
-  assert.ok(maxD < 0.25, 'no lateral jump (max ' + maxD.toFixed(3) + ' m/step)');
+  stepFor(race, 0.45, (s) => { maxD = Math.max(maxD, Math.abs(s.purl.lateral - prev)); prev = s.purl.lateral; });
+  assert.ok(Math.abs(st.purl.lateral - t0) >= 0.9 * T.laneStep, '90 % of the side-step within 0.45 s');
+  stepFor(race, 0.45, (s) => { maxD = Math.max(maxD, Math.abs(s.purl.lateral - prev)); prev = s.purl.lateral; });
+  assert.ok(Math.abs(st.purl.lateral - st.purl.latTarget) < 0.01, 'settles on the target');
+  assert.ok(maxD <= T.steerSpeed * DT + 1e-9, 'never faster than steerSpeed (max ' + (maxD / DT).toFixed(2) + ' m/s)');
   for (let i = 0; i < 6; i++) race.input({ type: 'steer', direction: 1 });
   stepFor(race, 0.8);
   assert.ok(Math.abs(st.purl.lateral - (3 - T.bodyRadius)) < 0.02, 'clamped at the road edge minus body clearance');

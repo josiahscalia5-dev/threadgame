@@ -24,7 +24,7 @@
     laneStep: 1.6,                // m per steering swipe
     steerSpeed: 4.2,              // m/s max sideways speed while changing line (a side-step, never a pop)
     steerAccel: 28,               // m/s² sideways acceleration
-    steerGain: 7,                 // 1/s: sideways speed eases off in proportion to the remaining distance
+    steerGain: 10,                // 1/s: sideways speed eases off in proportion to the remaining distance
     jumpHeight: 0.85,             // m
     sideLoopBoost: 1.45,          // speed ribbon on the side loop: 19.5 m at ×1.45 beats 16.0 m of main by ~0.45 s
     branchWindow: 12,             // m before the fork in which the side loop is announced
