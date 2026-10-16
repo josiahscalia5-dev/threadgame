@@ -169,23 +169,21 @@
     const s = info.from ? info.from + (1 - info.from) * s0 : s0;
     const u = U(), band = info.band;
     const g = ghostCanvas(R, v.plate, info);
-    // ghost (not yet woven) part
-    ctx.save();
-    u.bandPath(ctx, band, s, 1, 1.0);
-    ctx.clip();
-    if (g) { ctx.globalAlpha = 0.93; ctx.drawImage(g, info.box.x0, info.box.y0); ctx.globalAlpha = 1; }
-    // shimmer: soft glints drifting up the band
+    // ghost (not yet woven) part: pre-masked to the band section [s, 1] and cached while s holds still (the long
+    // 'ready' wait), so a frame draws one image instead of rasterising the band clip (≈ 10 ms/frame in CPU raster)
+    const m = maskedGhost(info, g, s);
+    if (m) { ctx.globalAlpha = 0.93; ctx.drawImage(m, info.box.x0, info.box.y0); ctx.globalAlpha = 1; }
+    // shimmer: soft glints drifting up the band (kept inside it by their size; no clip)
     const glow = u.glowSprite(R.cache, 'rgba(255,250,240,0.9)', 0.1);
+    ctx.save();
     ctx.globalCompositeOperation = 'lighter';
     for (let k = 0; k < 3; k++) {
       const ss = s + (1 - s) * (((clock * 0.18) + k / 3) % 1);
       const p = u.bandAt(band, ss);
-      const r = p.hw * 1.5;
-      ctx.globalAlpha = 0.16 * Math.sin(Math.PI * (((clock * 0.18) + k / 3) % 1));
-      ctx.drawImage(glow, p.x - r, p.y - r, 2 * r, 2 * r);
+      const r = p.hw * 0.95;
+      ctx.globalAlpha = 0.2 * Math.sin(Math.PI * (((clock * 0.18) + k / 3) % 1));
+      ctx.drawImage(glow, p.x - r, p.y - r * 0.8, 2 * r, 1.6 * r);
     }
-    ctx.globalAlpha = 1;
-    ctx.globalCompositeOperation = 'source-over';
     ctx.restore();
     // stitched template edges along the unwoven part
     const edges = u.bandEdges(band, s, 1);
@@ -200,6 +198,25 @@
     ctx.restore();
     // the roll at the weaving front
     drawRoll(R, ctx, info, s, st);
+  }
+
+  /* The ghost canvas masked to the band section [s, 1]; rebuilt only when s changes (one reusable canvas). */
+  function maskedGhost(info, g, s) {
+    if (!g) return null;
+    if (info.masked && info.maskS === s) return info.masked;
+    const u = U(), b = info.box;
+    if (!info.masked) info.masked = u.makeCanvas(g.width, g.height);
+    const c = info.masked, mg = c.getContext('2d');
+    mg.setTransform(1, 0, 0, 1, 0, 0);
+    mg.clearRect(0, 0, c.width, c.height);
+    mg.save();
+    mg.translate(-b.x0, -b.y0);
+    u.bandPath(mg, info.band, s, 1, 1.0);
+    mg.clip();
+    mg.drawImage(g, b.x0, b.y0);
+    mg.restore();
+    info.maskS = s;
+    return c;
   }
 
   /* Roll geometry at band fraction s: centre point on the band, drawn size and rotation (shared with pull.js,
