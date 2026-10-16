@@ -4004,3 +4004,7 @@ Next I'll find out exactly why the game doesn't fill your phone's screen.
 
 [Image: original 2230x890, displayed at 2000x798. Multiply coordinates by 1.11 to map to original image.]
 
+
+
+- _tool Bash_: Recheck features and transition with full-screen layout
+
